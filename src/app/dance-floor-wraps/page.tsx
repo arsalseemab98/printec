@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import Image from "next/image";
 import { Section } from "@/components/shared/section";
 import { SkewedButton } from "@/components/shared/skewed-button";
 import {
@@ -7,6 +8,7 @@ import {
   DARK1,
   DARK2,
   WHITE,
+  IMG,
 } from "@/lib/constants";
 import {
   Heart,
@@ -189,22 +191,23 @@ export default function DanceFloorWrapsPage() {
           padding: 0,
         }}
       >
-        {/* Hero image placeholder */}
+        {/* Hero image */}
         <div
           style={{
             width: "100%",
             aspectRatio: "21 / 9",
-            background: "#111",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            color: "rgba(255,255,255,0.15)",
-            fontSize: "14px",
-            letterSpacing: "3px",
-            fontWeight: 500,
+            position: "relative",
+            overflow: "hidden",
           }}
         >
-          Hero Image — 1920x400
+          <Image
+            src={IMG.workshop}
+            alt="Printec Corp production facility — wide-format printers and vinyl materials for dance floor wraps"
+            fill
+            sizes="100vw"
+            style={{ objectFit: "cover" }}
+            priority
+          />
         </div>
 
         {/* Hero text */}

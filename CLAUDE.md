@@ -3,6 +3,14 @@
 ## Project Overview
 Full-service website for Printec Corp — a custom signage, vehicle wrap, and graphics company established in 2017 in Virginia. The site targets both B2B (businesses, storefronts) and B2C (weddings, events, venues) customers.
 
+## Hosting & Services
+- **Domain**: https://printecwrap.com (+ www.printecwrap.com)
+- **Hosting**: Vercel — project `printec` under `arsalseemab98s-projects`
+- **Vercel URL**: https://printec.vercel.app
+- **GitHub**: https://github.com/arsalseemab98/printec
+- **Database**: Supabase — project `printecwrap` (ID: `eofjaizkkxqxbynnvemi`, region: us-east-1)
+- **Supabase Dashboard**: https://supabase.com/dashboard/project/eofjaizkkxqxbynnvemi
+
 ## Tech Stack
 - **Framework**: Next.js 16.1.7 (App Router, Turbopack)
 - **Language**: TypeScript
@@ -11,6 +19,7 @@ Full-service website for Printec Corp — a custom signage, vehicle wrap, and gr
 - **Animations**: Framer Motion (hero, scroll-driven) + CSS transitions (reveals)
 - **Icons**: Lucide React
 - **Font**: Inter (body via Geist), Arial Black (headings)
+- **Database**: Supabase (PostgreSQL)
 
 ## Design System — Refined Minimal
 - **Background**: #0C0C0C (dark), #111 (cards), #222 (borders)

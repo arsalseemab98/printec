@@ -14,6 +14,13 @@ export const WHITE = "#FFFFFF";
 export const SPECTRUM = `linear-gradient(90deg, ${YELLOW}, ${ORANGE}, ${RED}, ${MAGENTA}, ${TEAL}, ${LIME})`;
 export const BRAND_COLORS = [YELLOW, ORANGE, RED, MAGENTA, TEAL, EMERALD, LIME];
 
+/* ─── SUPABASE STORAGE ─── */
+const SUPABASE_STORAGE = "https://eofjaizkkxqxbynnvemi.supabase.co/storage/v1/object/public/images";
+export const IMG = {
+  workshop: `${SUPABASE_STORAGE}/workshop.webp`,
+  worker: `${SUPABASE_STORAGE}/worker.webp`,
+};
+
 /* ─── SVG NOISE TEXTURE DATA URL (static base64, works server-side) ─── */
 export const NOISE_SVG =
   "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJuIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iMC43NSIgbnVtT2N0YXZlcz0iNCIgc3RpdGNoVGlsZXM9InN0aXRjaCIvPjxmZUNvbG9yTWF0cml4IHR5cGU9InNhdHVyYXRlIiB2YWx1ZXM9IjAiLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMzAwIiBoZWlnaHQ9IjMwMCIgZmlsdGVyPSJ1cmwoI24pIiBvcGFjaXR5PSIwLjE4Ii8+PC9zdmc+";

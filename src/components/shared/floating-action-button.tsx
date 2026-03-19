@@ -13,7 +13,7 @@ import {
   Mail,
   CheckCircle,
 } from "lucide-react";
-import { ORANGE, BLACK, DARK1, DARK2, WHITE } from "@/lib/constants";
+import { ORANGE, BLACK, DARK1, DARK2, WHITE, IMG } from "@/lib/constants";
 import Image from "next/image";
 
 type View = "menu" | "form" | "success";
@@ -119,7 +119,7 @@ export function FloatingActionButton() {
             }}
           >
             <Image
-              src="/images/worker.png"
+              src={IMG.worker}
               alt="Printec Team"
               width={380}
               height={130}

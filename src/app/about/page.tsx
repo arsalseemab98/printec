@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import Image from "next/image";
 import { Section } from "@/components/shared/section";
 import { CtaBanner } from "@/components/shared/cta-banner";
 import {
@@ -7,6 +8,7 @@ import {
   DARK1,
   DARK2,
   WHITE,
+  IMG,
 } from "@/lib/constants";
 import {
   Calendar,
@@ -169,23 +171,25 @@ export default function AboutPage() {
         }}
       >
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-          {/* Hero image placeholder */}
+          {/* Hero image */}
           <div
             style={{
               width: "100%",
               aspectRatio: "21 / 9",
-              background: DARK1,
-              border: `1px solid ${DARK2}`,
               borderRadius: "4px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
+              overflow: "hidden",
               marginTop: "40px",
+              position: "relative",
             }}
           >
-            <span style={{ ...BODY, color: `${WHITE}44` }}>
-              Hero Image — 2100 x 900
-            </span>
+            <Image
+              src={IMG.workshop}
+              alt="Printec Corp workshop — wide-format printers, vinyl rolls, and team fabricating channel letters"
+              fill
+              sizes="(max-width: 1200px) 100vw, 1200px"
+              style={{ objectFit: "cover" }}
+              priority
+            />
           </div>
 
           <div style={{ marginTop: "40px", marginBottom: "20px" }}>
@@ -214,22 +218,23 @@ export default function AboutPage() {
             alignItems: "start",
           }}
         >
-          {/* Left — image placeholder */}
+          {/* Left — workshop image */}
           <div
             style={{
               width: "100%",
               aspectRatio: "4 / 3",
-              background: DARK1,
-              border: `1px solid ${DARK2}`,
               borderRadius: "4px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
+              overflow: "hidden",
+              position: "relative",
             }}
           >
-            <span style={{ ...BODY, color: `${WHITE}44` }}>
-              Story Image — 800 x 600
-            </span>
+            <Image
+              src={IMG.workshop}
+              alt="Printec Corp production facility with wide-format printers and vinyl materials"
+              fill
+              sizes="(max-width: 768px) 100vw, 50vw"
+              style={{ objectFit: "cover" }}
+            />
           </div>
 
           {/* Right — story text */}

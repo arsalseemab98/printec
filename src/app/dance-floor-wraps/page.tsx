@@ -201,8 +201,8 @@ export default function DanceFloorWrapsPage() {
           }}
         >
           <Image
-            src={IMG.workshop}
-            alt="Printec Corp production facility — wide-format printers and vinyl materials for dance floor wraps"
+            src={IMG.danceFloorHero}
+            alt="Elegant wedding dance floor wrap with custom monogram initials on dark marble surface"
             fill
             sizes="100vw"
             style={{ objectFit: "cover" }}

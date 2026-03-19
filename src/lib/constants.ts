@@ -19,6 +19,7 @@ const SUPABASE_STORAGE = "https://eofjaizkkxqxbynnvemi.supabase.co/storage/v1/ob
 export const IMG = {
   workshop: `${SUPABASE_STORAGE}/workshop.webp`,
   worker: `${SUPABASE_STORAGE}/worker.webp`,
+  danceFloorHero: `${SUPABASE_STORAGE}/dance-floor-hero.webp`,
 };
 
 /* ─── SVG NOISE TEXTURE DATA URL (static base64, works server-side) ─── */

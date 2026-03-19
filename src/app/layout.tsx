@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { Navbar } from "@/components/layout/navbar";
+import { Footer } from "@/components/layout/footer";
+import { FloatingActionButton } from "@/components/shared/floating-action-button";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -13,8 +16,48 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Printec Corp – Design Your Print",
-  description: "3 Website Redesigns for Printec Corp",
+  title: {
+    default: "Printec Corp – From Vision to Vinyl | Signs, Wraps & Graphics",
+    template: "%s | Printec Corp",
+  },
+  description:
+    "Printec Corp is Virginia's premier custom signage, vehicle wrap, and graphics company. Channel letters, window wraps, dance floor wraps, wall wraps & more.",
+  keywords: [
+    "channel letters signage",
+    "vehicle wraps Virginia",
+    "window wraps",
+    "dance floor wraps",
+    "wall wraps",
+    "LED channel letters",
+    "custom signage",
+    "storefront window graphics",
+    "custom signs Virginia",
+    "sign company near me",
+  ],
+  metadataBase: new URL("https://printeccorp.com"),
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    siteName: "Printec Corp",
+    title: "Printec Corp – From Vision to Vinyl",
+    description: "Virginia's premier custom signage, vehicle wrap, and graphics company.",
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Printec Corp" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Printec Corp – From Vision to Vinyl",
+    description: "Custom signs, wraps & graphics in Virginia.",
+    images: ["/og-image.png"],
+  },
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true },
+  },
 };
 
 export default function RootLayout({
@@ -24,8 +67,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
-      <body className="antialiased">
-        {children}
+      <body className="antialiased" style={{ background: "#0C0C0C" }}>
+        <Navbar />
+        <main>{children}</main>
+        <Footer />
+        <FloatingActionButton />
       </body>
     </html>
   );

@@ -1,6 +1,8 @@
 import { Metadata } from "next";
+import Image from "next/image";
 import { Section } from "@/components/shared/section";
 import { CtaBanner } from "@/components/shared/cta-banner";
+import { BeforeAfterSlider } from "@/components/ui/before-after-slider";
 import {
   ORANGE,
   BLACK,
@@ -186,30 +188,43 @@ export default function ChannelLettersSignagePage() {
           style={{
             width: "100%",
             aspectRatio: "1920 / 400",
-            background: "#0a0a0a",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            flexDirection: "column",
-            gap: "16px",
+            position: "relative",
+            overflow: "hidden",
             borderBottom: `1px solid ${DARK1}`,
           }}
         >
-          <span style={{ ...bodyStyle, color: `${WHITE}44`, fontSize: "13px" }}>
-            Hero Image — 1920x400
-          </span>
-          <h1
+          <Image
+            src="/images/channel-letters-hero.webp"
+            alt="Illuminated channel letter signage on a storefront at night"
+            fill
+            sizes="100vw"
+            style={{ objectFit: "cover" }}
+            priority
+          />
+          <div
             style={{
-              fontSize: "36px",
-              fontFamily: "'Arial Black', sans-serif",
-              fontWeight: 900,
-              color: WHITE,
-              margin: 0,
-              textAlign: "center",
+              position: "absolute",
+              inset: 0,
+              background: "linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.6))",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
             }}
           >
-            Channel Letters &amp; Signage
-          </h1>
+            <h1
+              style={{
+                fontSize: "36px",
+                fontFamily: "'Arial Black', sans-serif",
+                fontWeight: 900,
+                color: WHITE,
+                margin: 0,
+                textAlign: "center",
+                textShadow: "0 2px 8px rgba(0,0,0,0.5)",
+              }}
+            >
+              Channel Letters &amp; Signage
+            </h1>
+          </div>
         </div>
       </Section>
 
@@ -225,23 +240,15 @@ export default function ChannelLettersSignagePage() {
             alignItems: "center",
           }}
         >
-          {/* Image placeholder */}
-          <div
-            style={{
-              aspectRatio: "4 / 3",
-              background: "#0a0a0a",
-              borderRadius: "4px",
-              border: `1px solid ${DARK2}`,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              ...bodyStyle,
-              color: `${WHITE}44`,
-              fontSize: "13px",
-            }}
-          >
-            Intro Image — 600x450
-          </div>
+          {/* Before/after slider */}
+          <BeforeAfterSlider
+            beforeSrc="/images/channel-before.webp"
+            afterSrc="/images/channel-after.webp"
+            beforeAlt="Commercial building facade without signage"
+            afterAlt="Same building with illuminated SAVORA KITCHEN channel letter sign"
+            width={600}
+            height={450}
+          />
 
           {/* Copy */}
           <div>

@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import Image from "next/image";
 import { Section } from "@/components/shared/section";
 import { SkewedButton } from "@/components/shared/skewed-button";
+import { BeforeAfterSlider } from "@/components/ui/before-after-slider";
 import {
   ORANGE,
   BLACK,
@@ -191,13 +192,14 @@ export default function DanceFloorWrapsPage() {
           padding: 0,
         }}
       >
-        {/* Hero image */}
+        {/* Hero image with overlay */}
         <div
           style={{
             width: "100%",
-            aspectRatio: "21 / 9",
+            aspectRatio: "1920 / 400",
             position: "relative",
             overflow: "hidden",
+            borderBottom: `1px solid ${DARK1}`,
           }}
         >
           <Image
@@ -208,56 +210,30 @@ export default function DanceFloorWrapsPage() {
             style={{ objectFit: "cover" }}
             priority
           />
-        </div>
-
-        {/* Hero text */}
-        <div
-          style={{
-            maxWidth: "800px",
-            margin: "0 auto",
-            textAlign: "center",
-            padding: "60px 24px 80px",
-          }}
-        >
-          <p style={LABEL}>FLOOR GRAPHICS</p>
-
-          <h1
-            style={{
-              fontSize: "36px",
-              fontFamily: "'Arial Black', sans-serif",
-              fontWeight: 700,
-              lineHeight: 1.15,
-              color: WHITE,
-              margin: "0 0 16px",
-            }}
-          >
-            Dance Floor Wraps
-          </h1>
-
-          <p
-            style={{
-              fontSize: "15px",
-              lineHeight: 1.8,
-              color: "rgba(255,255,255,0.5)",
-              margin: "0 0 32px",
-              maxWidth: "520px",
-              marginLeft: "auto",
-              marginRight: "auto",
-            }}
-          >
-            Premium custom vinyl floor graphics for weddings, corporate events,
-            trade shows, and brand activations across Virginia.
-          </p>
-
-          {/* Thin orange line */}
           <div
             style={{
-              width: "60px",
-              height: "1px",
-              background: ORANGE,
-              margin: "0 auto",
+              position: "absolute",
+              inset: 0,
+              background: "linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.6))",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
             }}
-          />
+          >
+            <h1
+              style={{
+                fontSize: "36px",
+                fontFamily: "'Arial Black', sans-serif",
+                fontWeight: 900,
+                color: WHITE,
+                margin: 0,
+                textAlign: "center",
+                textShadow: "0 2px 8px rgba(0,0,0,0.5)",
+              }}
+            >
+              Dance Floor Wraps
+            </h1>
+          </div>
         </div>
       </Section>
 
@@ -275,15 +251,15 @@ export default function DanceFloorWrapsPage() {
             alignItems: "center",
           }}
         >
-          {/* Left — image placeholder */}
-          <div
-            style={{
-              ...IMAGE_PLACEHOLDER,
-              aspectRatio: "4 / 3",
-            }}
-          >
-            Before &amp; After — 500x400
-          </div>
+          {/* Left — interactive before/after slider */}
+          <BeforeAfterSlider
+            beforeSrc="/images/floor-before.webp"
+            afterSrc="/images/floor-after.webp"
+            beforeAlt="Plain ballroom dance floor before vinyl wrap"
+            afterAlt="Dance floor after custom vinyl wrap — elegant monogram design"
+            width={500}
+            height={400}
+          />
 
           {/* Right — copy */}
           <div>

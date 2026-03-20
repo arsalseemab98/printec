@@ -360,3 +360,40 @@
 .social-card-hover:hover {
   border-color: #F7941D !important;
 }
+
+/* ─── Before/After Slider ─── */
+@keyframes before-after-slide {
+  0%   { clip-path: inset(0 0 0 0); }
+  40%  { clip-path: inset(0 0 0 0); }
+  60%  { clip-path: inset(0 100% 0 0); }
+  90%  { clip-path: inset(0 100% 0 0); }
+  100% { clip-path: inset(0 0 0 0); }
+}
+
+@keyframes before-after-line-slide {
+  0%   { left: 100%; }
+  40%  { left: 100%; }
+  60%  { left: 0%; }
+  90%  { left: 0%; }
+  100% { left: 100%; }
+}
+
+@keyframes before-after-label-slide {
+  0%   { left: 12px; }
+  40%  { left: 12px; }
+  60%  { left: -80px; }
+  90%  { left: -80px; }
+  100% { left: 12px; }
+}
+
+.before-after-before {
+  animation: before-after-slide 6s ease-in-out infinite;
+}
+
+.before-after-line {
+  animation: before-after-line-slide 6s ease-in-out infinite;
+}
+
+.before-after-label-before {
+  animation: before-after-label-slide 6s ease-in-out infinite;
+}

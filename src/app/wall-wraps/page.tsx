@@ -1,6 +1,8 @@
 import { Metadata } from "next";
+import Image from "next/image";
 import { Section } from "@/components/shared/section";
 import { CtaBanner } from "@/components/shared/cta-banner";
+import { BeforeAfterSlider } from "@/components/ui/before-after-slider";
 import {
   ORANGE,
   BLACK,
@@ -191,30 +193,43 @@ export default function WallWrapsPage() {
           style={{
             width: "100%",
             aspectRatio: "1920 / 400",
-            background: "#0a0a0a",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            flexDirection: "column",
-            gap: "16px",
+            position: "relative",
+            overflow: "hidden",
             borderBottom: `1px solid ${DARK1}`,
           }}
         >
-          <span style={{ ...bodyStyle, color: `${WHITE}44`, fontSize: "13px" }}>
-            Hero Image — 1920x400
-          </span>
-          <h1
+          <Image
+            src="/images/wall-wrap-hero.webp"
+            alt="Restaurant with dramatic tropical leaf wall wrap mural in warm orange and dark tones"
+            fill
+            sizes="100vw"
+            style={{ objectFit: "cover" }}
+            priority
+          />
+          <div
             style={{
-              fontSize: "36px",
-              fontFamily: "'Arial Black', sans-serif",
-              fontWeight: 900,
-              color: WHITE,
-              margin: 0,
-              textAlign: "center",
+              position: "absolute",
+              inset: 0,
+              background: "linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.6))",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
             }}
           >
-            Wall Wraps
-          </h1>
+            <h1
+              style={{
+                fontSize: "36px",
+                fontFamily: "'Arial Black', sans-serif",
+                fontWeight: 900,
+                color: WHITE,
+                margin: 0,
+                textAlign: "center",
+                textShadow: "0 2px 8px rgba(0,0,0,0.5)",
+              }}
+            >
+              Wall Wraps
+            </h1>
+          </div>
         </div>
       </Section>
 
@@ -230,23 +245,15 @@ export default function WallWrapsPage() {
             alignItems: "center",
           }}
         >
-          {/* Image placeholder */}
-          <div
-            style={{
-              aspectRatio: "4 / 3",
-              background: "#0a0a0a",
-              borderRadius: "4px",
-              border: `1px solid ${DARK2}`,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              ...bodyStyle,
-              color: `${WHITE}44`,
-              fontSize: "13px",
-            }}
-          >
-            Intro Image — 600x450
-          </div>
+          {/* Before/after slider */}
+          <BeforeAfterSlider
+            beforeSrc="/images/wall-before.webp"
+            afterSrc="/images/wall-after.webp"
+            beforeAlt="Bar with plain grey wall before vinyl wrap"
+            afterAlt="Bar with custom wall wrap mural installed"
+            width={600}
+            height={450}
+          />
 
           {/* Copy */}
           <div>

@@ -104,7 +104,16 @@ export function ContactForm() {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...formData, source: "contact-form" }),
+        body: JSON.stringify({
+          ...formData,
+          source: "contact-form",
+          page: window.location.pathname,
+          ...Object.fromEntries(
+            ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content"]
+              .map((k) => [k, new URLSearchParams(window.location.search).get(k)])
+              .filter(([, v]) => v)
+          ),
+        }),
       });
       const data = await res.json();
       if (!res.ok) {

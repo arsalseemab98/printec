@@ -76,6 +76,12 @@ export function FloatingActionButton() {
           phone: formData.phone,
           description: formData.message,
           source: "floating-widget",
+          page: window.location.pathname,
+          ...Object.fromEntries(
+            ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content"]
+              .map((k) => [k, new URLSearchParams(window.location.search).get(k)])
+              .filter(([, v]) => v)
+          ),
         }),
       });
       const data = await res.json();

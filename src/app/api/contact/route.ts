@@ -6,13 +6,13 @@ import { TokenCredentialAuthenticationProvider } from "@microsoft/microsoft-grap
 // ── Rate limiting (in-memory) ──
 const recentSubmissions = new Map<string, number>();
 
-// Clean up old entries every 5 minutes
-setInterval(() => {
+// Clean up old entries on each request (serverless-safe)
+function cleanupRateLimit() {
   const now = Date.now();
   for (const [key, timestamp] of recentSubmissions) {
     if (now - timestamp > 120_000) recentSubmissions.delete(key);
   }
-}, 300_000);
+}
 
 function getGraphClient() {
   const credential = new ClientSecretCredential(
@@ -34,11 +34,19 @@ function buildNotificationEmail(data: {
   description?: string;
   budget?: string;
   source: string;
+  page?: string;
+  utm_source?: string;
+  utm_medium?: string;
+  utm_campaign?: string;
+  utm_term?: string;
+  utm_content?: string;
 }) {
   const isQuote = data.source === "contact-form";
   const subject = isQuote
     ? `New Quote Request from ${data.name} — ${data.service || "General"}`
     : `New Contact from ${data.name}`;
+
+  const hasUtm = data.utm_source || data.utm_medium || data.utm_campaign;
 
   const rows = [
     { label: "Name", value: data.name },
@@ -51,7 +59,17 @@ function buildNotificationEmail(data: {
         ]
       : []),
     { label: "Message", value: data.description || "—" },
-    { label: "Source", value: isQuote ? "Contact Page Form" : "Floating Widget" },
+    { label: "Form", value: isQuote ? "Contact Page Form" : "Floating Widget" },
+    { label: "Page", value: data.page || "—" },
+    ...(hasUtm
+      ? [
+          { label: "📊 UTM Source", value: data.utm_source || "—" },
+          { label: "📊 UTM Medium", value: data.utm_medium || "—" },
+          { label: "📊 UTM Campaign", value: data.utm_campaign || "—" },
+          ...(data.utm_term ? [{ label: "📊 UTM Term", value: data.utm_term }] : []),
+          ...(data.utm_content ? [{ label: "📊 UTM Content", value: data.utm_content }] : []),
+        ]
+      : [{ label: "Traffic", value: "Direct / Organic" }]),
   ];
 
   const tableRows = rows
@@ -134,7 +152,9 @@ function escapeHtml(str: string): string {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { name, email, phone, service, description, budget, source } = body;
+    const { name, email, phone, service, description, budget, source, page, utm_source, utm_medium, utm_campaign, utm_term, utm_content } = body;
+
+    cleanupRateLimit();
 
     // ── Validation ──
     if (!name || !email || !source) {
@@ -174,6 +194,12 @@ export async function POST(req: NextRequest) {
       description,
       budget,
       source,
+      page,
+      utm_source,
+      utm_medium,
+      utm_campaign,
+      utm_term,
+      utm_content,
     });
 
     const confirmation = buildConfirmationEmail(name);

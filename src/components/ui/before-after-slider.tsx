@@ -87,7 +87,7 @@ export function BeforeAfterSlider({
       style={{
         width: "100%",
         aspectRatio: `${width} / ${height}`,
-        borderRadius: "4px",
+        borderRadius: "8px",
         border: "1px solid #222",
         overflow: "hidden",
         position: "relative",
@@ -96,6 +96,12 @@ export function BeforeAfterSlider({
         willChange: "auto",
       }}
     >
+      {/* Corner accents */}
+      <div style={{ position: "absolute", top: 12, left: 12, width: 24, height: 24, borderTop: "1px solid rgba(255,255,255,0.3)", borderLeft: "1px solid rgba(255,255,255,0.3)", zIndex: 3, pointerEvents: "none" }} />
+      <div style={{ position: "absolute", top: 12, right: 12, width: 24, height: 24, borderTop: "1px solid rgba(247,148,29,0.3)", borderRight: "1px solid rgba(247,148,29,0.3)", zIndex: 3, pointerEvents: "none" }} />
+      <div style={{ position: "absolute", bottom: 12, left: 12, width: 24, height: 24, borderBottom: "1px solid rgba(255,255,255,0.3)", borderLeft: "1px solid rgba(255,255,255,0.3)", zIndex: 3, pointerEvents: "none" }} />
+      <div style={{ position: "absolute", bottom: 12, right: 12, width: 24, height: 24, borderBottom: "1px solid rgba(247,148,29,0.3)", borderRight: "1px solid rgba(247,148,29,0.3)", zIndex: 3, pointerEvents: "none" }} />
+
       {/* After image (full, bottom layer) */}
       <img
         src={afterSrc}
@@ -157,29 +163,29 @@ export function BeforeAfterSlider({
           willChange: "left",
         }}
       >
-        {/* Vertical line */}
+        {/* Gradient vertical line */}
         <div
           style={{
             position: "absolute",
             top: 0,
             bottom: 0,
-            width: "2px",
-            background: "#F7941D",
+            width: "1px",
+            background: "linear-gradient(to bottom, transparent 0%, rgba(255,255,255,0.4) 15%, rgba(247,148,29,0.6) 50%, rgba(255,255,255,0.4) 85%, transparent 100%)",
           }}
         />
 
-        {/* Grab handle circle */}
+        {/* Grab handle circle with glow */}
         <div
+          className="ba-slider-handle"
           style={{
-            width: "40px",
-            height: "40px",
+            width: "42px",
+            height: "42px",
             borderRadius: "50%",
-            background: "#F7941D",
-            border: "2px solid #fff",
+            background: "radial-gradient(circle, #F7941D 0%, #c67200 100%)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            boxShadow: "0 2px 8px rgba(0,0,0,0.5)",
+            boxShadow: "0 0 20px rgba(247,148,29,0.4), 0 0 40px rgba(247,148,29,0.15)",
             zIndex: 3,
           }}
         >
@@ -192,14 +198,14 @@ export function BeforeAfterSlider({
           >
             <path
               d="M7 6L3 10L7 14"
-              stroke="#fff"
+              stroke="rgba(255,255,255,0.9)"
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
             />
             <path
               d="M13 6L17 10L13 14"
-              stroke="#fff"
+              stroke="rgba(255,255,255,0.9)"
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -208,43 +214,52 @@ export function BeforeAfterSlider({
         </div>
       </div>
 
-      {/* Labels */}
+      {/* Labels — Elegant pill with glow */}
       <span
         ref={beforeLabelRef}
         style={{
           position: "absolute",
-          top: "12px",
-          left: "12px",
+          top: "20px",
+          left: "20px",
           fontSize: "10px",
-          fontWeight: 600,
-          letterSpacing: "2px",
-          color: "#fff",
-          background: "rgba(0,0,0,0.6)",
-          padding: "4px 10px",
-          borderRadius: "2px",
-          zIndex: 1,
+          fontFamily: "Arial, sans-serif",
+          fontWeight: 700,
+          letterSpacing: "3px",
+          color: "rgba(255,255,255,0.6)",
+          background: "rgba(255,255,255,0.06)",
+          padding: "7px 20px",
+          borderRadius: "50px",
+          border: "1px solid rgba(255,255,255,0.1)",
+          boxShadow: "0 0 20px rgba(255,255,255,0.03)",
+          zIndex: 4,
           textTransform: "uppercase",
           transition: "opacity 0.15s",
+          pointerEvents: "none",
         }}
       >
         Before
       </span>
       <span
         ref={afterLabelRef}
+        className="ba-after-label"
         style={{
           position: "absolute",
-          top: "12px",
-          right: "12px",
+          top: "20px",
+          right: "20px",
           fontSize: "10px",
-          fontWeight: 600,
-          letterSpacing: "2px",
+          fontFamily: "Arial, sans-serif",
+          fontWeight: 700,
+          letterSpacing: "3px",
           color: "#F7941D",
-          background: "rgba(0,0,0,0.6)",
-          padding: "4px 10px",
-          borderRadius: "2px",
-          zIndex: 1,
+          background: "rgba(247,148,29,0.15)",
+          padding: "7px 20px",
+          borderRadius: "50px",
+          border: "1px solid rgba(247,148,29,0.3)",
+          boxShadow: "0 0 20px rgba(247,148,29,0.15), 0 0 40px rgba(247,148,29,0.05)",
+          zIndex: 4,
           textTransform: "uppercase",
           transition: "opacity 0.15s",
+          pointerEvents: "none",
         }}
       >
         After

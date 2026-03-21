@@ -397,3 +397,19 @@
 .before-after-label-before {
   animation: before-after-label-slide 6s ease-in-out infinite;
 }
+
+/* Before/After Slider — Style 3: Elegant Pill Glow */
+.ba-slider-handle {
+  animation: baHandlePulse 2s ease-in-out infinite alternate;
+}
+@keyframes baHandlePulse {
+  0% { box-shadow: 0 0 20px rgba(247,148,29,0.4), 0 0 40px rgba(247,148,29,0.15); }
+  100% { box-shadow: 0 0 28px rgba(247,148,29,0.55), 0 0 56px rgba(247,148,29,0.2); }
+}
+.ba-after-label {
+  animation: baAfterGlow 2.5s ease-in-out infinite alternate;
+}
+@keyframes baAfterGlow {
+  0% { box-shadow: 0 0 20px rgba(247,148,29,0.15), 0 0 40px rgba(247,148,29,0.05); }
+  100% { box-shadow: 0 0 25px rgba(247,148,29,0.25), 0 0 50px rgba(247,148,29,0.1); }
+}

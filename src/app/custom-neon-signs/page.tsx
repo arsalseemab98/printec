@@ -167,12 +167,13 @@ export default function CustomNeonSignsPage() {
             borderBottom: `1px solid ${DARK1}`,
           }}
         >
-          <div
-            style={{
-              position: "absolute",
-              inset: 0,
-              background: "linear-gradient(135deg, #1a0a2e 0%, #0C0C0C 40%, #1a0a2e 70%, #0C0C0C 100%)",
-            }}
+          <Image
+            src={IMG.neonAfter}
+            alt="THIS WAY UP vertical LED neon sign glowing orange on dark staircase wall"
+            fill
+            sizes="100vw"
+            style={{ objectFit: "cover" }}
+            priority
           />
           <div
             style={{
@@ -215,10 +216,10 @@ export default function CustomNeonSignsPage() {
         >
           {/* Before/after slider */}
           <BeforeAfterSlider
-            beforeSrc="/images/neon-before.webp"
-            afterSrc="/images/neon-after.webp"
-            beforeAlt="Space before custom neon sign installation"
-            afterAlt="Same space illuminated with a custom LED neon sign"
+            beforeSrc={IMG.neonBefore}
+            afterSrc={IMG.neonAfter}
+            beforeAlt="Dark staircase wall in boutique hotel — plain plaster, no signage"
+            afterAlt="Same staircase with THIS WAY UP vertical LED neon sign glowing warm orange"
             width={600}
             height={450}
           />

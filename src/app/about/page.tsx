@@ -164,42 +164,50 @@ export default function AboutPage() {
   return (
     <main style={{ background: BLACK }}>
       {/* ── 1. HERO ── */}
-      <Section
-        style={{
-          background: BLACK,
-          padding: "0 24px",
-        }}
-      >
-        <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-          {/* Hero image */}
+      <Section style={{ padding: 0 }}>
+        <div
+          style={{
+            width: "100%",
+            aspectRatio: "1920 / 400",
+            position: "relative",
+            overflow: "hidden",
+            borderBottom: `1px solid ${DARK1}`,
+          }}
+        >
+          <Image
+            src={IMG.workshop}
+            alt="Printec Corp workshop — wide-format printers, vinyl rolls, and team fabricating channel letters"
+            fill
+            sizes="100vw"
+            style={{ objectFit: "cover" }}
+            priority
+          />
           <div
             style={{
-              width: "100%",
-              aspectRatio: "21 / 9",
-              borderRadius: "4px",
-              overflow: "hidden",
-              marginTop: "40px",
-              position: "relative",
+              position: "absolute",
+              inset: 0,
+              background: "linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.6))",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
             }}
           >
-            <Image
-              src={IMG.workshop}
-              alt="Printec Corp workshop — wide-format printers, vinyl rolls, and team fabricating channel letters"
-              fill
-              sizes="(max-width: 1200px) 100vw, 1200px"
-              style={{ objectFit: "cover" }}
-              priority
-            />
-          </div>
-
-          <div style={{ marginTop: "40px", marginBottom: "20px" }}>
-            <p style={{ ...LABEL, margin: "0 0 12px" }}>About Us</p>
-            <h1 style={H1}>Who We Are</h1>
+            <h1
+              style={{
+                fontSize: "36px",
+                fontFamily: "'Arial Black', sans-serif",
+                fontWeight: 900,
+                color: WHITE,
+                margin: 0,
+                textAlign: "center",
+                textShadow: "0 2px 8px rgba(0,0,0,0.5)",
+              }}
+            >
+              Who We Are
+            </h1>
           </div>
         </div>
       </Section>
-
-      <hr style={{ ...SEPARATOR, maxWidth: "1200px", margin: "0 auto" }} />
 
       {/* ── 2. OUR STORY — 50/50 ── */}
       <Section

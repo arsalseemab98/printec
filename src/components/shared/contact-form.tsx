@@ -87,6 +87,8 @@ export function ContactForm() {
   });
 
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   function handleChange(
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
@@ -94,11 +96,27 @@ export function ContactForm() {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   }
 
-  function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    // In production, this would send to an API
-    console.log("Quote request:", formData);
-    setSubmitted(true);
+    setLoading(true);
+    setError("");
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...formData, source: "contact-form" }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.error || "Something went wrong. Please try again.");
+        return;
+      }
+      setSubmitted(true);
+    } catch {
+      setError("Failed to send. Please check your connection and try again.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -504,9 +522,28 @@ export function ContactForm() {
                   />
                 </div>
 
+                {/* Error message */}
+                {error && (
+                  <div
+                    style={{
+                      padding: "12px 16px",
+                      background: "rgba(229,57,53,0.1)",
+                      border: "1px solid rgba(229,57,53,0.3)",
+                      borderRadius: "4px",
+                      color: "#E53935",
+                      fontFamily: "Arial, sans-serif",
+                      fontSize: "13px",
+                      marginBottom: "8px",
+                    }}
+                  >
+                    {error}
+                  </div>
+                )}
+
                 {/* Submit */}
                 <button
                   type="submit"
+                  disabled={loading}
                   style={{
                     width: "100%",
                     padding: "16px 32px",
@@ -517,18 +554,23 @@ export function ContactForm() {
                     textTransform: "uppercase",
                     textAlign: "center",
                     border: `2px solid ${ORANGE}`,
-                    background: ORANGE,
+                    background: loading ? "#555" : ORANGE,
                     color: WHITE,
-                    cursor: "pointer",
+                    cursor: loading ? "not-allowed" : "pointer",
                     transition: "all 0.3s ease",
-                    textShadow: `0 0 10px rgba(247,148,29,0.8), 0 0 20px rgba(247,148,29,0.4)`,
-                    boxShadow: `0 0 15px rgba(247,148,29,0.5), 0 0 30px rgba(247,148,29,0.2), inset 0 0 15px rgba(255,255,255,0.1)`,
+                    textShadow: loading
+                      ? "none"
+                      : `0 0 10px rgba(247,148,29,0.8), 0 0 20px rgba(247,148,29,0.4)`,
+                    boxShadow: loading
+                      ? "none"
+                      : `0 0 15px rgba(247,148,29,0.5), 0 0 30px rgba(247,148,29,0.2), inset 0 0 15px rgba(255,255,255,0.1)`,
+                    opacity: loading ? 0.7 : 1,
                   }}
-                  className="neon-pulse"
+                  className={loading ? undefined : "neon-pulse"}
                 >
                   <span style={{ display: "inline-flex", alignItems: "center", gap: "10px" }}>
-                    GET FREE QUOTE
-                    <Send size={18} color={WHITE} strokeWidth={2.5} />
+                    {loading ? "SENDING..." : "GET FREE QUOTE"}
+                    {!loading && <Send size={18} color={WHITE} strokeWidth={2.5} />}
                   </span>
                 </button>
               </form>

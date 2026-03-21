@@ -59,10 +59,36 @@ export function FloatingActionButton() {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   }
 
-  function handleSubmit(e: React.FormEvent) {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    console.log("Contact form:", formData);
-    setView("success");
+    setLoading(true);
+    setError("");
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          description: formData.message,
+          source: "floating-widget",
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.error || "Something went wrong.");
+        return;
+      }
+      setView("success");
+    } catch {
+      setError("Failed to send. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   function handleClose() {
@@ -70,6 +96,7 @@ export function FloatingActionButton() {
     setTimeout(() => {
       setView("menu");
       setFormData({ name: "", email: "", phone: "", message: "" });
+      setError("");
     }, 300);
   }
 
@@ -417,29 +444,46 @@ export function FloatingActionButton() {
                   onFocus={(e) => (e.currentTarget.style.borderColor = ORANGE)}
                   onBlur={(e) => (e.currentTarget.style.borderColor = "#333")}
                 />
+                {error && (
+                  <div
+                    style={{
+                      padding: "10px 12px",
+                      background: "rgba(229,57,53,0.1)",
+                      border: "1px solid rgba(229,57,53,0.3)",
+                      borderRadius: "6px",
+                      color: "#E53935",
+                      fontFamily: "Arial, sans-serif",
+                      fontSize: "12px",
+                    }}
+                  >
+                    {error}
+                  </div>
+                )}
                 <button
                   type="submit"
-                  className="neon-pulse"
+                  disabled={loading}
+                  className={loading ? undefined : "neon-pulse"}
                   style={{
                     width: "100%",
                     padding: "13px",
-                    background: ORANGE,
-                    border: `2px solid ${ORANGE}`,
+                    background: loading ? "#555" : ORANGE,
+                    border: `2px solid ${loading ? "#555" : ORANGE}`,
                     borderRadius: "8px",
                     color: WHITE,
                     fontFamily: "Arial, sans-serif",
                     fontSize: "14px",
                     fontWeight: 700,
-                    cursor: "pointer",
+                    cursor: loading ? "not-allowed" : "pointer",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
                     gap: "8px",
                     transition: "all 0.3s",
+                    opacity: loading ? 0.7 : 1,
                   }}
                 >
                   <Send size={16} />
-                  Send
+                  {loading ? "Sending..." : "Send"}
                 </button>
               </form>
             </div>

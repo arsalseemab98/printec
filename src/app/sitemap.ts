@@ -18,6 +18,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/wall-wraps",
     "/window-wraps",
     "/channel-letters-signage",
+    "/custom-neon-signs",
     "/wedding-floor-wrap",
     "/led-channel-letters",
     "/channel-letter-signs-near-me",

@@ -2,7 +2,7 @@ import { MetadataRoute } from "next";
 import { BLOG_POSTS } from "@/lib/blog-data";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://printeccorp.com";
+  const baseUrl = "https://printecwrap.com";
 
   const staticPages = [
     "",
@@ -11,6 +11,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/portfolio",
     "/contact",
     "/blog",
+    "/custom-signs",
+    "/vinyl-wraps",
+    "/business-signage",
     "/dance-floor-wraps",
     "/wall-wraps",
     "/window-wraps",

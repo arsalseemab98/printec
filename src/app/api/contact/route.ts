@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { ClientSecretCredential } from "@azure/identity";
 import { Client } from "@microsoft/microsoft-graph-client";
-import { TokenCredentialAuthenticationProvider } from "@microsoft/microsoft-graph-client/authProviders/azureTokenCredentials/index.js";
+import { TokenCredentialAuthenticationProvider } from "@microsoft/microsoft-graph-client/authProviders/azureTokenCredentials";
 
 // ── Rate limiting (in-memory) ──
 const recentSubmissions = new Map<string, number>();

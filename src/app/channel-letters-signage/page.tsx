@@ -9,6 +9,7 @@ import {
   DARK1,
   DARK2,
   WHITE,
+  IMG,
 } from "@/lib/constants";
 import {
   Sun,
@@ -194,7 +195,7 @@ export default function ChannelLettersSignagePage() {
           }}
         >
           <Image
-            src="/images/channel-letters-hero.webp"
+            src={IMG.signageAfter}
             alt="Illuminated channel letter signage on a storefront at night"
             fill
             sizes="100vw"
@@ -242,8 +243,8 @@ export default function ChannelLettersSignagePage() {
         >
           {/* Before/after slider */}
           <BeforeAfterSlider
-            beforeSrc="/images/channel-before.webp"
-            afterSrc="/images/channel-after.webp"
+            beforeSrc={IMG.signageBefore}
+            afterSrc={IMG.signageAfter}
             beforeAlt="Commercial building facade without signage"
             afterAlt="Same building with illuminated SAVORA KITCHEN channel letter sign"
             width={600}

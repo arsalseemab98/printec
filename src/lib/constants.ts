@@ -20,6 +20,8 @@ export const IMG = {
   workshop: `${SUPABASE_STORAGE}/workshop.webp`,
   worker: `${SUPABASE_STORAGE}/worker.webp`,
   danceFloorHero: `${SUPABASE_STORAGE}/dance-floor-hero.webp`,
+  signageBefore: `${SUPABASE_STORAGE}/signage-before.webp`,
+  signageAfter: `${SUPABASE_STORAGE}/signage-after.webp`,
 };
 
 /* ─── SVG NOISE TEXTURE DATA URL (static base64, works server-side) ─── */

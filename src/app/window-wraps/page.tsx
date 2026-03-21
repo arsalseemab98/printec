@@ -9,6 +9,7 @@ import {
   DARK1,
   DARK2,
   WHITE,
+  IMG,
 } from "@/lib/constants";
 import {
   Maximize,
@@ -163,7 +164,7 @@ export default function WindowWrapsPage() {
           }}
         >
           <Image
-            src="/images/window-wrap-hero.webp"
+            src={IMG.windowWrapHero}
             alt="Storefront with bold orange window wrap graphics for grand opening"
             fill
             sizes="100vw"
@@ -211,8 +212,8 @@ export default function WindowWrapsPage() {
         >
           {/* Before/after slider */}
           <BeforeAfterSlider
-            beforeSrc="/images/window-before.webp"
-            afterSrc="/images/window-after.webp"
+            beforeSrc={IMG.windowBefore}
+            afterSrc={IMG.windowAfter}
             beforeAlt="Plain storefront with empty glass windows"
             afterAlt="Storefront with bold branded window wrap graphics"
             width={600}

@@ -253,8 +253,8 @@ export default function DanceFloorWrapsPage() {
         >
           {/* Left — interactive before/after slider */}
           <BeforeAfterSlider
-            beforeSrc="/images/floor-before.webp"
-            afterSrc="/images/floor-after.webp"
+            beforeSrc={IMG.floorBefore}
+            afterSrc={IMG.floorAfter}
             beforeAlt="Plain ballroom dance floor before vinyl wrap"
             afterAlt="Dance floor after custom vinyl wrap — elegant monogram design"
             width={500}

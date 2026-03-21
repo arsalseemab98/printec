@@ -9,6 +9,7 @@ import {
   DARK1,
   DARK2,
   WHITE,
+  IMG,
 } from "@/lib/constants";
 import {
   Building2,
@@ -199,7 +200,7 @@ export default function WallWrapsPage() {
           }}
         >
           <Image
-            src="/images/wall-wrap-hero.webp"
+            src={IMG.wallWrapHero}
             alt="Restaurant with dramatic tropical leaf wall wrap mural in warm orange and dark tones"
             fill
             sizes="100vw"
@@ -247,8 +248,8 @@ export default function WallWrapsPage() {
         >
           {/* Before/after slider */}
           <BeforeAfterSlider
-            beforeSrc="/images/wall-before.webp"
-            afterSrc="/images/wall-after.webp"
+            beforeSrc={IMG.wallBefore}
+            afterSrc={IMG.wallAfter}
             beforeAlt="Bar with plain grey wall before vinyl wrap"
             afterAlt="Bar with custom wall wrap mural installed"
             width={600}

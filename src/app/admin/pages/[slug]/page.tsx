@@ -2,7 +2,36 @@
 
 import { useEffect, useState, useRef, use } from "react";
 import Link from "next/link";
-import { ArrowLeft, Upload, Trash2, Loader2 } from "lucide-react";
+import { ArrowLeft, Upload, Trash2, Loader2, Check, Save } from "lucide-react";
+
+const PAGE_FIELDS: Record<string, { field: string; label: string; type: "input" | "textarea" }[]> = {
+  "about": [
+    { field: "hero_title", label: "Hero Title", type: "input" },
+    { field: "story_heading", label: "Story Heading", type: "input" },
+    { field: "story_body", label: "Story Text", type: "textarea" },
+    { field: "mission_quote", label: "Mission Quote", type: "input" },
+  ],
+  "dance-floor-wraps": [
+    { field: "hero_title", label: "Hero Title", type: "input" },
+    { field: "intro_heading", label: "Intro Heading", type: "input" },
+    { field: "intro_body", label: "Intro Text", type: "textarea" },
+  ],
+  "wall-wraps": [
+    { field: "hero_title", label: "Hero Title", type: "input" },
+    { field: "intro_heading", label: "Intro Heading", type: "input" },
+    { field: "intro_body", label: "Intro Text", type: "textarea" },
+  ],
+  "window-wraps": [
+    { field: "hero_title", label: "Hero Title", type: "input" },
+    { field: "intro_heading", label: "Intro Heading", type: "input" },
+    { field: "intro_body", label: "Intro Text", type: "textarea" },
+  ],
+  "channel-letters-signage": [
+    { field: "hero_title", label: "Hero Title", type: "input" },
+    { field: "intro_heading", label: "Intro Heading", type: "input" },
+    { field: "intro_body", label: "Intro Text", type: "textarea" },
+  ],
+};
 
 const PAGES = [
   { slug: "about", name: "About Us", slots: ["hero", "story"] },
@@ -302,6 +331,207 @@ function SlotCard({
   );
 }
 
+function ContentField({
+  slug,
+  fieldDef,
+  initialValue,
+}: {
+  slug: string;
+  fieldDef: { field: string; label: string; type: "input" | "textarea" };
+  initialValue: string;
+}) {
+  const [value, setValue] = useState(initialValue);
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
+
+  useEffect(() => {
+    setValue(initialValue);
+  }, [initialValue]);
+
+  async function handleSave() {
+    setSaving(true);
+    setSaved(false);
+    try {
+      const res = await fetch(`/api/admin/pages/${slug}/content`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ field: fieldDef.field, value }),
+      });
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error);
+      }
+      setSaved(true);
+      setTimeout(() => setSaved(false), 2000);
+    } catch (err) {
+      alert(`Save failed: ${err instanceof Error ? err.message : "Unknown error"}`);
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  const inputStyle: React.CSSProperties = {
+    width: "100%",
+    padding: "0.6rem 0.75rem",
+    background: "#111",
+    border: "1px solid #222",
+    borderRadius: "4px",
+    color: "#fff",
+    fontSize: "14px",
+    outline: "none",
+    boxSizing: "border-box" as const,
+    fontFamily: "inherit",
+    transition: "border-color 0.2s",
+  };
+
+  return (
+    <div style={{ marginBottom: "1.25rem" }}>
+      <label
+        style={{
+          display: "block",
+          fontSize: "12px",
+          color: "rgba(255,255,255,0.6)",
+          marginBottom: "0.4rem",
+          fontWeight: 500,
+        }}
+      >
+        {fieldDef.label}
+      </label>
+      <div style={{ display: "flex", gap: "0.5rem", alignItems: "flex-start" }}>
+        {fieldDef.type === "textarea" ? (
+          <textarea
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            rows={4}
+            style={{ ...inputStyle, resize: "vertical", flex: 1 }}
+            onFocus={(e) => (e.currentTarget.style.borderColor = "#F7941D")}
+            onBlur={(e) => (e.currentTarget.style.borderColor = "#222")}
+          />
+        ) : (
+          <input
+            type="text"
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            style={{ ...inputStyle, flex: 1 }}
+            onFocus={(e) => (e.currentTarget.style.borderColor = "#F7941D")}
+            onBlur={(e) => (e.currentTarget.style.borderColor = "#222")}
+          />
+        )}
+        <button
+          onClick={handleSave}
+          disabled={saving}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "0.35rem",
+            padding: "0.6rem 1rem",
+            background: saved ? "#2E7D32" : "#F7941D",
+            color: "#fff",
+            border: "none",
+            borderRadius: "4px",
+            fontSize: "13px",
+            fontWeight: 600,
+            cursor: saving ? "not-allowed" : "pointer",
+            opacity: saving ? 0.6 : 1,
+            whiteSpace: "nowrap",
+            transition: "background 0.3s",
+            minHeight: fieldDef.type === "textarea" ? "38px" : undefined,
+          }}
+        >
+          {saved ? <Check size={14} /> : <Save size={14} />}
+          {saving ? "Saving..." : saved ? "Saved" : "Save"}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function PageContentSection({ slug }: { slug: string }) {
+  const fields = PAGE_FIELDS[slug];
+  const [content, setContent] = useState<Record<string, string>>({});
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchContent() {
+      try {
+        const res = await fetch(`/api/admin/pages/${slug}/content`);
+        const data = await res.json();
+        if (res.ok && data.content) {
+          const map: Record<string, string> = {};
+          for (const item of data.content) {
+            map[item.field] = item.value;
+          }
+          setContent(map);
+        }
+      } catch {
+        // ignore
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchContent();
+  }, [slug]);
+
+  if (!fields) return null;
+
+  return (
+    <div style={{ marginTop: "2.5rem" }}>
+      <p
+        style={{
+          fontSize: "10px",
+          textTransform: "uppercase",
+          letterSpacing: "4px",
+          color: "#F7941D",
+          fontWeight: 500,
+          marginBottom: "0.5rem",
+        }}
+      >
+        Page Content
+      </p>
+      <h2
+        style={{
+          fontSize: "28px",
+          fontWeight: 700,
+          color: "#fff",
+          margin: "0 0 1.5rem 0",
+        }}
+      >
+        Text Fields
+      </h2>
+
+      {loading ? (
+        <div style={{ textAlign: "center", padding: "2rem" }}>
+          <Loader2
+            size={24}
+            style={{
+              color: "#F7941D",
+              animation: "spin 1s linear infinite",
+            }}
+          />
+        </div>
+      ) : (
+        <div
+          style={{
+            background: "#111",
+            border: "1px solid #222",
+            borderRadius: "4px",
+            padding: "1.5rem",
+          }}
+        >
+          {fields.map((fieldDef) => (
+            <ContentField
+              key={fieldDef.field}
+              slug={slug}
+              fieldDef={fieldDef}
+              initialValue={content[fieldDef.field] || ""}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function PageEditorPage({
   params,
 }: {
@@ -440,6 +670,11 @@ export default function PageEditorPage({
             );
           })}
         </div>
+      )}
+
+      {/* Page Content Section */}
+      {PAGE_FIELDS[slug] && (
+        <PageContentSection slug={slug} />
       )}
 
       {/* Spinner keyframe */}

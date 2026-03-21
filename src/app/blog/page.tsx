@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import Link from "next/link";
+import { getBlogPosts } from "@/lib/content";
 import { BLOG_POSTS } from "@/lib/blog-data";
 import { CtaBanner } from "@/components/shared/cta-banner";
 import { DARK1, DARK2, ORANGE, BLACK, WHITE } from "@/lib/constants";
@@ -28,7 +29,9 @@ export const metadata: Metadata = {
 };
 
 function formatDate(dateStr: string) {
-  const date = new Date(dateStr + "T00:00:00");
+  // Handle both "2026-03-15" (hardcoded) and ISO timestamp "2026-03-15T..." (Supabase)
+  const normalized = dateStr.includes("T") ? dateStr.split("T")[0] : dateStr;
+  const date = new Date(normalized + "T00:00:00");
   return date.toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
@@ -36,7 +39,20 @@ function formatDate(dateStr: string) {
   });
 }
 
-export default function BlogPage() {
+export default async function BlogPage() {
+  // Fetch from Supabase first, fall back to hardcoded data
+  const dbPosts = await getBlogPosts();
+  const posts = dbPosts.length > 0
+    ? dbPosts.map((p: Record<string, unknown>) => ({
+        slug: p.slug as string,
+        title: p.title as string,
+        excerpt: p.excerpt as string,
+        date: (p.created_at as string) ?? "",
+        category: p.category as string,
+        readTime: (p.read_time as string) ?? "",
+      }))
+    : BLOG_POSTS;
+
   return (
     <main>
       {/* Custom Hero */}
@@ -111,7 +127,7 @@ export default function BlogPage() {
               gap: "32px",
             }}
           >
-            {BLOG_POSTS.map((post) => (
+            {posts.map((post) => (
               <Link
                 key={post.slug}
                 href={`/blog/${post.slug}`}

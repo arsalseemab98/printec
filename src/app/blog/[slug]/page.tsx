@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { getBlogPostBySlug, getBlogPosts } from "@/lib/content";
 import { BLOG_POSTS, getBlogPost, getRelatedPosts } from "@/lib/blog-data";
 import { CtaBanner } from "@/components/shared/cta-banner";
 import { ORANGE, BLACK, WHITE } from "@/lib/constants";
@@ -16,6 +17,13 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
+  const dbPost = await getBlogPostBySlug(slug);
+  if (dbPost) {
+    return {
+      title: dbPost.title as string,
+      description: dbPost.excerpt as string,
+    };
+  }
   const post = getBlogPost(slug);
   if (!post) return {};
   return {
@@ -25,7 +33,9 @@ export async function generateMetadata({
 }
 
 function formatDate(dateStr: string) {
-  const date = new Date(dateStr + "T00:00:00");
+  // Handle both "2026-03-15" (hardcoded) and ISO timestamp "2026-03-15T..." (Supabase)
+  const normalized = dateStr.includes("T") ? dateStr.split("T")[0] : dateStr;
+  const date = new Date(normalized + "T00:00:00");
   return date.toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
@@ -39,13 +49,43 @@ export default async function BlogPostPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const post = getBlogPost(slug);
+
+  // Try Supabase first, fall back to hardcoded data
+  const dbPost = await getBlogPostBySlug(slug);
+
+  const post = dbPost
+    ? {
+        slug: dbPost.slug as string,
+        title: dbPost.title as string,
+        excerpt: dbPost.excerpt as string,
+        date: (dbPost.created_at as string) ?? "",
+        category: dbPost.category as string,
+        readTime: (dbPost.read_time as string) ?? "",
+        content: dbPost.content as string,
+      }
+    : getBlogPost(slug);
 
   if (!post) {
     notFound();
   }
 
-  const relatedPosts = getRelatedPosts(slug, 3);
+  // For related posts: try Supabase, fall back to hardcoded
+  const dbAllPosts = await getBlogPosts();
+  const relatedPosts =
+    dbAllPosts.length > 0
+      ? dbAllPosts
+          .filter((p: Record<string, unknown>) => p.slug !== slug)
+          .slice(0, 3)
+          .map((p: Record<string, unknown>) => ({
+            slug: p.slug as string,
+            title: p.title as string,
+            excerpt: p.excerpt as string,
+            date: (p.created_at as string) ?? "",
+            category: p.category as string,
+            readTime: (p.read_time as string) ?? "",
+            content: p.content as string,
+          }))
+      : getRelatedPosts(slug, 3);
 
   return (
     <main>

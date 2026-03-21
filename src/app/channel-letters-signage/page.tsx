@@ -195,8 +195,8 @@ export default function ChannelLettersSignagePage() {
           }}
         >
           <Image
-            src={IMG.signageAfter}
-            alt="Illuminated channel letter signage on a storefront at night"
+            src={IMG.signageHero}
+            alt="Shopping plaza at dusk with illuminated channel letter signs — Aurora & Oak, Café Lumière"
             fill
             sizes="100vw"
             style={{ objectFit: "cover" }}

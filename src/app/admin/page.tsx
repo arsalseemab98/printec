@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import Link from "next/link";
 import {
   FileImage,
@@ -11,6 +11,9 @@ import {
   TrendingUp,
   BarChart3,
   Inbox,
+  ChevronLeft,
+  ChevronRight,
+  Calendar,
 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 
@@ -34,6 +37,14 @@ const STATUS_COLORS: Record<string, string> = {
   Completed: "#6b7280",
 };
 
+const FILTER_OPTIONS = ["All Time", "This Month", "Last Month", "Custom"] as const;
+type FilterOption = (typeof FILTER_OPTIONS)[number];
+
+const MONTHS = [
+  "January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December",
+];
+
 const PAGES = [
   { name: "Homepage", href: "/admin/pages/homepage" },
   { name: "About", href: "/admin/pages/about" },
@@ -45,52 +56,98 @@ const PAGES = [
 export default function AdminDashboard() {
   const [blogCount, setBlogCount] = useState<number | null>(null);
   const [inquiries, setInquiries] = useState<Inquiry[]>([]);
-  const [bookedPipeline, setBookedPipeline] = useState(0);
-  const [completedRevenue, setCompletedRevenue] = useState(0);
-  const [averageOrder, setAverageOrder] = useState(0);
-  const [newCount, setNewCount] = useState(0);
+  const [filter, setFilter] = useState<FilterOption>("All Time");
+  const [selectedMonth, setSelectedMonth] = useState(() => {
+    const now = new Date();
+    return { month: now.getMonth(), year: now.getFullYear() };
+  });
 
   useEffect(() => {
     async function fetchBlogCount() {
       const { count, error } = await supabase
         .from("blog_posts")
         .select("*", { count: "exact", head: true });
-      if (!error && count !== null) {
-        setBlogCount(count);
-      } else {
-        setBlogCount(0);
-      }
+      if (!error && count !== null) setBlogCount(count);
+      else setBlogCount(0);
     }
 
     async function fetchInquiries() {
       const res = await fetch("/api/admin/inquiries");
       const data = await res.json();
-      if (!Array.isArray(data)) return;
-
-      setInquiries(data);
-
-      const booked = data.filter((i: Inquiry) => i.status === "Booked");
-      const completed = data.filter((i: Inquiry) => i.status === "Completed");
-      const newInq = data.filter((i: Inquiry) => i.status === "New");
-
-      setBookedPipeline(
-        booked.reduce((sum: number, i: Inquiry) => sum + (i.booked_price || 0), 0)
-      );
-
-      const totalCompleted = completed.reduce(
-        (sum: number, i: Inquiry) => sum + (i.completed_price || 0),
-        0
-      );
-      setCompletedRevenue(totalCompleted);
-      setAverageOrder(completed.length > 0 ? totalCompleted / completed.length : 0);
-      setNewCount(newInq.length);
+      if (Array.isArray(data)) setInquiries(data);
     }
 
     fetchBlogCount();
     fetchInquiries();
   }, []);
 
-  const recentInquiries = inquiries.slice(0, 5);
+  // Filter inquiries by date
+  const filteredInquiries = useMemo(() => {
+    if (filter === "All Time") return inquiries;
+
+    let startDate: Date;
+    let endDate: Date;
+
+    if (filter === "This Month") {
+      const now = new Date();
+      startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+      endDate = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59);
+    } else if (filter === "Last Month") {
+      const now = new Date();
+      startDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+      endDate = new Date(now.getFullYear(), now.getMonth(), 0, 23, 59, 59);
+    } else {
+      // Custom — use selectedMonth
+      startDate = new Date(selectedMonth.year, selectedMonth.month, 1);
+      endDate = new Date(selectedMonth.year, selectedMonth.month + 1, 0, 23, 59, 59);
+    }
+
+    return inquiries.filter((inq) => {
+      const d = new Date(inq.created_at);
+      return d >= startDate && d <= endDate;
+    });
+  }, [inquiries, filter, selectedMonth]);
+
+  // Calculate metrics from filtered data
+  const metrics = useMemo(() => {
+    const booked = filteredInquiries.filter((i) => i.status === "Booked");
+    const completed = filteredInquiries.filter((i) => i.status === "Completed");
+    const newInq = filteredInquiries.filter((i) => i.status === "New");
+
+    const bookedPipeline = booked.reduce((sum, i) => sum + (i.booked_price || 0), 0);
+    const completedRevenue = completed.reduce((sum, i) => sum + (i.completed_price || 0), 0);
+    const averageOrder = completed.length > 0 ? completedRevenue / completed.length : 0;
+
+    return { bookedPipeline, completedRevenue, averageOrder, newCount: newInq.length, totalCount: filteredInquiries.length };
+  }, [filteredInquiries]);
+
+  function prevMonth() {
+    setSelectedMonth((prev) => {
+      if (prev.month === 0) return { month: 11, year: prev.year - 1 };
+      return { month: prev.month - 1, year: prev.year };
+    });
+  }
+
+  function nextMonth() {
+    setSelectedMonth((prev) => {
+      if (prev.month === 11) return { month: 0, year: prev.year + 1 };
+      return { month: prev.month + 1, year: prev.year };
+    });
+  }
+
+  const recentInquiries = filteredInquiries.slice(0, 5);
+  const filterLabel =
+    filter === "Custom"
+      ? `${MONTHS[selectedMonth.month]} ${selectedMonth.year}`
+      : filter === "This Month"
+      ? `${MONTHS[new Date().getMonth()]} ${new Date().getFullYear()}`
+      : filter === "Last Month"
+      ? (() => {
+          const d = new Date();
+          d.setMonth(d.getMonth() - 1);
+          return `${MONTHS[d.getMonth()]} ${d.getFullYear()}`;
+        })()
+      : "All Time";
 
   return (
     <div>
@@ -121,6 +178,106 @@ export default function AdminDashboard() {
         </h1>
       </div>
 
+      {/* Date Filter Bar */}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          background: "#111",
+          border: "1px solid #222",
+          borderRadius: "4px",
+          padding: "12px 20px",
+          marginBottom: "1.5rem",
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+          <Calendar size={16} color="#F7941D" />
+          <span style={{ fontSize: "13px", color: "rgba(255,255,255,0.5)", letterSpacing: "1px", textTransform: "uppercase" }}>
+            Sales Period
+          </span>
+        </div>
+
+        <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+          {FILTER_OPTIONS.map((opt) => (
+            <button
+              key={opt}
+              onClick={() => {
+                setFilter(opt);
+                if (opt === "Custom") {
+                  const now = new Date();
+                  setSelectedMonth({ month: now.getMonth(), year: now.getFullYear() });
+                }
+              }}
+              style={{
+                padding: "6px 14px",
+                background: filter === opt ? "#F7941D" : "transparent",
+                border: filter === opt ? "1px solid #F7941D" : "1px solid #333",
+                borderRadius: "4px",
+                color: filter === opt ? "#0C0C0C" : "rgba(255,255,255,0.5)",
+                fontSize: "12px",
+                fontWeight: filter === opt ? 700 : 500,
+                cursor: "pointer",
+                transition: "all 0.15s",
+              }}
+            >
+              {opt}
+            </button>
+          ))}
+        </div>
+
+        {/* Month navigation arrows (show for Custom, This Month, Last Month) */}
+        {filter !== "All Time" && (
+          <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+            <button
+              onClick={() => {
+                setFilter("Custom");
+                prevMonth();
+              }}
+              style={{
+                background: "transparent",
+                border: "1px solid #333",
+                borderRadius: "4px",
+                color: "rgba(255,255,255,0.6)",
+                cursor: "pointer",
+                padding: "4px 8px",
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <ChevronLeft size={16} />
+            </button>
+            <span style={{ fontSize: "14px", fontWeight: 600, color: "#fff", minWidth: "140px", textAlign: "center" }}>
+              {filterLabel}
+            </span>
+            <button
+              onClick={() => {
+                setFilter("Custom");
+                nextMonth();
+              }}
+              style={{
+                background: "transparent",
+                border: "1px solid #333",
+                borderRadius: "4px",
+                color: "rgba(255,255,255,0.6)",
+                cursor: "pointer",
+                padding: "4px 8px",
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <ChevronRight size={16} />
+            </button>
+          </div>
+        )}
+
+        {filter === "All Time" && (
+          <span style={{ fontSize: "14px", fontWeight: 600, color: "rgba(255,255,255,0.3)" }}>
+            All Time
+          </span>
+        )}
+      </div>
+
       {/* Sales Metrics */}
       <div
         style={{
@@ -130,134 +287,42 @@ export default function AdminDashboard() {
           marginBottom: "2.5rem",
         }}
       >
-        <div
-          style={{
-            background: "#111",
-            border: "1px solid #222",
-            borderRadius: "4px",
-            padding: "1.5rem",
-          }}
-        >
-          <DollarSign
-            size={20}
-            style={{ color: "#22c55e", marginBottom: "0.75rem" }}
-          />
-          <p
-            style={{
-              fontSize: "28px",
-              fontWeight: 700,
-              color: "#22c55e",
-              margin: "0 0 0.25rem",
-            }}
-          >
-            ${bookedPipeline.toLocaleString()}
+        <div style={{ background: "#111", border: "1px solid #222", borderRadius: "4px", padding: "1.5rem" }}>
+          <DollarSign size={20} style={{ color: "#22c55e", marginBottom: "0.75rem" }} />
+          <p style={{ fontSize: "28px", fontWeight: 700, color: "#22c55e", margin: "0 0 0.25rem" }}>
+            ${metrics.bookedPipeline.toLocaleString()}
           </p>
-          <p
-            style={{
-              fontSize: "13px",
-              color: "rgba(255,255,255,0.45)",
-              margin: 0,
-            }}
-          >
+          <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.45)", margin: 0 }}>
             Booked Pipeline
           </p>
         </div>
 
-        <div
-          style={{
-            background: "#111",
-            border: "1px solid #222",
-            borderRadius: "4px",
-            padding: "1.5rem",
-          }}
-        >
-          <TrendingUp
-            size={20}
-            style={{ color: "#F7941D", marginBottom: "0.75rem" }}
-          />
-          <p
-            style={{
-              fontSize: "28px",
-              fontWeight: 700,
-              color: "#F7941D",
-              margin: "0 0 0.25rem",
-            }}
-          >
-            ${completedRevenue.toLocaleString()}
+        <div style={{ background: "#111", border: "1px solid #222", borderRadius: "4px", padding: "1.5rem" }}>
+          <TrendingUp size={20} style={{ color: "#F7941D", marginBottom: "0.75rem" }} />
+          <p style={{ fontSize: "28px", fontWeight: 700, color: "#F7941D", margin: "0 0 0.25rem" }}>
+            ${metrics.completedRevenue.toLocaleString()}
           </p>
-          <p
-            style={{
-              fontSize: "13px",
-              color: "rgba(255,255,255,0.45)",
-              margin: 0,
-            }}
-          >
+          <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.45)", margin: 0 }}>
             Completed Revenue
           </p>
         </div>
 
-        <div
-          style={{
-            background: "#111",
-            border: "1px solid #222",
-            borderRadius: "4px",
-            padding: "1.5rem",
-          }}
-        >
-          <BarChart3
-            size={20}
-            style={{ color: "#06b6d4", marginBottom: "0.75rem" }}
-          />
-          <p
-            style={{
-              fontSize: "28px",
-              fontWeight: 700,
-              color: "#06b6d4",
-              margin: "0 0 0.25rem",
-            }}
-          >
-            ${Math.round(averageOrder).toLocaleString()}
+        <div style={{ background: "#111", border: "1px solid #222", borderRadius: "4px", padding: "1.5rem" }}>
+          <BarChart3 size={20} style={{ color: "#06b6d4", marginBottom: "0.75rem" }} />
+          <p style={{ fontSize: "28px", fontWeight: 700, color: "#06b6d4", margin: "0 0 0.25rem" }}>
+            ${Math.round(metrics.averageOrder).toLocaleString()}
           </p>
-          <p
-            style={{
-              fontSize: "13px",
-              color: "rgba(255,255,255,0.45)",
-              margin: 0,
-            }}
-          >
+          <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.45)", margin: 0 }}>
             Average Order
           </p>
         </div>
 
-        <div
-          style={{
-            background: "#111",
-            border: "1px solid #222",
-            borderRadius: "4px",
-            padding: "1.5rem",
-          }}
-        >
-          <Inbox
-            size={20}
-            style={{ color: "#3b82f6", marginBottom: "0.75rem" }}
-          />
-          <p
-            style={{
-              fontSize: "28px",
-              fontWeight: 700,
-              color: "#3b82f6",
-              margin: "0 0 0.25rem",
-            }}
-          >
-            {newCount}
+        <div style={{ background: "#111", border: "1px solid #222", borderRadius: "4px", padding: "1.5rem" }}>
+          <Inbox size={20} style={{ color: "#3b82f6", marginBottom: "0.75rem" }} />
+          <p style={{ fontSize: "28px", fontWeight: 700, color: "#3b82f6", margin: "0 0 0.25rem" }}>
+            {metrics.newCount}
           </p>
-          <p
-            style={{
-              fontSize: "13px",
-              color: "rgba(255,255,255,0.45)",
-              margin: 0,
-            }}
-          >
+          <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.45)", margin: 0 }}>
             New Inquiries
           </p>
         </div>
@@ -272,140 +337,39 @@ export default function AdminDashboard() {
           marginBottom: "2.5rem",
         }}
       >
-        {/* Pages Card */}
         <Link href="/admin/pages" style={{ textDecoration: "none" }}>
           <div
-            style={{
-              background: "#111",
-              border: "1px solid #222",
-              borderRadius: "4px",
-              padding: "1.5rem",
-              transition: "border-color 0.2s",
-              cursor: "pointer",
-            }}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.borderColor = "#F7941D")
-            }
-            onMouseLeave={(e) =>
-              (e.currentTarget.style.borderColor = "#222")
-            }
+            style={{ background: "#111", border: "1px solid #222", borderRadius: "4px", padding: "1.5rem", transition: "border-color 0.2s", cursor: "pointer" }}
+            onMouseEnter={(e) => (e.currentTarget.style.borderColor = "#F7941D")}
+            onMouseLeave={(e) => (e.currentTarget.style.borderColor = "#222")}
           >
-            <FileImage
-              size={24}
-              style={{ color: "rgba(255,255,255,0.3)", marginBottom: "1rem" }}
-            />
-            <p
-              style={{
-                fontSize: "32px",
-                fontWeight: 700,
-                color: "#F7941D",
-                margin: "0 0 0.25rem",
-              }}
-            >
-              5
-            </p>
-            <p
-              style={{
-                fontSize: "14px",
-                color: "rgba(255,255,255,0.5)",
-                margin: 0,
-              }}
-            >
-              Pages
-            </p>
+            <FileImage size={24} style={{ color: "rgba(255,255,255,0.3)", marginBottom: "1rem" }} />
+            <p style={{ fontSize: "32px", fontWeight: 700, color: "#F7941D", margin: "0 0 0.25rem" }}>5</p>
+            <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.5)", margin: 0 }}>Pages</p>
           </div>
         </Link>
 
-        {/* Blog Posts Card */}
         <Link href="/admin/blog" style={{ textDecoration: "none" }}>
           <div
-            style={{
-              background: "#111",
-              border: "1px solid #222",
-              borderRadius: "4px",
-              padding: "1.5rem",
-              transition: "border-color 0.2s",
-              cursor: "pointer",
-            }}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.borderColor = "#F7941D")
-            }
-            onMouseLeave={(e) =>
-              (e.currentTarget.style.borderColor = "#222")
-            }
+            style={{ background: "#111", border: "1px solid #222", borderRadius: "4px", padding: "1.5rem", transition: "border-color 0.2s", cursor: "pointer" }}
+            onMouseEnter={(e) => (e.currentTarget.style.borderColor = "#F7941D")}
+            onMouseLeave={(e) => (e.currentTarget.style.borderColor = "#222")}
           >
-            <FileText
-              size={24}
-              style={{ color: "rgba(255,255,255,0.3)", marginBottom: "1rem" }}
-            />
-            <p
-              style={{
-                fontSize: "32px",
-                fontWeight: 700,
-                color: "#F7941D",
-                margin: "0 0 0.25rem",
-              }}
-            >
-              {blogCount !== null ? blogCount : "..."}
-            </p>
-            <p
-              style={{
-                fontSize: "14px",
-                color: "rgba(255,255,255,0.5)",
-                margin: 0,
-              }}
-            >
-              Blog Posts
-            </p>
+            <FileText size={24} style={{ color: "rgba(255,255,255,0.3)", marginBottom: "1rem" }} />
+            <p style={{ fontSize: "32px", fontWeight: 700, color: "#F7941D", margin: "0 0 0.25rem" }}>{blogCount !== null ? blogCount : "..."}</p>
+            <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.5)", margin: 0 }}>Blog Posts</p>
           </div>
         </Link>
 
-        {/* Media Card */}
-        <a
-          href="https://supabase.com/dashboard/project/eofjaizkkxqxbynnvemi/storage/buckets"
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{ textDecoration: "none" }}
-        >
+        <a href="https://supabase.com/dashboard/project/eofjaizkkxqxbynnvemi/storage/buckets" target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>
           <div
-            style={{
-              background: "#111",
-              border: "1px solid #222",
-              borderRadius: "4px",
-              padding: "1.5rem",
-              transition: "border-color 0.2s",
-              cursor: "pointer",
-            }}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.borderColor = "#F7941D")
-            }
-            onMouseLeave={(e) =>
-              (e.currentTarget.style.borderColor = "#222")
-            }
+            style={{ background: "#111", border: "1px solid #222", borderRadius: "4px", padding: "1.5rem", transition: "border-color 0.2s", cursor: "pointer" }}
+            onMouseEnter={(e) => (e.currentTarget.style.borderColor = "#F7941D")}
+            onMouseLeave={(e) => (e.currentTarget.style.borderColor = "#222")}
           >
-            <HardDrive
-              size={24}
-              style={{ color: "rgba(255,255,255,0.3)", marginBottom: "1rem" }}
-            />
-            <p
-              style={{
-                fontSize: "18px",
-                fontWeight: 700,
-                color: "#F7941D",
-                margin: "0 0 0.25rem",
-              }}
-            >
-              Supabase Storage
-            </p>
-            <p
-              style={{
-                fontSize: "14px",
-                color: "rgba(255,255,255,0.5)",
-                margin: 0,
-              }}
-            >
-              Media
-            </p>
+            <HardDrive size={24} style={{ color: "rgba(255,255,255,0.3)", marginBottom: "1rem" }} />
+            <p style={{ fontSize: "18px", fontWeight: 700, color: "#F7941D", margin: "0 0 0.25rem" }}>Supabase Storage</p>
+            <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.5)", margin: 0 }}>Media</p>
           </div>
         </a>
       </div>
@@ -413,92 +377,33 @@ export default function AdminDashboard() {
       {/* Recent Inquiries */}
       {recentInquiries.length > 0 && (
         <div style={{ marginBottom: "2.5rem" }}>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              marginBottom: "1rem",
-            }}
-          >
-            <h2
-              style={{
-                fontSize: "20px",
-                fontWeight: 700,
-                color: "#fff",
-                margin: 0,
-              }}
-            >
-              Recent Inquiries
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1rem" }}>
+            <h2 style={{ fontSize: "20px", fontWeight: 700, color: "#fff", margin: 0 }}>
+              Recent Inquiries {filter !== "All Time" && <span style={{ fontSize: "13px", color: "rgba(255,255,255,0.3)", fontWeight: 400 }}>({filterLabel})</span>}
             </h2>
-            <Link
-              href="/admin/inquiries"
-              style={{
-                fontSize: "13px",
-                color: "#F7941D",
-                textDecoration: "none",
-              }}
-            >
+            <Link href="/admin/inquiries" style={{ fontSize: "13px", color: "#F7941D", textDecoration: "none" }}>
               View All
             </Link>
           </div>
-          <div
-            style={{
-              background: "#111",
-              border: "1px solid #222",
-              borderRadius: "4px",
-              overflow: "hidden",
-            }}
-          >
+          <div style={{ background: "#111", border: "1px solid #222", borderRadius: "4px", overflow: "hidden" }}>
             {recentInquiries.map((inq, i) => (
-              <Link
-                key={inq.id}
-                href={`/admin/inquiries/${inq.id}`}
-                style={{ textDecoration: "none" }}
-              >
+              <Link key={inq.id} href={`/admin/inquiries/${inq.id}`} style={{ textDecoration: "none" }}>
                 <div
                   style={{
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "space-between",
                     padding: "0.875rem 1.25rem",
-                    borderBottom:
-                      i < recentInquiries.length - 1
-                        ? "1px solid #1a1a1a"
-                        : "none",
+                    borderBottom: i < recentInquiries.length - 1 ? "1px solid #1a1a1a" : "none",
                     transition: "background 0.15s",
                     cursor: "pointer",
                   }}
-                  onMouseEnter={(e) =>
-                    (e.currentTarget.style.background =
-                      "rgba(247,148,29,0.05)")
-                  }
-                  onMouseLeave={(e) =>
-                    (e.currentTarget.style.background = "transparent")
-                  }
+                  onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(247,148,29,0.05)")}
+                  onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
                 >
-                  <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-                    <div>
-                      <p
-                        style={{
-                          fontSize: "14px",
-                          color: "#fff",
-                          margin: 0,
-                          fontWeight: 500,
-                        }}
-                      >
-                        {inq.name}
-                      </p>
-                      <p
-                        style={{
-                          fontSize: "12px",
-                          color: "rgba(255,255,255,0.4)",
-                          margin: "0.2rem 0 0",
-                        }}
-                      >
-                        {inq.service || inq.email}
-                      </p>
-                    </div>
+                  <div>
+                    <p style={{ fontSize: "14px", color: "#fff", margin: 0, fontWeight: 500 }}>{inq.name}</p>
+                    <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.4)", margin: "0.2rem 0 0" }}>{inq.service || inq.email}</p>
                   </div>
                   <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
                     <span
@@ -515,13 +420,7 @@ export default function AdminDashboard() {
                     >
                       {inq.status}
                     </span>
-                    <span
-                      style={{
-                        fontSize: "12px",
-                        color: "rgba(255,255,255,0.3)",
-                        whiteSpace: "nowrap",
-                      }}
-                    >
+                    <span style={{ fontSize: "12px", color: "rgba(255,255,255,0.3)", whiteSpace: "nowrap" }}>
                       {new Date(inq.created_at).toLocaleDateString()}
                     </span>
                   </div>
@@ -534,48 +433,22 @@ export default function AdminDashboard() {
 
       {/* Quick Links */}
       <div>
-        <h2
-          style={{
-            fontSize: "20px",
-            fontWeight: 700,
-            color: "#fff",
-            marginBottom: "1rem",
-          }}
-        >
+        <h2 style={{ fontSize: "20px", fontWeight: 700, color: "#fff", marginBottom: "1rem" }}>
           Quick Links
         </h2>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(3, 1fr)",
-            gap: "0.75rem",
-          }}
-        >
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "0.75rem" }}>
           {PAGES.map((page) => (
             <Link
               key={page.href}
               href={page.href}
               style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                background: "#111",
-                border: "1px solid #222",
-                borderRadius: "4px",
-                padding: "0.875rem 1.25rem",
-                color: "rgba(255,255,255,0.7)",
-                textDecoration: "none",
-                fontSize: "14px",
-                transition: "border-color 0.2s, color 0.2s",
+                display: "flex", alignItems: "center", justifyContent: "space-between",
+                background: "#111", border: "1px solid #222", borderRadius: "4px",
+                padding: "0.875rem 1.25rem", color: "rgba(255,255,255,0.7)",
+                textDecoration: "none", fontSize: "14px", transition: "border-color 0.2s, color 0.2s",
               }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = "#F7941D";
-                e.currentTarget.style.color = "#fff";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = "#222";
-                e.currentTarget.style.color = "rgba(255,255,255,0.7)";
-              }}
+              onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#F7941D"; e.currentTarget.style.color = "#fff"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.borderColor = "#222"; e.currentTarget.style.color = "rgba(255,255,255,0.7)"; }}
             >
               {page.name}
               <ArrowRight size={14} style={{ opacity: 0.5 }} />
@@ -584,26 +457,13 @@ export default function AdminDashboard() {
           <Link
             href="/admin/blog"
             style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              background: "#111",
-              border: "1px solid #222",
-              borderRadius: "4px",
-              padding: "0.875rem 1.25rem",
-              color: "rgba(255,255,255,0.7)",
-              textDecoration: "none",
-              fontSize: "14px",
-              transition: "border-color 0.2s, color 0.2s",
+              display: "flex", alignItems: "center", justifyContent: "space-between",
+              background: "#111", border: "1px solid #222", borderRadius: "4px",
+              padding: "0.875rem 1.25rem", color: "rgba(255,255,255,0.7)",
+              textDecoration: "none", fontSize: "14px", transition: "border-color 0.2s, color 0.2s",
             }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.borderColor = "#F7941D";
-              e.currentTarget.style.color = "#fff";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.borderColor = "#222";
-              e.currentTarget.style.color = "rgba(255,255,255,0.7)";
-            }}
+            onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#F7941D"; e.currentTarget.style.color = "#fff"; }}
+            onMouseLeave={(e) => { e.currentTarget.style.borderColor = "#222"; e.currentTarget.style.color = "rgba(255,255,255,0.7)"; }}
           >
             Blog Posts
             <ArrowRight size={14} style={{ opacity: 0.5 }} />
@@ -611,27 +471,14 @@ export default function AdminDashboard() {
           <Link
             href="/admin/inquiries"
             style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              background: "#111",
-              border: "1px solid #F7941D",
-              borderRadius: "4px",
-              padding: "0.875rem 1.25rem",
-              color: "#F7941D",
-              textDecoration: "none",
-              fontSize: "14px",
-              fontWeight: 600,
+              display: "flex", alignItems: "center", justifyContent: "space-between",
+              background: "#111", border: "1px solid #F7941D", borderRadius: "4px",
+              padding: "0.875rem 1.25rem", color: "#F7941D",
+              textDecoration: "none", fontSize: "14px", fontWeight: 600,
               transition: "background 0.2s, color 0.2s",
             }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = "rgba(247,148,29,0.1)";
-              e.currentTarget.style.color = "#fff";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = "transparent";
-              e.currentTarget.style.color = "#F7941D";
-            }}
+            onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(247,148,29,0.1)"; e.currentTarget.style.color = "#fff"; }}
+            onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "#F7941D"; }}
           >
             Inquiries
             <ArrowRight size={14} style={{ opacity: 0.7 }} />

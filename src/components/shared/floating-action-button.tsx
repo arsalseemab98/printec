@@ -50,11 +50,12 @@ export function FloatingActionButton() {
     name: "",
     email: "",
     phone: "",
+    service: "",
     message: "",
   });
 
   function handleChange(
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   }
@@ -74,6 +75,7 @@ export function FloatingActionButton() {
           name: formData.name,
           email: formData.email,
           phone: formData.phone,
+          service: formData.service || undefined,
           description: formData.message,
           source: "floating-widget",
           page: window.location.pathname,
@@ -101,7 +103,7 @@ export function FloatingActionButton() {
     setOpen(false);
     setTimeout(() => {
       setView("menu");
-      setFormData({ name: "", email: "", phone: "", message: "" });
+      setFormData({ name: "", email: "", phone: "", service: "", message: "" });
       setError("");
     }, 300);
   }
@@ -450,6 +452,24 @@ export function FloatingActionButton() {
                   onFocus={(e) => (e.currentTarget.style.borderColor = ORANGE)}
                   onBlur={(e) => (e.currentTarget.style.borderColor = "#333")}
                 />
+                <select
+                  name="service"
+                  value={formData.service}
+                  onChange={handleChange}
+                  style={{ ...INPUT, appearance: "none", cursor: "pointer" }}
+                  onFocus={(e) => (e.currentTarget.style.borderColor = ORANGE)}
+                  onBlur={(e) => (e.currentTarget.style.borderColor = "#333")}
+                >
+                  <option value="">Service (optional)</option>
+                  <option value="Dance Floor Wraps">Dance Floor Wraps</option>
+                  <option value="Channel Letters & Signage">Channel Letters & Signage</option>
+                  <option value="Wall Wraps">Wall Wraps</option>
+                  <option value="Window Wraps">Window Wraps</option>
+                  <option value="Vehicle Wraps">Vehicle Wraps</option>
+                  <option value="LED Channel Letters">LED Channel Letters</option>
+                  <option value="Graphic Design">Graphic Design</option>
+                  <option value="Other">Other</option>
+                </select>
                 {error && (
                   <div
                     style={{

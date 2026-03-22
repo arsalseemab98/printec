@@ -74,21 +74,21 @@ export const SERVICES_NAV = [
 ];
 
 /* ─── PORTFOLIO DATA ─── */
-export const PORTFOLIO_CATEGORIES = ["ALL", "VEHICLE WRAPS", "SIGNAGE", "PRINTING", "APPAREL", "DIGITAL"];
+export const PORTFOLIO_CATEGORIES = ["ALL", "SIGNAGE", "WALL WRAPS", "WINDOW WRAPS", "FLOOR WRAPS", "NEON SIGNS", "VINYL WRAPS"];
 
 export const PORTFOLIO = [
-  { title: "TACO KING TRUCK", category: "VEHICLE WRAPS", filter: "VEHICLE WRAPS", angle: 12 },
-  { title: "BBQ NATION TRAILER", category: "VEHICLE WRAPS", filter: "VEHICLE WRAPS", angle: -8 },
-  { title: "NEON DISTRICT SIGN", category: "LED CHANNEL", filter: "SIGNAGE", angle: 5 },
-  { title: "DOWNTOWN STOREFRONT", category: "MONUMENT SIGN", filter: "SIGNAGE", angle: -15 },
-  { title: "APEX GYM UNIFORMS", category: "CUSTOM UNIFORMS", filter: "APPAREL", angle: 20 },
-  { title: "LOCAL LEAGUE JERSEYS", category: "SPORTING WEAR", filter: "APPAREL", angle: -5 },
-  { title: "LAKESIDE COFFEE WRAP", category: "WINDOW WRAP", filter: "PRINTING", angle: 10 },
-  { title: "WATERPROOF MENU SET", category: "MENU DESIGN", filter: "PRINTING", angle: -12 },
-  { title: "SOCIAL MEDIA CAMPAIGN", category: "CONTENT MARKETING", filter: "DIGITAL", angle: 7 },
-  { title: "DIGITAL MENU BOARD", category: "DIGITAL SIGNAGE", filter: "DIGITAL", angle: -9 },
-  { title: "FLEET WRAP — 5 VANS", category: "VEHICLE WRAPS", filter: "VEHICLE WRAPS", angle: 15 },
-  { title: "BREWERY WINDOW ART", category: "WINDOW WRAP", filter: "PRINTING", angle: -6 },
+  { title: "AURORA & OAK CHANNEL LETTERS", category: "LED CHANNEL", filter: "SIGNAGE", angle: 12 },
+  { title: "MERIDIAN BUSINESS PARK SIGNS", category: "MONUMENT SIGN", filter: "SIGNAGE", angle: -8 },
+  { title: "SAVORA KITCHEN STOREFRONT", category: "CHANNEL LETTERS", filter: "SIGNAGE", angle: 5 },
+  { title: "RESTAURANT FEATURE WALL", category: "WALL MURAL", filter: "WALL WRAPS", angle: -15 },
+  { title: "CORPORATE LOBBY BRANDING", category: "WALL GRAPHICS", filter: "WALL WRAPS", angle: 20 },
+  { title: "LAKESIDE COFFEE WINDOWS", category: "WINDOW WRAP", filter: "WINDOW WRAPS", angle: 10 },
+  { title: "BREWERY STOREFRONT GRAPHICS", category: "STOREFRONT", filter: "WINDOW WRAPS", angle: -6 },
+  { title: "WEDDING MONOGRAM — A&J", category: "DANCE FLOOR", filter: "FLOOR WRAPS", angle: -12 },
+  { title: "CORPORATE GALA FLOOR WRAP", category: "EVENT FLOOR", filter: "FLOOR WRAPS", angle: 7 },
+  { title: "THIS WAY UP NEON SIGN", category: "LED NEON", filter: "NEON SIGNS", angle: -9 },
+  { title: "BAR NEON SIGNAGE", category: "CUSTOM NEON", filter: "NEON SIGNS", angle: 15 },
+  { title: "FOOD TRUCK FULL WRAP", category: "VEHICLE WRAP", filter: "VINYL WRAPS", angle: -5 },
 ];
 
 /* ─── STATS DATA ─── */

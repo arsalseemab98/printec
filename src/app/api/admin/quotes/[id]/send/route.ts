@@ -70,6 +70,7 @@ export async function POST(
       total: quote.total || 0,
       notes: quote.notes || null,
       created_at: quote.created_at,
+      logoUrl: "https://printecwrap.com/printec-logo-light.png",
       customer: {
         name: inquiry.name,
         email: inquiry.email,

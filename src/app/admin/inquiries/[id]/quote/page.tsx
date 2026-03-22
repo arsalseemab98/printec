@@ -238,6 +238,7 @@ export default function QuoteBuilderPage({
         total: quote.total,
         notes: quote.notes,
         created_at: quote.created_at,
+        logoUrl: "/printec-logo-light.png",
         customer: {
           name: inquiry.name,
           email: inquiry.email,

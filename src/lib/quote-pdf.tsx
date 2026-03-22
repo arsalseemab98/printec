@@ -4,6 +4,7 @@ import {
   Page,
   View,
   Text,
+  Image,
   StyleSheet,
 } from "@react-pdf/renderer";
 
@@ -14,6 +15,7 @@ export interface QuotePDFProps {
   total: number;
   notes: string | null;
   created_at: string;
+  logoUrl?: string;
   customer: {
     name: string;
     email: string;
@@ -21,6 +23,15 @@ export interface QuotePDFProps {
     service: string | null;
   };
 }
+
+/* ── Colors ── */
+const ORANGE = "#F7941D";
+const DARK = "#0C0C0C";
+const DARK_CARD = "#161616";
+const DARK_BORDER = "#222222";
+const WHITE = "#FFFFFF";
+const GREY = "#999999";
+const LIGHT_GREY = "#CCCCCC";
 
 /* ── Helpers ── */
 function fmt(n: number) {
@@ -38,238 +49,374 @@ function fmtDate(iso: string) {
 /* ── Styles ── */
 const s = StyleSheet.create({
   page: {
-    padding: 48,
+    padding: 0,
     fontFamily: "Helvetica",
     fontSize: 10,
-    color: "#222",
-    backgroundColor: "#fff",
+    color: WHITE,
+    backgroundColor: DARK,
   },
-  /* Header */
-  header: {
+
+  /* ── Top Banner ── */
+  banner: {
+    backgroundColor: DARK_CARD,
+    padding: "36 48 28 48",
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 28,
-    paddingBottom: 16,
-    borderBottomWidth: 2,
-    borderBottomColor: "#F7941D",
+    alignItems: "flex-start",
+    borderBottomWidth: 3,
+    borderBottomColor: ORANGE,
+  },
+  logo: {
+    width: 140,
+    height: 56,
   },
   companyName: {
-    fontSize: 22,
+    fontSize: 24,
     fontFamily: "Helvetica-Bold",
-    color: "#F7941D",
-    letterSpacing: 2,
+    color: ORANGE,
+    letterSpacing: 3,
   },
-  companyDetail: {
-    fontSize: 9,
-    color: "#555",
-    marginTop: 2,
+  companyInfo: {
+    alignItems: "flex-end" as const,
   },
-  /* Quote title */
-  titleRow: {
+  companyText: {
+    fontSize: 8,
+    color: GREY,
+    marginBottom: 2,
+    letterSpacing: 0.5,
+  },
+  companyHighlight: {
+    fontSize: 8,
+    color: ORANGE,
+    marginBottom: 2,
+    letterSpacing: 0.5,
+  },
+
+  /* ── Quote Title Section ── */
+  titleSection: {
+    padding: "32 48 24 48",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "flex-end",
-    marginBottom: 24,
   },
   quoteTitle: {
-    fontSize: 28,
+    fontSize: 32,
     fontFamily: "Helvetica-Bold",
-    color: "#111",
-    letterSpacing: 3,
+    color: WHITE,
+    letterSpacing: 6,
+  },
+  quoteMeta: {
+    alignItems: "flex-end" as const,
   },
   quoteNumber: {
-    fontSize: 12,
+    fontSize: 14,
     fontFamily: "Helvetica-Bold",
-    color: "#F7941D",
+    color: ORANGE,
+    letterSpacing: 1,
   },
   quoteDate: {
-    fontSize: 10,
-    color: "#666",
-    marginTop: 2,
-  },
-  /* Customer */
-  sectionLabel: {
     fontSize: 9,
+    color: GREY,
+    marginTop: 4,
+  },
+
+  /* ── Divider ── */
+  divider: {
+    height: 1,
+    backgroundColor: DARK_BORDER,
+    marginHorizontal: 48,
+  },
+  orangeDivider: {
+    height: 2,
+    backgroundColor: ORANGE,
+    width: 60,
+    marginLeft: 48,
+    marginTop: 0,
+  },
+
+  /* ── Customer & Prepared By ── */
+  infoRow: {
+    flexDirection: "row",
+    padding: "24 48",
+    gap: 40,
+  },
+  infoCol: {
+    flex: 1,
+  },
+  sectionLabel: {
+    fontSize: 8,
     fontFamily: "Helvetica-Bold",
-    color: "#F7941D",
+    color: ORANGE,
     textTransform: "uppercase" as const,
-    letterSpacing: 2,
-    marginBottom: 8,
+    letterSpacing: 3,
+    marginBottom: 10,
   },
-  customerBox: {
-    backgroundColor: "#f9f9f9",
-    padding: 14,
+  infoBox: {
+    backgroundColor: DARK_CARD,
+    padding: 16,
     borderRadius: 4,
-    marginBottom: 24,
+    borderLeftWidth: 3,
+    borderLeftColor: ORANGE,
   },
-  customerLine: {
+  infoText: {
     fontSize: 10,
-    color: "#333",
+    color: LIGHT_GREY,
     marginBottom: 3,
+    lineHeight: 1.5,
   },
-  /* Table */
+  infoBold: {
+    fontSize: 11,
+    fontFamily: "Helvetica-Bold",
+    color: WHITE,
+    marginBottom: 4,
+  },
+
+  /* ── Table ── */
+  tableSection: {
+    paddingHorizontal: 48,
+    paddingTop: 8,
+  },
   tableHeader: {
     flexDirection: "row",
-    backgroundColor: "#111",
-    padding: "8 12",
-    borderRadius: 2,
+    backgroundColor: ORANGE,
+    padding: "10 16",
+    borderRadius: 3,
+    marginBottom: 2,
   },
   tableHeaderText: {
     fontFamily: "Helvetica-Bold",
-    fontSize: 9,
-    color: "#fff",
+    fontSize: 8,
+    color: DARK,
     textTransform: "uppercase" as const,
-    letterSpacing: 1,
+    letterSpacing: 1.5,
   },
   tableRow: {
     flexDirection: "row",
-    padding: "10 12",
+    padding: "12 16",
     borderBottomWidth: 1,
-    borderBottomColor: "#eee",
+    borderBottomColor: DARK_BORDER,
   },
   tableRowAlt: {
-    backgroundColor: "#fafafa",
+    backgroundColor: DARK_CARD,
   },
   colNum: { width: "8%" },
-  colDesc: { width: "68%" },
-  colPrice: { width: "24%", textAlign: "right" as const },
-  /* Total */
+  colDesc: { width: "64%" },
+  colPrice: { width: "28%", textAlign: "right" as const },
+  itemNum: {
+    fontSize: 9,
+    color: GREY,
+  },
+  itemDesc: {
+    fontSize: 10,
+    color: LIGHT_GREY,
+  },
+  itemPrice: {
+    fontSize: 10,
+    fontFamily: "Helvetica-Bold",
+    color: WHITE,
+  },
+
+  /* ── Total ── */
+  totalSection: {
+    paddingHorizontal: 48,
+    marginTop: 4,
+  },
   totalRow: {
     flexDirection: "row",
     justifyContent: "flex-end",
-    marginTop: 12,
-    paddingTop: 10,
-    borderTopWidth: 2,
-    borderTopColor: "#F7941D",
+    alignItems: "center",
+    backgroundColor: DARK_CARD,
+    padding: "14 20",
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: ORANGE,
   },
   totalLabel: {
-    fontSize: 13,
+    fontSize: 12,
     fontFamily: "Helvetica-Bold",
-    color: "#111",
+    color: GREY,
+    letterSpacing: 2,
+    textTransform: "uppercase" as const,
     marginRight: 24,
   },
   totalValue: {
-    fontSize: 13,
+    fontSize: 22,
     fontFamily: "Helvetica-Bold",
-    color: "#F7941D",
+    color: ORANGE,
   },
-  /* Notes */
-  notesBox: {
-    marginTop: 28,
-    padding: 14,
-    backgroundColor: "#f9f9f9",
+
+  /* ── Notes ── */
+  notesSection: {
+    marginHorizontal: 48,
+    marginTop: 20,
+    padding: 16,
+    backgroundColor: DARK_CARD,
     borderRadius: 4,
+    borderLeftWidth: 3,
+    borderLeftColor: DARK_BORDER,
   },
   notesText: {
-    fontSize: 10,
-    color: "#444",
-    lineHeight: 1.6,
+    fontSize: 9,
+    color: GREY,
+    lineHeight: 1.7,
   },
-  /* Footer */
+
+  /* ── Footer ── */
   footer: {
     marginTop: "auto",
-    paddingTop: 16,
+    backgroundColor: DARK_CARD,
+    padding: "20 48",
     borderTopWidth: 1,
-    borderTopColor: "#ddd",
-    textAlign: "center" as const,
+    borderTopColor: DARK_BORDER,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
+  footerLeft: {},
   footerText: {
-    fontSize: 9,
-    color: "#888",
+    fontSize: 8,
+    color: GREY,
+    letterSpacing: 0.5,
   },
   footerBold: {
     fontSize: 9,
     fontFamily: "Helvetica-Bold",
-    color: "#F7941D",
+    color: ORANGE,
+    letterSpacing: 1,
+  },
+  footerRight: {
+    alignItems: "flex-end" as const,
+  },
+  footerValidity: {
+    fontSize: 7,
+    color: GREY,
+    marginTop: 4,
+  },
+
+  /* ── Accent Bar ── */
+  accentBar: {
+    height: 4,
+    backgroundColor: ORANGE,
   },
 });
 
 /* ── Document ── */
 export function QuotePDF(props: QuotePDFProps) {
-  const { quote_number, items, total, notes, created_at, customer } = props;
+  const { quote_number, items, total, notes, created_at, customer, logoUrl } = props;
 
   return (
     <Document>
       <Page size="A4" style={s.page}>
-        {/* ── Header ── */}
-        <View style={s.header}>
-          <View>
+        {/* ── Orange accent bar at top ── */}
+        <View style={s.accentBar} />
+
+        {/* ── Header with Logo ── */}
+        <View style={s.banner}>
+          {logoUrl ? (
+            <Image src={logoUrl} style={s.logo} />
+          ) : (
             <Text style={s.companyName}>PRINTEC CORP</Text>
-            <Text style={s.companyDetail}>1234 Commerce Drive</Text>
-            <Text style={s.companyDetail}>Virginia Beach, VA 23456</Text>
-          </View>
-          <View style={{ alignItems: "flex-end" as const }}>
-            <Text style={s.companyDetail}>(555) 123-4567</Text>
-            <Text style={s.companyDetail}>info@printecwrap.com</Text>
-            <Text style={s.companyDetail}>printecwrap.com</Text>
+          )}
+          <View style={s.companyInfo}>
+            <Text style={s.companyHighlight}>PRINTEC CORP</Text>
+            <Text style={s.companyText}>1234 Commerce Drive</Text>
+            <Text style={s.companyText}>Virginia Beach, VA 23456</Text>
+            <Text style={s.companyText}>(555) 123-4567</Text>
+            <Text style={s.companyHighlight}>info@printecwrap.com</Text>
+            <Text style={s.companyText}>printecwrap.com</Text>
           </View>
         </View>
 
-        {/* ── Title row ── */}
-        <View style={s.titleRow}>
-          <Text style={s.quoteTitle}>QUOTE</Text>
-          <View style={{ alignItems: "flex-end" as const }}>
+        {/* ── Quote Title ── */}
+        <View style={s.titleSection}>
+          <View>
+            <Text style={s.quoteTitle}>QUOTE</Text>
+            <View style={s.orangeDivider} />
+          </View>
+          <View style={s.quoteMeta}>
             <Text style={s.quoteNumber}>{quote_number}</Text>
             <Text style={s.quoteDate}>{fmtDate(created_at)}</Text>
           </View>
         </View>
 
-        {/* ── Customer info ── */}
-        <Text style={s.sectionLabel}>Customer</Text>
-        <View style={s.customerBox}>
-          <Text style={s.customerLine}>{customer.name}</Text>
-          <Text style={s.customerLine}>{customer.email}</Text>
-          {customer.phone && (
-            <Text style={s.customerLine}>{customer.phone}</Text>
-          )}
-          {customer.service && (
-            <Text style={s.customerLine}>
-              Service requested: {customer.service}
-            </Text>
-          )}
+        <View style={s.divider} />
+
+        {/* ── Customer & Prepared By ── */}
+        <View style={s.infoRow}>
+          <View style={s.infoCol}>
+            <Text style={s.sectionLabel}>Prepared For</Text>
+            <View style={s.infoBox}>
+              <Text style={s.infoBold}>{customer.name}</Text>
+              <Text style={s.infoText}>{customer.email}</Text>
+              {customer.phone && <Text style={s.infoText}>{customer.phone}</Text>}
+              {customer.service && (
+                <Text style={s.infoText}>Service: {customer.service}</Text>
+              )}
+            </View>
+          </View>
+          <View style={s.infoCol}>
+            <Text style={s.sectionLabel}>Prepared By</Text>
+            <View style={s.infoBox}>
+              <Text style={s.infoBold}>Printec Corp</Text>
+              <Text style={s.infoText}>Signs, Wraps & Graphics</Text>
+              <Text style={s.infoText}>Virginia Beach, VA</Text>
+              <Text style={s.infoText}>info@printecwrap.com</Text>
+            </View>
+          </View>
         </View>
 
-        {/* ── Items table ── */}
-        <Text style={s.sectionLabel}>Line Items</Text>
-        <View style={s.tableHeader}>
-          <Text style={[s.tableHeaderText, s.colNum]}>#</Text>
-          <Text style={[s.tableHeaderText, s.colDesc]}>Description</Text>
-          <Text style={[s.tableHeaderText, s.colPrice]}>Price</Text>
-        </View>
-        {items.map((item, i) => (
-          <View
-            key={i}
-            style={[s.tableRow, i % 2 === 1 ? s.tableRowAlt : {}]}
-          >
-            <Text style={s.colNum}>{i + 1}</Text>
-            <Text style={s.colDesc}>{item.description}</Text>
-            <Text style={s.colPrice}>{fmt(item.price)}</Text>
+        {/* ── Items Table ── */}
+        <View style={s.tableSection}>
+          <Text style={s.sectionLabel}>Services & Pricing</Text>
+          <View style={s.tableHeader}>
+            <Text style={[s.tableHeaderText, s.colNum]}>#</Text>
+            <Text style={[s.tableHeaderText, s.colDesc]}>Description</Text>
+            <Text style={[s.tableHeaderText, s.colPrice]}>Amount</Text>
           </View>
-        ))}
+          {items.map((item, i) => (
+            <View
+              key={i}
+              style={[s.tableRow, i % 2 === 1 ? s.tableRowAlt : {}]}
+            >
+              <Text style={[s.itemNum, s.colNum]}>{String(i + 1).padStart(2, "0")}</Text>
+              <Text style={[s.itemDesc, s.colDesc]}>{item.description}</Text>
+              <Text style={[s.itemPrice, s.colPrice]}>{fmt(item.price)}</Text>
+            </View>
+          ))}
+        </View>
 
         {/* ── Total ── */}
-        <View style={s.totalRow}>
-          <Text style={s.totalLabel}>Total</Text>
-          <Text style={s.totalValue}>{fmt(total)}</Text>
+        <View style={s.totalSection}>
+          <View style={s.totalRow}>
+            <Text style={s.totalLabel}>Total</Text>
+            <Text style={s.totalValue}>{fmt(total)}</Text>
+          </View>
         </View>
 
         {/* ── Notes ── */}
         {notes ? (
-          <View style={s.notesBox}>
-            <Text style={s.sectionLabel}>Notes</Text>
+          <View style={s.notesSection}>
+            <Text style={s.sectionLabel}>Terms & Notes</Text>
             <Text style={s.notesText}>{notes}</Text>
           </View>
         ) : null}
 
         {/* ── Footer ── */}
         <View style={s.footer}>
-          <Text style={s.footerBold}>
-            Thank you for choosing Printec Corp!
-          </Text>
-          <Text style={s.footerText}>
-            This quote is valid for 30 days from the date above.
-          </Text>
+          <View style={s.footerLeft}>
+            <Text style={s.footerBold}>PRINTEC CORP</Text>
+            <Text style={s.footerText}>From Vision to Vinyl</Text>
+          </View>
+          <View style={s.footerRight}>
+            <Text style={s.footerBold}>Thank you for choosing Printec!</Text>
+            <Text style={s.footerValidity}>
+              This quote is valid for 30 days from {fmtDate(created_at)}.
+            </Text>
+          </View>
         </View>
+
+        {/* ── Bottom accent bar ── */}
+        <View style={s.accentBar} />
       </Page>
     </Document>
   );

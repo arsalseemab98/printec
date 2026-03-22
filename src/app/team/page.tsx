@@ -1,10 +1,12 @@
 import { Metadata } from "next";
+import Image from "next/image";
 import { Section } from "@/components/shared/section";
 import { CtaBanner } from "@/components/shared/cta-banner";
 import {
   ORANGE,
   BLACK,
   WHITE,
+  IMG,
 } from "@/lib/constants";
 import {
   Linkedin,
@@ -68,25 +70,20 @@ const BODY: React.CSSProperties = {
 
 const LEADERSHIP = [
   {
-    name: "Rashid Ahmed",
+    name: "Shazil Ali",
     role: "Founder & CEO",
-    bio: "A decade in the signage industry. Rashid founded Printec Corp with a vision to deliver bold, high-quality graphics that help businesses stand out. He oversees every major project personally.",
-    email: "rashid@printeccorp.com",
+    bio: "Shazil founded Printec Corp in 2017 with a vision to deliver bold, high-quality graphics that help businesses stand out. He oversees every major project personally and drives the company's growth across Virginia.",
+    email: "shazil@printeccorp.com",
     linkedin: "#",
+    image: IMG.teamShazil,
   },
   {
-    name: "Sarah Mitchell",
-    role: "Creative Director",
-    bio: "Former agency designer with 15 years of brand identity experience. Sarah leads the design team and ensures every project meets the highest creative standards.",
-    email: "sarah@printeccorp.com",
+    name: "Azhar Ahmed",
+    role: "Co-Founder & Operations Director",
+    bio: "A decade of hands-on experience in signage fabrication and installation. Azhar manages production, quality control, and client relations — ensuring every project exceeds expectations.",
+    email: "azhar@printeccorp.com",
     linkedin: "#",
-  },
-  {
-    name: "James Rivera",
-    role: "Operations Manager",
-    bio: "Manages production, installation scheduling, and quality control. James ensures projects are delivered on time and exceed client expectations every time.",
-    email: "james@printeccorp.com",
-    linkedin: "#",
+    image: IMG.teamAzhar,
   },
 ];
 
@@ -180,7 +177,9 @@ export default function TeamPage() {
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 340px), 1fr))",
+              gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 320px), 1fr))",
+              maxWidth: "720px",
+              margin: "0 auto",
               gap: "24px",
             }}
           >
@@ -196,22 +195,41 @@ export default function TeamPage() {
                 }}
                 className="card-subtle"
               >
-                {/* Photo placeholder */}
+                {/* Photo */}
                 <div
                   style={{
                     width: "100%",
-                    aspectRatio: "4 / 3",
+                    aspectRatio: "3 / 4",
+                    position: "relative",
+                    overflow: "hidden",
                     background: "#0a0a0a",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    color: "rgba(255,255,255,0.15)",
-                    fontSize: "12px",
-                    fontFamily: "Arial, sans-serif",
-                    letterSpacing: "2px",
                   }}
                 >
-                  PHOTO — 400 × 300
+                  {person.image ? (
+                    <Image
+                      src={person.image}
+                      alt={`${person.name} — ${person.role} at Printec Corp`}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 340px"
+                      style={{ objectFit: "cover", objectPosition: "top" }}
+                    />
+                  ) : (
+                    <div
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        color: "rgba(255,255,255,0.15)",
+                        fontSize: "12px",
+                        fontFamily: "Arial, sans-serif",
+                        letterSpacing: "2px",
+                      }}
+                    >
+                      PHOTO
+                    </div>
+                  )}
                 </div>
 
                 <div style={{ padding: "24px" }}>

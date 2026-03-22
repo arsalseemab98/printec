@@ -25,6 +25,9 @@ export function BeforeAfterSlider({
   const beforeLabelRef = useRef<HTMLSpanElement>(null);
   const afterLabelRef = useRef<HTMLSpanElement>(null);
   const isDragging = useRef(false);
+  const hasInteracted = useRef(false);
+  const hasAutoPlayed = useRef(false);
+  const animFrameRef = useRef<number>(0);
 
   const updateSlider = useCallback((pct: number) => {
     if (!beforeRef.current || !handleRef.current) return;
@@ -55,6 +58,9 @@ export function BeforeAfterSlider({
     const onPointerDown = (e: PointerEvent) => {
       e.preventDefault();
       isDragging.current = true;
+      hasInteracted.current = true;
+      // Cancel any running auto-animation
+      if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
       container.setPointerCapture(e.pointerId);
       updateSlider(getPosition(e.clientX));
     };
@@ -80,6 +86,82 @@ export function BeforeAfterSlider({
       container.removeEventListener("pointerleave", onPointerUp);
     };
   }, [getPosition, updateSlider]);
+
+  // Auto-swipe animation when slider enters viewport (plays once)
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && !hasAutoPlayed.current && !hasInteracted.current) {
+          hasAutoPlayed.current = true;
+
+          // Keyframes: center(50) → right(80) → left(20) → center(50)
+          const keyframes = [
+            { from: 50, to: 80 },   // reveal more "after"
+            { from: 80, to: 20 },   // sweep to reveal "before"
+            { from: 20, to: 50 },   // return to center
+          ];
+          const segmentDuration = 800; // ms per segment
+          const pauseBetween = 400;    // ms pause between segments
+          let segmentIndex = 0;
+
+          function animateSegment() {
+            if (hasInteracted.current || segmentIndex >= keyframes.length) return;
+
+            const { from, to } = keyframes[segmentIndex];
+            const startTime = performance.now();
+
+            function tick(now: number) {
+              if (hasInteracted.current) return;
+
+              const elapsed = now - startTime;
+              const progress = Math.min(elapsed / segmentDuration, 1);
+              // Ease in-out cubic
+              const eased = progress < 0.5
+                ? 4 * progress * progress * progress
+                : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+
+              const current = from + (to - from) * eased;
+              updateSlider(current);
+
+              if (progress < 1) {
+                animFrameRef.current = requestAnimationFrame(tick);
+              } else {
+                // Pause then next segment
+                segmentIndex++;
+                if (segmentIndex < keyframes.length && !hasInteracted.current) {
+                  setTimeout(() => {
+                    if (!hasInteracted.current) {
+                      animFrameRef.current = requestAnimationFrame(animateSegment);
+                    }
+                  }, pauseBetween);
+                }
+              }
+            }
+
+            animFrameRef.current = requestAnimationFrame(tick);
+          }
+
+          // Start after a short delay
+          setTimeout(() => {
+            if (!hasInteracted.current) {
+              animateSegment();
+            }
+          }, 500);
+        }
+      },
+      { threshold: 0.5 }
+    );
+
+    observer.observe(container);
+
+    return () => {
+      observer.disconnect();
+      if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
+    };
+  }, [updateSlider]);
 
   return (
     <div

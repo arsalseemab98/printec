@@ -71,9 +71,15 @@ src/
 │   │   │   ├── page.tsx              # Inquiry list (status filter, search)
 │   │   │   └── [id]/                 # Inquiry detail + quote builder
 │   │   ├── images/page.tsx            # Image manager (view, upload, delete)
+│   │   ├── contracts/                # Digital contract management
+│   │   │   ├── page.tsx              # Contract list (Pending/Sent/Signed filter)
+│   │   │   ├── new/page.tsx          # Create contract (manual or from inquiry)
+│   │   │   └── [id]/page.tsx         # Contract detail, edit, send, download PDF
 │   │   └── quotes/page.tsx           # All quotes sent listing
+│   ├── sign/[id]/page.tsx            # Public contract signing page (no auth)
 │   ├── api/
 │   │   ├── contact/route.ts          # Contact form → email + save to DB
+│   │   ├── contracts/[id]/sign/      # Public: customer signs contract
 │   │   └── admin/                    # Admin API routes
 │   │       ├── login/route.ts        # Password auth
 │   │       ├── logout/route.ts       # Clear session
@@ -82,6 +88,7 @@ src/
 │   │       ├── blog/                 # Blog posts CRUD
 │   │       ├── inquiries/            # Inquiries CRUD
 │   │       ├── images/route.ts       # Image list, upload, delete (Supabase Storage)
+│   │       ├── contracts/            # Contracts CRUD + send signing link
 │   │       └── quotes/              # Quotes CRUD + send PDF
 │   ├── sitemap.ts                    # Auto-generated sitemap
 │   ├── robots.ts                     # Robots.txt
@@ -111,7 +118,8 @@ src/
 │   ├── blog-data.ts                  # Blog articles (fallback if Supabase empty)
 │   ├── supabase.ts                   # Supabase client (lazy init for build safety)
 │   ├── content.ts                    # Helpers: getPageImage, getBlogPosts, etc.
-│   └── quote-pdf.tsx                 # React PDF template for branded quotes
+│   ├── quote-pdf.tsx                 # React PDF template for branded quotes
+│   └── contract-pdf.tsx              # React PDF template for client agreements
 └── public/
     ├── printec-logo.png              # Original logo (2000x1252, high-res)
     ├── printec-logo-light.png        # White text version for dark bg

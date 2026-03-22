@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef, useCallback } from "react";
-import { useParams } from "next/navigation";
+import { use } from "react";
 
 interface Contract {
   id: string;
@@ -18,541 +18,748 @@ interface Contract {
   travel_cost: number;
   terms: string[] | null;
   signed_at: string | null;
-  created_at: string;
+  signature_data: string | null;
 }
 
-function formatDate(d: string | null) {
-  if (!d) return "\u2014";
-  return new Date(d).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
-}
-
-function formatCurrency(n: number) {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-  }).format(n);
-}
-
-export default function SignContractPage() {
-  const params = useParams();
-  const id = params.id as string;
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+export default function SignContractPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = use(params);
   const [contract, setContract] = useState<Contract | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-  const [signing, setSigning] = useState(false);
+  const [notFound, setNotFound] = useState(false);
   const [signed, setSigned] = useState(false);
-  const [isDrawing, setIsDrawing] = useState(false);
-  const [hasSignature, setHasSignature] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
-  useEffect(() => {
-    async function load() {
-      try {
-        const res = await fetch(`/api/admin/contracts/${id}`);
-        if (!res.ok) {
-          setError("Contract not found.");
-          return;
-        }
-        const data = await res.json();
-        setContract(data);
-        if (data.signed_at) {
-          setSigned(true);
-        }
-      } catch {
-        setError("Failed to load contract.");
-      } finally {
-        setLoading(false);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const drawingRef = useRef(false);
+
+  const fetchContract = useCallback(async () => {
+    try {
+      const res = await fetch(`/api/admin/contracts/${id}`);
+      if (!res.ok) {
+        setNotFound(true);
+        return;
       }
+      const data = await res.json();
+      if (data.error) {
+        setNotFound(true);
+        return;
+      }
+      setContract(data);
+    } catch {
+      setNotFound(true);
+    } finally {
+      setLoading(false);
     }
-    load();
   }, [id]);
 
-  const getCanvasCoords = useCallback(
-    (e: React.MouseEvent | React.TouchEvent) => {
-      const canvas = canvasRef.current;
-      if (!canvas) return { x: 0, y: 0 };
-      const rect = canvas.getBoundingClientRect();
-      const scaleX = canvas.width / rect.width;
-      const scaleY = canvas.height / rect.height;
-      if ("touches" in e) {
-        const touch = e.touches[0];
-        return {
-          x: (touch.clientX - rect.left) * scaleX,
-          y: (touch.clientY - rect.top) * scaleY,
-        };
-      }
-      return {
-        x: (e.clientX - rect.left) * scaleX,
-        y: (e.clientY - rect.top) * scaleY,
-      };
-    },
-    []
-  );
+  useEffect(() => {
+    fetchContract();
+  }, [fetchContract]);
 
-  function handlePointerDown(e: React.MouseEvent | React.TouchEvent) {
-    e.preventDefault();
+  /* ── Canvas setup ── */
+  useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
-    const { x, y } = getCanvasCoords(e);
-    ctx.beginPath();
-    ctx.moveTo(x, y);
-    setIsDrawing(true);
-  }
-
-  function handlePointerMove(e: React.MouseEvent | React.TouchEvent) {
-    if (!isDrawing) return;
-    e.preventDefault();
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-    const { x, y } = getCanvasCoords(e);
-    ctx.lineWidth = 2.5;
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = "#000000";
     ctx.lineCap = "round";
     ctx.lineJoin = "round";
-    ctx.strokeStyle = "#000";
-    ctx.lineTo(x, y);
+  }, [contract]);
+
+  function getPos(e: React.PointerEvent<HTMLCanvasElement>) {
+    const canvas = canvasRef.current!;
+    const rect = canvas.getBoundingClientRect();
+    return {
+      x: (e.clientX - rect.left) * (canvas.width / rect.width),
+      y: (e.clientY - rect.top) * (canvas.height / rect.height),
+    };
+  }
+
+  function onPointerDown(e: React.PointerEvent<HTMLCanvasElement>) {
+    const canvas = canvasRef.current!;
+    canvas.setPointerCapture(e.pointerId);
+    drawingRef.current = true;
+    const ctx = canvas.getContext("2d")!;
+    const pos = getPos(e);
+    ctx.beginPath();
+    ctx.moveTo(pos.x, pos.y);
+  }
+
+  function onPointerMove(e: React.PointerEvent<HTMLCanvasElement>) {
+    if (!drawingRef.current) return;
+    const canvas = canvasRef.current!;
+    const ctx = canvas.getContext("2d")!;
+    const pos = getPos(e);
+    ctx.lineTo(pos.x, pos.y);
     ctx.stroke();
-    setHasSignature(true);
   }
 
-  function handlePointerUp() {
-    setIsDrawing(false);
+  function onPointerUp() {
+    drawingRef.current = false;
   }
 
-  function clearSignature() {
+  function clearCanvas() {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    setHasSignature(false);
+    const ctx = canvas.getContext("2d")!;
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = "#000000";
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
   }
 
-  async function handleSign() {
+  function isCanvasBlank(): boolean {
     const canvas = canvasRef.current;
-    if (!canvas || !hasSignature) return;
-    setSigning(true);
+    if (!canvas) return true;
+    const ctx = canvas.getContext("2d")!;
+    const data = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+    for (let i = 0; i < data.length; i += 4) {
+      if (data[i] !== 255 || data[i + 1] !== 255 || data[i + 2] !== 255) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  async function handleSubmit() {
+    if (isCanvasBlank()) {
+      setError("Please draw your signature before submitting.");
+      return;
+    }
+
+    setError("");
+    setSubmitting(true);
+
     try {
+      const canvas = canvasRef.current!;
       const signatureData = canvas.toDataURL("image/png");
+
       const res = await fetch(`/api/contracts/${id}/sign`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ signature_data: signatureData }),
       });
-      if (res.ok) {
-        setSigned(true);
-      } else {
+
+      if (!res.ok) {
         const err = await res.json();
-        alert(err.error || "Failed to sign contract.");
+        setError(err.error || "Failed to sign contract. Please try again.");
+        return;
       }
+
+      setSigned(true);
     } catch {
-      alert("Failed to sign contract. Please try again.");
+      setError("Failed to sign contract. Please try again.");
     } finally {
-      setSigning(false);
+      setSubmitting(false);
     }
   }
 
+  function formatDate(dateStr: string) {
+    return new Date(dateStr).toLocaleDateString("en-US", {
+      weekday: "long",
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+    });
+  }
+
+  function formatCurrency(amount: number) {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+    }).format(amount);
+  }
+
+  /* ── Loading state ── */
   if (loading) {
     return (
-      <div style={styles.page}>
-        <div style={styles.container}>
-          <p style={{ color: "#666", textAlign: "center", padding: "4rem 0" }}>
-            Loading contract...
-          </p>
+      <div style={pageWrapper}>
+        <div style={contentContainer}>
+          <div style={{ textAlign: "center", padding: "4rem 0" }}>
+            <p style={{ color: "#666", fontSize: "16px" }}>
+              Loading contract...
+            </p>
+          </div>
         </div>
       </div>
     );
   }
 
-  if (error || !contract) {
+  /* ── Not found ── */
+  if (notFound || !contract) {
     return (
-      <div style={styles.page}>
-        <div style={styles.container}>
-          <p
-            style={{
-              color: "#ef4444",
-              textAlign: "center",
-              padding: "4rem 0",
-              fontSize: "16px",
-            }}
-          >
-            {error || "Contract not found."}
-          </p>
+      <div style={pageWrapper}>
+        <div style={contentContainer}>
+          <div style={{ textAlign: "center", padding: "4rem 0" }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/printec-logo.png"
+              alt="Printec Virginia LLC"
+              style={{ height: "48px", marginBottom: "2rem" }}
+            />
+            <h1
+              style={{
+                fontSize: "24px",
+                color: "#333",
+                marginBottom: "1rem",
+                fontWeight: 700,
+              }}
+            >
+              Contract Not Found
+            </h1>
+            <p style={{ color: "#666", fontSize: "15px" }}>
+              This contract link is invalid or has expired.
+            </p>
+          </div>
+          <ContractFooter />
         </div>
       </div>
     );
   }
 
-  if (signed) {
+  /* ── Already signed ── */
+  if (contract.signed_at && !signed) {
     return (
-      <div style={styles.page}>
-        <div style={styles.container}>
-          <div style={{ textAlign: "center", padding: "4rem 2rem" }}>
+      <div style={pageWrapper}>
+        <div style={contentContainer}>
+          <div style={{ textAlign: "center", padding: "3rem 0" }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/printec-logo.png"
+              alt="Printec Virginia LLC"
+              style={{ height: "48px", marginBottom: "2rem" }}
+            />
             <div
               style={{
-                width: 64,
-                height: 64,
+                width: "64px",
+                height: "64px",
                 borderRadius: "50%",
-                background: "rgba(34,197,94,0.15)",
+                background: "rgba(34,197,94,0.1)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
                 margin: "0 auto 1.5rem",
-                fontSize: "32px",
               }}
             >
-              &#10003;
+              <svg
+                width="32"
+                height="32"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#22c55e"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M20 6 9 17l-5-5" />
+              </svg>
             </div>
             <h1
               style={{
-                fontSize: "28px",
-                fontWeight: 800,
-                color: "#111",
-                margin: "0 0 0.75rem",
+                fontSize: "24px",
+                color: "#333",
+                marginBottom: "0.75rem",
+                fontWeight: 700,
               }}
             >
-              Contract Signed Successfully
+              Already Signed
             </h1>
-            <p style={{ fontSize: "16px", color: "#666", lineHeight: 1.7 }}>
-              Thank you, {contract.client_name || "Client"}! Your signed
-              contract <strong style={{ color: "#F7941D" }}>{contract.contract_number}</strong> has
-              been submitted. A copy will be sent to your email.
+            <p
+              style={{
+                color: "#666",
+                fontSize: "15px",
+                marginBottom: "1.5rem",
+              }}
+            >
+              This contract was signed on{" "}
+              <strong>{formatDate(contract.signed_at)}</strong>.
             </p>
+            {contract.signature_data && (
+              <div
+                style={{
+                  display: "inline-block",
+                  background: "#fff",
+                  border: "1px solid #e0e0e0",
+                  borderRadius: "8px",
+                  padding: "1rem",
+                }}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={contract.signature_data}
+                  alt="Signature"
+                  style={{ maxWidth: "300px", height: "auto" }}
+                />
+              </div>
+            )}
           </div>
+          <ContractFooter />
         </div>
       </div>
     );
   }
 
-  return (
-    <div style={styles.page}>
-      <div style={styles.container}>
-        {/* Header */}
-        <div style={styles.header}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "1rem" }}>
-            <div>
-              <h2 style={{ margin: 0, color: "#F7941D", fontSize: "18px", fontWeight: 800, letterSpacing: "1px" }}>
-                PRINTEC VIRGINIA LLC
-              </h2>
-              <p style={{ margin: "4px 0 0", color: "#888", fontSize: "12px" }}>
-                printecwisconsin@gmail.com | printecvirginia@gmail.com
-              </p>
-              <p style={{ margin: "2px 0 0", color: "#888", fontSize: "12px" }}>
-                www.printecwrap.com | (715) 503-5444
-              </p>
+  /* ── Success state ── */
+  if (signed) {
+    return (
+      <div style={pageWrapper}>
+        <div style={contentContainer}>
+          <div style={{ textAlign: "center", padding: "4rem 0" }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/printec-logo.png"
+              alt="Printec Virginia LLC"
+              style={{ height: "48px", marginBottom: "2rem" }}
+            />
+            <div
+              style={{
+                width: "72px",
+                height: "72px",
+                borderRadius: "50%",
+                background: "rgba(34,197,94,0.1)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                margin: "0 auto 1.5rem",
+              }}
+            >
+              <svg
+                width="36"
+                height="36"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#22c55e"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M20 6 9 17l-5-5" />
+              </svg>
             </div>
-            <div style={{ textAlign: "right" }}>
-              <p style={{ margin: 0, color: "#F7941D", fontWeight: 700, fontSize: "14px" }}>
+            <h1
+              style={{
+                fontSize: "28px",
+                color: "#333",
+                marginBottom: "0.75rem",
+                fontWeight: 800,
+              }}
+            >
+              Contract Signed Successfully!
+            </h1>
+            <p
+              style={{
+                color: "#666",
+                fontSize: "15px",
+                lineHeight: 1.7,
+                maxWidth: "420px",
+                margin: "0 auto",
+              }}
+            >
+              Thank you for signing contract{" "}
+              <strong style={{ color: "#F7941D" }}>
                 {contract.contract_number}
-              </p>
-              <p style={{ margin: "4px 0 0", color: "#888", fontSize: "12px" }}>
-                {formatDate(contract.created_at)}
-              </p>
-            </div>
+              </strong>
+              . A confirmation email with the signed contract will be sent to
+              your email address.
+            </p>
           </div>
+          <ContractFooter />
+        </div>
+      </div>
+    );
+  }
+
+  /* ── Main signing view ── */
+  return (
+    <div style={pageWrapper}>
+      <div style={contentContainer}>
+        {/* Logo */}
+        <div style={{ textAlign: "center", marginBottom: "2rem" }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/printec-logo.png"
+            alt="Printec Virginia LLC"
+            style={{ height: "56px" }}
+          />
         </div>
 
         {/* Title */}
-        <h1 style={styles.title}>Client Agreement</h1>
-        <div style={{ height: 3, width: 60, background: "#F7941D", margin: "0 0 2rem" }} />
-
-        {/* Event Info */}
-        <div style={styles.infoGrid}>
-          <div style={styles.infoCard}>
-            <p style={styles.infoLabel}>Event Date</p>
-            <p style={styles.infoValue}>{formatDate(contract.event_date)}</p>
-          </div>
-          <div style={styles.infoCard}>
-            <p style={styles.infoLabel}>Venue</p>
-            <p style={styles.infoValue}>{contract.venue || "\u2014"}</p>
-          </div>
-          <div style={styles.infoCard}>
-            <p style={styles.infoLabel}>Service</p>
-            <p style={styles.infoValue}>
-              {contract.service_description || "\u2014"}
-            </p>
-          </div>
-        </div>
-
-        {/* Pricing */}
-        <div style={styles.pricingSection}>
-          <div style={styles.pricingRow}>
-            <span style={{ color: "#666" }}>Total Price</span>
-            <span style={{ color: "#111", fontWeight: 700, fontSize: "18px" }}>
-              {formatCurrency(contract.total_price)}
-            </span>
-          </div>
-          <div style={styles.pricingRow}>
-            <span style={{ color: "#666" }}>Advance Amount</span>
-            <span style={{ color: "#111", fontWeight: 600 }}>
-              {formatCurrency(contract.advance_amount)}
-            </span>
-          </div>
-          <div style={styles.pricingRow}>
-            <span style={{ color: "#666" }}>Balance</span>
-            <span style={{ color: "#F7941D", fontWeight: 700 }}>
-              {formatCurrency(contract.balance_amount)}
-            </span>
-          </div>
-          <div style={{ ...styles.pricingRow, borderBottom: "none" }}>
-            <span style={{ color: "#666" }}>Balance Due</span>
-            <span style={{ color: "#111" }}>
-              {contract.balance_due || "Due on event day"}
-            </span>
-          </div>
-          {contract.travel_cost > 0 && (
-            <div style={{ ...styles.pricingRow, borderBottom: "none" }}>
-              <span style={{ color: "#666" }}>Travel Cost</span>
-              <span style={{ color: "#111" }}>
-                {formatCurrency(contract.travel_cost)}
-              </span>
-            </div>
-          )}
-        </div>
-
-        {/* Terms */}
-        <h2 style={styles.sectionTitle}>Terms & Conditions</h2>
-        <div style={{ marginBottom: "2rem" }}>
-          {(contract.terms || []).map((term, i) => (
-            <div key={i} style={styles.termRow}>
-              <span style={styles.termNum}>{i + 1}.</span>
-              <p style={styles.termText}>{term}</p>
-            </div>
-          ))}
-        </div>
-
-        {/* Signature Section */}
-        <div style={{ borderTop: "2px solid #F7941D", paddingTop: "2rem" }}>
-          <h2 style={styles.sectionTitle}>Sign Below</h2>
-          <p style={{ color: "#888", fontSize: "14px", margin: "0 0 1rem" }}>
-            Use your mouse or finger to draw your signature in the box below.
-          </p>
-
-          <div
+        <div style={{ textAlign: "center", marginBottom: "2rem" }}>
+          <h1
             style={{
-              border: "2px solid #ddd",
-              borderRadius: "8px",
-              background: "#fff",
-              position: "relative",
-              overflow: "hidden",
-              touchAction: "none",
+              fontSize: "28px",
+              fontFamily: "'Arial Black', Arial, sans-serif",
+              fontWeight: 900,
+              color: "#F7941D",
+              textTransform: "uppercase",
+              letterSpacing: "3px",
+              margin: "0 0 0.75rem",
             }}
           >
-            <canvas
-              ref={canvasRef}
-              width={700}
-              height={200}
-              style={{
-                width: "100%",
-                height: "200px",
-                cursor: "crosshair",
-                display: "block",
-              }}
-              onMouseDown={handlePointerDown}
-              onMouseMove={handlePointerMove}
-              onMouseUp={handlePointerUp}
-              onMouseLeave={handlePointerUp}
-              onTouchStart={handlePointerDown}
-              onTouchMove={handlePointerMove}
-              onTouchEnd={handlePointerUp}
-            />
-            {!hasSignature && (
-              <div
-                style={{
-                  position: "absolute",
-                  top: "50%",
-                  left: "50%",
-                  transform: "translate(-50%, -50%)",
-                  color: "#ccc",
-                  fontSize: "16px",
-                  pointerEvents: "none",
-                  userSelect: "none",
-                }}
-              >
-                Draw your signature here
-              </div>
-            )}
-          </div>
-
+            Client Agreement
+          </h1>
           <div
             style={{
               display: "flex",
-              gap: "0.75rem",
-              marginTop: "1rem",
-              justifyContent: "flex-end",
+              justifyContent: "center",
+              gap: "2rem",
+              flexWrap: "wrap",
+              color: "#555",
+              fontSize: "14px",
             }}
           >
-            <button onClick={clearSignature} style={styles.clearBtn}>
-              Clear
-            </button>
-            <button
-              onClick={handleSign}
-              disabled={!hasSignature || signing}
-              style={{
-                ...styles.signBtn,
-                opacity: !hasSignature || signing ? 0.5 : 1,
-                cursor: !hasSignature || signing ? "not-allowed" : "pointer",
-              }}
-            >
-              {signing ? "Submitting..." : "Sign & Submit"}
-            </button>
+            <span>
+              <strong style={{ color: "#333" }}>Contract:</strong>{" "}
+              {contract.contract_number}
+            </span>
+            {contract.event_date && (
+              <span>
+                <strong style={{ color: "#333" }}>Event Date:</strong>{" "}
+                {formatDate(contract.event_date)}
+              </span>
+            )}
           </div>
+          {contract.venue && (
+            <p
+              style={{ color: "#555", fontSize: "14px", marginTop: "0.5rem" }}
+            >
+              <strong style={{ color: "#333" }}>Venue:</strong>{" "}
+              {contract.venue}
+            </p>
+          )}
         </div>
 
-        {/* Provider Info */}
-        <div
-          style={{
-            marginTop: "2rem",
-            padding: "1.5rem",
-            background: "#f9f9f9",
-            borderRadius: "8px",
-            borderLeft: "3px solid #F7941D",
-          }}
-        >
-          <p style={{ margin: 0, fontWeight: 700, color: "#111", fontSize: "14px" }}>
-            Provider: Printec Virginia LLC
+        <hr style={dividerStyle} />
+
+        {/* Client Info */}
+        <section style={{ marginBottom: "2rem" }}>
+          <h2 style={sectionTitle}>Client Information</h2>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              gap: "1rem",
+            }}
+          >
+            <div>
+              <p style={fieldLabel}>Name</p>
+              <p style={fieldValue}>{contract.client_name || "\u2014"}</p>
+            </div>
+            <div>
+              <p style={fieldLabel}>Email</p>
+              <p style={fieldValue}>{contract.client_email || "\u2014"}</p>
+            </div>
+            {contract.service_description && (
+              <div style={{ gridColumn: "1 / -1" }}>
+                <p style={fieldLabel}>Service</p>
+                <p style={fieldValue}>{contract.service_description}</p>
+              </div>
+            )}
+          </div>
+        </section>
+
+        <hr style={dividerStyle} />
+
+        {/* Pricing */}
+        <section style={{ marginBottom: "2rem" }}>
+          <h2 style={sectionTitle}>Pricing</h2>
+          <div
+            style={{
+              background: "#f9f9f9",
+              border: "1px solid #e8e8e8",
+              borderRadius: "8px",
+              padding: "1.25rem",
+            }}
+          >
+            <div style={priceRow}>
+              <span style={priceLabel}>Total Price</span>
+              <span style={priceValueHighlight}>
+                {formatCurrency(contract.total_price)}
+              </span>
+            </div>
+            <div style={priceRow}>
+              <span style={priceLabel}>Advance Payment</span>
+              <span style={priceValueNormal}>
+                {formatCurrency(contract.advance_amount)}
+              </span>
+            </div>
+            <div style={priceRow}>
+              <span style={priceLabel}>Balance Due</span>
+              <span style={priceValueHighlight}>
+                {formatCurrency(contract.balance_amount)}
+              </span>
+            </div>
+            {contract.travel_cost > 0 && (
+              <div style={priceRow}>
+                <span style={priceLabel}>Travel Cost</span>
+                <span style={priceValueNormal}>
+                  {formatCurrency(contract.travel_cost)}
+                </span>
+              </div>
+            )}
+            {contract.balance_due && (
+              <div
+                style={{
+                  ...priceRow,
+                  borderTop: "1px solid #e0e0e0",
+                  paddingTop: "0.75rem",
+                  marginTop: "0.5rem",
+                }}
+              >
+                <span style={priceLabel}>Balance Due Timing</span>
+                <span
+                  style={{
+                    fontSize: "14px",
+                    color: "#F7941D",
+                    fontWeight: 600,
+                  }}
+                >
+                  {contract.balance_due}
+                </span>
+              </div>
+            )}
+          </div>
+        </section>
+
+        <hr style={dividerStyle} />
+
+        {/* Terms */}
+        {contract.terms && contract.terms.length > 0 && (
+          <>
+            <section style={{ marginBottom: "2rem" }}>
+              <h2 style={sectionTitle}>Terms & Conditions</h2>
+              <ol
+                style={{
+                  margin: 0,
+                  paddingLeft: "1.25rem",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "0.75rem",
+                }}
+              >
+                {contract.terms.map((term, i) => (
+                  <li
+                    key={i}
+                    style={{
+                      fontSize: "14px",
+                      color: "#444",
+                      lineHeight: 1.7,
+                      paddingLeft: "0.5rem",
+                    }}
+                  >
+                    {term}
+                  </li>
+                ))}
+              </ol>
+            </section>
+
+            <hr style={dividerStyle} />
+          </>
+        )}
+
+        {/* Signature Area */}
+        <section style={{ marginBottom: "2rem" }}>
+          <h2 style={sectionTitle}>Signature</h2>
+          <p
+            style={{
+              fontSize: "14px",
+              color: "#666",
+              marginBottom: "1rem",
+            }}
+          >
+            Draw Your Signature Below
           </p>
-          <p style={{ margin: "4px 0 0", color: "#666", fontSize: "13px" }}>
-            Muhammad Azhar — CEO / Founder
-          </p>
-          <p style={{ margin: "2px 0 0", color: "#666", fontSize: "13px" }}>
-            15485 Marsh Overlook Dr, Woodbridge, VA 22191
-          </p>
-        </div>
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <div>
+              <canvas
+                ref={canvasRef}
+                width={400}
+                height={200}
+                onPointerDown={onPointerDown}
+                onPointerMove={onPointerMove}
+                onPointerUp={onPointerUp}
+                style={{
+                  border: "2px solid #ddd",
+                  borderRadius: "8px",
+                  cursor: "crosshair",
+                  touchAction: "none",
+                  display: "block",
+                  maxWidth: "100%",
+                  height: "auto",
+                  background: "#fff",
+                }}
+              />
+              <div
+                style={{
+                  display: "flex",
+                  gap: "0.75rem",
+                  marginTop: "1rem",
+                  justifyContent: "center",
+                }}
+              >
+                <button
+                  onClick={clearCanvas}
+                  style={{
+                    padding: "0.625rem 1.5rem",
+                    background: "#fff",
+                    border: "1px solid #ddd",
+                    borderRadius: "6px",
+                    color: "#666",
+                    fontSize: "14px",
+                    fontWeight: 500,
+                    cursor: "pointer",
+                    transition: "all 0.2s",
+                  }}
+                >
+                  Clear
+                </button>
+                <button
+                  onClick={handleSubmit}
+                  disabled={submitting}
+                  style={{
+                    padding: "0.625rem 2rem",
+                    background: "#F7941D",
+                    border: "none",
+                    borderRadius: "6px",
+                    color: "#fff",
+                    fontSize: "14px",
+                    fontWeight: 700,
+                    cursor: submitting ? "wait" : "pointer",
+                    opacity: submitting ? 0.7 : 1,
+                    transition: "all 0.2s",
+                  }}
+                >
+                  {submitting ? "Submitting..." : "Sign & Submit"}
+                </button>
+              </div>
+              {error && (
+                <p
+                  style={{
+                    color: "#dc2626",
+                    fontSize: "13px",
+                    textAlign: "center",
+                    marginTop: "0.75rem",
+                  }}
+                >
+                  {error}
+                </p>
+              )}
+            </div>
+          </div>
+        </section>
 
         {/* Footer */}
-        <div
-          style={{
-            textAlign: "center",
-            padding: "2rem 0 1rem",
-            color: "#bbb",
-            fontSize: "12px",
-          }}
-        >
-          PRINTEC VIRGINIA LLC &mdash; From Vision to Vinyl
-        </div>
+        <ContractFooter />
       </div>
     </div>
   );
 }
 
-const styles: Record<string, React.CSSProperties> = {
-  page: {
-    minHeight: "100vh",
-    background: "#f5f5f5",
-    fontFamily: "Arial, Helvetica, sans-serif",
-    padding: "2rem 1rem",
-  },
-  container: {
-    maxWidth: 780,
-    margin: "0 auto",
-    background: "#fff",
-    borderRadius: "12px",
-    boxShadow: "0 2px 20px rgba(0,0,0,0.08)",
-    padding: "2.5rem",
-  },
-  header: {
-    borderBottom: "2px solid #F7941D",
-    paddingBottom: "1rem",
-    marginBottom: "2rem",
-  },
-  title: {
-    fontSize: "28px",
-    fontWeight: 800,
-    color: "#111",
-    margin: "0 0 0.5rem",
-    letterSpacing: "1px",
-  },
-  infoGrid: {
-    display: "grid",
-    gridTemplateColumns: "1fr 1fr 1fr",
-    gap: "1rem",
-    marginBottom: "2rem",
-  },
-  infoCard: {
-    background: "#f9f9f9",
-    borderRadius: "8px",
-    padding: "1rem",
-    borderLeft: "3px solid #F7941D",
-  },
-  infoLabel: {
-    fontSize: "10px",
-    textTransform: "uppercase",
-    letterSpacing: "2px",
-    color: "#F7941D",
-    fontWeight: 700,
-    margin: "0 0 0.35rem",
-  },
-  infoValue: {
-    fontSize: "14px",
-    color: "#111",
-    margin: 0,
-    fontWeight: 600,
-  },
-  pricingSection: {
-    background: "#f9f9f9",
-    borderRadius: "8px",
-    padding: "1rem 1.25rem",
-    marginBottom: "2rem",
-  },
-  pricingRow: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: "0.6rem 0",
-    borderBottom: "1px solid #eee",
-    fontSize: "14px",
-  },
-  sectionTitle: {
-    fontSize: "16px",
-    fontWeight: 700,
-    color: "#111",
-    margin: "0 0 1rem",
-    textTransform: "uppercase",
-    letterSpacing: "2px",
-  },
-  termRow: {
-    display: "flex",
-    gap: "0.5rem",
-    marginBottom: "0.5rem",
-    alignItems: "flex-start",
-  },
-  termNum: {
-    color: "#F7941D",
-    fontWeight: 700,
-    fontSize: "13px",
-    minWidth: "24px",
-  },
-  termText: {
-    fontSize: "13px",
-    color: "#555",
-    lineHeight: 1.7,
-    margin: 0,
-  },
-  clearBtn: {
-    padding: "0.6rem 1.5rem",
-    background: "#fff",
-    border: "1px solid #ddd",
-    borderRadius: "6px",
-    color: "#666",
-    fontSize: "14px",
-    fontWeight: 600,
-    cursor: "pointer",
-  },
-  signBtn: {
-    padding: "0.6rem 2rem",
-    background: "#F7941D",
-    border: "none",
-    borderRadius: "6px",
-    color: "#fff",
-    fontSize: "15px",
-    fontWeight: 700,
-  },
+/* ── Footer Component ── */
+function ContractFooter() {
+  return (
+    <div
+      style={{
+        borderTop: "1px solid #e8e8e8",
+        paddingTop: "1.5rem",
+        marginTop: "1rem",
+        textAlign: "center",
+      }}
+    >
+      <p
+        style={{
+          fontSize: "12px",
+          color: "#999",
+          letterSpacing: "0.5px",
+          margin: 0,
+        }}
+      >
+        Printec Virginia LLC &mdash; 15485 Marsh Overlook Dr, Woodbridge, VA
+        22191 &mdash; (715) 503-5444
+      </p>
+    </div>
+  );
+}
+
+/* ── Style constants ── */
+const pageWrapper: React.CSSProperties = {
+  minHeight: "100vh",
+  background: "#f5f5f5",
+  padding: "2rem 1rem",
+  fontFamily: "'Inter', Arial, sans-serif",
+};
+
+const contentContainer: React.CSSProperties = {
+  maxWidth: "680px",
+  margin: "0 auto",
+  background: "#ffffff",
+  borderRadius: "12px",
+  boxShadow: "0 1px 3px rgba(0,0,0,0.08), 0 8px 24px rgba(0,0,0,0.04)",
+  padding: "2.5rem",
+};
+
+const dividerStyle: React.CSSProperties = {
+  border: "none",
+  borderTop: "1px solid #eee",
+  margin: "0 0 2rem",
+};
+
+const sectionTitle: React.CSSProperties = {
+  fontSize: "13px",
+  textTransform: "uppercase",
+  letterSpacing: "2px",
+  color: "#F7941D",
+  fontWeight: 700,
+  marginBottom: "1rem",
+};
+
+const fieldLabel: React.CSSProperties = {
+  fontSize: "11px",
+  textTransform: "uppercase",
+  letterSpacing: "1px",
+  color: "#999",
+  margin: "0 0 0.25rem",
+  fontWeight: 500,
+};
+
+const fieldValue: React.CSSProperties = {
+  fontSize: "15px",
+  color: "#333",
+  margin: 0,
+  lineHeight: 1.5,
+};
+
+const priceRow: React.CSSProperties = {
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  padding: "0.5rem 0",
+};
+
+const priceLabel: React.CSSProperties = {
+  fontSize: "14px",
+  color: "#666",
+};
+
+const priceValueNormal: React.CSSProperties = {
+  fontSize: "14px",
+  color: "#333",
+  fontWeight: 500,
+};
+
+const priceValueHighlight: React.CSSProperties = {
+  fontSize: "16px",
+  color: "#F7941D",
+  fontWeight: 700,
 };

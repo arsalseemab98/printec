@@ -81,15 +81,15 @@ const LEADERSHIP = [
     image: null,
   },
   {
-    name: "Shazil Ali",
+    name: "Shazal Ali",
     role: "Sales Representative",
     bio: "Shazil connects clients with the right signage solutions for their business. From initial consultation to final delivery, he ensures every client gets personalized attention and a seamless experience.",
     email: TEAM_EMAIL,
     phone: TEAM_PHONE,
-    image: IMG.teamShazil,
+    image: IMG.teamShazal,
   },
   {
-    name: "Azhar Ahmed",
+    name: "Muhammad Azhar",
     role: "Sales Representative",
     bio: "Azhar brings a decade of industry knowledge to every client conversation. He specializes in helping businesses choose the right sign type, material, and installation approach for maximum impact.",
     email: TEAM_EMAIL,

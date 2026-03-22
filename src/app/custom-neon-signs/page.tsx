@@ -168,8 +168,8 @@ export default function CustomNeonSignsPage() {
           }}
         >
           <Image
-            src={IMG.neonAfter}
-            alt="THIS WAY UP vertical LED neon sign glowing orange on dark staircase wall"
+            src={IMG.neonHero}
+            alt="Good Vibes Only neon sign glowing orange on dark brick wall in cocktail bar"
             fill
             sizes="100vw"
             style={{ objectFit: "cover" }}

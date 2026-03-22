@@ -120,8 +120,8 @@ src/
     ├── images/                       # Local WebP backups (served from Supabase)
     │   ├── workshop.webp             # Workshop panoramic (188KB)
     │   ├── worker.webp               # Worker photo for chat modal (36KB)
-    │   ├── team-shazil.webp          # Shazil Ali team photo
-    │   ├── team-azhar.webp           # Azhar Ahmed team photo
+    │   ├── team-shazil.webp          # Shazal Ali team photo
+    │   ├── team-azhar.webp           # Muhammad Azhar team photo
     │   ├── team-anton.webp           # Anton Andersson team photo
     │   ├── dance-floor-hero.webp     # Wedding monogram hero
     │   ├── floor-before/after.webp   # Dance floor before/after
@@ -151,8 +151,8 @@ npx next build             # Production build
 
 ## Team
 - **Shakila** — CEO
-- **Shazil Ali** — Sales Representative
-- **Azhar Ahmed** — Sales Representative
+- **Shazal Ali** — Sales Representative
+- **Muhammad Azhar** — Sales Representative
 - **Anton Andersson** — Sales Representative
 - **Maria Gonzalez** — Lead Designer
 

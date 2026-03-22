@@ -28,7 +28,7 @@ export const IMG = {
   windowWrapHero: `${SUPABASE_STORAGE}/window-wrap-hero.webp`,
   windowBefore: `${SUPABASE_STORAGE}/window-before.webp`,
   windowAfter: `${SUPABASE_STORAGE}/window-after.webp`,
-  teamShazil: `${SUPABASE_STORAGE}/team-shazil-v2.webp`,
+  teamShazal: `${SUPABASE_STORAGE}/team-shazil-v2.webp`,
   teamAzhar: `${SUPABASE_STORAGE}/team-azhar.webp`,
   teamAnton: `${SUPABASE_STORAGE}/team-anton.webp`,
   bizSignageHero: `${SUPABASE_STORAGE}/biz-signage-hero.webp`,
@@ -37,6 +37,7 @@ export const IMG = {
   signageHero: `${SUPABASE_STORAGE}/signage-hero.webp`,
   signageBefore: `${SUPABASE_STORAGE}/signage-before.webp`,
   signageAfter: `${SUPABASE_STORAGE}/signage-after.webp`,
+  neonHero: `${SUPABASE_STORAGE}/neon-hero.webp`,
 };
 
 /* ─── SVG NOISE TEXTURE DATA URL (static base64, works server-side) ─── */

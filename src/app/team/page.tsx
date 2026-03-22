@@ -9,7 +9,7 @@ import {
   IMG,
 } from "@/lib/constants";
 import {
-  Linkedin,
+  Phone,
   Mail,
   Award,
   Users,
@@ -68,30 +68,41 @@ const BODY: React.CSSProperties = {
 
 /* ─── TEAM DATA ─── */
 
+const TEAM_EMAIL = "info@printeccorp.com";
+const TEAM_PHONE = "(555) 123-4567";
+
 const LEADERSHIP = [
   {
     name: "Shakila",
     role: "CEO",
     bio: "Shakila leads Printec Corp with a clear vision — delivering bold, high-quality signage and graphics that help businesses and events stand out. Under her leadership, Printec has grown into Virginia's trusted name in custom signage.",
-    email: "shakila@printeccorp.com",
-    linkedin: "#",
+    email: TEAM_EMAIL,
+    phone: TEAM_PHONE,
     image: null,
   },
   {
     name: "Shazil Ali",
     role: "Sales Representative",
     bio: "Shazil connects clients with the right signage solutions for their business. From initial consultation to final delivery, he ensures every client gets personalized attention and a seamless experience.",
-    email: "shazil@printeccorp.com",
-    linkedin: "#",
+    email: TEAM_EMAIL,
+    phone: TEAM_PHONE,
     image: IMG.teamShazil,
   },
   {
     name: "Azhar Ahmed",
     role: "Sales Representative",
     bio: "Azhar brings a decade of industry knowledge to every client conversation. He specializes in helping businesses choose the right sign type, material, and installation approach for maximum impact.",
-    email: "azhar@printeccorp.com",
-    linkedin: "#",
+    email: TEAM_EMAIL,
+    phone: TEAM_PHONE,
     image: IMG.teamAzhar,
+  },
+  {
+    name: "Anton Andersson",
+    role: "Sales Representative",
+    bio: "Anton helps clients navigate the full range of Printec's services — from custom signage and neon signs to wall wraps and event graphics. His hands-on approach ensures every project is tailored to the client's needs.",
+    email: TEAM_EMAIL,
+    phone: TEAM_PHONE,
+    image: IMG.teamAnton,
   },
 ];
 
@@ -185,8 +196,8 @@ export default function TeamPage() {
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 300px), 1fr))",
-              maxWidth: "1000px",
+              gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 260px), 1fr))",
+              maxWidth: "1200px",
               margin: "0 auto",
               gap: "24px",
             }}
@@ -297,7 +308,7 @@ export default function TeamPage() {
                       Email
                     </a>
                     <a
-                      href={person.linkedin}
+                      href={`tel:${person.phone?.replace(/[^+\d]/g, "")}`}
                       style={{
                         display: "flex",
                         alignItems: "center",
@@ -310,8 +321,8 @@ export default function TeamPage() {
                       }}
                       className="team-link"
                     >
-                      <Linkedin size={14} />
-                      LinkedIn
+                      <Phone size={14} />
+                      Call
                     </a>
                   </div>
                 </div>

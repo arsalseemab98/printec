@@ -30,6 +30,7 @@ export const IMG = {
   windowAfter: `${SUPABASE_STORAGE}/window-after.webp`,
   teamShazil: `${SUPABASE_STORAGE}/team-shazil.webp`,
   teamAzhar: `${SUPABASE_STORAGE}/team-azhar.webp`,
+  teamAnton: `${SUPABASE_STORAGE}/team-anton.webp`,
   bizSignageHero: `${SUPABASE_STORAGE}/biz-signage-hero.webp`,
   neonBefore: `${SUPABASE_STORAGE}/neon-before.webp`,
   neonAfter: `${SUPABASE_STORAGE}/neon-after.webp`,

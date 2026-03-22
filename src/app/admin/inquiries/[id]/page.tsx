@@ -60,6 +60,9 @@ export default function InquiryDetailPage({
   const [loading, setLoading] = useState(true);
   const [notes, setNotes] = useState("");
   const [saving, setSaving] = useState(false);
+  const [editing, setEditing] = useState(false);
+  const [editData, setEditData] = useState({ name: "", email: "", phone: "", service: "", budget: "", description: "" });
+  const [savingEdit, setSavingEdit] = useState(false);
 
   useEffect(() => {
     async function load() {
@@ -115,6 +118,32 @@ export default function InquiryDetailPage({
     const data = await res.json();
     setInquiry(data);
     setSaving(false);
+  }
+
+  function startEditing() {
+    if (!inquiry) return;
+    setEditData({
+      name: inquiry.name || "",
+      email: inquiry.email || "",
+      phone: inquiry.phone || "",
+      service: inquiry.service || "",
+      budget: inquiry.budget || "",
+      description: inquiry.description || "",
+    });
+    setEditing(true);
+  }
+
+  async function handleSaveEdit() {
+    setSavingEdit(true);
+    const res = await fetch(`/api/admin/inquiries/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(editData),
+    });
+    const data = await res.json();
+    setInquiry(data);
+    setEditing(false);
+    setSavingEdit(false);
   }
 
   async function handleDelete() {
@@ -237,59 +266,147 @@ export default function InquiryDetailPage({
             padding: "1.5rem",
           }}
         >
-          <h2
-            style={{
-              fontSize: "16px",
-              fontWeight: 700,
-              color: "#fff",
-              marginBottom: "1.25rem",
-              margin: "0 0 1.25rem",
-            }}
-          >
-            Customer Info
-          </h2>
-          {infoFields.map((f) => (
-            <div key={f.label} style={{ marginBottom: "0.875rem" }}>
-              <p
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.25rem" }}>
+            <h2 style={{ fontSize: "16px", fontWeight: 700, color: "#fff", margin: 0 }}>
+              Customer Info
+            </h2>
+            {!editing ? (
+              <button
+                onClick={startEditing}
                 style={{
+                  padding: "4px 12px",
+                  background: "transparent",
+                  border: "1px solid #F7941D",
+                  borderRadius: "4px",
+                  color: "#F7941D",
                   fontSize: "11px",
-                  textTransform: "uppercase",
+                  fontWeight: 600,
                   letterSpacing: "1px",
-                  color: "rgba(255,255,255,0.35)",
-                  margin: "0 0 0.25rem",
-                }}
-              >
-                {f.label}
-              </p>
-              <p style={{ fontSize: "14px", color: "#fff", margin: 0 }}>
-                {f.value || "—"}
-              </p>
-            </div>
-          ))}
-          {inquiry.description && (
-            <div style={{ marginTop: "1rem" }}>
-              <p
-                style={{
-                  fontSize: "11px",
+                  cursor: "pointer",
                   textTransform: "uppercase",
-                  letterSpacing: "1px",
-                  color: "rgba(255,255,255,0.35)",
-                  margin: "0 0 0.25rem",
                 }}
               >
-                Description
-              </p>
-              <p
-                style={{
-                  fontSize: "14px",
-                  color: "rgba(255,255,255,0.7)",
-                  margin: 0,
-                  lineHeight: 1.6,
-                }}
-              >
-                {inquiry.description}
-              </p>
-            </div>
+                Edit
+              </button>
+            ) : (
+              <div style={{ display: "flex", gap: "8px" }}>
+                <button
+                  onClick={handleSaveEdit}
+                  disabled={savingEdit}
+                  style={{
+                    padding: "4px 12px",
+                    background: "#F7941D",
+                    border: "none",
+                    borderRadius: "4px",
+                    color: "#0C0C0C",
+                    fontSize: "11px",
+                    fontWeight: 700,
+                    cursor: "pointer",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  {savingEdit ? "Saving..." : "Save"}
+                </button>
+                <button
+                  onClick={() => setEditing(false)}
+                  style={{
+                    padding: "4px 12px",
+                    background: "transparent",
+                    border: "1px solid #333",
+                    borderRadius: "4px",
+                    color: "#999",
+                    fontSize: "11px",
+                    cursor: "pointer",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  Cancel
+                </button>
+              </div>
+            )}
+          </div>
+
+          {editing ? (
+            <>
+              {[
+                { key: "name", label: "Name", type: "text" },
+                { key: "email", label: "Email", type: "email" },
+                { key: "phone", label: "Phone", type: "tel" },
+                { key: "service", label: "Service", type: "text" },
+                { key: "budget", label: "Budget", type: "text" },
+              ].map((f) => (
+                <div key={f.key} style={{ marginBottom: "0.75rem" }}>
+                  <label style={{ fontSize: "11px", textTransform: "uppercase", letterSpacing: "1px", color: "rgba(255,255,255,0.35)", display: "block", marginBottom: "4px" }}>
+                    {f.label}
+                  </label>
+                  <input
+                    type={f.type}
+                    value={editData[f.key as keyof typeof editData]}
+                    onChange={(e) => setEditData((prev) => ({ ...prev, [f.key]: e.target.value }))}
+                    style={{
+                      width: "100%",
+                      padding: "8px 10px",
+                      background: "#0C0C0C",
+                      border: "1px solid #333",
+                      borderRadius: "4px",
+                      color: "#fff",
+                      fontSize: "14px",
+                      outline: "none",
+                      boxSizing: "border-box",
+                    }}
+                    onFocus={(e) => (e.currentTarget.style.borderColor = "#F7941D")}
+                    onBlur={(e) => (e.currentTarget.style.borderColor = "#333")}
+                  />
+                </div>
+              ))}
+              <div style={{ marginBottom: "0.75rem" }}>
+                <label style={{ fontSize: "11px", textTransform: "uppercase", letterSpacing: "1px", color: "rgba(255,255,255,0.35)", display: "block", marginBottom: "4px" }}>
+                  Description
+                </label>
+                <textarea
+                  value={editData.description}
+                  onChange={(e) => setEditData((prev) => ({ ...prev, description: e.target.value }))}
+                  rows={4}
+                  style={{
+                    width: "100%",
+                    padding: "8px 10px",
+                    background: "#0C0C0C",
+                    border: "1px solid #333",
+                    borderRadius: "4px",
+                    color: "#fff",
+                    fontSize: "14px",
+                    outline: "none",
+                    resize: "vertical",
+                    boxSizing: "border-box",
+                  }}
+                  onFocus={(e) => (e.currentTarget.style.borderColor = "#F7941D")}
+                  onBlur={(e) => (e.currentTarget.style.borderColor = "#333")}
+                />
+              </div>
+            </>
+          ) : (
+            <>
+              {infoFields.map((f) => (
+                <div key={f.label} style={{ marginBottom: "0.875rem" }}>
+                  <p style={{ fontSize: "11px", textTransform: "uppercase", letterSpacing: "1px", color: "rgba(255,255,255,0.35)", margin: "0 0 0.25rem" }}>
+                    {f.label}
+                  </p>
+                  <p style={{ fontSize: "14px", color: "#fff", margin: 0 }}>
+                    {f.value || "—"}
+                  </p>
+                </div>
+              ))}
+              {inquiry.description && (
+                <div style={{ marginTop: "1rem" }}>
+                  <p style={{ fontSize: "11px", textTransform: "uppercase", letterSpacing: "1px", color: "rgba(255,255,255,0.35)", margin: "0 0 0.25rem" }}>
+                    Description
+                  </p>
+                  <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.7)", margin: 0, lineHeight: 1.6 }}>
+                    {inquiry.description}
+                  </p>
+                </div>
+              )}
+            </>
           )}
         </div>
 

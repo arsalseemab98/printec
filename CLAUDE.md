@@ -150,9 +150,8 @@ npx next build             # Production build
 5. Use `next/image` with `fill`, `sizes`, and `priority` (for hero images)
 
 ## Team
-- **Shakila** — CEO
+- **Muhammad Azhar** — CEO
 - **Shazal Ali** — Sales Representative
-- **Muhammad Azhar** — Sales Representative
 - **Anton Andersson** — Sales Representative
 - **Maria Gonzalez** — Lead Designer
 

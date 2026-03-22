@@ -73,28 +73,20 @@ const TEAM_PHONE = "(555) 123-4567";
 
 const LEADERSHIP = [
   {
-    name: "Shakila",
+    name: "Muhammad Azhar",
     role: "CEO",
-    bio: "Shakila leads Printec Corp with a clear vision — delivering bold, high-quality signage and graphics that help businesses and events stand out. Under her leadership, Printec has grown into Virginia's trusted name in custom signage.",
+    bio: "Azhar founded and leads Printec Corp with a clear vision — delivering bold, high-quality signage and graphics that help businesses and events stand out. Under his leadership, Printec has grown into Virginia's trusted name in custom signage.",
     email: TEAM_EMAIL,
     phone: TEAM_PHONE,
-    image: null,
+    image: IMG.teamAzhar,
   },
   {
     name: "Shazal Ali",
     role: "Sales Representative",
-    bio: "Shazil connects clients with the right signage solutions for their business. From initial consultation to final delivery, he ensures every client gets personalized attention and a seamless experience.",
+    bio: "Shazal connects clients with the right signage solutions for their business. From initial consultation to final delivery, he ensures every client gets personalized attention and a seamless experience.",
     email: TEAM_EMAIL,
     phone: TEAM_PHONE,
     image: IMG.teamShazal,
-  },
-  {
-    name: "Muhammad Azhar",
-    role: "Sales Representative",
-    bio: "Azhar brings a decade of industry knowledge to every client conversation. He specializes in helping businesses choose the right sign type, material, and installation approach for maximum impact.",
-    email: TEAM_EMAIL,
-    phone: TEAM_PHONE,
-    image: IMG.teamAzhar,
   },
   {
     name: "Anton Andersson",

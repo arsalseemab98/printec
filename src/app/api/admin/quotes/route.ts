@@ -5,14 +5,16 @@ export async function GET(req: NextRequest) {
   const supabase = createServerClient();
   const inquiryId = req.nextUrl.searchParams.get("inquiry_id");
 
-  let query = supabase
-    .from("quotes")
-    .select("*")
-    .order("created_at", { ascending: false });
-
-  if (inquiryId) {
-    query = query.eq("inquiry_id", inquiryId);
-  }
+  let query = inquiryId
+    ? supabase
+        .from("quotes")
+        .select("*")
+        .eq("inquiry_id", inquiryId)
+        .order("created_at", { ascending: false })
+    : supabase
+        .from("quotes")
+        .select("*, inquiries(name, email, service, status)")
+        .order("created_at", { ascending: false });
 
   const { data, error } = await query;
 

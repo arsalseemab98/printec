@@ -8,6 +8,7 @@ import {
   FileImage,
   Users,
   FileText,
+  ClipboardList,
   LogOut,
 } from "lucide-react";
 
@@ -15,6 +16,7 @@ const NAV_ITEMS = [
   { label: "Dashboard", href: "/admin", icon: LayoutDashboard },
   { label: "Pages", href: "/admin/pages", icon: FileImage },
   { label: "Inquiries", href: "/admin/inquiries", icon: Users },
+  { label: "Quotes", href: "/admin/quotes", icon: ClipboardList },
   { label: "Blog", href: "/admin/blog", icon: FileText },
 ];
 

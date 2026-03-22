@@ -104,17 +104,14 @@ const LEADERSHIP = [
     phone: TEAM_PHONE,
     image: IMG.teamAnton,
   },
-];
-
-const TEAM_MEMBERS = [
-  { name: "Michael Chen", role: "Lead Installer", specialty: "Vehicle Wraps & Fleet Graphics" },
-  { name: "Angela Torres", role: "Senior Designer", specialty: "Channel Letters & 3D Signage" },
-  { name: "David Park", role: "Production Manager", specialty: "Large Format & Digital Printing" },
-  { name: "Lisa Nguyen", role: "Project Coordinator", specialty: "Client Relations & Scheduling" },
-  { name: "Marcus Johnson", role: "Installation Technician", specialty: "Window & Wall Wraps" },
-  { name: "Priya Sharma", role: "Graphic Designer", specialty: "Floor Graphics & Event Branding" },
-  { name: "Carlos Mendez", role: "Fabrication Specialist", specialty: "LED & Channel Letter Assembly" },
-  { name: "Emma Wilson", role: "Sales Representative", specialty: "Consultations & Client Growth" },
+  {
+    name: "Maria Gonzalez",
+    role: "Lead Designer",
+    bio: "Maria brings creative vision and precision to every signage project. With a background in graphic design and brand identity, she transforms client ideas into bold, production-ready artwork.",
+    email: TEAM_EMAIL,
+    phone: TEAM_PHONE,
+    image: null,
+  },
 ];
 
 const VALUES = [
@@ -196,7 +193,7 @@ export default function TeamPage() {
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 260px), 1fr))",
+              gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 220px), 1fr))",
               maxWidth: "1200px",
               margin: "0 auto",
               gap: "24px",
@@ -325,99 +322,6 @@ export default function TeamPage() {
                       Call
                     </a>
                   </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </Section>
-
-      <hr style={{ border: "none", borderTop: "1px solid #161616", margin: 0 }} />
-
-      {/* ── TEAM GRID ── */}
-      <Section style={{ padding: "100px 24px" }}>
-        <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-          <p style={{ ...LABEL, textAlign: "center" }}>
-            <Users size={14} style={{ display: "inline", verticalAlign: "middle", marginRight: "6px" }} />
-            The Crew
-          </p>
-          <h2 style={{ ...H2, textAlign: "center", marginBottom: "60px" }}>
-            Our Talented Team
-          </h2>
-
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))",
-              gap: "16px",
-            }}
-          >
-            {TEAM_MEMBERS.map((member) => (
-              <div
-                key={member.name}
-                style={{
-                  background: "#111",
-                  border: "1px solid #222",
-                  borderRadius: "4px",
-                  overflow: "hidden",
-                  transition: "border-color 0.3s, transform 0.3s",
-                }}
-                className="card-subtle"
-              >
-                {/* Photo placeholder */}
-                <div
-                  style={{
-                    width: "100%",
-                    aspectRatio: "1",
-                    background: "#0a0a0a",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    color: "rgba(255,255,255,0.12)",
-                    fontSize: "11px",
-                    fontFamily: "Arial, sans-serif",
-                    letterSpacing: "2px",
-                  }}
-                >
-                  PHOTO
-                </div>
-
-                <div style={{ padding: "20px" }}>
-                  <h3
-                    style={{
-                      fontSize: "16px",
-                      fontWeight: 700,
-                      color: WHITE,
-                      margin: "0 0 4px",
-                      fontFamily: "Arial, sans-serif",
-                    }}
-                  >
-                    {member.name}
-                  </h3>
-                  <p
-                    style={{
-                      fontSize: "12px",
-                      fontWeight: 600,
-                      color: ORANGE,
-                      margin: "0 0 8px",
-                      fontFamily: "Arial, sans-serif",
-                      letterSpacing: "1px",
-                      textTransform: "uppercase",
-                    }}
-                  >
-                    {member.role}
-                  </p>
-                  <p
-                    style={{
-                      fontSize: "13px",
-                      color: "rgba(255,255,255,0.4)",
-                      margin: 0,
-                      fontFamily: "Arial, sans-serif",
-                      lineHeight: 1.5,
-                    }}
-                  >
-                    {member.specialty}
-                  </p>
                 </div>
               </div>
             ))}

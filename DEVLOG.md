@@ -123,3 +123,117 @@
 - Updated navbar and footer image dimensions
 - Removed spectrum gradient lines from navbar/footer (refined minimal)
 - Updated footer fonts from Arial Black to Arial (consistent)
+
+---
+
+## 2026-03-19 — Domain & Deployment Fix
+
+### What was done
+- Fixed redirect loop between printecwrap.com ↔ www.printecwrap.com (ERR_TOO_MANY_REDIRECTS)
+- Root cause: both domains were redirecting to each other in Vercel
+- Fix: made printecwrap.com the primary Production domain, www redirects to non-www
+- Site live at https://printecwrap.com
+
+---
+
+## 2026-03-19 — Images: Supabase Storage + WebP Migration
+
+### What was done
+- Created public `images` bucket in Supabase Storage with public read access
+- Converted all images from PNG/JPEG to WebP (97-99% size reduction)
+- Uploaded all images to Supabase CDN
+- Configured next.config.ts for Supabase remote image patterns
+- Created centralized `IMG` constants in constants.ts for all Supabase image URLs
+- Updated all pages to use `IMG.xxx` instead of `/images/xxx`
+- Added `next/image` with `priority`, `sizes`, `fill` for optimal SSR loading
+- Added Supabase env vars to Vercel (NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY)
+- Fixed Supabase client lazy init to prevent build crashes
+
+### Images added
+| Image | Size | Used On |
+|-------|------|---------|
+| workshop.webp | 188KB | About hero + story |
+| worker.webp | 36KB | Floating action button |
+| dance-floor-hero.webp | 168KB | Dance floor wraps hero |
+| floor-before/after.webp | 37KB/27KB | Dance floor before/after slider |
+| wall-wrap-hero.webp | 100KB | Wall wraps hero |
+| wall-before/after.webp | 26KB/45KB | Wall wraps before/after slider |
+| window-wrap-hero.webp | 120KB | Window wraps hero |
+| window-before/after.webp | 25KB/37KB | Window wraps before/after slider |
+| signage-hero.webp | 144KB | Channel letters hero (Aurora & Oak plaza) |
+| signage-before/after.webp | 64KB/84KB | Channel letters before/after slider |
+| neon-before/after.webp | 72KB/92KB | Custom neon signs before/after slider |
+| biz-signage-hero.webp | 260KB | Business signage hero (Meridian Business Park) |
+| team-shazil.webp | 24KB | Team page — Shazil Ali |
+| team-azhar.webp | 24KB | Team page — Azhar Ahmed |
+| team-anton.webp | 24KB | Team page — Anton Andersson |
+
+---
+
+## 2026-03-19 — Before/After Slider Redesign
+
+### What was done
+- Redesigned BeforeAfterSlider component with Style 3 (Elegant Pill with Glow)
+- Pill-shaped labels: frosted "BEFORE" (white), glowing "AFTER" (orange with pulse animation)
+- Gradient slider line that fades at top/bottom edges
+- Pulsing orange handle with radial gradient
+- Decorative corner accents (white left, orange right)
+- CSS animations added: baHandlePulse, baAfterGlow
+- Applied to all 4 service pages with before/after sliders
+
+---
+
+## 2026-03-21 — New Service Pages
+
+### What was done
+- Created `/vinyl-wraps` — targeting vinyl wraps (33,100/mo), vehicle wraps, boat wraps
+- Created `/business-signage` — targeting business signage (14,800/mo), commercial signage
+- Created `/custom-neon-signs` — targeting custom neon signs (33,100/mo), custom led neon signs (4,400/mo)
+- All follow identical structure: hero, before/after, who it's for, process, FAQ, CTA
+- Added to SERVICES_NAV dropdown, footer, and sitemap
+- `/custom-signs` was created then removed (overlapped with existing pages)
+
+### Decisions
+- No vehicle wraps page — Printec doesn't do car wraps
+- Removed custom-signs to avoid keyword cannibalization with channel-letters-signage
+
+---
+
+## 2026-03-21 — Team Page Updates
+
+### What was done
+- Added real team photos: Shazil Ali, Azhar Ahmed, Anton Andersson (24KB WebP each)
+- Updated team structure:
+  - Shakila — CEO (no photo)
+  - Shazil Ali — Sales Representative (photo)
+  - Azhar Ahmed — Sales Representative (photo)
+  - Anton Andersson — Sales Representative (photo)
+  - Maria Gonzalez — Lead Designer (no photo)
+- Removed "The Crew" section with 8 placeholder team members
+- All members share same email (info@printeccorp.com) and phone
+- Replaced LinkedIn links with Call buttons
+- Removed team hero photo placeholder
+
+---
+
+## 2026-03-22 — Location SEO Pages
+
+### What was done
+- Created 9 location pages for local search targeting:
+  - `/locations/washington-dc`
+  - `/locations/virginia`
+  - `/locations/maryland`
+  - `/locations/seattle`
+  - `/locations/new-york`
+  - `/locations/los-angeles`
+  - `/locations/chicago`
+  - `/locations/dallas`
+  - `/locations/houston`
+- Each page: hero, services, benefits, areas served (12 neighborhoods), FAQ (4 local Q&As), CTA
+- Content localized per city (permits, weather, neighborhoods)
+- All added to sitemap.xml
+- No images needed for location pages (text-heavy SEO pages)
+
+### Decisions
+- Text-only location pages (no hero images) — Google ranks based on content, not visuals
+- City-specific FAQ answers (e.g., Chicago winters, Texas sun, NYC DOB regulations)

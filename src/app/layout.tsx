@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { SiteShell } from "@/components/layout/site-shell";
@@ -32,7 +33,7 @@ export const metadata: Metadata = {
     "custom signs Virginia",
     "sign company near me",
   ],
-  metadataBase: new URL("https://printeccorp.com"),
+  metadataBase: new URL("https://printecwrap.com"),
   openGraph: {
     type: "website",
     locale: "en_US",
@@ -65,6 +66,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
+      <head>
+        <Script id="microsoft-clarity" strategy="afterInteractive">
+          {`(function(c,l,a,r,i,t,y){
+            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+          })(window, document, "clarity", "script", "vzki5lbs56");`}
+        </Script>
+      </head>
       <body className="antialiased" style={{ background: "#0C0C0C" }}>
         <SiteShell>{children}</SiteShell>
       </body>

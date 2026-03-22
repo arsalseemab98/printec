@@ -27,6 +27,7 @@ interface Inquiry {
 }
 
 const STATUSES = ["All", "New", "Contacted", "Follow Up", "Quoted", "Booked", "Completed"];
+const STATUS_LIST = ["New", "Contacted", "Follow Up", "Quoted", "Booked", "Completed"];
 
 const STATUS_COLORS: Record<string, string> = {
   New: "#3b82f6",
@@ -67,6 +68,37 @@ export default function InquiriesPage() {
       inq.email?.toLowerCase().includes(q)
     );
   });
+
+  async function quickStatusChange(inqId: string, newStatus: string, e: React.MouseEvent) {
+    e.stopPropagation(); // don't navigate to detail page
+
+    const updates: Record<string, unknown> = { status: newStatus };
+
+    if (newStatus === "Booked") {
+      const price = prompt("Enter booked price ($):");
+      if (price === null) return;
+      const parsed = parseFloat(price);
+      if (!isNaN(parsed)) updates.booked_price = parsed;
+    }
+
+    if (newStatus === "Completed") {
+      const price = prompt("Enter completed price ($):");
+      if (price === null) return;
+      const parsed = parseFloat(price);
+      if (!isNaN(parsed)) updates.completed_price = parsed;
+    }
+
+    const res = await fetch(`/api/admin/inquiries/${inqId}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(updates),
+    });
+    const data = await res.json();
+
+    setInquiries((prev) =>
+      prev.map((inq) => (inq.id === inqId ? { ...inq, ...data } : inq))
+    );
+  }
 
   return (
     <div>
@@ -194,7 +226,7 @@ export default function InquiriesPage() {
           >
             <thead>
               <tr>
-                {["Name", "Email", "Service", "Status", "Source", "Date"].map(
+                {["Name", "Email", "Service", "Status", "Source", "Date", "Quick Action"].map(
                   (h) => (
                     <th
                       key={h}
@@ -297,6 +329,36 @@ export default function InquiriesPage() {
                     }}
                   >
                     {new Date(inq.created_at).toLocaleDateString()}
+                  </td>
+                  <td
+                    style={{
+                      padding: "0.75rem 0.5rem",
+                      borderBottom: "1px solid #161616",
+                    }}
+                  >
+                    <select
+                      value={inq.status}
+                      onClick={(e) => e.stopPropagation()}
+                      onChange={(e) => quickStatusChange(inq.id, e.target.value, e as unknown as React.MouseEvent)}
+                      style={{
+                        padding: "4px 8px",
+                        background: "#0C0C0C",
+                        border: `1px solid ${STATUS_COLORS[inq.status] || "#333"}`,
+                        borderRadius: "4px",
+                        color: STATUS_COLORS[inq.status] || "#fff",
+                        fontSize: "11px",
+                        fontWeight: 600,
+                        cursor: "pointer",
+                        outline: "none",
+                        minWidth: "100px",
+                      }}
+                    >
+                      {STATUS_LIST.map((s) => (
+                        <option key={s} value={s} style={{ color: "#fff", background: "#111" }}>
+                          {s}
+                        </option>
+                      ))}
+                    </select>
                   </td>
                 </tr>
               ))}

@@ -20,11 +20,12 @@ export interface ContractPDFProps {
 }
 
 const ORANGE = "#F7941D";
-const DARK = "#0C0C0C";
-const DARK_CARD = "#161616";
+const BLACK = "#111111";
+const GREY = "#666666";
+const LIGHT_GREY = "#999999";
+const BORDER = "#DDDDDD";
 const WHITE = "#FFFFFF";
-const GREY = "#999999";
-const LIGHT_GREY = "#CCCCCC";
+const BG_LIGHT = "#F9F9F9";
 
 function fmt(n: number) {
   return "$" + n.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -36,63 +37,144 @@ function fmtDate(d: string | null) {
 }
 
 const s = StyleSheet.create({
-  page: { padding: 0, fontFamily: "Helvetica", fontSize: 10, color: WHITE, backgroundColor: DARK },
+  page: {
+    padding: 0,
+    fontFamily: "Helvetica",
+    fontSize: 10,
+    color: BLACK,
+    backgroundColor: WHITE,
+  },
   accentBar: { height: 4, backgroundColor: ORANGE },
-  banner: { backgroundColor: DARK_CARD, padding: "32 48 24 48", flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start", borderBottomWidth: 3, borderBottomColor: ORANGE },
+  banner: {
+    padding: "28 48 20 48",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
+    borderBottomWidth: 2,
+    borderBottomColor: ORANGE,
+  },
   logo: { width: 120, height: 48 },
-  companyName: { fontSize: 20, fontFamily: "Helvetica-Bold", color: ORANGE, letterSpacing: 2 },
+  companyName: {
+    fontSize: 20,
+    fontFamily: "Helvetica-Bold",
+    color: ORANGE,
+    letterSpacing: 2,
+  },
+  companyInfo: { alignItems: "flex-end" as const },
   companyText: { fontSize: 8, color: GREY, marginTop: 2 },
-  companyHighlight: { fontSize: 8, color: ORANGE, marginTop: 2 },
-  titleSection: { padding: "28 48 20 48", flexDirection: "row", justifyContent: "space-between", alignItems: "flex-end" },
-  title: { fontSize: 28, fontFamily: "Helvetica-Bold", color: WHITE, letterSpacing: 4 },
+  companyHighlight: { fontSize: 8, color: ORANGE, marginTop: 2, fontFamily: "Helvetica-Bold" },
+
+  titleSection: {
+    padding: "24 48 16 48",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-end",
+  },
+  title: {
+    fontSize: 26,
+    fontFamily: "Helvetica-Bold",
+    color: BLACK,
+    letterSpacing: 3,
+    textTransform: "uppercase" as const,
+  },
+  orangeLine: { height: 2, backgroundColor: ORANGE, width: 50, marginTop: 4 },
   meta: { alignItems: "flex-end" as const },
   metaNumber: { fontSize: 12, fontFamily: "Helvetica-Bold", color: ORANGE },
   metaDate: { fontSize: 9, color: GREY, marginTop: 3 },
-  divider: { height: 1, backgroundColor: "#222", marginHorizontal: 48 },
-  orangeLine: { height: 2, backgroundColor: ORANGE, width: 50, marginLeft: 48 },
-  infoRow: { flexDirection: "row", padding: "20 48", gap: 30 },
+
+  divider: { height: 1, backgroundColor: BORDER, marginHorizontal: 48 },
+
+  infoRow: { flexDirection: "row", padding: "18 48", gap: 30 },
   infoCol: { flex: 1 },
-  sectionLabel: { fontSize: 8, fontFamily: "Helvetica-Bold", color: ORANGE, textTransform: "uppercase" as const, letterSpacing: 3, marginBottom: 8 },
-  infoBox: { backgroundColor: DARK_CARD, padding: 14, borderRadius: 4, borderLeftWidth: 3, borderLeftColor: ORANGE },
-  infoBold: { fontSize: 11, fontFamily: "Helvetica-Bold", color: WHITE, marginBottom: 3 },
-  infoText: { fontSize: 9, color: LIGHT_GREY, marginBottom: 2, lineHeight: 1.5 },
-  termsSection: { paddingHorizontal: 48, paddingTop: 16 },
-  termRow: { flexDirection: "row", marginBottom: 8 },
+  sectionLabel: {
+    fontSize: 8,
+    fontFamily: "Helvetica-Bold",
+    color: ORANGE,
+    textTransform: "uppercase" as const,
+    letterSpacing: 3,
+    marginBottom: 8,
+  },
+  infoBox: {
+    backgroundColor: BG_LIGHT,
+    padding: 12,
+    borderRadius: 4,
+    borderLeftWidth: 3,
+    borderLeftColor: ORANGE,
+  },
+  infoBold: { fontSize: 11, fontFamily: "Helvetica-Bold", color: BLACK, marginBottom: 3 },
+  infoText: { fontSize: 9, color: GREY, marginBottom: 2, lineHeight: 1.5 },
+
+  termsSection: { paddingHorizontal: 48, paddingTop: 14 },
+  termRow: { flexDirection: "row", marginBottom: 6 },
   termNum: { width: 24, fontSize: 9, fontFamily: "Helvetica-Bold", color: ORANGE },
-  termText: { flex: 1, fontSize: 9, color: LIGHT_GREY, lineHeight: 1.6 },
-  sigSection: { padding: "20 48", flexDirection: "row", justifyContent: "space-between" },
+  termText: { flex: 1, fontSize: 9, color: GREY, lineHeight: 1.6 },
+
+  sigSection: { padding: "18 48", flexDirection: "row", justifyContent: "space-between" },
   sigCol: { width: "45%" },
-  sigLabel: { fontSize: 8, color: GREY, marginBottom: 4, textTransform: "uppercase" as const, letterSpacing: 1 },
-  sigName: { fontSize: 11, fontFamily: "Helvetica-Bold", color: WHITE, marginBottom: 4 },
+  sigLabel: { fontSize: 8, color: LIGHT_GREY, marginBottom: 4, textTransform: "uppercase" as const, letterSpacing: 1 },
+  sigName: { fontSize: 11, fontFamily: "Helvetica-Bold", color: BLACK, marginBottom: 4 },
   sigRole: { fontSize: 9, color: GREY },
   sigImage: { width: 150, height: 60, marginBottom: 4 },
-  sigLine: { height: 1, backgroundColor: "#444", marginBottom: 4, marginTop: 8 },
-  footer: { marginTop: "auto", backgroundColor: DARK_CARD, padding: "16 48", borderTopWidth: 1, borderTopColor: "#222", flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
+  sigLine: { height: 1, backgroundColor: "#AAAAAA", marginBottom: 4, marginTop: 8 },
+
+  footer: {
+    marginTop: "auto",
+    backgroundColor: BG_LIGHT,
+    padding: "14 48",
+    borderTopWidth: 1,
+    borderTopColor: BORDER,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
   footerBold: { fontSize: 8, fontFamily: "Helvetica-Bold", color: ORANGE, letterSpacing: 1 },
-  footerText: { fontSize: 7, color: GREY },
+  footerText: { fontSize: 7, color: LIGHT_GREY },
 });
 
 export function ContractPDF(props: ContractPDFProps) {
-  const { contract_number, event_date, venue, service_description, total_price, advance_amount, balance_amount, balance_due, travel_cost, client_name, client_email, terms, signature_data, signed_at, logoUrl } = props;
+  const {
+    contract_number,
+    event_date,
+    venue,
+    service_description,
+    total_price,
+    advance_amount,
+    balance_amount,
+    balance_due,
+    travel_cost,
+    client_name,
+    client_email,
+    terms,
+    signature_data,
+    signed_at,
+    logoUrl,
+  } = props;
 
   return (
     <Document>
       <Page size="A4" style={s.page}>
         <View style={s.accentBar} />
+
+        {/* Header */}
         <View style={s.banner}>
-          {logoUrl ? <Image src={logoUrl} style={s.logo} /> : <Text style={s.companyName}>PRINTEC</Text>}
-          <View style={{ alignItems: "flex-end" as const }}>
+          {logoUrl ? (
+            <Image src={logoUrl} style={s.logo} />
+          ) : (
+            <Text style={s.companyName}>PRINTEC CORP</Text>
+          )}
+          <View style={s.companyInfo}>
             <Text style={s.companyHighlight}>Printec Virginia LLC</Text>
-            <Text style={s.companyText}>15485 Marsh Overlook Dr</Text>
-            <Text style={s.companyText}>Woodbridge, VA 22191</Text>
+            <Text style={s.companyText}>printecwisconsin@gmail.com</Text>
+            <Text style={s.companyText}>printecvirginia@gmail.com</Text>
+            <Text style={s.companyText}>www.printecwrap.com</Text>
             <Text style={s.companyText}>(715) 503-5444</Text>
-            <Text style={s.companyHighlight}>info@printecwrap.com</Text>
           </View>
         </View>
 
+        {/* Title */}
         <View style={s.titleSection}>
           <View>
-            <Text style={s.title}>CLIENT AGREEMENT</Text>
+            <Text style={s.title}>Client Agreement</Text>
             <View style={s.orangeLine} />
           </View>
           <View style={s.meta}>
@@ -102,19 +184,25 @@ export function ContractPDF(props: ContractPDFProps) {
         </View>
 
         {venue && (
-          <View style={{ paddingHorizontal: 48, marginBottom: 8 }}>
-            <Text style={{ fontSize: 9, color: GREY }}>Venue: <Text style={{ color: LIGHT_GREY }}>{venue}</Text></Text>
+          <View style={{ paddingHorizontal: 48, marginBottom: 6 }}>
+            <Text style={{ fontSize: 9, color: GREY }}>
+              Venue: <Text style={{ color: BLACK, fontFamily: "Helvetica-Bold" }}>{venue}</Text>
+            </Text>
           </View>
         )}
 
         <View style={s.divider} />
 
+        {/* Client & Pricing */}
         <View style={s.infoRow}>
           <View style={s.infoCol}>
             <Text style={s.sectionLabel}>Client</Text>
             <View style={s.infoBox}>
               <Text style={s.infoBold}>{client_name}</Text>
               <Text style={s.infoText}>{client_email}</Text>
+              {service_description && (
+                <Text style={s.infoText}>Service: {service_description}</Text>
+              )}
             </View>
           </View>
           <View style={s.infoCol}>
@@ -122,12 +210,17 @@ export function ContractPDF(props: ContractPDFProps) {
             <View style={s.infoBox}>
               <Text style={s.infoBold}>Total: {fmt(total_price)}</Text>
               <Text style={s.infoText}>Advance: {fmt(advance_amount)}</Text>
-              <Text style={s.infoText}>Balance: {fmt(balance_amount)} — {balance_due || "Due on event day"}</Text>
-              {travel_cost > 0 && <Text style={s.infoText}>Travel: {fmt(travel_cost)}</Text>}
+              <Text style={s.infoText}>
+                Balance: {fmt(balance_amount)} — {balance_due || "Due on event day"}
+              </Text>
+              {travel_cost > 0 && (
+                <Text style={s.infoText}>Travel: {fmt(travel_cost)}</Text>
+              )}
             </View>
           </View>
         </View>
 
+        {/* Terms & Conditions */}
         <View style={s.termsSection}>
           <Text style={s.sectionLabel}>Terms & Conditions</Text>
           {(terms || []).map((term: string, i: number) => (
@@ -138,11 +231,16 @@ export function ContractPDF(props: ContractPDFProps) {
           ))}
         </View>
 
+        {/* Signatures */}
         <View style={s.sigSection}>
           <View style={s.sigCol}>
             <Text style={s.sectionLabel}>Client</Text>
             <Text style={s.sigName}>{client_name}</Text>
-            {signature_data ? <Image src={signature_data} style={s.sigImage} /> : <View style={s.sigLine} />}
+            {signature_data ? (
+              <Image src={signature_data} style={s.sigImage} />
+            ) : (
+              <View style={s.sigLine} />
+            )}
             <Text style={s.sigLabel}>Signature</Text>
             {signed_at && <Text style={s.sigRole}>Date: {fmtDate(signed_at)}</Text>}
           </View>
@@ -151,9 +249,11 @@ export function ContractPDF(props: ContractPDFProps) {
             <Text style={s.sigName}>Printec Virginia LLC</Text>
             <Text style={s.sigRole}>Muhammad Azhar</Text>
             <Text style={s.sigRole}>CEO / Founder</Text>
+            {signed_at && <Text style={{ ...s.sigRole, marginTop: 4 }}>Date: {fmtDate(signed_at)}</Text>}
           </View>
         </View>
 
+        {/* Footer */}
         <View style={s.footer}>
           <View>
             <Text style={s.footerBold}>PRINTEC VIRGINIA LLC</Text>

@@ -7,6 +7,7 @@ import { GalleryGridBlock } from "@/components/ui/gallery-grid-block-shadcnui";
 import { EtheralShadow } from "@/components/ui/etheral-shadow";
 import { SkewedButton } from "@/components/shared/skewed-button";
 import { ContainerTextFlip } from "@/components/ui/container-text-flip";
+import { PORTFOLIO_CATEGORIES, PORTFOLIO } from "@/lib/constants";
 
 /* ─── BRAND CONSTANTS (matching Printec logo spectrum) ─── */
 const ORANGE = "#F7941D";
@@ -39,23 +40,8 @@ const SERVICES = [
   { num: "09", title: "GRAPHIC DESIGN", desc: "Logo design, brand identity, marketing materials, and campaign visuals — from concept to print-ready files.", href: "/contact" },
 ];
 
-/* ─── PORTFOLIO DATA ─── */
-const PORTFOLIO_CATEGORIES = ["ALL", "VEHICLE WRAPS", "SIGNAGE", "PRINTING", "APPAREL", "DIGITAL"];
-
-const PORTFOLIO = [
-  { title: "TACO KING TRUCK", category: "VEHICLE WRAPS", filter: "VEHICLE WRAPS", angle: 12 },
-  { title: "BBQ NATION TRAILER", category: "VEHICLE WRAPS", filter: "VEHICLE WRAPS", angle: -8 },
-  { title: "NEON DISTRICT SIGN", category: "LED CHANNEL", filter: "SIGNAGE", angle: 5 },
-  { title: "DOWNTOWN STOREFRONT", category: "MONUMENT SIGN", filter: "SIGNAGE", angle: -15 },
-  { title: "APEX GYM UNIFORMS", category: "CUSTOM UNIFORMS", filter: "APPAREL", angle: 20 },
-  { title: "LOCAL LEAGUE JERSEYS", category: "SPORTING WEAR", filter: "APPAREL", angle: -5 },
-  { title: "LAKESIDE COFFEE WRAP", category: "WINDOW WRAP", filter: "PRINTING", angle: 10 },
-  { title: "WATERPROOF MENU SET", category: "MENU DESIGN", filter: "PRINTING", angle: -12 },
-  { title: "SOCIAL MEDIA CAMPAIGN", category: "CONTENT MARKETING", filter: "DIGITAL", angle: 7 },
-  { title: "DIGITAL MENU BOARD", category: "DIGITAL SIGNAGE", filter: "DIGITAL", angle: -9 },
-  { title: "FLEET WRAP — 5 VANS", category: "VEHICLE WRAPS", filter: "VEHICLE WRAPS", angle: 15 },
-  { title: "BREWERY WINDOW ART", category: "WINDOW WRAP", filter: "PRINTING", angle: -6 },
-];
+/* ─── PORTFOLIO DATA (imported from constants.ts — single source of truth) ─── */
+// PORTFOLIO_CATEGORIES and PORTFOLIO are imported below
 
 
 /* ─── STATS DATA ─── */

@@ -70,17 +70,25 @@ const BODY: React.CSSProperties = {
 
 const LEADERSHIP = [
   {
+    name: "Shakila",
+    role: "CEO",
+    bio: "Shakila leads Printec Corp with a clear vision — delivering bold, high-quality signage and graphics that help businesses and events stand out. Under her leadership, Printec has grown into Virginia's trusted name in custom signage.",
+    email: "shakila@printeccorp.com",
+    linkedin: "#",
+    image: null,
+  },
+  {
     name: "Shazil Ali",
-    role: "Founder & CEO",
-    bio: "Shazil founded Printec Corp in 2017 with a vision to deliver bold, high-quality graphics that help businesses stand out. He oversees every major project personally and drives the company's growth across Virginia.",
+    role: "Sales Representative",
+    bio: "Shazil connects clients with the right signage solutions for their business. From initial consultation to final delivery, he ensures every client gets personalized attention and a seamless experience.",
     email: "shazil@printeccorp.com",
     linkedin: "#",
     image: IMG.teamShazil,
   },
   {
     name: "Azhar Ahmed",
-    role: "Co-Founder & Operations Director",
-    bio: "A decade of hands-on experience in signage fabrication and installation. Azhar manages production, quality control, and client relations — ensuring every project exceeds expectations.",
+    role: "Sales Representative",
+    bio: "Azhar brings a decade of industry knowledge to every client conversation. He specializes in helping businesses choose the right sign type, material, and installation approach for maximum impact.",
     email: "azhar@printeccorp.com",
     linkedin: "#",
     image: IMG.teamAzhar,
@@ -177,8 +185,8 @@ export default function TeamPage() {
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 320px), 1fr))",
-              maxWidth: "720px",
+              gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 300px), 1fr))",
+              maxWidth: "1000px",
               margin: "0 auto",
               gap: "24px",
             }}
@@ -211,7 +219,7 @@ export default function TeamPage() {
                       alt={`${person.name} — ${person.role} at Printec Corp`}
                       fill
                       sizes="(max-width: 768px) 100vw, 340px"
-                      style={{ objectFit: "cover", objectPosition: "top" }}
+                      style={{ objectFit: "cover", objectPosition: "center 20%" }}
                     />
                   ) : (
                     <div

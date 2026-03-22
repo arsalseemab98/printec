@@ -4,13 +4,16 @@ import { BLOG_POSTS } from "@/lib/blog-data";
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://printecwrap.com";
 
-  const staticPages = [
-    "",
-    "/about",
-    "/team",
-    "/portfolio",
-    "/contact",
-    "/blog",
+  const corePages = [
+    { path: "", priority: 1.0, freq: "weekly" as const },
+    { path: "/about", priority: 0.8, freq: "monthly" as const },
+    { path: "/team", priority: 0.7, freq: "monthly" as const },
+    { path: "/portfolio", priority: 0.8, freq: "weekly" as const },
+    { path: "/contact", priority: 0.9, freq: "monthly" as const },
+    { path: "/blog", priority: 0.7, freq: "weekly" as const },
+  ];
+
+  const servicePages = [
     "/vinyl-wraps",
     "/business-signage",
     "/dance-floor-wraps",
@@ -18,10 +21,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/window-wraps",
     "/channel-letters-signage",
     "/custom-neon-signs",
+  ];
+
+  const seoLandingPages = [
     "/wedding-floor-wrap",
     "/led-channel-letters",
     "/channel-letter-signs-near-me",
     "/storefront-window-graphics",
+  ];
+
+  const locationPages = [
     "/locations/washington-dc",
     "/locations/virginia",
     "/locations/maryland",
@@ -41,11 +50,29 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }));
 
   return [
-    ...staticPages.map((path) => ({
+    ...corePages.map((p) => ({
+      url: `${baseUrl}${p.path}`,
+      lastModified: new Date(),
+      changeFrequency: p.freq,
+      priority: p.priority,
+    })),
+    ...servicePages.map((path) => ({
       url: `${baseUrl}${path}`,
       lastModified: new Date(),
-      changeFrequency: path === "" ? ("weekly" as const) : ("monthly" as const),
-      priority: path === "" ? 1 : path === "/contact" ? 0.9 : 0.8,
+      changeFrequency: "monthly" as const,
+      priority: 0.9,
+    })),
+    ...seoLandingPages.map((path) => ({
+      url: `${baseUrl}${path}`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+    })),
+    ...locationPages.map((path) => ({
+      url: `${baseUrl}${path}`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
     })),
     ...blogPages,
   ];

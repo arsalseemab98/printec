@@ -130,23 +130,6 @@ export default function TeamPage() {
       <Section style={{ padding: 0 }}>
         <div
           style={{
-            width: "100%",
-            aspectRatio: "1920 / 400",
-            background: "#111",
-            border: "1px solid #222",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            color: "rgba(255,255,255,0.2)",
-            fontSize: "13px",
-            fontFamily: "Arial, sans-serif",
-            letterSpacing: "2px",
-          }}
-        >
-          TEAM PHOTO — 1920 × 400
-        </div>
-        <div
-          style={{
             maxWidth: "600px",
             margin: "0 auto",
             padding: "48px 24px 60px",

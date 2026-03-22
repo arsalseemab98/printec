@@ -23,9 +23,9 @@ import {
 } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: "Custom Signs & Signage in Chicago | Printec Corp",
+  title: "Custom Signs & Signage in Chicago | Printec Virginia LLC",
   description:
-    "Professional custom signs and signage in Chicago. Printec Corp offers channel letters, vehicle wraps, window graphics, LED signs, and more for Chicago businesses. Free quotes.",
+    "Professional custom signs and signage in Chicago. Printec Virginia LLC offers channel letters, vehicle wraps, window graphics, LED signs, and more for Chicago businesses. Free quotes.",
   keywords: [
     "sign shop Chicago",
     "custom signs Chicago",
@@ -37,12 +37,12 @@ export const metadata: Metadata = {
     "storefront signs Chicago",
   ],
   openGraph: {
-    title: "Custom Signs & Signage in Chicago | Printec Corp",
+    title: "Custom Signs & Signage in Chicago | Printec Virginia LLC",
     description:
       "Professional custom signs and signage in Chicago. Channel letters, vehicle wraps, window graphics, LED signs, and more. Free quotes available.",
     type: "website",
     locale: "en_US",
-    siteName: "Printec Corp",
+    siteName: "Printec Virginia LLC",
   },
 };
 

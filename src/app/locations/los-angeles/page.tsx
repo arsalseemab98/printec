@@ -23,9 +23,9 @@ import {
 } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: "Custom Signs & Signage in Los Angeles | Printec Corp",
+  title: "Custom Signs & Signage in Los Angeles | Printec Virginia LLC",
   description:
-    "Printec Corp creates custom signs, vehicle wraps, channel letters, and business signage in Los Angeles, CA. Serving Hollywood, Downtown LA, Santa Monica, Beverly Hills, and all of LA County.",
+    "Printec Virginia LLC creates custom signs, vehicle wraps, channel letters, and business signage in Los Angeles, CA. Serving Hollywood, Downtown LA, Santa Monica, Beverly Hills, and all of LA County.",
   keywords: [
     "sign shop LA",
     "custom signs Los Angeles",
@@ -37,12 +37,12 @@ export const metadata: Metadata = {
     "storefront signs Hollywood",
   ],
   openGraph: {
-    title: "Custom Signs & Signage in Los Angeles | Printec Corp",
+    title: "Custom Signs & Signage in Los Angeles | Printec Virginia LLC",
     description:
-      "Printec Corp creates custom signs, vehicle wraps, channel letters, and business signage in Los Angeles, CA. Serving Hollywood, Downtown LA, Santa Monica, Beverly Hills, and all of LA County.",
+      "Printec Virginia LLC creates custom signs, vehicle wraps, channel letters, and business signage in Los Angeles, CA. Serving Hollywood, Downtown LA, Santa Monica, Beverly Hills, and all of LA County.",
     type: "website",
     locale: "en_US",
-    siteName: "Printec Corp",
+    siteName: "Printec Virginia LLC",
   },
 };
 
@@ -223,7 +223,7 @@ export default function LosAngelesLocationPage() {
             margin: "0 auto",
           }}
         >
-          From Hollywood storefronts to Downtown LA offices, Printec Corp
+          From Hollywood storefronts to Downtown LA offices, Printec Virginia LLC
           delivers custom channel letters, vehicle wraps, and business signage
           across all of Los Angeles County.
         </p>

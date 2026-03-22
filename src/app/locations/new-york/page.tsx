@@ -23,9 +23,9 @@ import {
 } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: "Custom Signs & Signage in New York | Printec Corp",
+  title: "Custom Signs & Signage in New York | Printec Virginia LLC",
   description:
-    "Printec Corp delivers custom signs, vehicle wraps, channel letters, and business signage across New York City. Serving Manhattan, Brooklyn, Queens, and the entire NYC metro.",
+    "Printec Virginia LLC delivers custom signs, vehicle wraps, channel letters, and business signage across New York City. Serving Manhattan, Brooklyn, Queens, and the entire NYC metro.",
   keywords: [
     "sign shop NYC",
     "custom signs New York",
@@ -37,12 +37,12 @@ export const metadata: Metadata = {
     "storefront signs Manhattan",
   ],
   openGraph: {
-    title: "Custom Signs & Signage in New York | Printec Corp",
+    title: "Custom Signs & Signage in New York | Printec Virginia LLC",
     description:
-      "Printec Corp delivers custom signs, vehicle wraps, channel letters, and business signage across New York City. Serving Manhattan, Brooklyn, Queens, and the entire NYC metro.",
+      "Printec Virginia LLC delivers custom signs, vehicle wraps, channel letters, and business signage across New York City. Serving Manhattan, Brooklyn, Queens, and the entire NYC metro.",
     type: "website",
     locale: "en_US",
-    siteName: "Printec Corp",
+    siteName: "Printec Virginia LLC",
   },
 };
 
@@ -224,7 +224,7 @@ export default function NewYorkLocationPage() {
           }}
         >
           Channel letters, storefront signs, vehicle wraps, and more —
-          Printec Corp brings premium signage to businesses across all five
+          Printec Virginia LLC brings premium signage to businesses across all five
           boroughs and the greater NYC metro.
         </p>
 

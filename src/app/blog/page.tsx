@@ -9,22 +9,22 @@ import { Calendar, Clock, ArrowRight } from "lucide-react";
 export const metadata: Metadata = {
   title: "Blog",
   description:
-    "Expert tips on signage, vehicle wraps, channel letters, window graphics, and more from Printec Corp in Virginia.",
+    "Expert tips on signage, vehicle wraps, channel letters, window graphics, and more from Printec Virginia LLC in Virginia.",
   keywords: [
     "signage tips",
     "vehicle wrap guide",
     "channel letter blog",
     "window graphics advice",
     "sign industry insights",
-    "Printec Corp blog",
+    "Printec Virginia LLC blog",
   ],
   openGraph: {
-    title: "Blog | Printec Corp",
+    title: "Blog | Printec Virginia LLC",
     description:
-      "Expert tips on signage, vehicle wraps, channel letters, window graphics, and more from Printec Corp in Virginia.",
+      "Expert tips on signage, vehicle wraps, channel letters, window graphics, and more from Printec Virginia LLC in Virginia.",
     type: "website",
     locale: "en_US",
-    siteName: "Printec Corp",
+    siteName: "Printec Virginia LLC",
   },
 };
 

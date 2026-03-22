@@ -476,7 +476,7 @@ function AboutScrollSection() {
               maxWidth: "600px",
             }}
           >
-            Since <strong style={{ color: ORANGE }}>2017</strong>, Printec Corp has been the go-to print and
+            Since <strong style={{ color: ORANGE }}>2017</strong>, Printec Virginia LLC has been the go-to print and
             signage powerhouse in Oshkosh, Wisconsin. From food truck wraps that stop traffic to LED channel letters
             that light up the night — we bring your vision to life with raw creativity and precision craftsmanship.
             No fluff. No shortcuts. Just bold work that gets noticed.
@@ -968,7 +968,7 @@ export default function PrintecStreetPage() {
             },
             {
               icon: <Facebook size={28} />,
-              handle: "Printec Corp",
+              handle: "Printec Virginia LLC",
               desc: "News, events & customer reviews",
               href: "https://www.facebook.com/share/1E2N8msTsc/",
               label: "FOLLOW",

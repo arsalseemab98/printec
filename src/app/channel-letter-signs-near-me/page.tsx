@@ -24,7 +24,7 @@ import {
 export const metadata: Metadata = {
   title: "Channel Letter Signs Near Me | Virginia's Top Sign Company",
   description:
-    "Looking for channel letter signs near you? Printec Corp serves Virginia Beach, Norfolk, Richmond, and all of Virginia. Local installation, competitive pricing.",
+    "Looking for channel letter signs near you? Printec Virginia LLC serves Virginia Beach, Norfolk, Richmond, and all of Virginia. Local installation, competitive pricing.",
   keywords: [
     "channel letter signs near me",
     "sign company Virginia",
@@ -35,12 +35,12 @@ export const metadata: Metadata = {
     "Richmond channel letters",
   ],
   openGraph: {
-    title: "Channel Letter Signs Near Me | Printec Corp",
+    title: "Channel Letter Signs Near Me | Printec Virginia LLC",
     description:
-      "Looking for channel letter signs near you? Printec Corp serves Virginia Beach, Norfolk, Richmond, and all of Virginia. Local installation, competitive pricing.",
+      "Looking for channel letter signs near you? Printec Virginia LLC serves Virginia Beach, Norfolk, Richmond, and all of Virginia. Local installation, competitive pricing.",
     type: "website",
     locale: "en_US",
-    siteName: "Printec Corp",
+    siteName: "Printec Virginia LLC",
   },
 };
 
@@ -110,7 +110,7 @@ const GET_STARTED_STEPS = [
 const FAQS = [
   {
     q: "How do I find a reliable channel letter sign company near me?",
-    a: "Look for a locally owned company with at least 10 years of experience, a physical fabrication facility in your state, and a portfolio of local installations. Printec Corp checks every box — we have been designing and installing channel letter signs across Virginia since 2017.",
+    a: "Look for a locally owned company with at least 10 years of experience, a physical fabrication facility in your state, and a portfolio of local installations. Printec Virginia LLC checks every box — we have been designing and installing channel letter signs across Virginia since 2017.",
   },
   {
     q: "Do you offer free estimates for channel letter signs?",
@@ -260,7 +260,7 @@ export default function ChannelLetterSignsNearMePage() {
             <p style={{ margin: "0 0 20px" }}>
               When you search for &ldquo;channel letter signs near me,&rdquo; you
               want a sign company that actually knows your area — not a national
-              franchise sending a subcontractor from three states away. Printec Corp
+              franchise sending a subcontractor from three states away. Printec Virginia LLC
               is a Virginia-based, locally owned sign company that has been designing,
               fabricating, and installing custom channel letter signs across the
               Commonwealth since 2017.
@@ -276,7 +276,7 @@ export default function ChannelLetterSignsNearMePage() {
             <p style={{ margin: 0 }}>
               Whether you need front-lit channel letters for a new storefront,
               halo-lit letters for a professional office, or a complete sign package
-              for a shopping center, Printec Corp delivers premium quality at local
+              for a shopping center, Printec Virginia LLC delivers premium quality at local
               prices. Every sign is custom-fabricated in our Virginia facility and
               installed by our own certified team — never outsourced.
             </p>

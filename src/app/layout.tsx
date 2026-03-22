@@ -16,11 +16,11 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Printec Corp – From Vision to Vinyl | Signs, Wraps & Graphics",
-    template: "%s | Printec Corp",
+    default: "Printec Virginia LLC – From Vision to Vinyl | Signs, Wraps & Graphics",
+    template: "%s | Printec Virginia LLC",
   },
   description:
-    "Printec Corp is Virginia's premier custom signage, vehicle wrap, and graphics company. Channel letters, window wraps, dance floor wraps, wall wraps & more.",
+    "Printec Virginia LLC is Virginia's premier custom signage, vehicle wrap, and graphics company. Channel letters, window wraps, dance floor wraps, wall wraps & more.",
   keywords: [
     "channel letters signage",
     "vehicle wraps Virginia",
@@ -37,14 +37,14 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    siteName: "Printec Corp",
-    title: "Printec Corp – From Vision to Vinyl",
+    siteName: "Printec Virginia LLC",
+    title: "Printec Virginia LLC – From Vision to Vinyl",
     description: "Virginia's premier custom signage, vehicle wrap, and graphics company.",
-    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Printec Corp" }],
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Printec Virginia LLC" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Printec Corp – From Vision to Vinyl",
+    title: "Printec Virginia LLC – From Vision to Vinyl",
     description: "Custom signs, wraps & graphics in Virginia.",
     images: ["/og-image.png"],
   },

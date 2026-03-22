@@ -357,7 +357,7 @@ export function QuotePDF(props: QuotePDFProps) {
           <View style={s.infoCol}>
             <Text style={s.sectionLabel}>Prepared By</Text>
             <View style={s.infoBox}>
-              <Text style={s.infoBold}>Printec Corp</Text>
+              <Text style={s.infoBold}>Printec Virginia LLC</Text>
               <Text style={s.infoText}>Signs, Wraps & Graphics</Text>
               <Text style={s.infoText}>Virginia Beach, VA</Text>
               <Text style={s.infoText}>info@printecwrap.com</Text>

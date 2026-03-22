@@ -1,11 +1,11 @@
-# DEVLOG — Printec Corp Website
+# DEVLOG — Printec Virginia LLC Website
 
 ---
 
 ## 2026-03-18 — Initial Build
 
 ### What was done
-- Created full 13-page Next.js website for Printec Corp
+- Created full 13-page Next.js website for Printec Virginia LLC
 - Extracted shared components (Navbar, Footer, Section, PageHero, CtaBanner, SkewedButton)
 - Built all service landing pages: Dance Floor Wraps, Wall Wraps, Window Wraps, Channel Letters & Signage
 - Built all SEO landing pages: Wedding Floor Wrap, LED Channel Letters, Channel Letter Signs Near Me, Storefront Window Graphics

@@ -29,9 +29,9 @@ import { type LucideIcon } from "lucide-react";
 export const metadata: Metadata = {
   title: "About Us",
   description:
-    "Printec Corp is Virginia's trusted custom signage and vehicle wrap company with nearly a decade of experience, established in 2017. Learn about our story, team, and commitment to quality.",
+    "Printec Virginia LLC is Virginia's trusted custom signage and vehicle wrap company with nearly a decade of experience, established in 2017. Learn about our story, team, and commitment to quality.",
   keywords: [
-    "about Printec Corp",
+    "about Printec Virginia LLC",
     "Virginia sign company",
     "custom signage Virginia",
     "vehicle wrap company",
@@ -39,12 +39,12 @@ export const metadata: Metadata = {
     "signage and graphics",
   ],
   openGraph: {
-    title: "About Us | Printec Corp",
+    title: "About Us | Printec Virginia LLC",
     description:
-      "Printec Corp is Virginia's trusted custom signage and vehicle wrap company with nearly a decade of experience, established in 2017. Learn about our story, team, and commitment to quality.",
+      "Printec Virginia LLC is Virginia's trusted custom signage and vehicle wrap company with nearly a decade of experience, established in 2017. Learn about our story, team, and commitment to quality.",
     type: "website",
     locale: "en_US",
-    siteName: "Printec Corp",
+    siteName: "Printec Virginia LLC",
   },
 };
 
@@ -176,7 +176,7 @@ export default function AboutPage() {
         >
           <Image
             src={IMG.workshop}
-            alt="Printec Corp workshop — wide-format printers, vinyl rolls, and team fabricating channel letters"
+            alt="Printec Virginia LLC workshop — wide-format printers, vinyl rolls, and team fabricating channel letters"
             fill
             sizes="100vw"
             style={{ objectFit: "cover" }}
@@ -238,7 +238,7 @@ export default function AboutPage() {
           >
             <Image
               src={IMG.workshop}
-              alt="Printec Corp production facility with wide-format printers and vinyl materials"
+              alt="Printec Virginia LLC production facility with wide-format printers and vinyl materials"
               fill
               sizes="(max-width: 768px) 100vw, 50vw"
               style={{ objectFit: "cover" }}
@@ -254,7 +254,7 @@ export default function AboutPage() {
 
             <div style={BODY}>
               <p style={{ margin: "0 0 16px" }}>
-                Printec Corp was founded in 2017 in the heart of Virginia by a
+                Printec Virginia LLC was founded in 2017 in the heart of Virginia by a
                 sign maker with one mission: help local businesses get noticed. What started
                 as a modest print shop with a single wide-format printer has grown into a
                 full-service signage, vehicle wrap, and custom graphics company trusted by
@@ -268,7 +268,7 @@ export default function AboutPage() {
                 fabrication technology.
               </p>
               <p style={{ margin: 0 }}>
-                Today, Printec Corp operates from a state-of-the-art production facility
+                Today, Printec Virginia LLC operates from a state-of-the-art production facility
                 equipped with the latest wide-format printers, CNC routers, and LED
                 fabrication tools. We remain a family-run business at heart — every client
                 gets the personal attention, fast turnaround, and uncompromising quality
@@ -382,7 +382,7 @@ export default function AboutPage() {
           </blockquote>
 
           <p style={{ ...BODY, maxWidth: "600px", margin: "0 auto" }}>
-            At Printec Corp, our mission is simple: combine cutting-edge printing and
+            At Printec Virginia LLC, our mission is simple: combine cutting-edge printing and
             fabrication technology with fearless creative design to deliver signs, wraps,
             and custom graphics that demand attention. Whether you&apos;re planning a dream
             wedding, launching a new storefront, or wrapping a fleet of vehicles — we make

@@ -39,12 +39,12 @@ export const metadata: Metadata = {
     "car wrap",
   ],
   openGraph: {
-    title: "Vinyl Wraps | Printec Corp",
+    title: "Vinyl Wraps | Printec Virginia LLC",
     description:
       "Professional vinyl wraps for vehicles, boats, trailers, and more. Custom vinyl graphics and fleet wraps serving Virginia.",
     type: "website",
     locale: "en_US",
-    siteName: "Printec Corp",
+    siteName: "Printec Virginia LLC",
   },
 };
 
@@ -272,7 +272,7 @@ export default function VinylWrapsPage() {
               into a head-turning statement. Whether you are branding an entire
               commercial fleet or giving your personal car a bold new color, a
               precision-installed wrap delivers paint-shop results at a fraction
-              of the cost. At Printec Corp, we use premium 3M and Avery Dennison
+              of the cost. At Printec Virginia LLC, we use premium 3M and Avery Dennison
               cast vinyl paired with UV-protective laminates engineered for years
               of outdoor exposure.
             </p>

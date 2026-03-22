@@ -39,12 +39,12 @@ export const metadata: Metadata = {
     "illuminated signs",
   ],
   openGraph: {
-    title: "Business Signage | Printec Corp",
+    title: "Business Signage | Printec Virginia LLC",
     description:
       "Custom business signage solutions including monument signs, pylon signs, channel letters, storefront signage, and office signs. Serving Virginia.",
     type: "website",
     locale: "en_US",
-    siteName: "Printec Corp",
+    siteName: "Printec Virginia LLC",
   },
 };
 

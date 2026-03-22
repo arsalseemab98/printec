@@ -24,9 +24,9 @@ import {
 } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: "Custom Signs & Signage in Seattle | Printec Corp",
+  title: "Custom Signs & Signage in Seattle | Printec Virginia LLC",
   description:
-    "Printec Corp provides custom signs, vehicle wraps, channel letters, and business signage in Seattle, WA. Serving Downtown, Capitol Hill, Ballard, Bellevue, and all of greater Seattle.",
+    "Printec Virginia LLC provides custom signs, vehicle wraps, channel letters, and business signage in Seattle, WA. Serving Downtown, Capitol Hill, Ballard, Bellevue, and all of greater Seattle.",
   keywords: [
     "sign shop Seattle",
     "custom signs Seattle",
@@ -38,12 +38,12 @@ export const metadata: Metadata = {
     "storefront signs Seattle",
   ],
   openGraph: {
-    title: "Custom Signs & Signage in Seattle | Printec Corp",
+    title: "Custom Signs & Signage in Seattle | Printec Virginia LLC",
     description:
-      "Printec Corp provides custom signs, vehicle wraps, channel letters, and business signage in Seattle, WA. Serving Downtown, Capitol Hill, Ballard, Bellevue, and all of greater Seattle.",
+      "Printec Virginia LLC provides custom signs, vehicle wraps, channel letters, and business signage in Seattle, WA. Serving Downtown, Capitol Hill, Ballard, Bellevue, and all of greater Seattle.",
     type: "website",
     locale: "en_US",
-    siteName: "Printec Corp",
+    siteName: "Printec Virginia LLC",
   },
 };
 
@@ -225,7 +225,7 @@ export default function SeattleLocationPage() {
           }}
         >
           From channel letters and storefront signs to full vehicle wraps,
-          Printec Corp delivers premium signage solutions to businesses across
+          Printec Virginia LLC delivers premium signage solutions to businesses across
           the greater Seattle area.
         </p>
 

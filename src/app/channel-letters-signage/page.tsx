@@ -42,12 +42,12 @@ export const metadata: Metadata = {
     "monument signs",
   ],
   openGraph: {
-    title: "Channel Letters & Custom Signage | Printec Corp",
+    title: "Channel Letters & Custom Signage | Printec Virginia LLC",
     description:
       "Custom channel letter signs and LED signage for businesses in Virginia. Front-lit, back-lit, and halo-lit options. Expert installation.",
     type: "website",
     locale: "en_US",
-    siteName: "Printec Corp",
+    siteName: "Printec Virginia LLC",
   },
 };
 
@@ -161,7 +161,7 @@ const FAQ = [
   },
   {
     q: "Do I need a permit for channel letter signage?",
-    a: "Yes, most Virginia municipalities require a sign permit before installation. Requirements vary by jurisdiction and typically regulate sign size, height, illumination, and placement. Printec Corp handles the entire permitting process, including scaled drawings, electrical plans, and local building department documentation.",
+    a: "Yes, most Virginia municipalities require a sign permit before installation. Requirements vary by jurisdiction and typically regulate sign size, height, illumination, and placement. Printec Virginia LLC handles the entire permitting process, including scaled drawings, electrical plans, and local building department documentation.",
   },
   {
     q: "How long does fabrication and installation take?",
@@ -267,7 +267,7 @@ export default function ChannelLettersSignagePage() {
                 bold, professional presence that attracts customers day and night.
               </p>
               <p style={{ margin: "0 0 16px" }}>
-                At Printec Corp, we custom-fabricate LED channel letter signs for
+                At Printec Virginia LLC, we custom-fabricate LED channel letter signs for
                 businesses across Virginia. Every sign is built from durable
                 aluminum housings, precision-bent returns, high-output LED
                 modules, and UV-stable acrylic faces. We handle design,

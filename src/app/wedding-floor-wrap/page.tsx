@@ -39,12 +39,12 @@ export const metadata: Metadata = {
     "reception floor wrap",
   ],
   openGraph: {
-    title: "Wedding Dance Floor Wraps & Decals | Printec Corp",
+    title: "Wedding Dance Floor Wraps & Decals | Printec Virginia LLC",
     description:
       "Make your wedding unforgettable with custom dance floor wraps and decals. Elegant monograms, photo prints, and personalized designs. Free consultation in Virginia.",
     type: "website",
     locale: "en_US",
-    siteName: "Printec Corp",
+    siteName: "Printec Virginia LLC",
   },
 };
 
@@ -308,7 +308,7 @@ export default function WeddingFloorWrapPage() {
           }}
         >
           Make your first dance unforgettable with a fully custom floor wrap
-          designed, printed, and installed by Printec Corp.
+          designed, printed, and installed by Printec Virginia LLC.
         </p>
 
         <div
@@ -350,7 +350,7 @@ export default function WeddingFloorWrapPage() {
               space entirely yours.
             </p>
             <p style={{ margin: 0 }}>
-              At Printec Corp, we have been creating custom wedding floor wraps and
+              At Printec Virginia LLC, we have been creating custom wedding floor wraps and
               wedding floor decals for couples across Virginia since 2017. Our
               premium non-slip vinyl is safe for heels, dance moves, and champagne
               spills — and our installation crew handles everything so you can focus

@@ -38,12 +38,12 @@ export const metadata: Metadata = {
     "window graphics Virginia",
   ],
   openGraph: {
-    title: "Window Wraps & Storefront Graphics | Printec Corp",
+    title: "Window Wraps & Storefront Graphics | Printec Virginia LLC",
     description:
       "Custom window wraps, storefront graphics, and business window decals that attract customers. Privacy films, full wraps, and perforated vinyl. Virginia's #1 choice.",
     type: "website",
     locale: "en_US",
-    siteName: "Printec Corp",
+    siteName: "Printec Virginia LLC",
   },
 };
 
@@ -232,7 +232,7 @@ export default function WindowWrapsPage() {
                 Your storefront windows are the first thing potential customers see
                 when they walk or drive past your business. Custom window wraps
                 turn that glass into high-impact, cost-effective advertising that
-                works 24 hours a day, 7 days a week. At Printec Corp, we design
+                works 24 hours a day, 7 days a week. At Printec Virginia LLC, we design
                 and install storefront window graphics, business window decals,
                 and privacy films for retail stores, restaurants, medical offices,
                 and commercial buildings throughout Virginia.

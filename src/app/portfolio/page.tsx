@@ -7,7 +7,7 @@ import { ORANGE, BLACK, WHITE } from "@/lib/constants";
 export const metadata: Metadata = {
   title: "Portfolio",
   description:
-    "Browse Printec Corp's portfolio of custom signs, vehicle wraps, window graphics, dance floor wraps, and channel letter signage projects in Virginia.",
+    "Browse Printec Virginia LLC's portfolio of custom signs, vehicle wraps, window graphics, dance floor wraps, and channel letter signage projects in Virginia.",
   keywords: [
     "signage portfolio",
     "vehicle wrap gallery",
@@ -17,12 +17,12 @@ export const metadata: Metadata = {
     "Virginia sign work",
   ],
   openGraph: {
-    title: "Portfolio | Printec Corp",
+    title: "Portfolio | Printec Virginia LLC",
     description:
-      "Browse Printec Corp's portfolio of custom signs, vehicle wraps, window graphics, dance floor wraps, and channel letter signage projects in Virginia.",
+      "Browse Printec Virginia LLC's portfolio of custom signs, vehicle wraps, window graphics, dance floor wraps, and channel letter signage projects in Virginia.",
     type: "website",
     locale: "en_US",
-    siteName: "Printec Corp",
+    siteName: "Printec Virginia LLC",
   },
 };
 

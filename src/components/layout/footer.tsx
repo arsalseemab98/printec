@@ -104,7 +104,7 @@ export function Footer() {
           <Link href="/" style={{ display: "inline-block" }}>
             <Image
               src="/printec-logo-light.png"
-              alt="Printec Corp"
+              alt="Printec Virginia LLC"
               width={200}
               height={125}
               style={{ height: "52px", width: "auto" }}
@@ -301,7 +301,7 @@ export function Footer() {
               letterSpacing: "0.5px",
             }}
           >
-            &copy; 2026 Printec Corp. All rights reserved.
+            &copy; 2026 Printec Virginia LLC. All rights reserved.
           </span>
           <span
             style={{

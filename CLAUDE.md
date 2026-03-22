@@ -1,7 +1,7 @@
-# Printec Corp Website
+# Printec Virginia LLC Website
 
 ## Project Overview
-Full-service website for Printec Corp — a custom signage, vehicle wrap, and graphics company established in 2017 in Virginia. The site targets both B2B (businesses, storefronts) and B2C (weddings, events, venues) customers.
+Full-service website for Printec Virginia LLC — a custom signage, vehicle wrap, and graphics company established in 2017 in Virginia. The site targets both B2B (businesses, storefronts) and B2C (weddings, events, venues) customers.
 
 ## Hosting & Services
 - **Domain**: https://printecwrap.com (www.printecwrap.com → redirects to non-www)

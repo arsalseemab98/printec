@@ -45,12 +45,12 @@ export const metadata: Metadata = {
     "neon wedding signs",
   ],
   openGraph: {
-    title: "Custom Neon Signs | Printec Corp",
+    title: "Custom Neon Signs | Printec Virginia LLC",
     description:
       "Custom LED neon signs for businesses, events, weddings, and home decor. Energy-efficient, long-lasting, and fully customizable. Serving Virginia.",
     type: "website",
     locale: "en_US",
-    siteName: "Printec Corp",
+    siteName: "Printec Virginia LLC",
   },
 };
 
@@ -240,7 +240,7 @@ export default function CustomNeonSignsPage() {
                 personal spaces.
               </p>
               <p style={{ margin: "0 0 16px" }}>
-                At Printec Corp, we design and fabricate custom LED neon signs for
+                At Printec Virginia LLC, we design and fabricate custom LED neon signs for
                 clients across Virginia. Every sign is hand-bent from premium LED
                 neon flex strip, mounted on laser-cut clear acrylic backing, and
                 wired with a low-voltage adapter for plug-and-play simplicity.

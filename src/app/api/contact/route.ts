@@ -123,7 +123,7 @@ function buildConfirmationEmail(name: string) {
         </h1>
       </div>
       <div style="padding:28px 24px;color:#ccc;font-size:15px;line-height:1.7;">
-        <p style="margin:0 0 16px;">Thanks for reaching out to <strong style="color:#F7941D;">Printec Corp</strong>. We've received your message and our team will get back to you within <strong style="color:#fff;">24 hours</strong>.</p>
+        <p style="margin:0 0 16px;">Thanks for reaching out to <strong style="color:#F7941D;">Printec Virginia LLC</strong>. We've received your message and our team will get back to you within <strong style="color:#fff;">24 hours</strong>.</p>
         <p style="margin:0 0 16px;">In the meantime, feel free to check out our latest work on <a href="https://www.instagram.com/printecvirginia/" style="color:#F7941D;text-decoration:none;">Instagram</a> or browse our <a href="https://printecwrap.com/portfolio" style="color:#F7941D;text-decoration:none;">portfolio</a>.</p>
         <p style="margin:0;color:#888;">— The Printec Team</p>
       </div>
@@ -136,7 +136,7 @@ function buildConfirmationEmail(name: string) {
 </html>`;
 
   return {
-    subject: "Thanks for contacting Printec Corp!",
+    subject: "Thanks for contacting Printec Virginia LLC!",
     html,
   };
 }

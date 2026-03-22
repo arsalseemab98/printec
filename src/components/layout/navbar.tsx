@@ -148,7 +148,7 @@ export function Navbar() {
         >
           <Image
             src="/printec-logo-light.png"
-            alt="Printec Corp"
+            alt="Printec Virginia LLC"
             width={200}
             height={125}
             className={logoAnimated ? "logo-spin-bounce" : undefined}

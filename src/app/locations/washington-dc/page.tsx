@@ -24,9 +24,9 @@ import {
 } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: "Sign Shop & Custom Signage in Washington DC | Printec Corp",
+  title: "Sign Shop & Custom Signage in Washington DC | Printec Virginia LLC",
   description:
-    "Printec Corp is your trusted sign shop in Washington DC. Custom channel letters, vehicle wraps, business signage, and more. Serving Capitol Hill, Georgetown, Dupont Circle, and all of DC.",
+    "Printec Virginia LLC is your trusted sign shop in Washington DC. Custom channel letters, vehicle wraps, business signage, and more. Serving Capitol Hill, Georgetown, Dupont Circle, and all of DC.",
   keywords: [
     "sign shop Washington DC",
     "custom signs DC",
@@ -37,12 +37,12 @@ export const metadata: Metadata = {
     "business signs DC",
   ],
   openGraph: {
-    title: "Sign Shop & Custom Signage in Washington DC | Printec Corp",
+    title: "Sign Shop & Custom Signage in Washington DC | Printec Virginia LLC",
     description:
-      "Printec Corp is your trusted sign shop in Washington DC. Custom channel letters, vehicle wraps, business signage, and more. Serving Capitol Hill, Georgetown, Dupont Circle, and all of DC.",
+      "Printec Virginia LLC is your trusted sign shop in Washington DC. Custom channel letters, vehicle wraps, business signage, and more. Serving Capitol Hill, Georgetown, Dupont Circle, and all of DC.",
     type: "website",
     locale: "en_US",
-    siteName: "Printec Corp",
+    siteName: "Printec Virginia LLC",
   },
 };
 
@@ -221,7 +221,7 @@ export default function WashingtonDCPage() {
             margin: "0 auto",
           }}
         >
-          Printec Corp delivers premium custom signage to businesses across the
+          Printec Virginia LLC delivers premium custom signage to businesses across the
           nation&apos;s capital — from channel letters and storefront signs to
           vehicle wraps and digital displays.
         </p>

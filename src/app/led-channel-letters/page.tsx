@@ -42,12 +42,12 @@ export const metadata: Metadata = {
     "halo-lit channel letters",
   ],
   openGraph: {
-    title: "LED Channel Letters | Printec Corp",
+    title: "LED Channel Letters | Printec Virginia LLC",
     description:
       "Premium LED channel letter signs that make your business shine 24/7. Energy-efficient, long-lasting, and custom-designed. Free estimates in Virginia.",
     type: "website",
     locale: "en_US",
-    siteName: "Printec Corp",
+    siteName: "Printec Virginia LLC",
   },
 };
 
@@ -125,7 +125,7 @@ const FAQS = [
   },
   {
     q: "Do I need a permit for LED channel letter signs in Virginia?",
-    a: "Yes, most Virginia municipalities require a sign permit for illuminated channel letters. Printec Corp handles the entire permitting process as part of our service, including zoning compliance, electrical permits, and HOA submissions.",
+    a: "Yes, most Virginia municipalities require a sign permit for illuminated channel letters. Printec Virginia LLC handles the entire permitting process as part of our service, including zoning compliance, electrical permits, and HOA submissions.",
   },
   {
     q: "Can LED channel letters be installed on any building?",

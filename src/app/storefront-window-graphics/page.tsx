@@ -41,12 +41,12 @@ export const metadata: Metadata = {
     "commercial window graphics",
   ],
   openGraph: {
-    title: "Storefront Window Graphics & Decals | Printec Corp",
+    title: "Storefront Window Graphics & Decals | Printec Virginia LLC",
     description:
       "Professional storefront window graphics and decals that drive foot traffic. Custom window signs, vinyl lettering, and full window wraps for businesses in Virginia.",
     type: "website",
     locale: "en_US",
-    siteName: "Printec Corp",
+    siteName: "Printec Virginia LLC",
   },
 };
 
@@ -232,7 +232,7 @@ export default function StorefrontWindowGraphicsPage() {
           }}
         >
           Turn every passerby into a customer with professional window
-          graphics designed and installed by Printec Corp.
+          graphics designed and installed by Printec Virginia LLC.
         </p>
 
         <div
@@ -273,7 +273,7 @@ export default function StorefrontWindowGraphicsPage() {
               marketing medium — with zero recurring fees and years of durability.
             </p>
             <p style={{ margin: 0 }}>
-              At Printec Corp, we design and install custom storefront window graphics
+              At Printec Virginia LLC, we design and install custom storefront window graphics
               for businesses across Virginia. From full window wraps to elegant
               frosted films, from{" "}
               <Link href="/window-wraps" style={{ color: ORANGE, textDecoration: "underline" }}>

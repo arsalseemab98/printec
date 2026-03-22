@@ -50,7 +50,7 @@ export const BLOG_POSTS: BlogPost[] = [
       <p>Channel letter installation isn't a DIY project. It requires electrical wiring, secure structural mounting, and compliance with local building codes. A licensed sign company in Virginia will pull the necessary permits, handle the electrical connections, and ensure the sign meets all UL listing and NEC requirements. Improper installation can void warranties, create fire hazards, and result in fines from local code enforcement.</p>
 
       <h3>The Bottom Line</h3>
-      <p>Channel letters are an investment that pays for itself through increased visibility and brand credibility. Whether you're opening a new location in Virginia or refreshing an existing storefront, getting a detailed quote from a reputable local sign company is the best first step. At Printec Corp, we provide free on-site consultations and transparent pricing for channel letter projects throughout Virginia.</p>
+      <p>Channel letters are an investment that pays for itself through increased visibility and brand credibility. Whether you're opening a new location in Virginia or refreshing an existing storefront, getting a detailed quote from a reputable local sign company is the best first step. At Printec Virginia LLC, we provide free on-site consultations and transparent pricing for channel letter projects throughout Virginia.</p>
     `,
   },
   {
@@ -90,7 +90,7 @@ export const BLOG_POSTS: BlogPost[] = [
       <p>Professional installation takes 1–3 hours depending on size. The floor surface must be clean, dry, and smooth for proper adhesion. Most installers recommend applying the wrap at least 2 hours before guests arrive to allow it to fully settle. If your venue has a textured or uneven floor, a smooth plywood subflooring layer may be needed first. After the event, removal typically takes 30–60 minutes.</p>
 
       <h3>Make It Unforgettable</h3>
-      <p>A custom dance floor wrap is one of the highest-impact, most-photographed elements of any wedding reception. It sets the tone, reinforces your theme, and gives guests something to talk about. At Printec Corp, we work with couples throughout Virginia to design and install custom wedding dance floor wraps that make the night truly special.</p>
+      <p>A custom dance floor wrap is one of the highest-impact, most-photographed elements of any wedding reception. It sets the tone, reinforces your theme, and gives guests something to talk about. At Printec Virginia LLC, we work with couples throughout Virginia to design and install custom wedding dance floor wraps that make the night truly special.</p>
     `,
   },
   {
@@ -135,7 +135,7 @@ export const BLOG_POSTS: BlogPost[] = [
       </ul>
 
       <h3>Get Expert Advice</h3>
-      <p>At Printec Corp, we help Virginia businesses choose the right window graphics solution for their goals and budget. Whether it's a full storefront wrap or a set of precision-cut vinyl decals, we handle design, production, and installation so you can focus on running your business.</p>
+      <p>At Printec Virginia LLC, we help Virginia businesses choose the right window graphics solution for their goals and budget. Whether it's a full storefront wrap or a set of precision-cut vinyl decals, we handle design, production, and installation so you can focus on running your business.</p>
     `,
   },
   {
@@ -187,7 +187,7 @@ export const BLOG_POSTS: BlogPost[] = [
       <p>Studies consistently show that effective signage drives foot traffic and revenue. The Small Business Administration notes that adding or upgrading a sign can increase revenue by 7–15%. For a business spending $5,000 on LED channel letters that last 10 years, that's $500 per year — far less than almost any other form of ongoing advertising. Channel letters work 24/7, require no monthly ad spend, and build cumulative brand recognition in your local market.</p>
 
       <h3>Ready to Get Started?</h3>
-      <p>Printec Corp designs, fabricates, and installs LED channel letter signs for businesses throughout Virginia. Contact us for a free consultation and custom quote tailored to your building, brand, and budget.</p>
+      <p>Printec Virginia LLC designs, fabricates, and installs LED channel letter signs for businesses throughout Virginia. Contact us for a free consultation and custom quote tailored to your building, brand, and budget.</p>
     `,
   },
   {
@@ -228,7 +228,7 @@ export const BLOG_POSTS: BlogPost[] = [
       </ul>
 
       <h3>Transform Your Workspace</h3>
-      <p>At Printec Corp, we help businesses throughout Virginia design and install wall wraps that reinforce brand identity and create inspiring work environments. From a single accent wall to a complete office transformation, we guide you through material selection, design, and professional installation.</p>
+      <p>At Printec Virginia LLC, we help businesses throughout Virginia design and install wall wraps that reinforce brand identity and create inspiring work environments. From a single accent wall to a complete office transformation, we guide you through material selection, design, and professional installation.</p>
     `,
   },
   {
@@ -267,7 +267,7 @@ export const BLOG_POSTS: BlogPost[] = [
       <p>Pay attention to how the company communicates from the first inquiry. Do they respond promptly? Do they visit your site before quoting? Do they provide detailed, itemized proposals? A company that's organized and communicative during the sales process will likely be organized during production and installation. Conversely, slow responses, vague quotes, and missed commitments during the sales phase are warning signs of what's to come.</p>
 
       <h3>Making Your Decision</h3>
-      <p>The cheapest quote is rarely the best value. Prioritize quality, experience, and professionalism. A well-made sign from a reputable company will outperform and outlast a bargain sign by years — paying for itself many times over through brand visibility and customer trust. At Printec Corp, we welcome the opportunity to walk you through our process, show you our portfolio, and earn your business on merit.</p>
+      <p>The cheapest quote is rarely the best value. Prioritize quality, experience, and professionalism. A well-made sign from a reputable company will outperform and outlast a bargain sign by years — paying for itself many times over through brand visibility and customer trust. At Printec Virginia LLC, we welcome the opportunity to walk you through our process, show you our portfolio, and earn your business on merit.</p>
     `,
   },
 ];

@@ -43,12 +43,12 @@ export const metadata: Metadata = {
     "wall graphics Virginia",
   ],
   openGraph: {
-    title: "Commercial Wall Wraps | Printec Corp",
+    title: "Commercial Wall Wraps | Printec Virginia LLC",
     description:
       "Custom vinyl wall wraps for offices, retail stores, restaurants, and commercial spaces. Durable wall graphics that transform any interior. Serving Virginia.",
     type: "website",
     locale: "en_US",
-    siteName: "Printec Corp",
+    siteName: "Printec Virginia LLC",
   },
 };
 
@@ -268,7 +268,7 @@ export default function WallWrapsPage() {
                 Your walls are the largest untapped branding asset in your
                 building. A custom vinyl wall wrap converts empty drywall into a
                 powerful visual experience that communicates your brand story,
-                engages customers, and inspires your team. At Printec Corp, we
+                engages customers, and inspires your team. At Printec Virginia LLC, we
                 design, print, and install commercial wall wraps for businesses
                 of every size across Virginia.
               </p>

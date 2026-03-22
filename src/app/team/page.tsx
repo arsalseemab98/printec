@@ -18,9 +18,9 @@ import {
 export const metadata: Metadata = {
   title: "Our Team",
   description:
-    "Meet the Printec Corp team — experienced designers, installers, and project managers dedicated to delivering exceptional signage, wraps, and graphics in Virginia.",
+    "Meet the Printec Virginia LLC team — experienced designers, installers, and project managers dedicated to delivering exceptional signage, wraps, and graphics in Virginia.",
   keywords: [
-    "Printec Corp team",
+    "Printec Virginia LLC team",
     "sign company staff",
     "signage designers Virginia",
     "wrap installers",
@@ -28,12 +28,12 @@ export const metadata: Metadata = {
     "Virginia sign professionals",
   ],
   openGraph: {
-    title: "Our Team | Printec Corp",
+    title: "Our Team | Printec Virginia LLC",
     description:
-      "Meet the Printec Corp team — experienced designers, installers, and project managers dedicated to delivering exceptional signage, wraps, and graphics in Virginia.",
+      "Meet the Printec Virginia LLC team — experienced designers, installers, and project managers dedicated to delivering exceptional signage, wraps, and graphics in Virginia.",
     type: "website",
     locale: "en_US",
-    siteName: "Printec Corp",
+    siteName: "Printec Virginia LLC",
   },
 };
 
@@ -75,7 +75,7 @@ const LEADERSHIP = [
   {
     name: "Muhammad Azhar",
     role: "CEO",
-    bio: "Azhar founded and leads Printec Corp with a clear vision — delivering bold, high-quality signage and graphics that help businesses and events stand out. Under his leadership, Printec has grown into Virginia's trusted name in custom signage.",
+    bio: "Azhar founded and leads Printec Virginia LLC with a clear vision — delivering bold, high-quality signage and graphics that help businesses and events stand out. Under his leadership, Printec has grown into Virginia's trusted name in custom signage.",
     email: TEAM_EMAIL,
     phone: TEAM_PHONE,
     image: IMG.teamAzhar,
@@ -199,7 +199,7 @@ export default function TeamPage() {
                   {person.image ? (
                     <Image
                       src={person.image}
-                      alt={`${person.name} — ${person.role} at Printec Corp`}
+                      alt={`${person.name} — ${person.role} at Printec Virginia LLC`}
                       fill
                       sizes="(max-width: 768px) 100vw, 340px"
                       style={{ objectFit: "cover", objectPosition: "center 20%" }}

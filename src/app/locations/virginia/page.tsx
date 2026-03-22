@@ -23,9 +23,9 @@ import {
 } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: "Custom Signs & Signage in Virginia | Printec Corp",
+  title: "Custom Signs & Signage in Virginia | Printec Virginia LLC",
   description:
-    "Printec Corp is Virginia's trusted sign company. Custom channel letters, vehicle wraps, business signage, and more. Serving Virginia Beach, Norfolk, Richmond, Arlington, and all of Virginia.",
+    "Printec Virginia LLC is Virginia's trusted sign company. Custom channel letters, vehicle wraps, business signage, and more. Serving Virginia Beach, Norfolk, Richmond, Arlington, and all of Virginia.",
   keywords: [
     "sign company Virginia",
     "custom signs Virginia",
@@ -36,12 +36,12 @@ export const metadata: Metadata = {
     "business signs Richmond",
   ],
   openGraph: {
-    title: "Custom Signs & Signage in Virginia | Printec Corp",
+    title: "Custom Signs & Signage in Virginia | Printec Virginia LLC",
     description:
-      "Printec Corp is Virginia's trusted sign company. Custom channel letters, vehicle wraps, business signage, and more. Serving Virginia Beach, Norfolk, Richmond, Arlington, and all of Virginia.",
+      "Printec Virginia LLC is Virginia's trusted sign company. Custom channel letters, vehicle wraps, business signage, and more. Serving Virginia Beach, Norfolk, Richmond, Arlington, and all of Virginia.",
     type: "website",
     locale: "en_US",
-    siteName: "Printec Corp",
+    siteName: "Printec Virginia LLC",
   },
 };
 

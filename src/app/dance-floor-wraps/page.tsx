@@ -33,12 +33,12 @@ export const metadata: Metadata = {
     "trade show floor wraps",
   ],
   openGraph: {
-    title: "Custom Dance Floor Wraps | Printec Corp",
+    title: "Custom Dance Floor Wraps | Printec Virginia LLC",
     description:
       "Custom dance floor wraps and vinyl floor graphics for weddings, corporate events, galas, trade shows, and brand activations. Serving Virginia.",
     type: "website",
     locale: "en_US",
-    siteName: "Printec Corp",
+    siteName: "Printec Virginia LLC",
   },
 };
 
@@ -270,7 +270,7 @@ export default function DanceFloorWrapsPage() {
               unforgettable experience. Whether you are hosting an elegant
               wedding reception with a personalized monogram or a high-energy
               corporate gala with branded flooring, a professionally designed
-              wrap sets the tone the moment your guests arrive. At Printec Corp,
+              wrap sets the tone the moment your guests arrive. At Printec Virginia LLC,
               we use premium 3M vinyl paired with a slip-resistant laminate
               engineered specifically for foot traffic.
             </p>

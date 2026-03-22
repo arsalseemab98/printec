@@ -23,9 +23,9 @@ import {
 } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: "Custom Signs & Signage in Maryland | Printec Corp",
+  title: "Custom Signs & Signage in Maryland | Printec Virginia LLC",
   description:
-    "Printec Corp delivers custom signs and signage in Maryland. Channel letters, vehicle wraps, business signage, and more. Serving Baltimore, Silver Spring, Bethesda, Rockville, Annapolis, and all of Maryland.",
+    "Printec Virginia LLC delivers custom signs and signage in Maryland. Channel letters, vehicle wraps, business signage, and more. Serving Baltimore, Silver Spring, Bethesda, Rockville, Annapolis, and all of Maryland.",
   keywords: [
     "custom signs Maryland",
     "sign shop Maryland",
@@ -36,12 +36,12 @@ export const metadata: Metadata = {
     "business signs Bethesda",
   ],
   openGraph: {
-    title: "Custom Signs & Signage in Maryland | Printec Corp",
+    title: "Custom Signs & Signage in Maryland | Printec Virginia LLC",
     description:
-      "Printec Corp delivers custom signs and signage in Maryland. Channel letters, vehicle wraps, business signage, and more. Serving Baltimore, Silver Spring, Bethesda, Rockville, Annapolis, and all of Maryland.",
+      "Printec Virginia LLC delivers custom signs and signage in Maryland. Channel letters, vehicle wraps, business signage, and more. Serving Baltimore, Silver Spring, Bethesda, Rockville, Annapolis, and all of Maryland.",
     type: "website",
     locale: "en_US",
-    siteName: "Printec Corp",
+    siteName: "Printec Virginia LLC",
   },
 };
 
@@ -222,7 +222,7 @@ export default function MarylandPage() {
             margin: "0 auto",
           }}
         >
-          Printec Corp brings premium custom signage to Maryland businesses —
+          Printec Virginia LLC brings premium custom signage to Maryland businesses —
           from channel letters and monument signs to vehicle wraps and digital
           displays, all fabricated and installed by our own team.
         </p>

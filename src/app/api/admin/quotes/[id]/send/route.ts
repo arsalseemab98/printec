@@ -94,12 +94,12 @@ export async function POST(
     <div style="background:#161616;border:1px solid #222;border-radius:8px;overflow:hidden;">
       <div style="background:#F7941D;padding:20px 24px;">
         <h1 style="margin:0;color:#0C0C0C;font-size:20px;font-weight:900;text-transform:uppercase;letter-spacing:1px;">
-          Your Quote from Printec Corp
+          Your Quote from Printec Virginia LLC
         </h1>
       </div>
       <div style="padding:28px 24px;color:#ccc;font-size:15px;line-height:1.7;">
         <p style="margin:0 0 16px;">Hi <strong style="color:#fff;">${escapeHtml(inquiry.name)}</strong>,</p>
-        <p style="margin:0 0 16px;">Thank you for your interest in <strong style="color:#F7941D;">Printec Corp</strong>. Please find your personalized quote <strong style="color:#fff;">${escapeHtml(quote.quote_number)}</strong> attached as a PDF.</p>
+        <p style="margin:0 0 16px;">Thank you for your interest in <strong style="color:#F7941D;">Printec Virginia LLC</strong>. Please find your personalized quote <strong style="color:#fff;">${escapeHtml(quote.quote_number)}</strong> attached as a PDF.</p>
         <p style="margin:0 0 16px;">Your quoted total is: <strong style="color:#F7941D;font-size:18px;">$${Number(quote.total).toLocaleString("en-US", { minimumFractionDigits: 2 })}</strong></p>
         <p style="margin:0 0 16px;color:#888;">This quote is valid for 30 days. If you have any questions or would like to proceed, simply reply to this email or call us at <strong style="color:#fff;">(555) 123-4567</strong>.</p>
         <p style="margin:0;color:#888;">— The Printec Team</p>
@@ -118,7 +118,7 @@ export async function POST(
 
     await graphClient.api(`/users/${emailFrom}/sendMail`).post({
       message: {
-        subject: `Your Quote from Printec Corp — ${quote.quote_number}`,
+        subject: `Your Quote from Printec Virginia LLC — ${quote.quote_number}`,
         body: { contentType: "HTML", content: emailHtml },
         toRecipients: [
           { emailAddress: { address: inquiry.email } },

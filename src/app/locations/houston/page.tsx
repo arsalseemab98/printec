@@ -23,9 +23,9 @@ import {
 } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: "Custom Signs & Signage in Houston | Printec Corp",
+  title: "Custom Signs & Signage in Houston | Printec Virginia LLC",
   description:
-    "Professional custom signs and signage in Houston. Printec Corp offers channel letters, vehicle wraps, window graphics, LED signs, and more for Houston businesses. Free quotes.",
+    "Professional custom signs and signage in Houston. Printec Virginia LLC offers channel letters, vehicle wraps, window graphics, LED signs, and more for Houston businesses. Free quotes.",
   keywords: [
     "sign shop Houston",
     "custom signs Houston",
@@ -37,12 +37,12 @@ export const metadata: Metadata = {
     "storefront signs Houston",
   ],
   openGraph: {
-    title: "Custom Signs & Signage in Houston | Printec Corp",
+    title: "Custom Signs & Signage in Houston | Printec Virginia LLC",
     description:
       "Professional custom signs and signage in Houston. Channel letters, vehicle wraps, window graphics, LED signs, and more. Free quotes available.",
     type: "website",
     locale: "en_US",
-    siteName: "Printec Corp",
+    siteName: "Printec Virginia LLC",
   },
 };
 

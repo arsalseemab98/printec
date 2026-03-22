@@ -23,9 +23,9 @@ import {
 } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: "Custom Signs & Signage in Dallas | Printec Corp",
+  title: "Custom Signs & Signage in Dallas | Printec Virginia LLC",
   description:
-    "Professional custom signs and signage in Dallas. Printec Corp offers channel letters, vehicle wraps, window graphics, LED signs, and more for Dallas-Fort Worth businesses. Free quotes.",
+    "Professional custom signs and signage in Dallas. Printec Virginia LLC offers channel letters, vehicle wraps, window graphics, LED signs, and more for Dallas-Fort Worth businesses. Free quotes.",
   keywords: [
     "sign shop Dallas",
     "custom signs Dallas",
@@ -37,12 +37,12 @@ export const metadata: Metadata = {
     "storefront signs Dallas",
   ],
   openGraph: {
-    title: "Custom Signs & Signage in Dallas | Printec Corp",
+    title: "Custom Signs & Signage in Dallas | Printec Virginia LLC",
     description:
       "Professional custom signs and signage in Dallas. Channel letters, vehicle wraps, window graphics, LED signs, and more. Free quotes available.",
     type: "website",
     locale: "en_US",
-    siteName: "Printec Corp",
+    siteName: "Printec Virginia LLC",
   },
 };
 

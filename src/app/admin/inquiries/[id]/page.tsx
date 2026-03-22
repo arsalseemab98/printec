@@ -3,7 +3,7 @@
 import { useEffect, useState, use } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, Trash2, Save, Plus } from "lucide-react";
+import { ArrowLeft, Trash2, Save, Plus, FileSignature } from "lucide-react";
 
 interface Inquiry {
   id: string;
@@ -571,24 +571,45 @@ export default function InquiryDetailPage({
               >
                 Quotes
               </h2>
-              <button
-                onClick={handleCreateQuote}
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "0.4rem",
-                  padding: "0.4rem 0.75rem",
-                  background: "rgba(247,148,29,0.15)",
-                  border: "1px solid #F7941D",
-                  borderRadius: "4px",
-                  color: "#F7941D",
-                  fontSize: "12px",
-                  fontWeight: 600,
-                  cursor: "pointer",
-                }}
-              >
-                <Plus size={13} /> Create Quote
-              </button>
+              <div style={{ display: "flex", gap: "0.5rem" }}>
+                <button
+                  onClick={handleCreateQuote}
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "0.4rem",
+                    padding: "0.4rem 0.75rem",
+                    background: "rgba(247,148,29,0.15)",
+                    border: "1px solid #F7941D",
+                    borderRadius: "4px",
+                    color: "#F7941D",
+                    fontSize: "12px",
+                    fontWeight: 600,
+                    cursor: "pointer",
+                  }}
+                >
+                  <Plus size={13} /> Create Quote
+                </button>
+                <Link
+                  href={`/admin/contracts/new?inquiry_id=${id}`}
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "0.4rem",
+                    padding: "0.4rem 0.75rem",
+                    background: "rgba(247,148,29,0.15)",
+                    border: "1px solid #F7941D",
+                    borderRadius: "4px",
+                    color: "#F7941D",
+                    fontSize: "12px",
+                    fontWeight: 600,
+                    textDecoration: "none",
+                    cursor: "pointer",
+                  }}
+                >
+                  <FileSignature size={13} /> Create Contract
+                </Link>
+              </div>
             </div>
             {quotes.length === 0 ? (
               <p

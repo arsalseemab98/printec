@@ -10,6 +10,7 @@ import {
   Users,
   FileText,
   ClipboardList,
+  FileSignature,
   LogOut,
 } from "lucide-react";
 
@@ -19,6 +20,7 @@ const NAV_ITEMS = [
   { label: "Images", href: "/admin/images", icon: ImageIcon },
   { label: "Inquiries", href: "/admin/inquiries", icon: Users },
   { label: "Quotes", href: "/admin/quotes", icon: ClipboardList },
+  { label: "Contracts", href: "/admin/contracts", icon: FileSignature },
   { label: "Blog", href: "/admin/blog", icon: FileText },
 ];
 

@@ -28,6 +28,7 @@ export const IMG = {
   windowWrapHero: `${SUPABASE_STORAGE}/window-wrap-hero.webp`,
   windowBefore: `${SUPABASE_STORAGE}/window-before.webp`,
   windowAfter: `${SUPABASE_STORAGE}/window-after.webp`,
+  bizSignageHero: `${SUPABASE_STORAGE}/biz-signage-hero.webp`,
   neonBefore: `${SUPABASE_STORAGE}/neon-before.webp`,
   neonAfter: `${SUPABASE_STORAGE}/neon-after.webp`,
   signageHero: `${SUPABASE_STORAGE}/signage-hero.webp`,

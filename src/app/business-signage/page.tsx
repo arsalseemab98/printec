@@ -212,6 +212,14 @@ export default function BusinessSignagePage() {
             borderBottom: `1px solid ${DARK1}`,
           }}
         >
+          <Image
+            src={IMG.bizSignageHero}
+            alt="Meridian Business Park monument sign and wayfinding signage at dusk"
+            fill
+            sizes="100vw"
+            style={{ objectFit: "cover" }}
+            priority
+          />
           <div
             style={{
               position: "absolute",

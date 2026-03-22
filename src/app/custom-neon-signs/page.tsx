@@ -222,6 +222,7 @@ export default function CustomNeonSignsPage() {
             afterAlt="Same staircase with THIS WAY UP vertical LED neon sign glowing warm orange"
             width={600}
             height={450}
+            startPosition={20}
           />
 
           {/* Copy */}

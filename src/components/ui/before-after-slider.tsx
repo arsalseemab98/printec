@@ -9,6 +9,7 @@ interface BeforeAfterSliderProps {
   afterAlt?: string;
   width?: number;
   height?: number;
+  startPosition?: number;
 }
 
 export function BeforeAfterSlider({
@@ -18,6 +19,7 @@ export function BeforeAfterSlider({
   afterAlt = "After",
   width = 500,
   height = 400,
+  startPosition = 50,
 }: BeforeAfterSliderProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const beforeRef = useRef<HTMLDivElement>(null);
@@ -97,11 +99,11 @@ export function BeforeAfterSlider({
         if (entries[0].isIntersecting && !hasAutoPlayed.current && !hasInteracted.current) {
           hasAutoPlayed.current = true;
 
-          // Keyframes: center(50) → right(80) → left(20) → center(50)
+          // Keyframes: start → right(80) → left(20) → start
           const keyframes = [
-            { from: 50, to: 80 },   // reveal more "after"
-            { from: 80, to: 20 },   // sweep to reveal "before"
-            { from: 20, to: 50 },   // return to center
+            { from: startPosition, to: 80 },   // reveal more "after"
+            { from: 80, to: 20 },               // sweep to reveal "before"
+            { from: 20, to: startPosition },     // return to start
           ];
           const segmentDuration = 800; // ms per segment
           const pauseBetween = 400;    // ms pause between segments
@@ -208,7 +210,7 @@ export function BeforeAfterSlider({
           left: 0,
           width: "100%",
           height: "100%",
-          clipPath: "inset(0 50% 0 0)",
+          clipPath: `inset(0 ${100 - startPosition}% 0 0)`,
           willChange: "clip-path",
         }}
       >
@@ -234,7 +236,7 @@ export function BeforeAfterSlider({
           position: "absolute",
           top: 0,
           bottom: 0,
-          left: "50%",
+          left: `${startPosition}%`,
           transform: "translateX(-50%)",
           zIndex: 2,
           display: "flex",

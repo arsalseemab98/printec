@@ -6,6 +6,7 @@ import Link from "next/link";
 import {
   LayoutDashboard,
   FileImage,
+  ImageIcon,
   Users,
   FileText,
   ClipboardList,
@@ -15,6 +16,7 @@ import {
 const NAV_ITEMS = [
   { label: "Dashboard", href: "/admin", icon: LayoutDashboard },
   { label: "Pages", href: "/admin/pages", icon: FileImage },
+  { label: "Images", href: "/admin/images", icon: ImageIcon },
   { label: "Inquiries", href: "/admin/inquiries", icon: Users },
   { label: "Quotes", href: "/admin/quotes", icon: ClipboardList },
   { label: "Blog", href: "/admin/blog", icon: FileText },

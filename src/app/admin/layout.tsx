@@ -6,6 +6,7 @@ import Link from "next/link";
 import {
   LayoutDashboard,
   FileImage,
+  Users,
   FileText,
   LogOut,
 } from "lucide-react";
@@ -13,6 +14,7 @@ import {
 const NAV_ITEMS = [
   { label: "Dashboard", href: "/admin", icon: LayoutDashboard },
   { label: "Pages", href: "/admin/pages", icon: FileImage },
+  { label: "Inquiries", href: "/admin/inquiries", icon: Users },
   { label: "Blog", href: "/admin/blog", icon: FileText },
 ];
 

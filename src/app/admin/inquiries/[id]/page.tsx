@@ -124,19 +124,8 @@ export default function InquiryDetailPage({
     router.push("/admin/inquiries");
   }
 
-  async function handleCreateQuote() {
-    const res = await fetch("/api/admin/quotes", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        inquiry_id: id,
-        items: [],
-        total: 0,
-        notes: "",
-      }),
-    });
-    const data = await res.json();
-    setQuotes((prev) => [data, ...prev]);
+  function handleCreateQuote() {
+    router.push(`/admin/inquiries/${id}/quote`);
   }
 
   if (loading) {
@@ -497,8 +486,9 @@ export default function InquiryDetailPage({
             ) : (
               <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
                 {quotes.map((q) => (
-                  <div
+                  <Link
                     key={q.id}
+                    href={`/admin/inquiries/${id}/quote?quote_id=${q.id}`}
                     style={{
                       display: "flex",
                       alignItems: "center",
@@ -507,6 +497,8 @@ export default function InquiryDetailPage({
                       background: "#0C0C0C",
                       border: "1px solid #1a1a1a",
                       borderRadius: "4px",
+                      textDecoration: "none",
+                      transition: "border-color 0.2s",
                     }}
                   >
                     <div>
@@ -542,7 +534,7 @@ export default function InquiryDetailPage({
                     >
                       ${q.total.toLocaleString()}
                     </p>
-                  </div>
+                  </Link>
                 ))}
               </div>
             )}

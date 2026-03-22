@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { ClientSecretCredential } from "@azure/identity";
 import { Client } from "@microsoft/microsoft-graph-client";
 import { TokenCredentialAuthenticationProvider } from "@microsoft/microsoft-graph-client/authProviders/azureTokenCredentials";
+import { createServerClient } from "@/lib/supabase";
 
 // ── Rate limiting (in-memory) ──
 const recentSubmissions = new Map<string, number>();
@@ -222,6 +223,27 @@ export async function POST(req: NextRequest) {
         toRecipients: [{ emailAddress: { address: email } }],
       },
     });
+
+    // ── Save inquiry to database ──
+    try {
+      const serverClient = createServerClient();
+      await serverClient.from("inquiries").insert({
+        name,
+        email,
+        phone: phone || null,
+        service: service || null,
+        description: description || null,
+        budget: budget || null,
+        source,
+        page: page || null,
+        utm_source: utm_source || null,
+        utm_medium: utm_medium || null,
+        utm_campaign: utm_campaign || null,
+        status: "New",
+      });
+    } catch (dbError) {
+      console.error("Failed to save inquiry to database:", dbError);
+    }
 
     return NextResponse.json({ success: true });
   } catch (error) {

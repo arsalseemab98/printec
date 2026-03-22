@@ -74,6 +74,7 @@ export default function ContractDetailPage({
   const [saving, setSaving] = useState(false);
   const [sending, setSending] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [downloadingPdf, setDownloadingPdf] = useState(false);
 
   const fetchContract = useCallback(async () => {
     try {
@@ -159,6 +160,47 @@ export default function ContractDetailPage({
       return;
     await fetch(`/api/admin/contracts/${id}`, { method: "DELETE" });
     router.push("/admin/contracts");
+  }
+
+  async function handleDownloadPDF() {
+    if (!contract) return;
+    setDownloadingPdf(true);
+    try {
+      const { pdf } = await import("@react-pdf/renderer");
+      const { ContractPDF } = await import("@/lib/contract-pdf");
+      const React = await import("react");
+      const element = React.createElement(ContractPDF, {
+        contract_number: contract.contract_number,
+        client_name: contract.client_name || "",
+        client_email: contract.client_email || "",
+        event_date: contract.event_date,
+        venue: contract.venue,
+        service_description: contract.service_description,
+        total_price: contract.total_price,
+        travel_cost: contract.travel_cost,
+        advance_amount: contract.advance_amount,
+        balance_amount: contract.balance_amount,
+        balance_due: contract.balance_due,
+        terms: contract.terms || [],
+        signature_data: contract.signature_data,
+        signed_at: contract.signed_at,
+        logoUrl: "/printec-logo-light.png",
+      });
+      const blob = await pdf(element as any).toBlob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${contract.contract_number}${contract.signed_at ? "-signed" : ""}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error("PDF generation failed:", err);
+      alert("Failed to generate PDF.");
+    } finally {
+      setDownloadingPdf(false);
+    }
   }
 
   function handleCopyLink() {
@@ -714,9 +756,8 @@ export default function ContractDetailPage({
                 )}
               </button>
               <button
-                onClick={() =>
-                  window.open(`/api/admin/contracts/${id}/pdf`, "_blank")
-                }
+                onClick={handleDownloadPDF}
+                disabled={downloadingPdf}
                 style={{
                   display: "inline-flex",
                   alignItems: "center",
@@ -728,13 +769,18 @@ export default function ContractDetailPage({
                   color: "rgba(255,255,255,0.7)",
                   fontSize: "13px",
                   fontWeight: 600,
-                  cursor: "pointer",
+                  cursor: downloadingPdf ? "wait" : "pointer",
+                  opacity: downloadingPdf ? 0.6 : 1,
                   width: "100%",
                   justifyContent: "center",
                 }}
               >
                 <Download size={14} />{" "}
-                {isSigned ? "Download Signed PDF" : "Download PDF"}
+                {downloadingPdf
+                  ? "Generating..."
+                  : isSigned
+                    ? "Download Signed PDF"
+                    : "Download PDF"}
               </button>
             </div>
           </div>

@@ -6,8 +6,8 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
 const DEFAULT_TERMS = [
-  "Services: Provider agrees to perform the {service_description} for {venue} printing, install (\"Services\") Custom Design Included Total of ${total_price}",
-  "Payment: Client agrees to pay Provider the total fee of ${advance_amount} advance and balance ${balance_amount} {balance_due}, for the Services, payable as follows:",
+  "Services: Provider agrees to perform the {service} for {venue} printing, install (\"Services\") Custom Design Included Total of ${total}",
+  "Payment: Client agrees to pay Provider the total fee of ${advance} advance and balance ${balance} {balance_due}, for the Services, payable as follows:",
   "Deposit/Cancellation: Printec also reserves right to cancel the dance floor event in any unforeseen circumstances, with the return of the deposit.",
   "Confidentiality: Both parties agree to keep all information related to this Agreement confidential and shall not disclose it to any third party without the prior written consent of the other party.",
   "Liability: Provider's total liability under this Agreement shall be limited to the total fee paid by the Client. In no event shall Provider be liable for any indirect, special, or consequential damages caused by the floor vinyl installation to the property or any individual.",

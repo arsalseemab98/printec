@@ -11,7 +11,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/portfolio",
     "/contact",
     "/blog",
-    "/custom-signs",
     "/vinyl-wraps",
     "/business-signage",
     "/dance-floor-wraps",

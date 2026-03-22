@@ -297,3 +297,28 @@
 - Microsoft Graph for email (company already uses M365)
 - In-memory rate limiting (serverless-safe with cleanup on each request)
 - Blog migration is backward-compatible (fallback to blog-data.ts if DB empty)
+
+---
+
+## 2026-03-22 — Admin Image Management
+
+### What was done
+- Created /admin/images page for managing Supabase Storage images
+- Features: view all images in grid, single + bulk upload (drag & drop), delete with confirmation
+- Copy URL button copies Supabase CDN URL to clipboard
+- Search/filter bar to find images by filename
+- Shows file size (KB/MB) and thumbnail preview for each image
+- API route /api/admin/images (GET list, POST upload, DELETE remove)
+- Added "Images" to admin sidebar navigation
+
+---
+
+## 2026-03-22 — Logo Animation + Performance + Analytics
+
+### What was done
+- Added navbar logo spin + bounce animation (Style 1) on first visit
+- Uses sessionStorage — plays once per browser session, no SEO impact
+- Added Microsoft Clarity analytics (ID: vzki5lbs56) via next/Script afterInteractive
+- Fixed metadataBase URL: printeccorp.com → printecwrap.com
+- Performance: enabled AVIF format, 1-year image cache TTL, gzip compression, removed X-Powered-By header
+- Improved sitemap with priority tiers (service pages 0.9, SEO pages 0.8, locations 0.7, blog 0.6)

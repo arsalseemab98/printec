@@ -70,6 +70,7 @@ src/
 │   │   ├── inquiries/                # CRM: inquiry list, detail, quote builder
 │   │   │   ├── page.tsx              # Inquiry list (status filter, search)
 │   │   │   └── [id]/                 # Inquiry detail + quote builder
+│   │   ├── images/page.tsx            # Image manager (view, upload, delete)
 │   │   └── quotes/page.tsx           # All quotes sent listing
 │   ├── api/
 │   │   ├── contact/route.ts          # Contact form → email + save to DB
@@ -80,6 +81,7 @@ src/
 │   │       ├── pages/[slug]/         # Page images + content CRUD
 │   │       ├── blog/                 # Blog posts CRUD
 │   │       ├── inquiries/            # Inquiries CRUD
+│   │       ├── images/route.ts       # Image list, upload, delete (Supabase Storage)
 │   │       └── quotes/              # Quotes CRUD + send PDF
 │   ├── sitemap.ts                    # Auto-generated sitemap
 │   ├── robots.ts                     # Robots.txt
@@ -185,6 +187,7 @@ npx next build             # Production build
   - PDF quote generator (branded dark theme with logo, line items, totals)
   - Quote sending via Microsoft Graph email (PDF attachment)
   - All quotes listing page (/admin/quotes)
+  - Image manager: view all Supabase Storage images, single + bulk upload, delete, copy URL, search/filter
 
 ## Email Integration
 - **Provider**: Microsoft Graph API (Azure AD app)

@@ -72,6 +72,7 @@
 | Inquiry Detail | `/admin/inquiries/[id]` | ✅ | Editable customer info, status change, notes |
 | Quote Builder | `/admin/inquiries/[id]/quote` | ✅ | Line items, PDF preview, send email |
 | Quotes List | `/admin/quotes` | ✅ | All/Sent/Not Sent filter |
+| Image Manager | `/admin/images` | ✅ | View grid, upload (single+bulk), delete, copy URL, search |
 | Proxy Auth | `proxy.ts` | ✅ | Protects /admin/* except /admin/login |
 
 ## Email — Verification
@@ -106,6 +107,29 @@
 | IMG constants centralized | ✅ |
 | next.config.ts remotePatterns | ✅ |
 | Supabase env vars on Vercel | ✅ |
+| AVIF format enabled | ✅ |
+| 1-year image cache TTL | ✅ |
+| Admin image manager | ✅ |
+
+## Performance — Verification
+
+| Feature | Status |
+|---------|--------|
+| AVIF + WebP image formats | ✅ |
+| minimumCacheTTL 1 year | ✅ |
+| Gzip compression enabled | ✅ |
+| X-Powered-By header removed | ✅ |
+| Static pages (SSG) | ✅ |
+| next/font zero layout shift | ✅ |
+| Logo animation (sessionStorage) | ✅ |
+
+## Analytics — Verification
+
+| Feature | Status |
+|---------|--------|
+| Microsoft Clarity (vzki5lbs56) | ✅ |
+| UTM parameter tracking in forms | ✅ |
+| Page source tracking in forms | ✅ |
 
 ## SEO Verification
 

@@ -22,6 +22,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/led-channel-letters",
     "/channel-letter-signs-near-me",
     "/storefront-window-graphics",
+    "/locations/washington-dc",
+    "/locations/virginia",
+    "/locations/maryland",
+    "/locations/seattle",
+    "/locations/new-york",
+    "/locations/los-angeles",
+    "/locations/chicago",
+    "/locations/dallas",
+    "/locations/houston",
   ];
 
   const blogPages = BLOG_POSTS.map((post) => ({

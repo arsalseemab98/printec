@@ -53,8 +53,16 @@ export function Navbar() {
   const [servicesOpen, setServicesOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [logoAnimated, setLogoAnimated] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
+
+  useEffect(() => {
+    if (!sessionStorage.getItem("logo-animated")) {
+      setLogoAnimated(true);
+      sessionStorage.setItem("logo-animated", "1");
+    }
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -143,6 +151,7 @@ export function Navbar() {
             alt="Printec Corp"
             width={200}
             height={125}
+            className={logoAnimated ? "logo-spin-bounce" : undefined}
             style={{ height: "44px", width: "auto" }}
             priority
           />

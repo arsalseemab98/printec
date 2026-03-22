@@ -413,3 +413,15 @@
   0% { box-shadow: 0 0 20px rgba(247,148,29,0.15), 0 0 40px rgba(247,148,29,0.05); }
   100% { box-shadow: 0 0 25px rgba(247,148,29,0.25), 0 0 50px rgba(247,148,29,0.1); }
 }
+
+/* Navbar Logo — Spin + Bounce (plays once per session) */
+.logo-spin-bounce {
+  animation: logoSpinBounce 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+@keyframes logoSpinBounce {
+  0% { transform: rotate(0deg) scale(0); opacity: 0; }
+  40% { transform: rotate(360deg) scale(1.2); opacity: 1; }
+  60% { transform: rotate(360deg) scale(0.9); }
+  80% { transform: rotate(360deg) scale(1.08); }
+  100% { transform: rotate(360deg) scale(1); }
+}

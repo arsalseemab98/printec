@@ -42,12 +42,13 @@ Full-service website for Printec Corp — a custom signage, vehicle wrap, and gr
 src/
 ├── app/                              # Pages (App Router)
 │   ├── page.tsx                      # Homepage (unique animated hero)
-│   ├── layout.tsx                    # Root layout (Navbar + Footer + FAB)
+│   ├── layout.tsx                    # Root layout (SiteShell wraps Navbar/Footer/FAB)
+│   ├── proxy.ts                      # Auth middleware (protects /admin/*)
 │   ├── about/                        # About Us (workshop hero image)
 │   ├── team/                         # Team page (5 members)
 │   ├── portfolio/                    # Portfolio/Gallery
 │   ├── contact/                      # Contact / Get a Quote
-│   ├── blog/                         # Blog hub + [slug] dynamic posts
+│   ├── blog/                         # Blog hub + [slug] (reads from Supabase with fallback)
 │   ├── dance-floor-wraps/            # Service page (hero + before/after)
 │   ├── wall-wraps/                   # Service page (hero + before/after)
 │   ├── window-wraps/                 # Service page (hero + before/after)
@@ -59,32 +60,45 @@ src/
 │   ├── led-channel-letters/          # SEO landing page
 │   ├── channel-letter-signs-near-me/ # SEO landing page
 │   ├── storefront-window-graphics/   # SEO landing page
-│   ├── locations/                    # Location SEO pages
-│   │   ├── washington-dc/
-│   │   ├── virginia/
-│   │   ├── maryland/
-│   │   ├── seattle/
-│   │   ├── new-york/
-│   │   ├── los-angeles/
-│   │   ├── chicago/
-│   │   ├── dallas/
-│   │   └── houston/
+│   ├── locations/                    # Location SEO pages (9 cities)
 │   ├── admin/                        # Admin portal
+│   │   ├── layout.tsx                # Admin sidebar layout
+│   │   ├── login/page.tsx            # Password login
+│   │   ├── page.tsx                  # Dashboard (sales metrics, date filter)
+│   │   ├── pages/                    # Page image + text management
+│   │   ├── blog/                     # Blog CRUD with Tiptap WYSIWYG
+│   │   ├── inquiries/                # CRM: inquiry list, detail, quote builder
+│   │   │   ├── page.tsx              # Inquiry list (status filter, search)
+│   │   │   └── [id]/                 # Inquiry detail + quote builder
+│   │   └── quotes/page.tsx           # All quotes sent listing
+│   ├── api/
+│   │   ├── contact/route.ts          # Contact form → email + save to DB
+│   │   └── admin/                    # Admin API routes
+│   │       ├── login/route.ts        # Password auth
+│   │       ├── logout/route.ts       # Clear session
+│   │       ├── upload/route.ts       # Image upload to Supabase Storage
+│   │       ├── pages/[slug]/         # Page images + content CRUD
+│   │       ├── blog/                 # Blog posts CRUD
+│   │       ├── inquiries/            # Inquiries CRUD
+│   │       └── quotes/              # Quotes CRUD + send PDF
 │   ├── sitemap.ts                    # Auto-generated sitemap
 │   ├── robots.ts                     # Robots.txt
 │   └── globals.css                   # Global styles + CSS animations
 ├── components/
 │   ├── layout/
 │   │   ├── navbar.tsx                # Site-wide nav with services dropdown
-│   │   └── footer.tsx                # 4-column footer with social links
+│   │   ├── footer.tsx                # 4-column footer with social links
+│   │   └── site-shell.tsx            # Hides nav/footer on /admin routes
 │   ├── shared/
 │   │   ├── section.tsx               # IntersectionObserver reveal wrapper
 │   │   ├── page-hero.tsx             # Reusable inner-page hero
 │   │   ├── cta-banner.tsx            # Reusable CTA section
 │   │   ├── skewed-button.tsx         # Neon glow pulse CTA button
 │   │   ├── tape-strip.tsx            # Spectrum gradient strip (homepage only)
-│   │   ├── contact-form.tsx          # Contact form with service dropdown
-│   │   └── floating-action-button.tsx # Bottom-right chat modal
+│   │   ├── contact-form.tsx          # Contact form → /api/contact (email + UTM)
+│   │   └── floating-action-button.tsx # Chat modal → /api/contact (with service dropdown)
+│   ├── admin/
+│   │   └── tiptap-editor.tsx         # WYSIWYG editor for blog posts
 │   └── ui/
 │       ├── container-text-flip.tsx    # Animated word flip component
 │       ├── gallery-grid-block-shadcnui.tsx # Filterable gallery with lightbox
@@ -92,8 +106,10 @@ src/
 │       └── etheral-shadow.tsx         # SVG displacement animation (hero bg)
 ├── lib/
 │   ├── constants.ts                  # Brand colors, services data, nav links, IMG URLs
-│   ├── blog-data.ts                  # Blog articles (6 posts with full content)
-│   └── supabase.ts                   # Supabase client (lazy init for build safety)
+│   ├── blog-data.ts                  # Blog articles (fallback if Supabase empty)
+│   ├── supabase.ts                   # Supabase client (lazy init for build safety)
+│   ├── content.ts                    # Helpers: getPageImage, getBlogPosts, etc.
+│   └── quote-pdf.tsx                 # React PDF template for branded quotes
 └── public/
     ├── printec-logo.png              # Original logo (2000x1252, high-res)
     ├── printec-logo-light.png        # White text version for dark bg
@@ -155,6 +171,46 @@ npx next build             # Production build
 - Facebook: https://www.facebook.com/share/1E2N8msTsc/
 - TikTok: https://www.tiktok.com/@printec.va
 
+## Admin Portal
+- **URL**: /admin (protected by password auth via proxy.ts)
+- **Password**: Set via `ADMIN_PASSWORD` env var
+- **Features**:
+  - Dashboard with sales metrics (booked pipeline, completed revenue, avg order)
+  - Date filter: All Time / This Month / Last Month / Custom month with ← → arrows
+  - Page image management (upload to Supabase Storage)
+  - Page text management (headings, body text)
+  - Blog CRUD with Tiptap WYSIWYG editor
+  - CRM: Inquiry list with status pipeline (New → Contacted → Follow Up → Quoted → Booked → Completed)
+  - Editable customer details (name, email, phone, service, budget, description)
+  - PDF quote generator (branded dark theme with logo, line items, totals)
+  - Quote sending via Microsoft Graph email (PDF attachment)
+  - All quotes listing page (/admin/quotes)
+
+## Email Integration
+- **Provider**: Microsoft Graph API (Azure AD app)
+- **From**: info@printecwrap.com
+- **Contact form**: Sends notification to Printec + confirmation to customer
+- **Quote emails**: Branded PDF attachment with quote details
+- **UTM tracking**: Captured from URL params, included in notification emails
+- **Rate limiting**: 60s cooldown per email+source
+
+## Database Tables (Supabase)
+- `page_images` — page_slug, slot, url, alt_text
+- `page_content` — page_slug, field, value
+- `blog_posts` — slug, title, excerpt, category, content (HTML), published
+- `inquiries` — name, email, phone, service, status, booked_price, completed_price, utm_*
+- `quotes` — inquiry_id, quote_number (PQ-001), items (jsonb), total, sent_at
+
+## Environment Variables
+- `NEXT_PUBLIC_SUPABASE_URL` — Supabase project URL
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY` — Public anon key
+- `SUPABASE_SERVICE_ROLE_KEY` — Service role (admin writes)
+- `ADMIN_PASSWORD` — Admin portal password
+- `AZURE_TENANT_ID` — Microsoft Graph auth
+- `AZURE_CLIENT_ID` — Microsoft Graph auth
+- `AZURE_CLIENT_SECRET` — Microsoft Graph auth
+- `EMAIL_FROM` — Sender email (info@printecwrap.com)
+
 ## Important Notes
 - Company established in **2017** (~9 years, NOT 25 years)
 - Content targets BOTH businesses AND events/weddings
@@ -162,8 +218,8 @@ npx next build             # Production build
 - Homepage has unique animated hero (street/urban style) — different from inner pages
 - Inner pages use Refined Minimal style consistently
 - Images served from Supabase Storage CDN (not public/ folder)
-- Blog articles are hardcoded in blog-data.ts (no CMS)
-- Contact form + FAB submit to /api/contact (Supabase backend)
+- Blog reads from Supabase with fallback to blog-data.ts
+- Contact form + FAB submit to /api/contact (email + save to inquiries table)
 - Supabase client uses lazy init to prevent build crashes when env vars missing
 - Domain: printecwrap.com is primary (www redirects to non-www)
 - Sitemap base URL: https://printecwrap.com

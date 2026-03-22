@@ -45,16 +45,55 @@
 |-----------|-------|-------|
 | Navbar | ✅ | Desktop + mobile, services dropdown (8 items), active links |
 | Footer | ✅ | 4 columns, social links, responsive |
-| FloatingActionButton | ✅ | Chat modal with form + worker photo, submits to /api/contact |
+| FloatingActionButton | ✅ | Chat modal with form + service dropdown + worker photo, submits to /api/contact |
 | SkewedButton (neon) | ✅ | Pulse animation, hover states |
 | ContainerTextFlip | ✅ | Word cycling animation in hero |
 | GalleryGridBlock | ✅ | Filter, lightbox, hover effects |
 | EtheralShadow | ✅ | SVG displacement, lazy-loaded |
-| ContactForm | ✅ | Service dropdown, budget, validation, submits to /api/contact |
+| ContactForm | ✅ | Service dropdown, budget, validation, submits to /api/contact, UTM capture |
 | PageHero | ✅ | Refined minimal style |
 | CtaBanner | ✅ | Refined minimal style |
 | Section (reveal) | ✅ | IntersectionObserver CSS transitions |
 | BeforeAfterSlider | ✅ | Style 3 — Elegant Pill Glow, drag interaction, pill labels, corner accents |
+| SiteShell | ✅ | Hides navbar/footer on /admin routes |
+| TiptapEditor | ✅ | WYSIWYG: bold, italic, headings, lists, links, images |
+
+## Admin Portal — Verification
+
+| Feature | Route | Works | Notes |
+|---------|-------|-------|-------|
+| Login | `/admin/login` | ✅ | Password auth, cookie session, 24h expiry |
+| Dashboard | `/admin` | ✅ | Sales metrics, date filter with month arrows |
+| Page Images | `/admin/pages` | ✅ | Upload/preview/delete per slot |
+| Page Text | `/admin/pages/[slug]` | ✅ | Edit headings and body text |
+| Blog List | `/admin/blog` | ✅ | Create/edit/delete, draft/published |
+| Blog Editor | `/admin/blog/[slug]` | ✅ | Tiptap WYSIWYG, cover image |
+| Inquiries | `/admin/inquiries` | ✅ | Status filter tabs, search, color badges |
+| Inquiry Detail | `/admin/inquiries/[id]` | ✅ | Editable customer info, status change, notes |
+| Quote Builder | `/admin/inquiries/[id]/quote` | ✅ | Line items, PDF preview, send email |
+| Quotes List | `/admin/quotes` | ✅ | All/Sent/Not Sent filter |
+| Proxy Auth | `proxy.ts` | ✅ | Protects /admin/* except /admin/login |
+
+## Email — Verification
+
+| Feature | Works | Notes |
+|---------|-------|-------|
+| Contact form notification | ✅ | Styled HTML to info@printecwrap.com |
+| Customer confirmation | ✅ | Branded "Thank you" email |
+| UTM tracking in emails | ✅ | utm_source, utm_medium, utm_campaign |
+| Page source in emails | ✅ | Which page form was submitted from |
+| Quote PDF email | ✅ | Branded PDF attachment via Microsoft Graph |
+| Rate limiting | ✅ | 60s cooldown per email+source |
+
+## Database — Verification
+
+| Table | RLS | Works | Notes |
+|-------|-----|-------|-------|
+| page_images | ✅ | ✅ | Public read, service role write |
+| page_content | ✅ | ✅ | Public read, service role write |
+| blog_posts | ✅ | ✅ | Public read published only, service role all |
+| inquiries | ✅ | ✅ | Service role only |
+| quotes | ✅ | ✅ | Service role only, FK to inquiries |
 
 ## Image Pipeline — Verification
 

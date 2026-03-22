@@ -237,3 +237,63 @@
 ### Decisions
 - Text-only location pages (no hero images) — Google ranks based on content, not visuals
 - City-specific FAQ answers (e.g., Chicago winters, Texas sun, NYC DOB regulations)
+
+---
+
+## 2026-03-22 — Admin Portal & CRM
+
+### What was done
+- Built full admin portal at /admin with password auth (proxy.ts middleware)
+- Dashboard with sales metrics: Booked Pipeline, Completed Revenue, Average Order, New Inquiries
+- Date filter with month navigation arrows (All Time / This Month / Last Month / Custom)
+- Page image management: upload to Supabase Storage, preview, delete per page slot
+- Page text management: edit headings and body text per page
+- Blog CRUD with Tiptap WYSIWYG editor (bold, italic, headings, lists, links, images)
+- Blog reads from Supabase with fallback to hardcoded blog-data.ts
+- Seeded 6 blog posts into Supabase
+
+### CRM Features
+- Inquiry management: all contact form submissions saved to `inquiries` table
+- Status pipeline: New → Contacted → Follow Up → Quoted → Booked → Completed
+- Color-coded status badges, filter tabs, search by name/email
+- Editable customer details (name, email, phone, service, budget, description)
+- Notes per inquiry
+- Price tracking: prompted on Booked/Completed status change
+- PDF quote generator: branded dark theme with Printec logo, line items, totals
+- Quote sending via Microsoft Graph email with PDF attachment
+- All quotes listing page with Sent/Not Sent filter
+
+### Email Integration
+- Microsoft Graph API (Azure AD app registration)
+- Contact form: sends notification to info@printecwrap.com + confirmation to customer
+- UTM parameter capture (utm_source, utm_medium, utm_campaign) from URL
+- Page source tracking (which page form was submitted from)
+- Rate limiting: 60s cooldown per email+source
+- Added service dropdown to floating widget form
+
+### Packages Added
+- @supabase/supabase-js — database + storage client
+- @tiptap/react, @tiptap/starter-kit, @tiptap/extension-image, @tiptap/extension-link — WYSIWYG
+- @react-pdf/renderer — PDF quote generation
+- @azure/identity, @microsoft/microsoft-graph-client — email sending
+
+### Database Tables Created
+- page_images (page_slug, slot, url, alt_text)
+- page_content (page_slug, field, value)
+- blog_posts (slug, title, content, published, etc.)
+- inquiries (name, email, status, booked_price, completed_price, utm_*, etc.)
+- quotes (inquiry_id, quote_number, items jsonb, total, sent_at)
+
+### Environment Variables Added to Vercel
+- SUPABASE_SERVICE_ROLE_KEY
+- ADMIN_PASSWORD
+- AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
+- EMAIL_FROM (info@printecwrap.com)
+
+### Decisions
+- Simple password auth (no Supabase Auth) — single admin user
+- Tiptap for WYSIWYG (free, React-native, extensible)
+- React PDF for quote generation (server-side rendering)
+- Microsoft Graph for email (company already uses M365)
+- In-memory rate limiting (serverless-safe with cleanup on each request)
+- Blog migration is backward-compatible (fallback to blog-data.ts if DB empty)

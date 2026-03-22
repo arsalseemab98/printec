@@ -195,12 +195,17 @@ npx next build             # Production build
   - Quote sending via Microsoft Graph email (PDF attachment)
   - All quotes listing page (/admin/quotes)
   - Image manager: view all Supabase Storage images, single + bulk upload, delete, copy URL, search/filter
+  - Digital contracts: create, edit, send signing link, download PDF
+  - Public signing page at /sign/[id] (customer draws signature on canvas)
+  - Signed PDF emailed to both parties after signing
+  - Create contracts from inquiries (auto-fills client details)
 
 ## Email Integration
 - **Provider**: Microsoft Graph API (Azure AD app)
 - **From**: info@printecwrap.com
 - **Contact form**: Sends notification to Printec + confirmation to customer
 - **Quote emails**: Branded PDF attachment with quote details
+- **Contract emails**: Signing link sent to customer, signed PDF to both parties
 - **UTM tracking**: Captured from URL params, included in notification emails
 - **Rate limiting**: 60s cooldown per email+source
 

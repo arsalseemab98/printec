@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
@@ -41,7 +41,15 @@ const labelStyle: React.CSSProperties = {
   fontWeight: 500,
 };
 
-export default function NewContractPage() {
+export default function NewContractPageWrapper() {
+  return (
+    <Suspense fallback={<div style={{ padding: "40px", color: "rgba(255,255,255,0.5)" }}>Loading...</div>}>
+      <NewContractPage />
+    </Suspense>
+  );
+}
+
+function NewContractPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const inquiryId = searchParams.get("inquiry_id");

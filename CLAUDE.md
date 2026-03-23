@@ -184,7 +184,7 @@ npx next build             # Production build
 - **URL**: /admin (protected by password auth via proxy.ts)
 - **Password**: Set via `ADMIN_PASSWORD` env var
 - **Features**:
-  - Dashboard with sales metrics (booked pipeline, completed revenue, avg order)
+  - Dashboard with sales metrics (booked pipeline, completed revenue, avg order) — includes both inquiries and contracts
   - Date filter: All Time / This Month / Last Month / Custom month with ← → arrows
   - Page image management (upload to Supabase Storage)
   - Page text management (headings, body text)
@@ -195,7 +195,9 @@ npx next build             # Production build
   - Quote sending via Microsoft Graph email (PDF attachment)
   - All quotes listing page (/admin/quotes)
   - Image manager: view all Supabase Storage images, single + bulk upload, delete, copy URL, search/filter
-  - Digital contracts: create, edit, send signing link, download PDF
+  - Digital contracts: create, edit, send signing link, download PDF, status management (Pending/Sent/Signed/Completed/Cancelled)
+  - Contract status dropdown on detail page (manual override)
+  - Contract signing/completion feeds into dashboard sales metrics
   - Public signing page at /sign/[id] (customer draws signature on canvas)
   - Signed PDF emailed to both parties after signing
   - Create contracts from inquiries (auto-fills client details)
@@ -215,7 +217,7 @@ npx next build             # Production build
 - `blog_posts` — slug, title, excerpt, category, content (HTML), published
 - `inquiries` — name, email, phone, service, status, booked_price, completed_price, utm_*
 - `quotes` — inquiry_id, quote_number (PQ-001), items (jsonb), total, sent_at
-- `contracts` — inquiry_id (nullable), contract_number (PC-001), event_date, venue, service_description, total_price, advance_amount, balance_amount, balance_due, travel_cost, client_name, client_email, terms (jsonb), signature_data, signed_at, sent_at
+- `contracts` — inquiry_id (nullable), contract_number (PC-001), event_date, venue, service_description, total_price, advance_amount, balance_amount, balance_due, travel_cost, client_name, client_email, terms (jsonb), signature_data, signed_at, sent_at, status (Pending/Sent/Signed/Completed/Cancelled), completed_at
 
 ## Environment Variables
 - `NEXT_PUBLIC_SUPABASE_URL` — Supabase project URL
@@ -239,3 +241,21 @@ npx next build             # Production build
 - Supabase client uses lazy init to prevent build crashes when env vars missing
 - Domain: printecwrap.com is primary (www redirects to non-www)
 - Sitemap base URL: https://printecwrap.com
+- Phone number: +1 (647) 299-1460 (used across all pages)
+- Company name: Printec Virginia LLC (NOT "Printec Corp")
+- Homepage is server component wrapper → imports HomePageClient (client component)
+- JSON-LD LocalBusiness structured data in root layout (schema.org)
+- Microsoft Clarity analytics (ID: vzki5lbs56)
+- Logo spin+bounce animation on first visit (sessionStorage)
+- AVIF + WebP image formats enabled, 1-year cache TTL
+- Portfolio categories match actual services (single source of truth in constants.ts)
+
+## SEO Features
+- Unique metadata (title, description, keywords, openGraph) on all 32 pages
+- JSON-LD LocalBusiness schema (services, hours, social, area served)
+- sitemap.xml with priority tiers (service 0.9, SEO 0.8, location 0.7, blog 0.6)
+- robots.txt pointing to correct sitemap
+- Canonical URL on homepage
+- Meta descriptions all under 160 chars
+- 9 location pages for local SEO (DC, VA, MD, Seattle, NYC, LA, Chicago, Dallas, Houston)
+- Microsoft Clarity for heatmaps and session recordings

@@ -73,9 +73,9 @@
 | Quote Builder | `/admin/inquiries/[id]/quote` | ✅ | Line items, PDF preview, send email |
 | Quotes List | `/admin/quotes` | ✅ | All/Sent/Not Sent filter |
 | Image Manager | `/admin/images` | ✅ | View grid, upload (single+bulk), delete, copy URL, search |
-| Contracts List | `/admin/contracts` | ✅ | All/Pending/Sent/Signed filter tabs |
+| Contracts List | `/admin/contracts` | ✅ | All/Pending/Sent/Signed/Completed/Cancelled filter tabs |
 | New Contract | `/admin/contracts/new` | ✅ | Manual or auto-fill from inquiry (?inquiry_id=) |
-| Contract Detail | `/admin/contracts/[id]` | ✅ | View, edit, send link, copy link, download PDF |
+| Contract Detail | `/admin/contracts/[id]` | ✅ | View, edit, send link, copy link, download PDF, status dropdown |
 | Public Signing | `/sign/[id]` | ✅ | Customer draws signature on canvas, no auth |
 | Proxy Auth | `proxy.ts` | ✅ | Protects /admin/* except /admin/login, /sign/* is public |
 
@@ -93,6 +93,12 @@
 | Contract PDF logo | ✅ | Uses printec-logo.png (dark, for white bg) |
 | Contract PDF email | ✅ | info@printecwrap.com |
 | Contract PDF phone | ✅ | +1 (571) 343-1598 |
+| Manual status change | ✅ | Dropdown: Pending/Sent/Signed/Completed/Cancelled |
+| Auto-status on send | ✅ | Sending contract → status = Sent |
+| Auto-status on sign | ✅ | Customer signs → status = Signed |
+| Completed → revenue | ✅ | Contract total_price added to Completed Revenue |
+| Signed → booked | ✅ | Contract total_price added to Booked Pipeline |
+| Cancelled hides actions | ✅ | Edit and Send buttons hidden when cancelled |
 
 ## Email — Verification
 
@@ -154,21 +160,27 @@
 
 | Feature | Status |
 |---------|--------|
-| Unique meta title per page | ✅ (27 pages) |
-| Unique meta description per page | ✅ |
+| Unique meta title per page | ✅ (32 pages) |
+| Unique meta description per page | ✅ (all under 160 chars) |
 | Keywords array per page | ✅ |
 | OpenGraph tags | ✅ |
 | Twitter cards | ✅ |
-| sitemap.xml | ✅ Auto-generated (27 pages + 6 blog posts) |
-| robots.txt | ✅ |
+| Homepage page-level metadata | ✅ (server component wrapper) |
+| Homepage canonical URL | ✅ |
+| JSON-LD LocalBusiness schema | ✅ |
+| sitemap.xml | ✅ Auto-generated (32 URLs + priority tiers) |
+| robots.txt | ✅ (points to printecwrap.com/sitemap.xml) |
 | Favicon (P monogram) | ✅ |
 | Apple touch icon | ✅ |
 | OG image (1200x630) | ✅ |
 | Location pages (9 cities) | ✅ |
 | Sitemap base URL = printecwrap.com | ✅ |
+| Company name = Printec Virginia LLC | ✅ |
+| Phone = +1 (647) 299-1460 | ✅ (all pages) |
+| Portfolio categories match services | ✅ (single source of truth) |
 
 ## Planned Tests
-- [ ] E2E: Navigation between all 27 pages
+- [ ] E2E: Navigation between all 32 pages
 - [ ] E2E: Contact form submission (API + Supabase)
 - [ ] E2E: Floating action button modal flow
 - [ ] E2E: Blog post navigation

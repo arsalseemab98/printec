@@ -13,6 +13,7 @@ import {
   ClipboardList,
   FileSignature,
   BarChart3,
+  BookOpen,
   LogOut,
   Sun,
   Moon,
@@ -29,6 +30,7 @@ const NAV_ITEMS = [
   { label: "Quotes", href: "/admin/quotes", icon: ClipboardList },
   { label: "Contracts", href: "/admin/contracts", icon: FileSignature },
   { label: "Blog", href: "/admin/blog", icon: FileText },
+  { label: "Catalogs", href: "/admin/catalogs", icon: BookOpen },
 ];
 
 const BOTTOM_TAB_ITEMS = [

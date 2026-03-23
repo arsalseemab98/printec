@@ -341,8 +341,14 @@
   .footer-grid {
     grid-template-columns: 1fr !important;
   }
+  .catalogs-grid {
+    grid-template-columns: 1fr !important;
+  }
 }
 @media (min-width: 769px) and (max-width: 1024px) {
+  .catalogs-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
   .portfolio-grid {
     grid-template-columns: repeat(2, 1fr) !important;
   }

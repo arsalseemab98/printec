@@ -78,8 +78,8 @@ const LEADERSHIP = [
     bio: "Azhar founded and leads Printec Virginia LLC with a clear vision — delivering bold, high-quality signage and graphics that help businesses and events stand out. Under his leadership, Printec has grown into Virginia's trusted name in custom signage.",
     email: TEAM_EMAIL,
     phone: TEAM_PHONE,
-    image: IMG.teamAzhar,
-    imagePosition: "center 15%",
+    image: "/images/team-azhar-v2.webp",
+    imagePosition: "center top",
   },
   {
     name: "Shazal Ali",

@@ -21,6 +21,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/window-wraps",
     "/channel-letters-signage",
     "/custom-neon-signs",
+    "/food-truck-wraps",
   ];
 
   const seoLandingPages = [

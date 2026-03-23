@@ -71,6 +71,7 @@ export const SERVICES_NAV = [
   { name: "Window Wraps", href: "/window-wraps" },
   { name: "Channel Letters & Signage", href: "/channel-letters-signage" },
   { name: "Custom Neon Signs", href: "/custom-neon-signs" },
+  { name: "Food Truck Wraps", href: "/food-truck-wraps" },
 ];
 
 /* ─── PORTFOLIO DATA ─── */

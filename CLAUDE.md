@@ -207,7 +207,7 @@ npx next build             # Production build
 
 ## Email Integration
 - **Provider**: Microsoft Graph API (Azure AD app)
-- **From**: info@printecwrap.com
+- **From**: info@printecwrap.com (all contact emails use this domain)
 - **Contact form**: Sends notification to Printec + confirmation to customer
 - **Quote emails**: Branded PDF attachment with quote details
 - **Contract emails**: Signing link sent to customer, signed PDF to both parties
@@ -244,7 +244,9 @@ npx next build             # Production build
 - Supabase client uses lazy init to prevent build crashes when env vars missing
 - Domain: printecwrap.com is primary (www redirects to non-www)
 - Sitemap base URL: https://printecwrap.com
-- Phone number: +1 (647) 299-1460 (used across all pages)
+- Phone number: +1 (715) 503-5444 (used across all pages)
+- Email: info@printecwrap.com (NOT printeccorp.com)
+- Address: Woodbridge, VA 22191
 - Company name: Printec Virginia LLC (NOT "Printec Corp")
 - Homepage is server component wrapper → imports HomePageClient (client component)
 - JSON-LD LocalBusiness structured data in root layout (schema.org)

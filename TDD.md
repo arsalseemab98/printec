@@ -177,7 +177,9 @@
 | Location pages (9 cities) | ✅ |
 | Sitemap base URL = printecwrap.com | ✅ |
 | Company name = Printec Virginia LLC | ✅ |
-| Phone = +1 (647) 299-1460 | ✅ (all pages) |
+| Phone = +1 (715) 503-5444 | ✅ (all pages) |
+| Email = info@printecwrap.com | ✅ (all pages) |
+| Address = Woodbridge, VA 22191 | ✅ (all pages) |
 | Portfolio categories match services | ✅ (single source of truth) |
 
 ## Forms — Verification

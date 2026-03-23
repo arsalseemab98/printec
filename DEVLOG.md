@@ -439,3 +439,27 @@
 - Client-side computation (data volume is small, no need for backend aggregation)
 - Recharts chosen for React-native API, dark theme support, lightweight bundle
 - Statistics page separate from dashboard (dashboard = quick overview, statistics = deep analytics)
+
+---
+
+## 2026-03-23 — Contact Info & Address Update
+
+### What was done
+- Updated phone number across all pages: `(647) 299-1460` → `(715) 503-5444`
+- Updated email across all pages: `info@printeccorp.com` → `info@printecwrap.com`
+- Updated address: `1234 Commerce Drive, Virginia Beach, VA 23456` → `Woodbridge, VA 22191`
+- Updated homepage location: `Oshkosh, Wisconsin` → `Woodbridge, Virginia`
+- Updated JSON-LD geo coordinates to Woodbridge, VA (38.6582, -77.2497)
+- Updated team page email and phone
+- Updated footer connect info and bottom bar address
+- Updated contact form info panel (phone, email, WhatsApp, address, map link)
+- Updated floating action button call link
+- Updated contract PDF and quote PDF contact details
+- Updated CTA banner phone link
+- Added "Sales Statistics" button to admin dashboard header (links to /admin/statistics)
+
+### Files changed (15)
+- layout.tsx, page.tsx, team/page.tsx, contact/page.tsx
+- home-page-client.tsx, footer.tsx, contact-form.tsx, floating-action-button.tsx
+- cta-banner.tsx, business-signage/page.tsx, dance-floor-wraps/page.tsx, vinyl-wraps/page.tsx
+- contract-pdf.tsx, quote-pdf.tsx, admin/page.tsx

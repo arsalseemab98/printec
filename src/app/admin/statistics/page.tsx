@@ -441,14 +441,30 @@ export default function StatisticsPage() {
 
   return (
     <div>
-      {/* Header */}
-      <div style={{ marginBottom: "2rem" }}>
-        <p style={{ fontSize: "10px", textTransform: "uppercase", letterSpacing: "4px", color: ORANGE, fontWeight: 500, marginBottom: "0.5rem" }}>
-          Admin
-        </p>
-        <h1 style={{ fontSize: "36px", fontWeight: 900, color: "#fff", fontFamily: "'Arial Black', Arial, sans-serif", margin: 0 }}>
-          Statistics
-        </h1>
+      {/* Header + Sales Summary Bar */}
+      <div style={{ marginBottom: "1.5rem", display: "flex", alignItems: "flex-end", justifyContent: "space-between" }}>
+        <div>
+          <p style={{ fontSize: "10px", textTransform: "uppercase", letterSpacing: "4px", color: ORANGE, fontWeight: 500, marginBottom: "0.5rem" }}>
+            Admin
+          </p>
+          <h1 style={{ fontSize: "36px", fontWeight: 900, color: "#fff", fontFamily: "'Arial Black', Arial, sans-serif", margin: 0 }}>
+            Statistics
+          </h1>
+        </div>
+        {/* Top bar sales summary */}
+        <div style={{ display: "flex", alignItems: "center", gap: "24px" }}>
+          {[
+            { label: "Pipeline", value: `$${kpis.bookedPipeline.toLocaleString()}`, color: "#22c55e" },
+            { label: "Revenue", value: `$${kpis.completedRevenue.toLocaleString()}`, color: ORANGE },
+            { label: "Avg Order", value: `$${Math.round(kpis.avgOrder).toLocaleString()}`, color: "#06b6d4" },
+            { label: "Inquiries", value: String(kpis.total), color: "#3b82f6" },
+          ].map((item) => (
+            <div key={item.label} style={{ textAlign: "right" }}>
+              <p style={{ fontSize: "20px", fontWeight: 700, color: item.color, margin: 0, lineHeight: 1 }}>{item.value}</p>
+              <p style={{ fontSize: "10px", color: "rgba(255,255,255,0.35)", margin: "2px 0 0", textTransform: "uppercase", letterSpacing: "1px" }}>{item.label}</p>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Date Filter Bar */}

@@ -184,7 +184,7 @@ export default function ContractDetailPage({
         terms: contract.terms || [],
         signature_data: contract.signature_data,
         signed_at: contract.signed_at,
-        logoUrl: "/printec-logo-light.png",
+        logoUrl: "/printec-logo.png",
       });
       const blob = await pdf(element as any).toBlob();
       const url = URL.createObjectURL(blob);

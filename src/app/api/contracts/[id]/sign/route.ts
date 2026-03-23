@@ -100,7 +100,7 @@ export async function POST(
       terms: updated.terms || [],
       signature_data: updated.signature_data,
       signed_at: updated.signed_at,
-      logoUrl: "https://printecwrap.com/printec-logo-light.png",
+      logoUrl: "https://printecwrap.com/printec-logo.png",
     });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const pdfBuffer = await renderToBuffer(pdfElement as any);

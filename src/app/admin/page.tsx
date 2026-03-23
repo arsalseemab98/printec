@@ -206,30 +206,56 @@ export default function AdminDashboard() {
   return (
     <div>
       {/* Header */}
-      <div style={{ marginBottom: "2rem" }}>
-        <p
+      <div style={{ marginBottom: "2rem", display: "flex", alignItems: "flex-end", justifyContent: "space-between" }}>
+        <div>
+          <p
+            style={{
+              fontSize: "10px",
+              textTransform: "uppercase",
+              letterSpacing: "4px",
+              color: "#F7941D",
+              fontWeight: 500,
+              marginBottom: "0.5rem",
+            }}
+          >
+            Admin
+          </p>
+          <h1
+            style={{
+              fontSize: "36px",
+              fontWeight: 900,
+              color: "#fff",
+              fontFamily: "'Arial Black', Arial, sans-serif",
+              margin: 0,
+            }}
+          >
+            Dashboard
+          </h1>
+        </div>
+        <Link
+          href="/admin/statistics"
           style={{
-            fontSize: "10px",
-            textTransform: "uppercase",
-            letterSpacing: "4px",
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "8px",
+            padding: "10px 20px",
+            background: "transparent",
+            border: "1px solid #F7941D",
+            borderRadius: "4px",
             color: "#F7941D",
-            fontWeight: 500,
-            marginBottom: "0.5rem",
+            fontSize: "13px",
+            fontWeight: 700,
+            textDecoration: "none",
+            letterSpacing: "1px",
+            textTransform: "uppercase",
+            transition: "all 0.2s",
           }}
+          onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(247,148,29,0.1)"; e.currentTarget.style.color = "#fff"; }}
+          onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "#F7941D"; }}
         >
-          Admin
-        </p>
-        <h1
-          style={{
-            fontSize: "36px",
-            fontWeight: 900,
-            color: "#fff",
-            fontFamily: "'Arial Black', Arial, sans-serif",
-            margin: 0,
-          }}
-        >
-          Dashboard
-        </h1>
+          <BarChart3 size={16} />
+          Sales Statistics
+        </Link>
       </div>
 
       {/* Date Filter Bar */}

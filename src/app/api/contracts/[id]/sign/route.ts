@@ -72,6 +72,7 @@ export async function POST(
       .update({
         signature_data: body.signature_data,
         signed_at: signedAt,
+        status: "Signed",
       })
       .eq("id", id)
       .select()

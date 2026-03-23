@@ -74,6 +74,60 @@ export default function RootLayout({
             y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
           })(window, document, "clarity", "script", "vzki5lbs56");`}
         </Script>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "LocalBusiness",
+              name: "Printec Virginia LLC",
+              description: "Virginia's premier custom signage, wraps, and graphics company. Channel letters, window wraps, dance floor wraps, wall wraps, neon signs & more.",
+              url: "https://printecwrap.com",
+              telephone: "+1-647-299-1460",
+              email: "info@printecwrap.com",
+              address: {
+                "@type": "PostalAddress",
+                addressRegion: "VA",
+                addressCountry: "US",
+              },
+              geo: {
+                "@type": "GeoCoordinates",
+                latitude: 36.8529,
+                longitude: -75.978,
+              },
+              image: "https://printecwrap.com/og-image.png",
+              logo: "https://printecwrap.com/printec-logo.png",
+              sameAs: [
+                "https://www.instagram.com/printecvirginia/",
+                "https://www.facebook.com/share/1E2N8msTsc/",
+                "https://www.tiktok.com/@printec.va",
+              ],
+              openingHoursSpecification: [
+                { "@type": "OpeningHoursSpecification", dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], opens: "09:00", closes: "18:00" },
+                { "@type": "OpeningHoursSpecification", dayOfWeek: "Saturday", opens: "10:00", closes: "16:00" },
+              ],
+              priceRange: "$$",
+              areaServed: [
+                { "@type": "State", name: "Virginia" },
+                { "@type": "State", name: "Maryland" },
+                { "@type": "Place", name: "Washington, D.C." },
+              ],
+              hasOfferCatalog: {
+                "@type": "OfferCatalog",
+                name: "Signage & Graphics Services",
+                itemListElement: [
+                  { "@type": "Offer", itemOffered: { "@type": "Service", name: "Channel Letters & LED Signage" } },
+                  { "@type": "Offer", itemOffered: { "@type": "Service", name: "Custom Neon Signs" } },
+                  { "@type": "Offer", itemOffered: { "@type": "Service", name: "Business Signage" } },
+                  { "@type": "Offer", itemOffered: { "@type": "Service", name: "Window Wraps & Graphics" } },
+                  { "@type": "Offer", itemOffered: { "@type": "Service", name: "Wall Wraps & Murals" } },
+                  { "@type": "Offer", itemOffered: { "@type": "Service", name: "Dance Floor Wraps" } },
+                  { "@type": "Offer", itemOffered: { "@type": "Service", name: "Vinyl Wraps" } },
+                ],
+              },
+            }),
+          }}
+        />
       </head>
       <body className="antialiased" style={{ background: "#0C0C0C" }}>
         <SiteShell>{children}</SiteShell>

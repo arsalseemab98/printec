@@ -13,7 +13,7 @@ import { MapPin } from "lucide-react";
 export const metadata: Metadata = {
   title: "Contact Us | Get a Free Quote",
   description:
-    "Get a free quote for custom signs, vehicle wraps, channel letters, window graphics and more. Contact Printec Virginia LLC in Virginia. Call (555) 123-4567.",
+    "Get a free quote for custom signs, vehicle wraps, channel letters, window graphics and more. Contact Printec Virginia LLC in Virginia. Call (647) 299-1460.",
   keywords: [
     "contact Printec Virginia LLC",
     "free sign quote Virginia",

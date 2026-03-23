@@ -96,7 +96,7 @@ export function CtaBanner() {
           }}
         >
           <Phone size={13} />
-          (555) 123-4567
+          (647) 299-1460
         </p>
       </div>
     </Section>

@@ -543,7 +543,7 @@ export default function VinylWrapsPage() {
               letterSpacing: "1px",
             }}
           >
-            (555) 123-4567
+            (647) 299-1460
           </p>
         </div>
       </Section>

@@ -321,7 +321,7 @@ export function QuotePDF(props: QuotePDFProps) {
             <Text style={s.companyHighlight}>PRINTEC CORP</Text>
             <Text style={s.companyText}>1234 Commerce Drive</Text>
             <Text style={s.companyText}>Virginia Beach, VA 23456</Text>
-            <Text style={s.companyText}>(555) 123-4567</Text>
+            <Text style={s.companyText}>(647) 299-1460</Text>
             <Text style={s.companyHighlight}>info@printecwrap.com</Text>
             <Text style={s.companyText}>printecwrap.com</Text>
           </View>

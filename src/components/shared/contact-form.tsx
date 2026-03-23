@@ -171,8 +171,8 @@ export function ContactForm() {
               </div>
               <div>
                 <div style={INFO_LABEL_STYLE}>PHONE</div>
-                <a href="tel:+15551234567" style={{ ...INFO_VALUE_STYLE, textDecoration: "none" }}>
-                  (555) 123-4567
+                <a href="tel:+16472991460" style={{ ...INFO_VALUE_STYLE, textDecoration: "none" }}>
+                  (647) 299-1460
                 </a>
               </div>
             </div>
@@ -198,12 +198,12 @@ export function ContactForm() {
               <div>
                 <div style={INFO_LABEL_STYLE}>WHATSAPP</div>
                 <a
-                  href="https://wa.me/15551234567"
+                  href="https://wa.me/16472991460"
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{ ...INFO_VALUE_STYLE, textDecoration: "none" }}
                 >
-                  (555) 123-4567
+                  (647) 299-1460
                 </a>
               </div>
             </div>

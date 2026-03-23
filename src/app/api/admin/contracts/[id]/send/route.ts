@@ -122,7 +122,7 @@ export async function POST(
     // Update sent_at timestamp
     const { data: updated, error: updateErr } = await supabase
       .from("contracts")
-      .update({ sent_at: new Date().toISOString() })
+      .update({ sent_at: new Date().toISOString(), status: "Sent" })
       .eq("id", id)
       .select()
       .single();

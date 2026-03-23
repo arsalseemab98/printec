@@ -42,11 +42,22 @@ export async function PUT(
     "client_name",
     "client_email",
     "terms",
+    "status",
+    "completed_at",
   ];
 
   const updates: Record<string, unknown> = {};
   for (const key of allowed) {
     if (body[key] !== undefined) updates[key] = body[key];
+  }
+
+  // Auto-set completed_at when status changes to Completed
+  if (updates.status === "Completed" && !updates.completed_at) {
+    updates.completed_at = new Date().toISOString();
+  }
+  // Clear completed_at if status changes away from Completed
+  if (updates.status && updates.status !== "Completed") {
+    updates.completed_at = null;
   }
 
   // Auto-recalculate balance if price fields change

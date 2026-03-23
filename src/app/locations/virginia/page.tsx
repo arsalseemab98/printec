@@ -25,7 +25,7 @@ import {
 export const metadata: Metadata = {
   title: "Custom Signs & Signage in Virginia | Printec Virginia LLC",
   description:
-    "Printec Virginia LLC is Virginia's trusted sign company. Custom channel letters, vehicle wraps, business signage, and more. Serving Virginia Beach, Norfolk, Richmond, Arlington, and all of Virginia.",
+    "Virginia's trusted sign company. Custom channel letters, business signage & more. Serving Virginia Beach, Norfolk, Richmond & beyond.",
   keywords: [
     "sign company Virginia",
     "custom signs Virginia",
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Custom Signs & Signage in Virginia | Printec Virginia LLC",
     description:
-      "Printec Virginia LLC is Virginia's trusted sign company. Custom channel letters, vehicle wraps, business signage, and more. Serving Virginia Beach, Norfolk, Richmond, Arlington, and all of Virginia.",
+      "Virginia's trusted sign company. Custom channel letters, business signage & more. Serving Virginia Beach, Norfolk, Richmond & beyond.",
     type: "website",
     locale: "en_US",
     siteName: "Printec Virginia LLC",

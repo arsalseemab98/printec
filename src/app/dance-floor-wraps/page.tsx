@@ -23,7 +23,7 @@ import {
 export const metadata: Metadata = {
   title: "Custom Dance Floor Wraps | Weddings, Events & Corporate",
   description:
-    "Custom dance floor wraps and vinyl floor graphics for weddings, corporate events, galas, trade shows, and brand activations. Premium materials, slip-resistant finishes. Serving Virginia.",
+    "Custom dance floor wraps for weddings, corporate events, galas & trade shows. Slip-resistant vinyl. Serving Virginia.",
   keywords: [
     "dance floor wraps",
     "custom floor graphics",
@@ -584,7 +584,7 @@ export default function DanceFloorWrapsPage() {
               letterSpacing: "1px",
             }}
           >
-            (555) 123-4567
+            (647) 299-1460
           </p>
         </div>
       </Section>

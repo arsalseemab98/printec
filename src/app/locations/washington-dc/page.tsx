@@ -26,7 +26,7 @@ import {
 export const metadata: Metadata = {
   title: "Sign Shop & Custom Signage in Washington DC | Printec Virginia LLC",
   description:
-    "Printec Virginia LLC is your trusted sign shop in Washington DC. Custom channel letters, vehicle wraps, business signage, and more. Serving Capitol Hill, Georgetown, Dupont Circle, and all of DC.",
+    "Trusted sign shop in Washington DC. Custom channel letters, business signage & more. Serving Capitol Hill, Georgetown & all of DC.",
   keywords: [
     "sign shop Washington DC",
     "custom signs DC",
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Sign Shop & Custom Signage in Washington DC | Printec Virginia LLC",
     description:
-      "Printec Virginia LLC is your trusted sign shop in Washington DC. Custom channel letters, vehicle wraps, business signage, and more. Serving Capitol Hill, Georgetown, Dupont Circle, and all of DC.",
+      "Trusted sign shop in Washington DC. Custom channel letters, business signage & more. Serving Capitol Hill, Georgetown & all of DC.",
     type: "website",
     locale: "en_US",
     siteName: "Printec Virginia LLC",

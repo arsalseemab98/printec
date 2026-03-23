@@ -27,7 +27,7 @@ import {
 export const metadata: Metadata = {
   title: "Business Signage | Commercial Signs, Storefront & Office Signage",
   description:
-    "Custom business signage solutions including monument signs, pylon signs, channel letters, storefront signage, and office signs. ADA-compliant, illuminated options available. Serving Virginia.",
+    "Custom business signage — monument signs, pylon signs, channel letters, storefront & office signs. ADA-compliant. Serving Virginia.",
   keywords: [
     "business signage",
     "commercial signage",
@@ -553,7 +553,7 @@ export default function BusinessSignagePage() {
               letterSpacing: "1px",
             }}
           >
-            (555) 123-4567
+            (647) 299-1460
           </p>
         </div>
       </Section>

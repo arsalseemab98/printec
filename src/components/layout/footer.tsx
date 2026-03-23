@@ -47,9 +47,9 @@ const CONNECT_ICON_MAP: Record<string, React.ReactNode> = {
 };
 
 const CONNECT_ITEMS = [
-  { label: "Phone", value: "(555) 123-4567", href: "tel:+15551234567" },
+  { label: "Phone", value: "(647) 299-1460", href: "tel:+16472991460" },
   { label: "Email", value: "info@printeccorp.com", href: "mailto:info@printeccorp.com" },
-  { label: "WhatsApp", value: "+1 (555) 123-4567", href: "https://wa.me/15551234567" },
+  { label: "WhatsApp", value: "+1 (647) 299-1460", href: "https://wa.me/16472991460" },
   { label: "Address", value: "Virginia, USA", href: null },
 ];
 

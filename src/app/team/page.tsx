@@ -106,7 +106,7 @@ const LEADERSHIP = [
     email: TEAM_EMAIL,
     phone: TEAM_PHONE,
     image: "/images/team-nomi.webp",
-    imagePosition: "42% top",
+    imagePosition: "center top",
   },
   {
     name: "Aryan W.",

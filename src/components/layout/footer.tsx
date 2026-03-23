@@ -39,6 +39,18 @@ const SERVICE_LINKS = [
   { name: "Storefront Graphics", href: "/storefront-window-graphics" },
 ];
 
+const LOCATION_LINKS = [
+  { label: "Virginia", href: "/locations/virginia" },
+  { label: "Washington DC", href: "/locations/washington-dc" },
+  { label: "Maryland", href: "/locations/maryland" },
+  { label: "New York", href: "/locations/new-york" },
+  { label: "Los Angeles", href: "/locations/los-angeles" },
+  { label: "Chicago", href: "/locations/chicago" },
+  { label: "Seattle", href: "/locations/seattle" },
+  { label: "Dallas", href: "/locations/dallas" },
+  { label: "Houston", href: "/locations/houston" },
+];
+
 const CONNECT_ICON_MAP: Record<string, React.ReactNode> = {
   Phone: <Phone size={14} style={{ color: ORANGE, flexShrink: 0 }} />,
   Email: <Mail size={14} style={{ color: ORANGE, flexShrink: 0 }} />,
@@ -161,7 +173,7 @@ export function Footer() {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(4, 1fr)",
+            gridTemplateColumns: "repeat(5, 1fr)",
             gap: "clamp(24px, 4vw, 48px)",
           }}
           className="footer-grid"
@@ -199,6 +211,24 @@ export function Footer() {
               >
                 {"name" in link ? link.name : ""}
                 <ArrowUpRight size={12} style={{ flexShrink: 0, opacity: 0.6 }} />
+              </Link>
+            ))}
+          </div>
+
+          {/* Locations */}
+          <div>
+            <h4 style={{ ...columnHeadingStyle, display: "flex", alignItems: "center", gap: "8px" }}>
+              <MapPin size={16} /> Locations
+            </h4>
+            {LOCATION_LINKS.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                style={linkStyle}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = ORANGE; }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = `${WHITE}bb`; }}
+              >
+                {link.label}
               </Link>
             ))}
           </div>

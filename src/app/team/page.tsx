@@ -86,7 +86,7 @@ const LEADERSHIP = [
     bio: "Shazal connects clients with the right signage solutions for their business. From initial consultation to final delivery, he ensures every client gets personalized attention and a seamless experience.",
     email: TEAM_EMAIL,
     phone: TEAM_PHONE,
-    image: IMG.teamShazal,
+    image: "/images/team-shazal-v3.webp",
     imagePosition: "center center",
   },
   {
@@ -210,7 +210,7 @@ export default function TeamPage() {
                       src={person.image}
                       alt={`${person.name} — ${person.role} at Printec Virginia LLC`}
                       fill
-                      sizes="(max-width: 768px) 100vw, 340px"
+                      sizes="(max-width: 768px) 100vw, 600px"
                       style={{ objectFit: "cover", objectPosition: (person as { imagePosition?: string }).imagePosition || "center 20%" }}
                     />
                   ) : (

@@ -79,6 +79,7 @@ const LEADERSHIP = [
     email: TEAM_EMAIL,
     phone: TEAM_PHONE,
     image: IMG.teamAzhar,
+    imagePosition: "center 15%",
   },
   {
     name: "Shazal Ali",
@@ -87,7 +88,7 @@ const LEADERSHIP = [
     email: TEAM_EMAIL,
     phone: TEAM_PHONE,
     image: "/images/team-shazal-v3.webp",
-    imagePosition: "center center",
+    imagePosition: "40% center",
   },
   {
     name: "Anton Andersson",
@@ -96,6 +97,7 @@ const LEADERSHIP = [
     email: TEAM_EMAIL,
     phone: TEAM_PHONE,
     image: IMG.teamAnton,
+    imagePosition: "center 15%",
   },
   {
     name: "Nomi",
@@ -104,6 +106,7 @@ const LEADERSHIP = [
     email: TEAM_EMAIL,
     phone: TEAM_PHONE,
     image: "/images/team-nomi.webp",
+    imagePosition: "45% center",
   },
   {
     name: "Aryan W.",
@@ -112,6 +115,7 @@ const LEADERSHIP = [
     email: TEAM_EMAIL,
     phone: TEAM_PHONE,
     image: "/images/team-aryan.webp",
+    imagePosition: "45% center",
   },
 ];
 

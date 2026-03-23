@@ -6,14 +6,24 @@ export async function GET() {
 
   const { data, error } = await supabase
     .from("catalogs")
-    .select("*, catalog_projects(count)")
+    .select("id, title, slug, description, created_at, catalog_projects(id)")
     .order("created_at", { ascending: false });
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
-  return NextResponse.json(data);
+  // Map to include project_count
+  const catalogs = (data || []).map((c: Record<string, unknown>) => ({
+    id: c.id,
+    title: c.title,
+    slug: c.slug,
+    description: c.description,
+    created_at: c.created_at,
+    project_count: Array.isArray(c.catalog_projects) ? c.catalog_projects.length : 0,
+  }));
+
+  return NextResponse.json({ catalogs });
 }
 
 export async function POST(req: Request) {

@@ -19,14 +19,16 @@ import {
   Moon,
   Menu,
   X,
+  MessageSquare,
 } from "lucide-react";
 
 const NAV_ITEMS = [
   { label: "Dashboard", href: "/admin", icon: LayoutDashboard },
   { label: "Statistics", href: "/admin/statistics", icon: BarChart3 },
+  { label: "Customers", href: "/admin/customers", icon: Users },
   { label: "Pages", href: "/admin/pages", icon: FileImage },
   { label: "Images", href: "/admin/images", icon: ImageIcon },
-  { label: "Inquiries", href: "/admin/inquiries", icon: Users },
+  { label: "Inquiries", href: "/admin/inquiries", icon: MessageSquare },
   { label: "Quotes", href: "/admin/quotes", icon: ClipboardList },
   { label: "Contracts", href: "/admin/contracts", icon: FileSignature },
   { label: "Blog", href: "/admin/blog", icon: FileText },

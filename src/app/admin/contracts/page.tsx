@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { FileSignature, Plus } from "lucide-react";
+import { FileSignature, Plus, Trash2 } from "lucide-react";
 
 interface Contract {
   id: string;
@@ -40,6 +40,8 @@ export default function ContractsPage() {
   const [contracts, setContracts] = useState<Contract[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<FilterTab>("all");
+  const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     fetchContracts();
@@ -73,6 +75,53 @@ export default function ContractsPage() {
       }
     } catch {
       // silent
+    }
+  }
+
+  function toggleSelect(id: string) {
+    setSelected((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }
+
+  function toggleSelectAll() {
+    if (selected.size === filtered.length) {
+      setSelected(new Set());
+    } else {
+      setSelected(new Set(filtered.map((c) => c.id)));
+    }
+  }
+
+  async function handleDelete(id: string) {
+    if (!confirm("Delete this contract? This cannot be undone.")) return;
+    try {
+      await fetch(`/api/admin/contracts/${id}`, { method: "DELETE" });
+      setContracts((prev) => prev.filter((c) => c.id !== id));
+      setSelected((prev) => { const next = new Set(prev); next.delete(id); return next; });
+    } catch {
+      alert("Failed to delete contract.");
+    }
+  }
+
+  async function handleBulkDelete() {
+    if (!selected.size) return;
+    if (!confirm(`Delete ${selected.size} contract${selected.size > 1 ? "s" : ""}? This cannot be undone.`)) return;
+    setDeleting(true);
+    try {
+      await Promise.all(
+        Array.from(selected).map((id) =>
+          fetch(`/api/admin/contracts/${id}`, { method: "DELETE" })
+        )
+      );
+      setContracts((prev) => prev.filter((c) => !selected.has(c.id)));
+      setSelected(new Set());
+    } catch {
+      alert("Some deletes failed.");
+    } finally {
+      setDeleting(false);
     }
   }
 
@@ -231,6 +280,46 @@ export default function ContractsPage() {
         ))}
       </div>
 
+      {/* Bulk Actions Bar */}
+      {selected.size > 0 && (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            background: "rgba(239,68,68,0.08)",
+            border: "1px solid rgba(239,68,68,0.2)",
+            borderRadius: "4px",
+            padding: "0.75rem 1.25rem",
+            marginBottom: "1rem",
+          }}
+        >
+          <span style={{ color: "#ef4444", fontSize: "13px", fontWeight: 600 }}>
+            {selected.size} contract{selected.size > 1 ? "s" : ""} selected
+          </span>
+          <button
+            onClick={handleBulkDelete}
+            disabled={deleting}
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "0.4rem",
+              padding: "0.5rem 1rem",
+              background: "#ef4444",
+              border: "none",
+              borderRadius: "4px",
+              color: "#fff",
+              fontSize: "13px",
+              fontWeight: 700,
+              cursor: deleting ? "wait" : "pointer",
+              opacity: deleting ? 0.6 : 1,
+            }}
+          >
+            <Trash2 size={14} /> {deleting ? "Deleting..." : "Delete Selected"}
+          </button>
+        </div>
+      )}
+
       {/* Content */}
       {loading ? (
         <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "14px" }}>
@@ -278,6 +367,14 @@ export default function ContractsPage() {
                   textAlign: "left",
                 }}
               >
+                <th style={{ padding: "0.75rem 0.5rem 0.75rem 1rem", width: "40px" }}>
+                  <input
+                    type="checkbox"
+                    checked={filtered.length > 0 && selected.size === filtered.length}
+                    onChange={toggleSelectAll}
+                    style={{ cursor: "pointer", accentColor: "#F7941D" }}
+                  />
+                </th>
                 {[
                   "Contract #",
                   "Client Name",
@@ -322,6 +419,19 @@ export default function ContractsPage() {
                     (e.currentTarget.style.background = "transparent")
                   }
                 >
+                  {/* Checkbox */}
+                  <td
+                    style={{ padding: "0.75rem 0.5rem 0.75rem 1rem" }}
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={selected.has(c.id)}
+                      onChange={() => toggleSelect(c.id)}
+                      style={{ cursor: "pointer", accentColor: "#F7941D" }}
+                    />
+                  </td>
+
                   {/* Contract Number */}
                   <td style={{ padding: "0.75rem 1rem" }}>
                     <span
@@ -404,25 +514,44 @@ export default function ContractsPage() {
                     style={{ padding: "0.75rem 1rem" }}
                     onClick={(e) => e.stopPropagation()}
                   >
-                    <Link
-                      href={`/admin/contracts/${c.id}`}
-                      style={{
-                        display: "inline-flex",
-                        alignItems: "center",
-                        gap: "0.35rem",
-                        padding: "0.35rem 0.75rem",
-                        borderRadius: "4px",
-                        border: "1px solid #222",
-                        background: "transparent",
-                        color: "rgba(255,255,255,0.6)",
-                        fontSize: "12px",
-                        textDecoration: "none",
-                        whiteSpace: "nowrap",
-                        transition: "all 0.2s",
-                      }}
-                    >
-                      View
-                    </Link>
+                    <div style={{ display: "flex", gap: "0.35rem" }}>
+                      <Link
+                        href={`/admin/contracts/${c.id}`}
+                        style={{
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: "0.35rem",
+                          padding: "0.35rem 0.75rem",
+                          borderRadius: "4px",
+                          border: "1px solid #222",
+                          background: "transparent",
+                          color: "rgba(255,255,255,0.6)",
+                          fontSize: "12px",
+                          textDecoration: "none",
+                          whiteSpace: "nowrap",
+                          transition: "all 0.2s",
+                        }}
+                      >
+                        View
+                      </Link>
+                      <button
+                        onClick={() => handleDelete(c.id)}
+                        style={{
+                          display: "inline-flex",
+                          alignItems: "center",
+                          padding: "0.35rem 0.5rem",
+                          borderRadius: "4px",
+                          border: "1px solid rgba(239,68,68,0.2)",
+                          background: "transparent",
+                          color: "#ef4444",
+                          fontSize: "12px",
+                          cursor: "pointer",
+                          transition: "all 0.2s",
+                        }}
+                      >
+                        <Trash2 size={13} />
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}

@@ -86,7 +86,7 @@ const LEADERSHIP = [
     bio: "Shazal connects clients with the right signage solutions for their business. From initial consultation to final delivery, he ensures every client gets personalized attention and a seamless experience.",
     email: TEAM_EMAIL,
     phone: TEAM_PHONE,
-    image: IMG.teamShazal,
+    image: "/images/team-shazal-v2.webp",
   },
   {
     name: "Anton Andersson",

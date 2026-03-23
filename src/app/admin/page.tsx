@@ -415,17 +415,17 @@ export default function AdminDashboard() {
           </div>
         </Link>
 
-        <a href="https://supabase.com/dashboard/project/eofjaizkkxqxbynnvemi/storage/buckets" target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>
+        <Link href="/admin/images" style={{ textDecoration: "none" }}>
           <div
             style={{ background: "#111", border: "1px solid #222", borderRadius: "4px", padding: "1.5rem", transition: "border-color 0.2s", cursor: "pointer" }}
             onMouseEnter={(e) => (e.currentTarget.style.borderColor = "#F7941D")}
             onMouseLeave={(e) => (e.currentTarget.style.borderColor = "#222")}
           >
             <HardDrive size={24} style={{ color: "rgba(255,255,255,0.3)", marginBottom: "1rem" }} />
-            <p style={{ fontSize: "18px", fontWeight: 700, color: "#F7941D", margin: "0 0 0.25rem" }}>Supabase Storage</p>
-            <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.5)", margin: 0 }}>Media</p>
+            <p style={{ fontSize: "32px", fontWeight: 700, color: "#F7941D", margin: "0 0 0.25rem" }}>Images</p>
+            <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.5)", margin: 0 }}>Media Manager</p>
           </div>
-        </a>
+        </Link>
       </div>
 
       {/* Recent Inquiries */}

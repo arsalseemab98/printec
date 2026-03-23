@@ -425,3 +425,22 @@
   80% { transform: rotate(360deg) scale(1.08); }
   100% { transform: rotate(360deg) scale(1); }
 }
+
+/* Admin Light Mode */
+.admin-light main { color: #333; }
+.admin-light main h1,
+.admin-light main h2,
+.admin-light main h3 { color: #111 !important; }
+.admin-light main p { color: #555; }
+.admin-light main div[style*="background: #111"],
+.admin-light main div[style*="background:#111"] { background: #fff !important; border-color: #e0e0e0 !important; }
+.admin-light main div[style*="background: #0C0C0C"],
+.admin-light main div[style*="background:#0C0C0C"] { background: #fafafa !important; }
+.admin-light main table { color: #333; }
+.admin-light main td { color: #333 !important; }
+.admin-light main th { color: #888 !important; }
+.admin-light main tr { border-color: #e8e8e8 !important; }
+.admin-light main input,
+.admin-light main textarea,
+.admin-light main select { background: #fff !important; color: #333 !important; border-color: #ddd !important; }
+.admin-light main a { color: inherit; }

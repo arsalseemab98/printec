@@ -3,6 +3,7 @@
 import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
+import { useState, useEffect } from "react";
 import {
   LayoutDashboard,
   FileImage,
@@ -12,6 +13,8 @@ import {
   ClipboardList,
   FileSignature,
   LogOut,
+  Sun,
+  Moon,
 } from "lucide-react";
 
 const NAV_ITEMS = [
@@ -65,21 +68,38 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const [light, setLight] = useState(false);
+
+  useEffect(() => {
+    const saved = localStorage.getItem("admin-theme");
+    if (saved === "light") setLight(true);
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("admin-theme", light ? "light" : "dark");
+  }, [light]);
 
   // Login page renders without sidebar
   if (pathname === "/admin/login") {
     return <>{children}</>;
   }
 
+  const bg = light ? "#f5f5f5" : "#0C0C0C";
+  const sidebarBg = light ? "#fff" : "#111";
+  const sidebarBorder = light ? "#e0e0e0" : "#222";
+  const textColor = light ? "#333" : "rgba(255,255,255,0.5)";
+  const activeColor = "#F7941D";
+  const activeTextBg = light ? "rgba(247,148,29,0.08)" : "rgba(247,148,29,0.05)";
+
   return (
-    <div style={{ display: "flex", minHeight: "100vh", background: "#0C0C0C" }}>
+    <div style={{ display: "flex", minHeight: "100vh", background: bg }} className={light ? "admin-light" : ""}>
       {/* Sidebar */}
       <aside
         style={{
           width: 240,
           minWidth: 240,
-          background: "#111",
-          borderRight: "1px solid #222",
+          background: sidebarBg,
+          borderRight: `1px solid ${sidebarBorder}`,
           display: "flex",
           flexDirection: "column",
           position: "fixed",
@@ -99,7 +119,7 @@ export default function AdminLayout({
           }}
         >
           <Image
-            src="/printec-logo-light.png"
+            src={light ? "/printec-logo.png" : "/printec-logo-light.png"}
             alt="Printec"
             width={140}
             height={88}
@@ -139,14 +159,14 @@ export default function AdminLayout({
                   alignItems: "center",
                   gap: "0.75rem",
                   padding: "0.75rem 1.25rem",
-                  color: isActive ? "#F7941D" : "rgba(255,255,255,0.5)",
+                  color: isActive ? activeColor : textColor,
                   textDecoration: "none",
                   fontSize: "14px",
                   fontWeight: isActive ? 600 : 400,
                   borderLeft: isActive
-                    ? "3px solid #F7941D"
+                    ? `3px solid ${activeColor}`
                     : "3px solid transparent",
-                  background: isActive ? "rgba(247,148,29,0.05)" : "transparent",
+                  background: isActive ? activeTextBg : "transparent",
                   transition: "all 0.2s",
                 }}
               >
@@ -157,8 +177,29 @@ export default function AdminLayout({
           })}
         </nav>
 
-        {/* Logout */}
-        <div style={{ borderTop: "1px solid #222", padding: "0.5rem 0" }}>
+        {/* Theme Toggle + Logout */}
+        <div style={{ borderTop: `1px solid ${sidebarBorder}`, padding: "0.5rem 0" }}>
+          <button
+            onClick={() => setLight(!light)}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "0.75rem",
+              padding: "0.75rem 1.25rem",
+              background: "none",
+              border: "none",
+              color: textColor,
+              fontSize: "14px",
+              cursor: "pointer",
+              width: "100%",
+              transition: "color 0.2s",
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.color = light ? "#000" : "#fff")}
+            onMouseLeave={(e) => (e.currentTarget.style.color = textColor)}
+          >
+            {light ? <Moon size={18} /> : <Sun size={18} />}
+            {light ? "Dark Mode" : "Light Mode"}
+          </button>
           <LogoutButton />
         </div>
       </aside>

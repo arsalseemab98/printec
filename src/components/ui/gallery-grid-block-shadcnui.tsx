@@ -11,27 +11,15 @@ const DARK2 = "#222222";
 const SPECTRUM = "linear-gradient(90deg, #FFD600, #F7941D, #E53935, #9B2D8E, #00897B, #8BC34A)";
 
 const galleryImages = [
-  { id: 1, url: "https://printecwrap.com/wp-content/uploads/2022/04/whatsapp_image_2022__5jvGo-500x500.jpg", title: "VINYL WRAP — FULL COVERAGE", category: "Vinyl Wraps" },
-  { id: 2, url: "https://printecwrap.com/wp-content/uploads/2022/04/whatsapp_image_2022__D8j7o-500x500.jpg", title: "COMMERCIAL SIGNAGE", category: "Signage" },
-  { id: 3, url: "https://printecwrap.com/wp-content/uploads/2022/04/whatsapp_image_2022__dE4IP-500x500.jpg", title: "FOOD TRUCK WRAP", category: "Vinyl Wraps" },
-  { id: 4, url: "https://printecwrap.com/wp-content/uploads/2022/04/whatsapp_image_2022__mF3ey-500x500.jpg", title: "WALL MURAL DESIGN", category: "Wall Wraps" },
-  { id: 5, url: "https://printecwrap.com/wp-content/uploads/2022/04/whatsapp_image_2022__MNBze-500x500.jpg", title: "LED CHANNEL LETTERS", category: "Signage" },
-  { id: 6, url: "https://printecwrap.com/wp-content/uploads/2022/04/whatsapp_image_2022__mYluM-500x500.jpg", title: "WINDOW GRAPHICS", category: "Window Wraps" },
-  { id: 7, url: "https://printecwrap.com/wp-content/uploads/2022/04/whatsapp_image_2022__OLs5R-500x500.jpg", title: "FLEET BRANDING", category: "Vinyl Wraps" },
-  { id: 8, url: "https://printecwrap.com/wp-content/uploads/2022/04/whatsapp_image_2022__PTbib-500x500.jpg", title: "STOREFRONT SIGN", category: "Signage" },
-  { id: 9, url: "https://printecwrap.com/wp-content/uploads/2022/04/whatsapp_image_2022__qYamp-500x500.jpg", title: "NEON BAR SIGN", category: "Neon Signs" },
-  { id: 10, url: "https://printecwrap.com/wp-content/uploads/2022/04/whatsapp_image_2022__UtFTz-500x500.jpg", title: "TRAILER WRAP", category: "Vinyl Wraps" },
-  { id: 11, url: "https://printecwrap.com/wp-content/uploads/2022/04/whatsapp_image_2022__xXNwR-500x500.jpg", title: "DANCE FLOOR WRAP", category: "Floor Wraps" },
-  { id: 12, url: "https://printecwrap.com/wp-content/uploads/2022/04/Webp.net-compress-image01-500x500.jpg", title: "EVENT SIGNAGE", category: "Signage" },
-  { id: 13, url: "/images/portfolio/floor-as-monogram.webp", title: "A&S MONOGRAM WEDDING FLOOR", category: "Floor Wraps" },
-  { id: 14, url: "/images/portfolio/floor-mandala-colorful.webp", title: "COLORFUL MANDALA MEHNDI FLOOR", category: "Floor Wraps" },
-  { id: 15, url: "/images/portfolio/floor-mm-gold.webp", title: "M&M GOLD MONOGRAM FLOOR", category: "Floor Wraps" },
-  { id: 16, url: "/images/portfolio/floor-hz-orange.webp", title: "H&Z ORANGE MONOGRAM FLOOR", category: "Floor Wraps" },
-  { id: 17, url: "/images/portfolio/floor-anjana-aditya.webp", title: "ANJANA & ADITYA WEDDING FLOOR", category: "Floor Wraps" },
-  { id: 18, url: "/images/portfolio/floor-rv-wreath.webp", title: "R&V GOLD WREATH FLOOR", category: "Floor Wraps" },
-  { id: 19, url: "/images/portfolio/floor-pastel-mandala.webp", title: "PASTEL MANDALA FLOOR", category: "Floor Wraps" },
-  { id: 20, url: "/images/portfolio/floor-red-pattern.webp", title: "TRADITIONAL RED PATTERN FLOOR", category: "Floor Wraps" },
-  { id: 21, url: "/images/portfolio/floor-mehndi-colorful.webp", title: "VIBRANT MEHNDI FLOOR", category: "Floor Wraps" },
+  { id: 1, url: "/images/portfolio/floor-as-monogram.webp", title: "A&S MONOGRAM WEDDING FLOOR", category: "Floor Wraps" },
+  { id: 2, url: "/images/portfolio/floor-mandala-colorful.webp", title: "COLORFUL MANDALA MEHNDI FLOOR", category: "Floor Wraps" },
+  { id: 3, url: "/images/portfolio/floor-mm-gold.webp", title: "M&M GOLD MONOGRAM FLOOR", category: "Floor Wraps" },
+  { id: 4, url: "/images/portfolio/floor-hz-orange.webp", title: "H&Z ORANGE MONOGRAM FLOOR", category: "Floor Wraps" },
+  { id: 5, url: "/images/portfolio/floor-anjana-aditya.webp", title: "ANJANA & ADITYA WEDDING FLOOR", category: "Floor Wraps" },
+  { id: 6, url: "/images/portfolio/floor-rv-wreath.webp", title: "R&V GOLD WREATH FLOOR", category: "Floor Wraps" },
+  { id: 7, url: "/images/portfolio/floor-pastel-mandala.webp", title: "PASTEL MANDALA FLOOR", category: "Floor Wraps" },
+  { id: 8, url: "/images/portfolio/floor-red-pattern.webp", title: "TRADITIONAL RED PATTERN FLOOR", category: "Floor Wraps" },
+  { id: 9, url: "/images/portfolio/floor-mehndi-colorful.webp", title: "VIBRANT MEHNDI FLOOR", category: "Floor Wraps" },
 ];
 
 export function GalleryGridBlock() {

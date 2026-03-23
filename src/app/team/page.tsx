@@ -88,7 +88,7 @@ const LEADERSHIP = [
     email: TEAM_EMAIL,
     phone: TEAM_PHONE,
     image: "/images/team-shazal-v3.webp",
-    imagePosition: "40% center",
+    imagePosition: "35% top",
   },
   {
     name: "Anton Andersson",
@@ -106,7 +106,7 @@ const LEADERSHIP = [
     email: TEAM_EMAIL,
     phone: TEAM_PHONE,
     image: "/images/team-nomi.webp",
-    imagePosition: "45% center",
+    imagePosition: "42% top",
   },
   {
     name: "Aryan W.",
@@ -115,7 +115,7 @@ const LEADERSHIP = [
     email: TEAM_EMAIL,
     phone: TEAM_PHONE,
     image: "/images/team-aryan.webp",
-    imagePosition: "45% center",
+    imagePosition: "45% top",
   },
 ];
 
@@ -203,7 +203,7 @@ export default function TeamPage() {
                 <div
                   style={{
                     width: "100%",
-                    aspectRatio: "3 / 4",
+                    aspectRatio: "4 / 5",
                     position: "relative",
                     overflow: "hidden",
                     background: "#0a0a0a",

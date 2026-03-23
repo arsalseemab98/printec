@@ -39,6 +39,8 @@ const PAGES = [
   { slug: "wall-wraps", name: "Wall Wraps", slots: ["hero", "before", "after"] },
   { slug: "window-wraps", name: "Window Wraps", slots: ["hero", "before", "after"] },
   { slug: "channel-letters-signage", name: "Channel Letters & Signage", slots: ["hero", "before", "after"] },
+  { slug: "custom-neon-signs", name: "Custom Neon Signs", slots: ["hero", "before", "after"] },
+  { slug: "business-signage", name: "Business Signage", slots: ["hero"] },
   { slug: "team", name: "Team", slots: ["hero"] },
   { slug: "contact", name: "Contact", slots: ["map"] },
   { slug: "portfolio", name: "Portfolio", slots: [] },

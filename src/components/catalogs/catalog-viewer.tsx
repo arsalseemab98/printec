@@ -771,106 +771,81 @@ export default function CatalogViewer({ catalog, projects }: CatalogViewerProps)
                     Sent!
                   </p>
                   <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.5)", margin: 0 }}>
-                    We&apos;ll get back to you shortly.
+                    Our team will get back to you within 24 hours.
                   </p>
                 </div>
               ) : (
                 <>
                   {/* Header */}
                   <p style={{ fontSize: "10px", fontWeight: 500, letterSpacing: "4px", textTransform: "uppercase", color: ORANGE, margin: "0 0 8px" }}>
-                    SEND THIS DESIGN
+                    CONNECT WITH OUR TEAM
                   </p>
                   <h3 style={{ fontFamily: "'Arial Black', sans-serif", fontWeight: 900, fontSize: "20px", color: "#fff", margin: "0 0 4px" }}>
                     {projects[current]?.title}
                   </h3>
-                  <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.4)", margin: "0 0 24px" }}>
+                  <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.4)", margin: "0 0 20px" }}>
                     from {catalog.title}
                   </p>
 
+                  {/* Auto-filled category badge */}
+                  <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "20px", padding: "10px 14px", background: "rgba(247,148,29,0.08)", border: "1px solid rgba(247,148,29,0.2)", borderRadius: "4px" }}>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={ORANGE} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+                    <span style={{ fontSize: "12px", fontWeight: 600, color: ORANGE, letterSpacing: "1px", textTransform: "uppercase" }}>
+                      {catalog.title}
+                    </span>
+                  </div>
+
                   <form onSubmit={handleSendInquiry} style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-                    <input
-                      type="text"
-                      placeholder="Your Name *"
-                      value={inquiryName}
-                      onChange={(e) => setInquiryName(e.target.value)}
-                      required
-                      style={{
-                        width: "100%",
-                        padding: "12px 14px",
-                        background: BLACK,
-                        border: `1px solid ${DARK2}`,
-                        borderRadius: "4px",
-                        color: "#fff",
-                        fontSize: "14px",
-                        outline: "none",
-                        boxSizing: "border-box",
-                        transition: "border-color 0.2s",
-                      }}
-                      onFocus={(e) => { e.currentTarget.style.borderColor = ORANGE; }}
-                      onBlur={(e) => { e.currentTarget.style.borderColor = DARK2; }}
-                    />
-                    <input
-                      type="email"
-                      placeholder="Email Address *"
-                      value={inquiryEmail}
-                      onChange={(e) => setInquiryEmail(e.target.value)}
-                      required
-                      style={{
-                        width: "100%",
-                        padding: "12px 14px",
-                        background: BLACK,
-                        border: `1px solid ${DARK2}`,
-                        borderRadius: "4px",
-                        color: "#fff",
-                        fontSize: "14px",
-                        outline: "none",
-                        boxSizing: "border-box",
-                        transition: "border-color 0.2s",
-                      }}
-                      onFocus={(e) => { e.currentTarget.style.borderColor = ORANGE; }}
-                      onBlur={(e) => { e.currentTarget.style.borderColor = DARK2; }}
-                    />
-                    <input
-                      type="tel"
-                      placeholder="Phone (optional)"
-                      value={inquiryPhone}
-                      onChange={(e) => setInquiryPhone(e.target.value)}
-                      style={{
-                        width: "100%",
-                        padding: "12px 14px",
-                        background: BLACK,
-                        border: `1px solid ${DARK2}`,
-                        borderRadius: "4px",
-                        color: "#fff",
-                        fontSize: "14px",
-                        outline: "none",
-                        boxSizing: "border-box",
-                        transition: "border-color 0.2s",
-                      }}
-                      onFocus={(e) => { e.currentTarget.style.borderColor = ORANGE; }}
-                      onBlur={(e) => { e.currentTarget.style.borderColor = DARK2; }}
-                    />
-                    <textarea
-                      placeholder="Message (optional)"
-                      value={inquiryMessage}
-                      onChange={(e) => setInquiryMessage(e.target.value)}
-                      rows={3}
-                      style={{
-                        width: "100%",
-                        padding: "12px 14px",
-                        background: BLACK,
-                        border: `1px solid ${DARK2}`,
-                        borderRadius: "4px",
-                        color: "#fff",
-                        fontSize: "14px",
-                        outline: "none",
-                        boxSizing: "border-box",
-                        resize: "vertical",
-                        transition: "border-color 0.2s",
-                      }}
-                      onFocus={(e) => { e.currentTarget.style.borderColor = ORANGE; }}
-                      onBlur={(e) => { e.currentTarget.style.borderColor = DARK2; }}
-                    />
+                    <div>
+                      <label style={{ display: "block", fontWeight: 600, fontSize: "11px", letterSpacing: "1px", textTransform: "uppercase", color: "rgba(255,255,255,0.5)", marginBottom: "6px" }}>Name *</label>
+                      <input
+                        type="text"
+                        placeholder="Your full name"
+                        value={inquiryName}
+                        onChange={(e) => setInquiryName(e.target.value)}
+                        required
+                        style={{ width: "100%", padding: "12px 14px", background: "#111", border: `1px solid ${DARK2}`, borderRadius: "4px", color: "#fff", fontFamily: "Arial, sans-serif", fontSize: "14px", outline: "none", boxSizing: "border-box", transition: "border-color 0.2s" }}
+                        onFocus={(e) => { e.currentTarget.style.borderColor = ORANGE; }}
+                        onBlur={(e) => { e.currentTarget.style.borderColor = DARK2; }}
+                      />
+                    </div>
+                    <div>
+                      <label style={{ display: "block", fontWeight: 600, fontSize: "11px", letterSpacing: "1px", textTransform: "uppercase", color: "rgba(255,255,255,0.5)", marginBottom: "6px" }}>Email *</label>
+                      <input
+                        type="email"
+                        placeholder="you@example.com"
+                        value={inquiryEmail}
+                        onChange={(e) => setInquiryEmail(e.target.value)}
+                        required
+                        style={{ width: "100%", padding: "12px 14px", background: "#111", border: `1px solid ${DARK2}`, borderRadius: "4px", color: "#fff", fontFamily: "Arial, sans-serif", fontSize: "14px", outline: "none", boxSizing: "border-box", transition: "border-color 0.2s" }}
+                        onFocus={(e) => { e.currentTarget.style.borderColor = ORANGE; }}
+                        onBlur={(e) => { e.currentTarget.style.borderColor = DARK2; }}
+                      />
+                    </div>
+                    <div>
+                      <label style={{ display: "block", fontWeight: 600, fontSize: "11px", letterSpacing: "1px", textTransform: "uppercase", color: "rgba(255,255,255,0.5)", marginBottom: "6px" }}>Phone</label>
+                      <input
+                        type="tel"
+                        placeholder="(optional)"
+                        value={inquiryPhone}
+                        onChange={(e) => setInquiryPhone(e.target.value)}
+                        style={{ width: "100%", padding: "12px 14px", background: "#111", border: `1px solid ${DARK2}`, borderRadius: "4px", color: "#fff", fontFamily: "Arial, sans-serif", fontSize: "14px", outline: "none", boxSizing: "border-box", transition: "border-color 0.2s" }}
+                        onFocus={(e) => { e.currentTarget.style.borderColor = ORANGE; }}
+                        onBlur={(e) => { e.currentTarget.style.borderColor = DARK2; }}
+                      />
+                    </div>
+                    <div>
+                      <label style={{ display: "block", fontWeight: 600, fontSize: "11px", letterSpacing: "1px", textTransform: "uppercase", color: "rgba(255,255,255,0.5)", marginBottom: "6px" }}>Message</label>
+                      <textarea
+                        placeholder="Tell us about your project (optional)"
+                        value={inquiryMessage}
+                        onChange={(e) => setInquiryMessage(e.target.value)}
+                        rows={3}
+                        style={{ width: "100%", padding: "12px 14px", background: "#111", border: `1px solid ${DARK2}`, borderRadius: "4px", color: "#fff", fontFamily: "Arial, sans-serif", fontSize: "14px", outline: "none", boxSizing: "border-box", resize: "vertical", transition: "border-color 0.2s" }}
+                        onFocus={(e) => { e.currentTarget.style.borderColor = ORANGE; }}
+                        onBlur={(e) => { e.currentTarget.style.borderColor = DARK2; }}
+                      />
+                    </div>
                     <button
                       type="submit"
                       disabled={inquirySending}
@@ -891,11 +866,11 @@ export default function CatalogViewer({ catalog, projects }: CatalogViewerProps)
                         transition: "opacity 0.2s",
                       }}
                     >
-                      {inquirySending ? "Sending..." : "Send Inquiry"}
+                      {inquirySending ? "Sending..." : "Send to Our Team"}
                     </button>
                   </form>
                   <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.2)", textAlign: "center", margin: "12px 0 0" }}>
-                    We&apos;ll respond within 24 hours.
+                    We respond within 24 hours.
                   </p>
                 </>
               )}

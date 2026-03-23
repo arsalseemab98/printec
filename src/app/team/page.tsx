@@ -97,12 +97,20 @@ const LEADERSHIP = [
     image: IMG.teamAnton,
   },
   {
-    name: "Maria Gonzalez",
+    name: "Nomi",
     role: "Lead Designer",
-    bio: "Maria brings creative vision and precision to every signage project. With a background in graphic design and brand identity, she transforms client ideas into bold, production-ready artwork.",
+    bio: "Nomi brings creative vision and precision to every signage project. With a background in graphic design and brand identity, she transforms client ideas into bold, production-ready artwork.",
     email: TEAM_EMAIL,
     phone: TEAM_PHONE,
     image: null,
+  },
+  {
+    name: "Aryan W.",
+    role: "Junior Intern",
+    bio: "Aryan brings fresh energy and eagerness to learn to the Printec team. As a junior intern, he assists across departments — from design support to installation prep — gaining hands-on experience in the signage industry.",
+    email: TEAM_EMAIL,
+    phone: TEAM_PHONE,
+    image: "/images/team-aryan.webp",
   },
 ];
 

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, FormEvent } from "react";
+import Image from "next/image";
 
 interface EmailGateProps {
   catalogTitle: string;
@@ -104,6 +105,7 @@ export default function EmailGate({ catalogTitle, catalogSlug, onUnlock }: Email
       >
         <div
           style={{
+            position: "relative",
             background: DARK1,
             border: `1px solid ${DARK2}`,
             borderRadius: "4px",
@@ -112,36 +114,41 @@ export default function EmailGate({ catalogTitle, catalogSlug, onUnlock }: Email
             width: "100%",
           }}
         >
+          {/* Close button */}
+          <button
+            onClick={onUnlock}
+            style={{
+              position: "absolute",
+              top: "12px",
+              right: "12px",
+              width: "32px",
+              height: "32px",
+              border: "none",
+              background: "transparent",
+              color: "rgba(255,255,255,0.3)",
+              fontSize: "22px",
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              transition: "color 0.2s",
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.color = "rgba(255,255,255,0.7)"; }}
+            onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(255,255,255,0.3)"; }}
+            aria-label="Skip"
+          >
+            &times;
+          </button>
+
           {/* Logo */}
-          <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "24px" }}>
-            <div
-              style={{
-                width: "32px",
-                height: "32px",
-                background: ORANGE,
-                borderRadius: "4px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontFamily: "'Arial Black', sans-serif",
-                fontWeight: 900,
-                fontSize: "18px",
-                color: "#000",
-              }}
-            >
-              P
-            </div>
-            <span
-              style={{
-                fontFamily: "'Arial Black', sans-serif",
-                fontWeight: 900,
-                fontSize: "20px",
-                color: "#fff",
-                letterSpacing: "2px",
-              }}
-            >
-              PRINTEC
-            </span>
+          <div style={{ marginBottom: "24px" }}>
+            <Image
+              src="/printec-logo-light.png"
+              alt="Printec Virginia LLC"
+              width={200}
+              height={125}
+              style={{ height: "40px", width: "auto" }}
+            />
           </div>
 
           {/* Orange divider */}

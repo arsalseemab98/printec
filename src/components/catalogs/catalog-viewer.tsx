@@ -482,38 +482,16 @@ export default function CatalogViewer({ catalog, projects }: CatalogViewerProps)
             style={{
               display: "flex",
               alignItems: "center",
-              gap: "10px",
               textDecoration: "none",
             }}
           >
-            <div
-              style={{
-                width: "28px",
-                height: "28px",
-                background: ORANGE,
-                borderRadius: "4px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontFamily: "'Arial Black', sans-serif",
-                fontWeight: 900,
-                fontSize: "16px",
-                color: "#000",
-              }}
-            >
-              P
-            </div>
-            <span
-              style={{
-                fontFamily: "'Arial Black', sans-serif",
-                fontWeight: 900,
-                fontSize: "16px",
-                color: "#fff",
-                letterSpacing: "2px",
-              }}
-            >
-              PRINTEC
-            </span>
+            <Image
+              src="/printec-logo-light.png"
+              alt="Printec Virginia LLC"
+              width={200}
+              height={125}
+              style={{ height: "36px", width: "auto" }}
+            />
           </Link>
 
           {/* Catalog title */}

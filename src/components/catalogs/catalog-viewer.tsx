@@ -36,6 +36,55 @@ export default function CatalogViewer({ catalog, projects }: CatalogViewerProps)
   const touchStartRef = useRef<number | null>(null);
   const total = projects.length;
 
+  // Inquiry modal state
+  const [showInquiry, setShowInquiry] = useState(false);
+  const [inquiryName, setInquiryName] = useState("");
+  const [inquiryEmail, setInquiryEmail] = useState("");
+  const [inquiryPhone, setInquiryPhone] = useState("");
+  const [inquiryMessage, setInquiryMessage] = useState("");
+  const [inquirySending, setInquirySending] = useState(false);
+  const [inquirySent, setInquirySent] = useState(false);
+
+  function openInquiry() {
+    setInquirySent(false);
+    setShowInquiry(true);
+  }
+
+  async function handleSendInquiry(e: React.FormEvent) {
+    e.preventDefault();
+    if (!inquiryName.trim() || !inquiryEmail.trim()) return;
+    setInquirySending(true);
+    const currentProject = projects[current];
+    try {
+      await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: inquiryName.trim(),
+          email: inquiryEmail.trim(),
+          phone: inquiryPhone.trim(),
+          service: catalog.title,
+          description: `[Catalog Inquiry] Interested in: "${currentProject?.title}" from the "${catalog.title}" catalog.\n\n${inquiryMessage.trim() || "No additional message."}`,
+          source: "catalog",
+          budget: "",
+        }),
+      });
+      setInquirySent(true);
+      setTimeout(() => {
+        setShowInquiry(false);
+        setInquiryName("");
+        setInquiryEmail("");
+        setInquiryPhone("");
+        setInquiryMessage("");
+        setInquirySent(false);
+      }, 2500);
+    } catch {
+      alert("Failed to send. Please try again.");
+    } finally {
+      setInquirySending(false);
+    }
+  }
+
   const goTo = useCallback(
     (idx: number) => {
       if (total <= 1) return;
@@ -342,7 +391,7 @@ export default function CatalogViewer({ catalog, projects }: CatalogViewerProps)
                 </div>
               )}
 
-              {/* CTA button */}
+              {/* CTA buttons */}
               <div
                 key={`cta-${animKey}`}
                 style={{
@@ -350,8 +399,36 @@ export default function CatalogViewer({ catalog, projects }: CatalogViewerProps)
                   animationDelay: "0.8s",
                   opacity: 0,
                   animationFillMode: "forwards",
+                  display: "flex",
+                  gap: "12px",
+                  flexWrap: "wrap",
                 }}
               >
+                <button
+                  onClick={openInquiry}
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "8px",
+                    padding: "12px 28px",
+                    background: ORANGE,
+                    border: "none",
+                    color: "#000",
+                    fontFamily: "'Arial Black', sans-serif",
+                    fontWeight: 900,
+                    fontSize: "12px",
+                    letterSpacing: "2px",
+                    textTransform: "uppercase",
+                    borderRadius: "4px",
+                    cursor: "pointer",
+                    transition: "opacity 0.2s",
+                  }}
+                  onMouseEnter={(e) => { e.currentTarget.style.opacity = "0.85"; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.opacity = "1"; }}
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                  Send This Design
+                </button>
                 <Link
                   href={`/contact?service=${encodeURIComponent(catalog.title)}`}
                   style={{
@@ -378,7 +455,7 @@ export default function CatalogViewer({ catalog, projects }: CatalogViewerProps)
                     e.currentTarget.style.color = ORANGE;
                   }}
                 >
-                  Get a Quote Like This
+                  Get a Quote
                 </Link>
               </div>
             </div>
@@ -620,6 +697,211 @@ export default function CatalogViewer({ catalog, projects }: CatalogViewerProps)
           </svg>
           Request Quote
         </Link>
+
+        {/* ── INQUIRY MODAL ── */}
+        {showInquiry && (
+          <div
+            style={{
+              position: "fixed",
+              inset: 0,
+              zIndex: 60,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              background: "rgba(0,0,0,0.8)",
+              backdropFilter: "blur(12px)",
+              WebkitBackdropFilter: "blur(12px)",
+            }}
+            onClick={(e) => { if (e.target === e.currentTarget) setShowInquiry(false); }}
+          >
+            <div
+              style={{
+                background: "#161616",
+                border: `1px solid ${DARK2}`,
+                borderRadius: "4px",
+                padding: "32px",
+                width: "100%",
+                maxWidth: "440px",
+                margin: "16px",
+                position: "relative",
+              }}
+            >
+              {/* Close button */}
+              <button
+                onClick={() => setShowInquiry(false)}
+                style={{
+                  position: "absolute",
+                  top: "12px",
+                  right: "12px",
+                  width: "32px",
+                  height: "32px",
+                  border: "none",
+                  background: "transparent",
+                  color: "rgba(255,255,255,0.4)",
+                  fontSize: "20px",
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                &times;
+              </button>
+
+              {inquirySent ? (
+                <div style={{ textAlign: "center", padding: "24px 0" }}>
+                  <div
+                    style={{
+                      width: "48px",
+                      height: "48px",
+                      borderRadius: "50%",
+                      background: "rgba(34,197,94,0.15)",
+                      border: "1px solid rgba(34,197,94,0.3)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      margin: "0 auto 16px",
+                      color: "#22c55e",
+                      fontSize: "24px",
+                    }}
+                  >
+                    &#10003;
+                  </div>
+                  <p style={{ fontFamily: "'Arial Black', sans-serif", fontWeight: 900, fontSize: "20px", color: "#fff", margin: "0 0 8px" }}>
+                    Sent!
+                  </p>
+                  <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.5)", margin: 0 }}>
+                    We&apos;ll get back to you shortly.
+                  </p>
+                </div>
+              ) : (
+                <>
+                  {/* Header */}
+                  <p style={{ fontSize: "10px", fontWeight: 500, letterSpacing: "4px", textTransform: "uppercase", color: ORANGE, margin: "0 0 8px" }}>
+                    SEND THIS DESIGN
+                  </p>
+                  <h3 style={{ fontFamily: "'Arial Black', sans-serif", fontWeight: 900, fontSize: "20px", color: "#fff", margin: "0 0 4px" }}>
+                    {projects[current]?.title}
+                  </h3>
+                  <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.4)", margin: "0 0 24px" }}>
+                    from {catalog.title}
+                  </p>
+
+                  <form onSubmit={handleSendInquiry} style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                    <input
+                      type="text"
+                      placeholder="Your Name *"
+                      value={inquiryName}
+                      onChange={(e) => setInquiryName(e.target.value)}
+                      required
+                      style={{
+                        width: "100%",
+                        padding: "12px 14px",
+                        background: BLACK,
+                        border: `1px solid ${DARK2}`,
+                        borderRadius: "4px",
+                        color: "#fff",
+                        fontSize: "14px",
+                        outline: "none",
+                        boxSizing: "border-box",
+                        transition: "border-color 0.2s",
+                      }}
+                      onFocus={(e) => { e.currentTarget.style.borderColor = ORANGE; }}
+                      onBlur={(e) => { e.currentTarget.style.borderColor = DARK2; }}
+                    />
+                    <input
+                      type="email"
+                      placeholder="Email Address *"
+                      value={inquiryEmail}
+                      onChange={(e) => setInquiryEmail(e.target.value)}
+                      required
+                      style={{
+                        width: "100%",
+                        padding: "12px 14px",
+                        background: BLACK,
+                        border: `1px solid ${DARK2}`,
+                        borderRadius: "4px",
+                        color: "#fff",
+                        fontSize: "14px",
+                        outline: "none",
+                        boxSizing: "border-box",
+                        transition: "border-color 0.2s",
+                      }}
+                      onFocus={(e) => { e.currentTarget.style.borderColor = ORANGE; }}
+                      onBlur={(e) => { e.currentTarget.style.borderColor = DARK2; }}
+                    />
+                    <input
+                      type="tel"
+                      placeholder="Phone (optional)"
+                      value={inquiryPhone}
+                      onChange={(e) => setInquiryPhone(e.target.value)}
+                      style={{
+                        width: "100%",
+                        padding: "12px 14px",
+                        background: BLACK,
+                        border: `1px solid ${DARK2}`,
+                        borderRadius: "4px",
+                        color: "#fff",
+                        fontSize: "14px",
+                        outline: "none",
+                        boxSizing: "border-box",
+                        transition: "border-color 0.2s",
+                      }}
+                      onFocus={(e) => { e.currentTarget.style.borderColor = ORANGE; }}
+                      onBlur={(e) => { e.currentTarget.style.borderColor = DARK2; }}
+                    />
+                    <textarea
+                      placeholder="Message (optional)"
+                      value={inquiryMessage}
+                      onChange={(e) => setInquiryMessage(e.target.value)}
+                      rows={3}
+                      style={{
+                        width: "100%",
+                        padding: "12px 14px",
+                        background: BLACK,
+                        border: `1px solid ${DARK2}`,
+                        borderRadius: "4px",
+                        color: "#fff",
+                        fontSize: "14px",
+                        outline: "none",
+                        boxSizing: "border-box",
+                        resize: "vertical",
+                        transition: "border-color 0.2s",
+                      }}
+                      onFocus={(e) => { e.currentTarget.style.borderColor = ORANGE; }}
+                      onBlur={(e) => { e.currentTarget.style.borderColor = DARK2; }}
+                    />
+                    <button
+                      type="submit"
+                      disabled={inquirySending}
+                      style={{
+                        width: "100%",
+                        padding: "14px",
+                        background: ORANGE,
+                        border: "none",
+                        borderRadius: "4px",
+                        color: "#000",
+                        fontFamily: "'Arial Black', sans-serif",
+                        fontWeight: 900,
+                        fontSize: "13px",
+                        letterSpacing: "2px",
+                        textTransform: "uppercase",
+                        cursor: inquirySending ? "wait" : "pointer",
+                        opacity: inquirySending ? 0.6 : 1,
+                        transition: "opacity 0.2s",
+                      }}
+                    >
+                      {inquirySending ? "Sending..." : "Send Inquiry"}
+                    </button>
+                  </form>
+                  <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.2)", textAlign: "center", margin: "12px 0 0" }}>
+                    We&apos;ll respond within 24 hours.
+                  </p>
+                </>
+              )}
+            </div>
+          </div>
+        )}
       </div>
     </>
   );

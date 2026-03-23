@@ -472,30 +472,40 @@ export default function DanceFloorWrapsPage() {
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 240px), 1fr))",
-              gap: "20px",
+              gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 320px), 1fr))",
+              gap: "16px",
             }}
           >
-            {[1, 2, 3, 4].map((n) => (
+            {[
+              { src: "/images/portfolio/floor-as-monogram.webp", alt: "A&S monogram wedding floor wrap with gold wreath design" },
+              { src: "/images/portfolio/floor-mandala-colorful.webp", alt: "Colorful mandala mehndi dance floor wrap in pink, blue and yellow" },
+              { src: "/images/portfolio/floor-mm-gold.webp", alt: "M&M gold monogram wedding dance floor wrap" },
+              { src: "/images/portfolio/floor-hz-orange.webp", alt: "H&Z orange monogram wedding floor wrap" },
+              { src: "/images/portfolio/floor-anjana-aditya.webp", alt: "Anjana & Aditya wedding dance floor with blue lighting" },
+              { src: "/images/portfolio/floor-rv-wreath.webp", alt: "R&V gold wreath monogram dance floor wrap" },
+              { src: "/images/portfolio/floor-pastel-mandala.webp", alt: "Pastel pink and purple mandala dance floor wrap" },
+              { src: "/images/portfolio/floor-red-pattern.webp", alt: "Traditional red cross-stitch pattern dance floor wrap" },
+              { src: "/images/portfolio/floor-mehndi-colorful.webp", alt: "Vibrant mehndi mandala floor wrap with chandeliers" },
+            ].map((img) => (
               <div
-                key={n}
+                key={img.src}
                 style={{
+                  position: "relative",
                   aspectRatio: "4 / 3",
-                  background: "#111",
-                  border: "1px solid #222",
                   borderRadius: "4px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  color: "rgba(255,255,255,0.15)",
-                  fontSize: "12px",
-                  letterSpacing: "2px",
-                  fontWeight: 500,
+                  overflow: "hidden",
+                  border: "1px solid #222",
                   transition: "border-color 0.3s ease",
                 }}
                 className="card-hover"
               >
-                Project {n} — 280x200
+                <Image
+                  src={img.src}
+                  alt={img.alt}
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1100px) 50vw, 33vw"
+                  style={{ objectFit: "cover" }}
+                />
               </div>
             ))}
           </div>

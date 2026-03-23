@@ -59,10 +59,10 @@ const CONNECT_ICON_MAP: Record<string, React.ReactNode> = {
 };
 
 const CONNECT_ITEMS = [
-  { label: "Phone", value: "(647) 299-1460", href: "tel:+16472991460" },
-  { label: "Email", value: "info@printeccorp.com", href: "mailto:info@printeccorp.com" },
-  { label: "WhatsApp", value: "+1 (647) 299-1460", href: "https://wa.me/16472991460" },
-  { label: "Address", value: "Virginia, USA", href: null },
+  { label: "Phone", value: "(715) 503-5444", href: "tel:+17155035444" },
+  { label: "Email", value: "info@printecwrap.com", href: "mailto:info@printecwrap.com" },
+  { label: "WhatsApp", value: "+1 (715) 503-5444", href: "https://wa.me/17155035444" },
+  { label: "Address", value: "Woodbridge, VA 22191", href: null },
 ];
 
 const HOURS = [
@@ -341,7 +341,7 @@ export function Footer() {
               letterSpacing: "0.5px",
             }}
           >
-            Virginia, USA
+            Woodbridge, VA 22191
           </span>
         </div>
       </div>

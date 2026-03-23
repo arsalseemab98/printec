@@ -13,7 +13,7 @@ import { MapPin } from "lucide-react";
 export const metadata: Metadata = {
   title: "Contact Us | Get a Free Quote",
   description:
-    "Get a free quote for custom signs, vehicle wraps, channel letters, window graphics and more. Contact Printec Virginia LLC in Virginia. Call (647) 299-1460.",
+    "Get a free quote for custom signs, vehicle wraps, channel letters, window graphics and more. Contact Printec Virginia LLC in Virginia. Call (715) 503-5444.",
   keywords: [
     "contact Printec Virginia LLC",
     "free sign quote Virginia",
@@ -141,7 +141,7 @@ export default function ContactPage() {
                 color: `${WHITE}66`,
               }}
             >
-              1234 Commerce Drive, Virginia Beach, VA 23456
+              Woodbridge, VA 22191
             </span>
           </div>
         </div>

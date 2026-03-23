@@ -172,8 +172,8 @@ export function ContactForm() {
               </div>
               <div>
                 <div style={INFO_LABEL_STYLE}>PHONE</div>
-                <a href="tel:+16472991460" style={{ ...INFO_VALUE_STYLE, textDecoration: "none" }}>
-                  (647) 299-1460
+                <a href="tel:+17155035444" style={{ ...INFO_VALUE_STYLE, textDecoration: "none" }}>
+                  (715) 503-5444
                 </a>
               </div>
             </div>
@@ -185,8 +185,8 @@ export function ContactForm() {
               </div>
               <div>
                 <div style={INFO_LABEL_STYLE}>EMAIL</div>
-                <a href="mailto:info@printeccorp.com" style={{ ...INFO_VALUE_STYLE, textDecoration: "none" }}>
-                  info@printeccorp.com
+                <a href="mailto:info@printecwrap.com" style={{ ...INFO_VALUE_STYLE, textDecoration: "none" }}>
+                  info@printecwrap.com
                 </a>
               </div>
             </div>
@@ -199,12 +199,12 @@ export function ContactForm() {
               <div>
                 <div style={INFO_LABEL_STYLE}>WHATSAPP</div>
                 <a
-                  href="https://wa.me/16472991460"
+                  href="https://wa.me/17155035444"
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{ ...INFO_VALUE_STYLE, textDecoration: "none" }}
                 >
-                  (647) 299-1460
+                  (715) 503-5444
                 </a>
               </div>
             </div>
@@ -217,8 +217,7 @@ export function ContactForm() {
               <div>
                 <div style={INFO_LABEL_STYLE}>ADDRESS</div>
                 <div style={INFO_VALUE_STYLE}>
-                  1234 Commerce Drive,<br />
-                  Virginia Beach, VA 23456
+                  Woodbridge, VA 22191
                 </div>
               </div>
             </div>
@@ -699,7 +698,7 @@ export function ContactForm() {
                 textAlign: "center",
               }}
             >
-              Virginia Beach, VA 23456
+              Woodbridge, VA 22191
             </p>
 
             <a

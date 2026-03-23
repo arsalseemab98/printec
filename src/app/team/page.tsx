@@ -68,8 +68,8 @@ const BODY: React.CSSProperties = {
 
 /* ─── TEAM DATA ─── */
 
-const TEAM_EMAIL = "info@printeccorp.com";
-const TEAM_PHONE = "(647) 299-1460";
+const TEAM_EMAIL = "info@printecwrap.com";
+const TEAM_PHONE = "(715) 503-5444";
 
 const LEADERSHIP = [
   {

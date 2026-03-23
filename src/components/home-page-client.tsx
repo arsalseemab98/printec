@@ -463,7 +463,7 @@ function AboutScrollSection() {
             }}
           >
             Since <strong style={{ color: ORANGE }}>2017</strong>, Printec Virginia LLC has been the go-to print and
-            signage powerhouse in Oshkosh, Wisconsin. From food truck wraps that stop traffic to LED channel letters
+            signage powerhouse in Woodbridge, Virginia. From food truck wraps that stop traffic to LED channel letters
             that light up the night — we bring your vision to life with raw creativity and precision craftsmanship.
             No fluff. No shortcuts. Just bold work that gets noticed.
           </motion.p>
@@ -1160,9 +1160,9 @@ export function HomePageClient() {
 
             <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
               {[
-                { label: "PHONE", value: "+1 715-503-5444", href: "tel:+17155035444" },
-                { label: "EMAIL", value: "printecwisconsin@gmail.com", href: "mailto:printecwisconsin@gmail.com" },
-                { label: "LOCATION", value: "Oshkosh, Wisconsin", href: null },
+                { label: "PHONE", value: "+1 (715) 503-5444", href: "tel:+17155035444" },
+                { label: "EMAIL", value: "info@printecwrap.com", href: "mailto:info@printecwrap.com" },
+                { label: "LOCATION", value: "Woodbridge, Virginia", href: null },
               ].map((item) => (
                 <div key={item.label}>
                   <div

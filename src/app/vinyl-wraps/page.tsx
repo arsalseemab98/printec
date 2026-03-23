@@ -543,7 +543,7 @@ export default function VinylWrapsPage() {
               letterSpacing: "1px",
             }}
           >
-            (647) 299-1460
+            (715) 503-5444
           </p>
         </div>
       </Section>

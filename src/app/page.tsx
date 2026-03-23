@@ -4,7 +4,7 @@ import { HomePageClient } from "@/components/home-page-client";
 export const metadata: Metadata = {
   title: "Printec Virginia LLC – From Vision to Vinyl | Signs, Wraps & Graphics",
   description:
-    "Virginia's premier custom signage and graphics company. Channel letters, window wraps, dance floor wraps, wall wraps, neon signs & more. Call (647) 299-1460.",
+    "Virginia's premier custom signage and graphics company. Channel letters, window wraps, dance floor wraps, wall wraps, neon signs & more. Call (715) 503-5444.",
   keywords: [
     "custom signs Virginia",
     "channel letters signage",
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Printec Virginia LLC – From Vision to Vinyl",
-    description: "Custom signs, wraps & graphics in Virginia. Call (647) 299-1460.",
+    description: "Custom signs, wraps & graphics in Virginia. Call (715) 503-5444.",
     images: ["/og-image.png"],
   },
   alternates: {

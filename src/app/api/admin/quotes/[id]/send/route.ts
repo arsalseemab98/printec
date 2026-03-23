@@ -101,7 +101,7 @@ export async function POST(
         <p style="margin:0 0 16px;">Hi <strong style="color:#fff;">${escapeHtml(inquiry.name)}</strong>,</p>
         <p style="margin:0 0 16px;">Thank you for your interest in <strong style="color:#F7941D;">Printec Virginia LLC</strong>. Please find your personalized quote <strong style="color:#fff;">${escapeHtml(quote.quote_number)}</strong> attached as a PDF.</p>
         <p style="margin:0 0 16px;">Your quoted total is: <strong style="color:#F7941D;font-size:18px;">$${Number(quote.total).toLocaleString("en-US", { minimumFractionDigits: 2 })}</strong></p>
-        <p style="margin:0 0 16px;color:#888;">This quote is valid for 30 days. If you have any questions or would like to proceed, simply reply to this email or call us at <strong style="color:#fff;">(647) 299-1460</strong>.</p>
+        <p style="margin:0 0 16px;color:#888;">This quote is valid for 30 days. If you have any questions or would like to proceed, simply reply to this email or call us at <strong style="color:#fff;">(715) 503-5444</strong>.</p>
         <p style="margin:0;color:#888;">— The Printec Team</p>
       </div>
     </div>

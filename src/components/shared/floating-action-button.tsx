@@ -346,7 +346,7 @@ export function FloatingActionButton() {
 
                 {/* Call */}
                 <a
-                  href="tel:+16472991460"
+                  href="tel:+17155035444"
                   style={{
                     display: "flex",
                     alignItems: "center",
@@ -372,7 +372,7 @@ export function FloatingActionButton() {
                   }}
                 >
                   <Phone size={17} color={ORANGE} />
-                  <span style={{ flex: 1 }}>Call (647) 299-1460</span>
+                  <span style={{ flex: 1 }}>Call (715) 503-5444</span>
                   <ArrowRight size={15} style={{ opacity: 0.4 }} />
                 </a>
               </div>

@@ -318,10 +318,9 @@ export function QuotePDF(props: QuotePDFProps) {
             <Text style={s.companyName}>PRINTEC CORP</Text>
           )}
           <View style={s.companyInfo}>
-            <Text style={s.companyHighlight}>PRINTEC CORP</Text>
-            <Text style={s.companyText}>1234 Commerce Drive</Text>
-            <Text style={s.companyText}>Virginia Beach, VA 23456</Text>
-            <Text style={s.companyText}>(647) 299-1460</Text>
+            <Text style={s.companyHighlight}>PRINTEC VIRGINIA LLC</Text>
+            <Text style={s.companyText}>Woodbridge, VA 22191</Text>
+            <Text style={s.companyText}>(715) 503-5444</Text>
             <Text style={s.companyHighlight}>info@printecwrap.com</Text>
             <Text style={s.companyText}>printecwrap.com</Text>
           </View>
@@ -359,7 +358,7 @@ export function QuotePDF(props: QuotePDFProps) {
             <View style={s.infoBox}>
               <Text style={s.infoBold}>Printec Virginia LLC</Text>
               <Text style={s.infoText}>Signs, Wraps & Graphics</Text>
-              <Text style={s.infoText}>Virginia Beach, VA</Text>
+              <Text style={s.infoText}>Woodbridge, VA</Text>
               <Text style={s.infoText}>info@printecwrap.com</Text>
             </View>
           </View>

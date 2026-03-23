@@ -166,7 +166,7 @@ export function ContractPDF(props: ContractPDFProps) {
             <Text style={s.companyHighlight}>Printec Virginia LLC</Text>
             <Text style={s.companyText}>info@printecwrap.com</Text>
             <Text style={s.companyText}>www.printecwrap.com</Text>
-            <Text style={s.companyText}>+1 (571) 343-1598</Text>
+            <Text style={s.companyText}>+1 (715) 503-5444</Text>
           </View>
         </View>
 
@@ -260,7 +260,7 @@ export function ContractPDF(props: ContractPDFProps) {
           </View>
           <View style={{ alignItems: "flex-end" as const }}>
             <Text style={s.footerText}>15485 Marsh Overlook Dr, Woodbridge, VA 22191</Text>
-            <Text style={s.footerText}>+1 (571) 343-1598 | printecwrap.com</Text>
+            <Text style={s.footerText}>+1 (715) 503-5444 | printecwrap.com</Text>
           </View>
         </View>
         <View style={s.accentBar} />

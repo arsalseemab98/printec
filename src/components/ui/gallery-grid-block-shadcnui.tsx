@@ -23,6 +23,15 @@ const galleryImages = [
   { id: 10, url: "https://printecwrap.com/wp-content/uploads/2022/04/whatsapp_image_2022__UtFTz-500x500.jpg", title: "TRAILER WRAP", category: "Vinyl Wraps" },
   { id: 11, url: "https://printecwrap.com/wp-content/uploads/2022/04/whatsapp_image_2022__xXNwR-500x500.jpg", title: "DANCE FLOOR WRAP", category: "Floor Wraps" },
   { id: 12, url: "https://printecwrap.com/wp-content/uploads/2022/04/Webp.net-compress-image01-500x500.jpg", title: "EVENT SIGNAGE", category: "Signage" },
+  { id: 13, url: "/images/portfolio/floor-as-monogram.webp", title: "A&S MONOGRAM WEDDING FLOOR", category: "Floor Wraps" },
+  { id: 14, url: "/images/portfolio/floor-mandala-colorful.webp", title: "COLORFUL MANDALA MEHNDI FLOOR", category: "Floor Wraps" },
+  { id: 15, url: "/images/portfolio/floor-mm-gold.webp", title: "M&M GOLD MONOGRAM FLOOR", category: "Floor Wraps" },
+  { id: 16, url: "/images/portfolio/floor-hz-orange.webp", title: "H&Z ORANGE MONOGRAM FLOOR", category: "Floor Wraps" },
+  { id: 17, url: "/images/portfolio/floor-anjana-aditya.webp", title: "ANJANA & ADITYA WEDDING FLOOR", category: "Floor Wraps" },
+  { id: 18, url: "/images/portfolio/floor-rv-wreath.webp", title: "R&V GOLD WREATH FLOOR", category: "Floor Wraps" },
+  { id: 19, url: "/images/portfolio/floor-pastel-mandala.webp", title: "PASTEL MANDALA FLOOR", category: "Floor Wraps" },
+  { id: 20, url: "/images/portfolio/floor-red-pattern.webp", title: "TRADITIONAL RED PATTERN FLOOR", category: "Floor Wraps" },
+  { id: 21, url: "/images/portfolio/floor-mehndi-colorful.webp", title: "VIBRANT MEHNDI FLOOR", category: "Floor Wraps" },
 ];
 
 export function GalleryGridBlock() {

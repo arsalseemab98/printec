@@ -1,3 +1,0 @@
-module.exports=[10179,a=>{"use strict";a.i(87924),a.i(72131),a.i(38246),a.i(13572),a.i(4720);(0,a.i(70106).default)("hard-drive",[["path",{d:"M10 16h.01",key:"1bzywj"}],["path",{d:"M2.212 11.577a2 2 0 0 0-.212.896V18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-5.527a2 2 0 0 0-.212-.896L18.55 5.11A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z",key:"18tbho"}],["path",{d:"M21.946 12.013H2.054",key:"zqlbp7"}],["path",{d:"M6 16h.01",key:"1pmjb7"}]]);a.i(32860),a.i(94101),a.i(24669),a.i(39761),a.i(19521),a.i(13749),a.i(50522),a.i(41675);let b=Error("Cannot find module '@/lib/supabase'");throw b.code="MODULE_NOT_FOUND",b}];
-
-//# sourceMappingURL=src_app_admin_page_tsx_645532da._.js.map

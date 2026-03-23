@@ -45,12 +45,12 @@
 |-----------|-------|-------|
 | Navbar | ✅ | Desktop + mobile, services dropdown (8 items), active links |
 | Footer | ✅ | 4 columns, social links, responsive |
-| FloatingActionButton | ✅ | Chat modal with form + service dropdown + worker photo, submits to /api/contact |
+| FloatingActionButton | ✅ | Chat modal with form + 11 services dropdown + worker photo, submits to /api/contact |
 | SkewedButton (neon) | ✅ | Pulse animation, hover states |
 | ContainerTextFlip | ✅ | Word cycling animation in hero |
 | GalleryGridBlock | ✅ | Filter, lightbox, hover effects |
 | EtheralShadow | ✅ | SVG displacement, lazy-loaded |
-| ContactForm | ✅ | Service dropdown, budget, validation, submits to /api/contact, UTM capture |
+| ContactForm | ✅ | 5 optgroups (Wraps, Floor, Signage, Print, Other), budget, validation, UTM capture, error logging |
 | PageHero | ✅ | Refined minimal style |
 | CtaBanner | ✅ | Refined minimal style |
 | Section (reveal) | ✅ | IntersectionObserver CSS transitions |
@@ -77,6 +77,7 @@
 | New Contract | `/admin/contracts/new` | ✅ | Manual or auto-fill from inquiry (?inquiry_id=) |
 | Contract Detail | `/admin/contracts/[id]` | ✅ | View, edit, send link, copy link, download PDF, status dropdown |
 | Public Signing | `/sign/[id]` | ✅ | Customer draws signature on canvas, no auth |
+| Statistics | `/admin/statistics` | ✅ | 13 charts (Recharts), date filter, KPI cards |
 | Proxy Auth | `proxy.ts` | ✅ | Protects /admin/* except /admin/login, /sign/* is public |
 
 ## Contract — Verification
@@ -106,7 +107,7 @@
 |---------|-------|-------|
 | Contact form notification | ✅ | Styled HTML to info@printecwrap.com |
 | Customer confirmation | ✅ | Branded "Thank you" email |
-| UTM tracking in emails | ✅ | utm_source, utm_medium, utm_campaign |
+| UTM tracking in emails | ✅ | utm_source, utm_medium, utm_campaign, utm_term, utm_content |
 | Page source in emails | ✅ | Which page form was submitted from |
 | Quote PDF email | ✅ | Branded PDF attachment via Microsoft Graph |
 | Rate limiting | ✅ | 60s cooldown per email+source |
@@ -178,6 +179,24 @@
 | Company name = Printec Virginia LLC | ✅ |
 | Phone = +1 (647) 299-1460 | ✅ (all pages) |
 | Portfolio categories match services | ✅ (single source of truth) |
+
+## Forms — Verification
+
+| Feature | Status | Notes |
+|---------|--------|-------|
+| Contact form categories match services | ✅ | 5 optgroups: Wraps, Floor Wraps, Signage, Print & Design, Other |
+| FAB widget categories match services | ✅ | 11 options matching all SERVICES_NAV + Wedding Floor |
+| No "Vehicle Wraps" in forms | ✅ | Removed — Printec doesn't do car wraps |
+| Custom Neon Signs in forms | ✅ | Added to both contact form and FAB |
+| Business Signage in forms | ✅ | Added to both contact form and FAB |
+| Vinyl Wraps in forms | ✅ | Added to both contact form and FAB |
+| Food Truck Wraps in forms | ✅ | In contact form (Wraps group) and FAB |
+| utm_term saved to DB | ✅ | Was missing, now included in insert |
+| utm_content saved to DB | ✅ | Was missing, now included in insert |
+| API error logging | ✅ | Validation, rate limit, email, DB — all logged with [Contact API] prefix |
+| Client error logging | ✅ | Both forms log errors with component prefix |
+| Company name in emails | ✅ | "Printec Virginia LLC" (was "Printec Corp") |
+| Company name in FAB | ✅ | "Printec Virginia LLC" (was "Printec Corp") |
 
 ## Planned Tests
 - [ ] E2E: Navigation between all 32 pages

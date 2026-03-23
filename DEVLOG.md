@@ -380,3 +380,62 @@
 - Contracts and inquiries remain independent (no auto-sync between them)
 - Both contribute to dashboard sales metrics independently
 - Contract total_price is the value used for sales metrics (not advance or balance)
+
+---
+
+## 2026-03-23 — Form Audit & Fixes
+
+### What was done
+- Audited all forms (contact form, FAB widget, API route) for category completeness
+- **Contact form categories fixed**: Removed Vehicle Wraps, Monument Signs, Pylon Signs. Added Vinyl Wraps, Business Signage, Custom Neon Signs, Food Truck/Trailer Wraps. Reorganized into 5 optgroups (Wraps, Floor Wraps, Signage, Print & Design, Other)
+- **FAB widget categories fixed**: Removed Vehicle Wraps, LED Channel Letters. Added Vinyl Wraps, Business Signage, Custom Neon Signs, Food Truck Wraps, Wedding Floor Wraps (11 options total)
+- **Branding fixes**: "PRINTEC CORP" → "PRINTEC VIRGINIA LLC" in FAB footer and confirmation email
+- **API bug fix**: utm_term and utm_content were captured from URL but dropped on DB insert — now saved
+- **Error logging added**: API route logs all submissions, validation failures, rate limits, email send results, DB saves with [Contact API] prefix. Client forms log errors with component prefix.
+
+---
+
+## 2026-03-23 — Admin Statistics Dashboard
+
+### What was done
+- Created /admin/statistics page with 13 charts/visualizations using Recharts
+- Added "Statistics" to admin sidebar navigation (2nd position with chart icon)
+- Installed `recharts` package
+
+### Charts & Visualizations
+**KPI Cards (6):** Total Inquiries, New Inquiries, Booked Pipeline ($), Completed Revenue ($), Avg Order ($), Conversion Rate (%)
+
+**Inquiry Analytics (4 charts):**
+1. Inquiries Over Time — monthly bar chart
+2. By Service Type — horizontal bar chart (top 8)
+3. Conversion Funnel — colored bars (New → Contacted → Follow Up → Quoted → Booked → Completed)
+4. By Source — donut chart (Contact Form vs Chat Widget)
+
+**Revenue Analytics (4 charts):**
+5. Revenue Over Time — area chart (booked + completed with gradient fills)
+6. Revenue by Service — horizontal bar chart
+7. Average Deal Size Over Time — line chart
+8. Pipeline: Booked vs Completed — stacked bar chart
+
+**Traffic & Form Analytics (5 items):**
+9. Top Pages Generating Inquiries — ranked list with inline bars
+10. Submissions by Day of Week — bar chart
+11. Submissions by Hour of Day — bar chart
+12. Budget Range Distribution — donut chart
+13. UTM Campaign Breakdown — table (source, medium, campaign, count)
+
+### Technical Details
+- All data computed client-side from existing API endpoints (no new backend needed)
+- Same date filter as dashboard (All Time / This Month / Last Month / Custom)
+- Dark theme matching admin panel (#111 cards, #222 borders, orange accents)
+- Custom tooltip component for consistent chart hover styling
+- Empty state component for charts with no data
+- Responsive charts via Recharts ResponsiveContainer
+
+### Packages Added
+- recharts — React charting library
+
+### Decisions
+- Client-side computation (data volume is small, no need for backend aggregation)
+- Recharts chosen for React-native API, dark theme support, lightweight bundle
+- Statistics page separate from dashboard (dashboard = quick overview, statistics = deep analytics)

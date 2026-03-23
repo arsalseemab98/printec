@@ -19,6 +19,7 @@ Full-service website for Printec Virginia LLC — a custom signage, vehicle wrap
 - **Styling**: Tailwind CSS + inline styles (dark theme)
 - **UI Components**: shadcn/ui base + custom components
 - **Animations**: Framer Motion (hero, scroll-driven) + CSS transitions (reveals)
+- **Charts**: Recharts (admin statistics dashboard)
 - **Icons**: Lucide React
 - **Font**: Inter (body via Geist), Arial Black (headings)
 - **Database**: Supabase (PostgreSQL)
@@ -70,6 +71,7 @@ src/
 │   │   ├── inquiries/                # CRM: inquiry list, detail, quote builder
 │   │   │   ├── page.tsx              # Inquiry list (status filter, search)
 │   │   │   └── [id]/                 # Inquiry detail + quote builder
+│   │   ├── statistics/page.tsx         # Full analytics dashboard (Recharts)
 │   │   ├── images/page.tsx            # Image manager (view, upload, delete)
 │   │   ├── contracts/                # Digital contract management
 │   │   │   ├── page.tsx              # Contract list (Pending/Sent/Signed filter)
@@ -96,7 +98,7 @@ src/
 ├── components/
 │   ├── layout/
 │   │   ├── navbar.tsx                # Site-wide nav with services dropdown
-│   │   ├── footer.tsx                # 4-column footer with social links
+│   │   ├── footer.tsx                # 5-column footer (Company, Services, Locations, Connect, Hours)
 │   │   └── site-shell.tsx            # Hides nav/footer on /admin routes
 │   ├── shared/
 │   │   ├── section.tsx               # IntersectionObserver reveal wrapper
@@ -185,6 +187,7 @@ npx next build             # Production build
 - **Password**: Set via `ADMIN_PASSWORD` env var
 - **Features**:
   - Dashboard with sales metrics (booked pipeline, completed revenue, avg order) — includes both inquiries and contracts
+  - Statistics page with 13 charts/visualizations (Recharts): inquiries over time, by service, conversion funnel, by source, revenue over time, revenue by service, avg deal size, pipeline, top pages, day/hour heatmaps, budget distribution, UTM breakdown
   - Date filter: All Time / This Month / Last Month / Custom month with ← → arrows
   - Page image management (upload to Supabase Storage)
   - Page text management (headings, body text)

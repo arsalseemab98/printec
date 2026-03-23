@@ -11,6 +11,7 @@ import {
   WHITE,
   IMG,
 } from "@/lib/constants";
+import { getPageImages } from "@/lib/content";
 import {
   Heart,
   Building2,
@@ -181,7 +182,8 @@ const FAQ_DATA = [
 
 /* ─── PAGE ─── */
 
-export default function DanceFloorWrapsPage() {
+export default async function DanceFloorWrapsPage() {
+  const imgs = await getPageImages("dance-floor-wraps");
   return (
     <main style={{ background: BLACK }}>
 
@@ -203,7 +205,7 @@ export default function DanceFloorWrapsPage() {
           }}
         >
           <Image
-            src={IMG.danceFloorHero}
+            src={imgs.hero || IMG.danceFloorHero}
             alt="Elegant wedding dance floor wrap with custom monogram initials on dark marble surface"
             fill
             sizes="100vw"
@@ -253,8 +255,8 @@ export default function DanceFloorWrapsPage() {
         >
           {/* Left — interactive before/after slider */}
           <BeforeAfterSlider
-            beforeSrc={IMG.floorBefore}
-            afterSrc={IMG.floorAfter}
+            beforeSrc={imgs.before || IMG.floorBefore}
+            afterSrc={imgs.after || IMG.floorAfter}
             beforeAlt="Plain ballroom dance floor before vinyl wrap"
             afterAlt="Dance floor after custom vinyl wrap — elegant monogram design"
             width={500}

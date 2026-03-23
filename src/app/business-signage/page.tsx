@@ -11,6 +11,7 @@ import {
   WHITE,
   IMG,
 } from "@/lib/constants";
+import { getPageImages } from "@/lib/content";
 import {
   ShoppingBag,
   Building2,
@@ -191,7 +192,8 @@ const FAQ_DATA = [
 
 /* ─── PAGE ─── */
 
-export default function BusinessSignagePage() {
+export default async function BusinessSignagePage() {
+  const imgs = await getPageImages("business-signage");
   return (
     <main style={{ background: BLACK }}>
 
@@ -213,7 +215,7 @@ export default function BusinessSignagePage() {
           }}
         >
           <Image
-            src={IMG.bizSignageHero}
+            src={imgs.hero || IMG.bizSignageHero}
             alt="Meridian Business Park monument sign and wayfinding signage at dusk"
             fill
             sizes="100vw"

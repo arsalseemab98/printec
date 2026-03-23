@@ -11,6 +11,7 @@ import {
   WHITE,
   IMG,
 } from "@/lib/constants";
+import { getPageImages } from "@/lib/content";
 import {
   Zap,
   Shield,
@@ -152,7 +153,8 @@ const FAQ = [
 
 /* ─── PAGE ─── */
 
-export default function CustomNeonSignsPage() {
+export default async function CustomNeonSignsPage() {
+  const imgs = await getPageImages("custom-neon-signs");
   return (
     <main style={{ background: BLACK }}>
 
@@ -168,7 +170,7 @@ export default function CustomNeonSignsPage() {
           }}
         >
           <Image
-            src={IMG.neonHero}
+            src={imgs.hero || IMG.neonHero}
             alt="Good Vibes Only neon sign glowing orange on dark brick wall in cocktail bar"
             fill
             sizes="100vw"
@@ -216,8 +218,8 @@ export default function CustomNeonSignsPage() {
         >
           {/* Before/after slider */}
           <BeforeAfterSlider
-            beforeSrc={IMG.neonBefore}
-            afterSrc={IMG.neonAfter}
+            beforeSrc={imgs.before || IMG.neonBefore}
+            afterSrc={imgs.after || IMG.neonAfter}
             beforeAlt="Dark staircase wall in boutique hotel — plain plaster, no signage"
             afterAlt="Same staircase with THIS WAY UP vertical LED neon sign glowing warm orange"
             width={600}

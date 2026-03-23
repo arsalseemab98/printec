@@ -11,6 +11,7 @@ import {
   WHITE,
   IMG,
 } from "@/lib/constants";
+import { getPageImages } from "@/lib/content";
 import {
   Building2,
   Store,
@@ -184,7 +185,8 @@ const FAQ = [
 
 /* ─── PAGE ─── */
 
-export default function WallWrapsPage() {
+export default async function WallWrapsPage() {
+  const imgs = await getPageImages("wall-wraps");
   return (
     <main style={{ background: BLACK }}>
 
@@ -200,7 +202,7 @@ export default function WallWrapsPage() {
           }}
         >
           <Image
-            src={IMG.wallWrapHero}
+            src={imgs.hero || IMG.wallWrapHero}
             alt="Restaurant with dramatic tropical leaf wall wrap mural in warm orange and dark tones"
             fill
             sizes="100vw"
@@ -248,8 +250,8 @@ export default function WallWrapsPage() {
         >
           {/* Before/after slider */}
           <BeforeAfterSlider
-            beforeSrc={IMG.wallBefore}
-            afterSrc={IMG.wallAfter}
+            beforeSrc={imgs.before || IMG.wallBefore}
+            afterSrc={imgs.after || IMG.wallAfter}
             beforeAlt="Bar with plain grey wall before vinyl wrap"
             afterAlt="Bar with custom wall wrap mural installed"
             width={600}

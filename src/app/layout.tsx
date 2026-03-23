@@ -99,7 +99,7 @@ export default function RootLayout({
               logo: "https://printecwrap.com/printec-logo.png",
               sameAs: [
                 "https://www.instagram.com/printecvirginia/",
-                "https://www.facebook.com/share/1E2N8msTsc/",
+                "https://www.facebook.com/printecvirginia",
                 "https://www.tiktok.com/@printec.va",
               ],
               openingHoursSpecification: [

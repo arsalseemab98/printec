@@ -956,7 +956,7 @@ export function HomePageClient() {
               icon: <Facebook size={28} />,
               handle: "Printec Virginia LLC",
               desc: "News, events & customer reviews",
-              href: "https://www.facebook.com/share/1E2N8msTsc/",
+              href: "https://www.facebook.com/printecvirginia",
               label: "FOLLOW",
             },
             {

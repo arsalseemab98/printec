@@ -11,6 +11,7 @@ import {
   WHITE,
   IMG,
 } from "@/lib/constants";
+import { getPageImages } from "@/lib/content";
 import {
   Maximize,
   Eye,
@@ -148,7 +149,8 @@ const FAQ = [
 
 /* ─── PAGE ─── */
 
-export default function WindowWrapsPage() {
+export default async function WindowWrapsPage() {
+  const imgs = await getPageImages("window-wraps");
   return (
     <main style={{ background: BLACK }}>
 
@@ -164,7 +166,7 @@ export default function WindowWrapsPage() {
           }}
         >
           <Image
-            src={IMG.windowWrapHero}
+            src={imgs.hero || IMG.windowWrapHero}
             alt="Storefront with bold orange window wrap graphics for grand opening"
             fill
             sizes="100vw"
@@ -212,8 +214,8 @@ export default function WindowWrapsPage() {
         >
           {/* Before/after slider */}
           <BeforeAfterSlider
-            beforeSrc={IMG.windowBefore}
-            afterSrc={IMG.windowAfter}
+            beforeSrc={imgs.before || IMG.windowBefore}
+            afterSrc={imgs.after || IMG.windowAfter}
             beforeAlt="Plain storefront with empty glass windows"
             afterAlt="Storefront with bold branded window wrap graphics"
             width={600}

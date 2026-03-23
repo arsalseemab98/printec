@@ -140,7 +140,7 @@ export function Footer() {
           </span>
           {[
             { href: "https://www.instagram.com/printecvirginia/", icon: <Instagram size={20} /> },
-            { href: "https://www.facebook.com/share/1E2N8msTsc/", icon: <Facebook size={20} /> },
+            { href: "https://www.facebook.com/printecvirginia", icon: <Facebook size={20} /> },
             {
               href: "https://www.tiktok.com/@printec.va",
               icon: (

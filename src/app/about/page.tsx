@@ -10,6 +10,7 @@ import {
   WHITE,
   IMG,
 } from "@/lib/constants";
+import { getPageImages } from "@/lib/content";
 import {
   Calendar,
   FolderCheck,
@@ -160,7 +161,8 @@ const CARD: React.CSSProperties = {
 
 /* ─── PAGE ─── */
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const imgs = await getPageImages("about");
   return (
     <main style={{ background: BLACK }}>
       {/* ── 1. HERO ── */}
@@ -175,7 +177,7 @@ export default function AboutPage() {
           }}
         >
           <Image
-            src={IMG.workshop}
+            src={imgs.hero || IMG.workshop}
             alt="Printec Virginia LLC workshop — wide-format printers, vinyl rolls, and team fabricating channel letters"
             fill
             sizes="100vw"
@@ -237,7 +239,7 @@ export default function AboutPage() {
             }}
           >
             <Image
-              src={IMG.workshop}
+              src={imgs.story || IMG.workshop}
               alt="Printec Virginia LLC production facility with wide-format printers and vinyl materials"
               fill
               sizes="(max-width: 768px) 100vw, 50vw"

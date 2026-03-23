@@ -13,6 +13,22 @@ export async function getPageImage(
   return data?.url ?? null;
 }
 
+export async function getPageImages(
+  pageSlug: string
+): Promise<Record<string, string>> {
+  const { data } = await supabase
+    .from("page_images")
+    .select("slot, url")
+    .eq("page_slug", pageSlug);
+  const map: Record<string, string> = {};
+  if (data) {
+    for (const row of data) {
+      map[row.slot] = row.url;
+    }
+  }
+  return map;
+}
+
 export async function getPageContent(
   pageSlug: string,
   field: string

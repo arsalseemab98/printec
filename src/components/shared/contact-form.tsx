@@ -252,7 +252,7 @@ export function ContactForm() {
                       icon: <Instagram size={18} />,
                     },
                     {
-                      href: "https://www.facebook.com/share/1E2N8msTsc/",
+                      href: "https://www.facebook.com/printecvirginia",
                       label: "Facebook",
                       icon: <Facebook size={18} />,
                     },

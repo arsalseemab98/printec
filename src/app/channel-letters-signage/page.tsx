@@ -11,6 +11,7 @@ import {
   WHITE,
   IMG,
 } from "@/lib/constants";
+import { getPageImages } from "@/lib/content";
 import {
   Sun,
   Moon,
@@ -179,7 +180,8 @@ const FAQ = [
 
 /* ─── PAGE ─── */
 
-export default function ChannelLettersSignagePage() {
+export default async function ChannelLettersSignagePage() {
+  const imgs = await getPageImages("channel-letters-signage");
   return (
     <main style={{ background: BLACK }}>
 
@@ -195,7 +197,7 @@ export default function ChannelLettersSignagePage() {
           }}
         >
           <Image
-            src={IMG.signageHero}
+            src={imgs.hero || IMG.signageHero}
             alt="Shopping plaza at dusk with illuminated channel letter signs — Aurora & Oak, Café Lumière"
             fill
             sizes="100vw"
@@ -243,8 +245,8 @@ export default function ChannelLettersSignagePage() {
         >
           {/* Before/after slider */}
           <BeforeAfterSlider
-            beforeSrc={IMG.signageBefore}
-            afterSrc={IMG.signageAfter}
+            beforeSrc={imgs.before || IMG.signageBefore}
+            afterSrc={imgs.after || IMG.signageAfter}
             beforeAlt="Commercial building facade without signage"
             afterAlt="Same building with illuminated SAVORA KITCHEN channel letter sign"
             width={600}

@@ -86,7 +86,8 @@ const LEADERSHIP = [
     bio: "Shazal connects clients with the right signage solutions for their business. From initial consultation to final delivery, he ensures every client gets personalized attention and a seamless experience.",
     email: TEAM_EMAIL,
     phone: TEAM_PHONE,
-    image: "/images/team-shazal-v2.webp",
+    image: IMG.teamShazal,
+    imagePosition: "center center",
   },
   {
     name: "Anton Andersson",
@@ -99,10 +100,10 @@ const LEADERSHIP = [
   {
     name: "Nomi",
     role: "Lead Designer",
-    bio: "Nomi brings creative vision and precision to every signage project. With a background in graphic design and brand identity, she transforms client ideas into bold, production-ready artwork.",
+    bio: "Nomi brings creative vision and precision to every signage project. With a background in graphic design and brand identity, he transforms client ideas into bold, production-ready artwork.",
     email: TEAM_EMAIL,
     phone: TEAM_PHONE,
-    image: null,
+    image: "/images/team-nomi.webp",
   },
   {
     name: "Aryan W.",
@@ -210,7 +211,7 @@ export default function TeamPage() {
                       alt={`${person.name} — ${person.role} at Printec Virginia LLC`}
                       fill
                       sizes="(max-width: 768px) 100vw, 340px"
-                      style={{ objectFit: "cover", objectPosition: "center 20%" }}
+                      style={{ objectFit: "cover", objectPosition: (person as { imagePosition?: string }).imagePosition || "center 20%" }}
                     />
                   ) : (
                     <div

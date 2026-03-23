@@ -31,6 +31,8 @@ export const IMG = {
   teamShazal: `${SUPABASE_STORAGE}/team-shazil-v2.webp`,
   teamAzhar: `${SUPABASE_STORAGE}/team-azhar.webp`,
   teamAnton: `${SUPABASE_STORAGE}/team-anton.webp`,
+  teamNomi: `${SUPABASE_STORAGE}/team-nomi.webp`,
+  teamAryan: `${SUPABASE_STORAGE}/team-aryan.webp`,
   bizSignageHero: `${SUPABASE_STORAGE}/biz-signage-hero.webp`,
   neonBefore: `${SUPABASE_STORAGE}/neon-before.webp`,
   neonAfter: `${SUPABASE_STORAGE}/neon-after.webp`,

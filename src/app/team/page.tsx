@@ -96,8 +96,7 @@ const LEADERSHIP = [
     bio: "Anton helps clients navigate the full range of Printec's services — from custom signage and neon signs to wall wraps and event graphics. His hands-on approach ensures every project is tailored to the client's needs.",
     email: TEAM_EMAIL,
     phone: TEAM_PHONE,
-    image: IMG.teamAnton,
-    imagePosition: "center 15%",
+    image: null,
   },
   {
     name: "Nomi",

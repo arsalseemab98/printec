@@ -129,7 +129,7 @@ function buildConfirmationEmail(name: string) {
       </div>
     </div>
     <div style="text-align:center;padding:20px;color:#444;font-size:11px;letter-spacing:1px;">
-      PRINTEC CORP &mdash; FROM VISION TO VINYL
+      PRINTEC VIRGINIA LLC &mdash; FROM VISION TO VINYL
     </div>
   </div>
 </body>
@@ -159,6 +159,7 @@ export async function POST(req: NextRequest) {
 
     // ── Validation ──
     if (!name || !email || !source) {
+      console.warn("[Contact API] Validation failed: missing required fields", { name: !!name, email: !!email, source: !!source });
       return NextResponse.json(
         { error: "Name, email, and source are required." },
         { status: 400 }
@@ -166,6 +167,7 @@ export async function POST(req: NextRequest) {
     }
 
     if (source === "contact-form" && (!service || !description)) {
+      console.warn("[Contact API] Validation failed: missing service/description for contact-form");
       return NextResponse.json(
         { error: "Service and description are required for quote requests." },
         { status: 400 }
@@ -176,12 +178,15 @@ export async function POST(req: NextRequest) {
     const rateKey = `${email.toLowerCase()}_${source}`;
     const lastSubmission = recentSubmissions.get(rateKey);
     if (lastSubmission && Date.now() - lastSubmission < 60_000) {
+      console.warn(`[Contact API] Rate limited: ${email} (${source})`);
       return NextResponse.json(
         { error: "Please wait a moment before submitting again." },
         { status: 429 }
       );
     }
     recentSubmissions.set(rateKey, Date.now());
+
+    console.log(`[Contact API] New submission: source=${source}, service=${service || "none"}, email=${email}`);
 
     // ── Build emails ──
     const emailFrom = process.env.EMAIL_FROM!;
@@ -206,23 +211,35 @@ export async function POST(req: NextRequest) {
     const confirmation = buildConfirmationEmail(name);
 
     // ── Send notification to Printec ──
-    await client.api(`/users/${emailFrom}/sendMail`).post({
-      message: {
-        subject: notification.subject,
-        body: { contentType: "HTML", content: notification.html },
-        toRecipients: [{ emailAddress: { address: emailFrom } }],
-        replyTo: [{ emailAddress: { address: email } }],
-      },
-    });
+    try {
+      await client.api(`/users/${emailFrom}/sendMail`).post({
+        message: {
+          subject: notification.subject,
+          body: { contentType: "HTML", content: notification.html },
+          toRecipients: [{ emailAddress: { address: emailFrom } }],
+          replyTo: [{ emailAddress: { address: email } }],
+        },
+      });
+      console.log(`[Contact API] Notification email sent to ${emailFrom}`);
+    } catch (emailErr) {
+      console.error("[Contact API] Failed to send notification email:", emailErr);
+      throw emailErr;
+    }
 
     // ── Send confirmation to customer ──
-    await client.api(`/users/${emailFrom}/sendMail`).post({
-      message: {
-        subject: confirmation.subject,
-        body: { contentType: "HTML", content: confirmation.html },
-        toRecipients: [{ emailAddress: { address: email } }],
-      },
-    });
+    try {
+      await client.api(`/users/${emailFrom}/sendMail`).post({
+        message: {
+          subject: confirmation.subject,
+          body: { contentType: "HTML", content: confirmation.html },
+          toRecipients: [{ emailAddress: { address: email } }],
+        },
+      });
+      console.log(`[Contact API] Confirmation email sent to ${email}`);
+    } catch (emailErr) {
+      console.error("[Contact API] Failed to send confirmation email:", emailErr);
+      // Don't throw — notification already sent, DB save should still happen
+    }
 
     // ── Save inquiry to database ──
     try {
@@ -239,15 +256,18 @@ export async function POST(req: NextRequest) {
         utm_source: utm_source || null,
         utm_medium: utm_medium || null,
         utm_campaign: utm_campaign || null,
+        utm_term: utm_term || null,
+        utm_content: utm_content || null,
         status: "New",
       });
+      console.log(`[Contact API] Inquiry saved to DB for ${email}`);
     } catch (dbError) {
-      console.error("Failed to save inquiry to database:", dbError);
+      console.error("[Contact API] Failed to save inquiry to database:", dbError);
     }
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error("Contact API error:", error);
+    console.error("[Contact API] Unhandled error:", error instanceof Error ? { message: error.message, stack: error.stack } : error);
     return NextResponse.json(
       { error: "Failed to send message. Please try again later." },
       { status: 500 }

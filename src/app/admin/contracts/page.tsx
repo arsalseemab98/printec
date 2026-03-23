@@ -14,10 +14,24 @@ interface Contract {
   total_price: number;
   event_date: string | null;
   status: string;
+  category: string | null;
   sent_at: string | null;
   signed_at: string | null;
   created_at: string;
 }
+
+const CONTRACT_STATUSES = ["Pending", "Sent", "Signed", "Completed", "Cancelled"] as const;
+
+const CONTRACT_CATEGORIES = [
+  "Dance Floor Wraps",
+  "Wall Wraps",
+  "Window Wraps",
+  "Channel Letters",
+  "Vinyl Wraps",
+  "Business Signage",
+  "Neon Signs",
+  "Other",
+] as const;
 
 type FilterTab = "all" | "pending" | "sent" | "signed" | "completed" | "cancelled";
 
@@ -43,6 +57,22 @@ export default function ContractsPage() {
       // silent
     } finally {
       setLoading(false);
+    }
+  }
+
+  async function handleQuickUpdate(id: string, field: string, value: string) {
+    try {
+      const res = await fetch(`/api/admin/contracts/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ [field]: value }),
+      });
+      if (res.ok) {
+        const updated = await res.json();
+        setContracts((prev) => prev.map((c) => (c.id === id ? { ...c, ...updated } : c)));
+      }
+    } catch {
+      // silent
     }
   }
 
@@ -74,29 +104,34 @@ export default function ContractsPage() {
     Cancelled: "#ef4444",
   };
 
-  function getStatusBadge(contract: Contract) {
+  function renderStatusDropdown(contract: Contract) {
     const color = CONTRACT_STATUS_COLORS[contract.status] || "#888";
-    let label = contract.status;
-    if (contract.status === "Signed" && contract.signed_at) {
-      label = `Signed ${formatDate(contract.signed_at)}`;
-    } else if (contract.status === "Sent" && contract.sent_at) {
-      label = `Sent ${formatDate(contract.sent_at)}`;
-    }
     return (
-      <span
+      <select
+        value={contract.status}
+        onChange={(e) => {
+          const val = e.target.value;
+          if (val === "Completed" && !confirm("Mark as completed? This adds to Completed Revenue.")) return;
+          if (val === "Cancelled" && !confirm("Cancel this contract?")) return;
+          handleQuickUpdate(contract.id, "status", val);
+        }}
+        onClick={(e) => e.stopPropagation()}
         style={{
-          display: "inline-block",
-          padding: "0.2rem 0.6rem",
+          padding: "0.2rem 0.5rem",
           borderRadius: "4px",
           background: `${color}20`,
           color: color,
+          border: `1px solid ${color}40`,
           fontSize: "12px",
           fontWeight: 600,
-          whiteSpace: "nowrap",
+          cursor: "pointer",
+          outline: "none",
         }}
       >
-        {label}
-      </span>
+        {CONTRACT_STATUSES.map((s) => (
+          <option key={s} value={s} style={{ background: "#111", color: "#fff" }}>{s}</option>
+        ))}
+      </select>
     );
   }
 
@@ -246,7 +281,7 @@ export default function ContractsPage() {
                 {[
                   "Contract #",
                   "Client Name",
-                  "Service",
+                  "Category",
                   "Total",
                   "Status",
                   "Event Date",
@@ -310,18 +345,29 @@ export default function ContractsPage() {
                     {c.client_name || "\u2014"}
                   </td>
 
-                  {/* Service */}
+                  {/* Category */}
                   <td
-                    style={{
-                      padding: "0.75rem 1rem",
-                      color: "rgba(255,255,255,0.5)",
-                      maxWidth: "200px",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      whiteSpace: "nowrap",
-                    }}
+                    style={{ padding: "0.75rem 1rem" }}
+                    onClick={(e) => e.stopPropagation()}
                   >
-                    {c.service_description || "\u2014"}
+                    <select
+                      value={c.category || "Other"}
+                      onChange={(e) => handleQuickUpdate(c.id, "category", e.target.value)}
+                      style={{
+                        padding: "0.2rem 0.5rem",
+                        borderRadius: "4px",
+                        background: "rgba(255,255,255,0.05)",
+                        color: "rgba(255,255,255,0.6)",
+                        border: "1px solid #333",
+                        fontSize: "12px",
+                        cursor: "pointer",
+                        outline: "none",
+                      }}
+                    >
+                      {CONTRACT_CATEGORIES.map((cat) => (
+                        <option key={cat} value={cat} style={{ background: "#111", color: "#fff" }}>{cat}</option>
+                      ))}
+                    </select>
                   </td>
 
                   {/* Total */}
@@ -338,7 +384,7 @@ export default function ContractsPage() {
 
                   {/* Status */}
                   <td style={{ padding: "0.75rem 1rem" }}>
-                    {getStatusBadge(c)}
+                    {renderStatusDropdown(c)}
                   </td>
 
                   {/* Event Date */}

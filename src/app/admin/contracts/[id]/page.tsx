@@ -30,6 +30,7 @@ interface Contract {
   travel_cost: number;
   terms: string[] | null;
   status: string;
+  category: string | null;
   sent_at: string | null;
   signed_at: string | null;
   signature_data: string | null;
@@ -136,6 +137,7 @@ export default function ContractDetailPage({
       event_date: contract.event_date || "",
       venue: contract.venue || "",
       service_description: contract.service_description || "",
+      category: contract.category || "Other",
       total_price: contract.total_price,
       travel_cost: contract.travel_cost,
       advance_amount: contract.advance_amount,
@@ -503,6 +505,23 @@ export default function ContractDetailPage({
                   />
                 </div>
               ))}
+              <div style={{ marginBottom: "0.75rem" }}>
+                <label style={labelStyle}>Category</label>
+                <select
+                  value={String(editData.category ?? "Other")}
+                  onChange={(e) =>
+                    setEditData((prev) => ({
+                      ...prev,
+                      category: e.target.value,
+                    }))
+                  }
+                  style={{ ...inputStyle, cursor: "pointer" }}
+                >
+                  {["Dance Floor Wraps", "Wall Wraps", "Window Wraps", "Channel Letters", "Vinyl Wraps", "Business Signage", "Neon Signs", "Other"].map((cat) => (
+                    <option key={cat} value={cat}>{cat}</option>
+                  ))}
+                </select>
+              </div>
               <div>
                 <label style={labelStyle}>Service Description</label>
                 <textarea
@@ -525,6 +544,7 @@ export default function ContractDetailPage({
               {[
                 { label: "Client Name", value: contract.client_name },
                 { label: "Client Email", value: contract.client_email },
+                { label: "Category", value: contract.category },
                 {
                   label: "Event Date",
                   value: contract.event_date

@@ -59,6 +59,7 @@ export async function POST(req: NextRequest) {
       client_name: body.client_name || null,
       client_email: body.client_email || null,
       terms: body.terms || null,
+      category: body.category || "Other",
     })
     .select()
     .single();

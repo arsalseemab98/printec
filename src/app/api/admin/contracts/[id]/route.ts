@@ -44,6 +44,7 @@ export async function PUT(
     "terms",
     "status",
     "completed_at",
+    "category",
   ];
 
   const updates: Record<string, unknown> = {};

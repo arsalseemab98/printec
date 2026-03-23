@@ -92,7 +92,8 @@ export function FloatingActionButton() {
         return;
       }
       setView("success");
-    } catch {
+    } catch (err) {
+      console.error("[FloatingWidget] Submission failed:", err);
       setError("Failed to send. Please try again.");
     } finally {
       setLoading(false);
@@ -389,7 +390,7 @@ export function FloatingActionButton() {
                   fontFamily: "Arial, sans-serif",
                 }}
               >
-                PRINTEC CORP — FROM VISION TO VINYL
+                PRINTEC VIRGINIA LLC — FROM VISION TO VINYL
               </div>
             </div>
           )}
@@ -461,12 +462,15 @@ export function FloatingActionButton() {
                   onBlur={(e) => (e.currentTarget.style.borderColor = "#333")}
                 >
                   <option value="">Service (optional)</option>
+                  <option value="Vinyl Wraps">Vinyl Wraps</option>
+                  <option value="Business Signage">Business Signage</option>
                   <option value="Dance Floor Wraps">Dance Floor Wraps</option>
-                  <option value="Channel Letters & Signage">Channel Letters & Signage</option>
                   <option value="Wall Wraps">Wall Wraps</option>
                   <option value="Window Wraps">Window Wraps</option>
-                  <option value="Vehicle Wraps">Vehicle Wraps</option>
-                  <option value="LED Channel Letters">LED Channel Letters</option>
+                  <option value="Channel Letters & Signage">Channel Letters & Signage</option>
+                  <option value="Custom Neon Signs">Custom Neon Signs</option>
+                  <option value="Food Truck Wraps">Food Truck Wraps</option>
+                  <option value="Wedding Floor Wraps">Wedding Floor Wraps</option>
                   <option value="Graphic Design">Graphic Design</option>
                   <option value="Other">Other</option>
                 </select>

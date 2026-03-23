@@ -121,7 +121,8 @@ export function ContactForm() {
         return;
       }
       setSubmitted(true);
-    } catch {
+    } catch (err) {
+      console.error("[ContactForm] Submission failed:", err);
       setError("Failed to send. Please check your connection and try again.");
     } finally {
       setLoading(false);
@@ -459,25 +460,25 @@ export function ContactForm() {
                       <option value="" disabled>
                         Select a service...
                       </option>
+                      <optgroup label="Wraps">
+                        <option value="Vinyl Wraps">Vinyl Wraps</option>
+                        <option value="Wall Wraps">Wall Wraps</option>
+                        <option value="Window Wraps">Window Wraps</option>
+                        <option value="Storefront Window Graphics">Storefront Window Graphics</option>
+                        <option value="Food Truck Wraps">Food Truck Wraps</option>
+                        <option value="Food Trailer Wraps">Food Trailer Wraps</option>
+                      </optgroup>
                       <optgroup label="Floor Wraps">
                         <option value="Dance Floor Wraps">Dance Floor Wraps</option>
                         <option value="Wedding Floor Wraps">Wedding Floor Wraps</option>
                         <option value="Event Floor Graphics">Event Floor Graphics</option>
                       </optgroup>
                       <optgroup label="Signage">
+                        <option value="Business Signage">Business Signage</option>
                         <option value="Channel Letters & Signage">Channel Letters &amp; Signage</option>
                         <option value="LED Channel Letters">LED Channel Letters</option>
-                        <option value="Monument Signs">Monument Signs</option>
-                        <option value="Pylon Signs">Pylon Signs</option>
+                        <option value="Custom Neon Signs">Custom Neon Signs</option>
                         <option value="Digital Signage">Digital Signage</option>
-                      </optgroup>
-                      <optgroup label="Wraps & Graphics">
-                        <option value="Wall Wraps">Wall Wraps</option>
-                        <option value="Window Wraps">Window Wraps</option>
-                        <option value="Storefront Window Graphics">Storefront Window Graphics</option>
-                        <option value="Vehicle Wraps">Vehicle Wraps</option>
-                        <option value="Food Truck Wraps">Food Truck Wraps</option>
-                        <option value="Trailer Wraps">Trailer Wraps</option>
                       </optgroup>
                       <optgroup label="Print & Design">
                         <option value="Graphic Design">Graphic Design</option>

@@ -63,6 +63,7 @@ function NewContractPage() {
   const [travelCost, setTravelCost] = useState<number>(0);
   const [advanceAmount, setAdvanceAmount] = useState<number>(0);
   const [balanceDue, setBalanceDue] = useState("One week prior to event");
+  const [category, setCategory] = useState("Other");
   const [terms, setTerms] = useState<string[]>([...DEFAULT_TERMS]);
   const [submitting, setSubmitting] = useState(false);
   const [loadingInquiry, setLoadingInquiry] = useState(!!inquiryId);
@@ -109,6 +110,7 @@ function NewContractPage() {
           travel_cost: travelCost,
           advance_amount: advanceAmount,
           balance_due: balanceDue,
+          category,
           terms,
         }),
       });
@@ -259,6 +261,19 @@ function NewContractPage() {
                 onFocus={handleFocus}
                 onBlur={handleBlur}
               />
+            </div>
+
+            <div style={{ marginBottom: "0.75rem" }}>
+              <label style={labelStyle}>Category</label>
+              <select
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+                style={{ ...inputStyle, cursor: "pointer" }}
+              >
+                {["Dance Floor Wraps", "Wall Wraps", "Window Wraps", "Channel Letters", "Vinyl Wraps", "Business Signage", "Neon Signs", "Other"].map((cat) => (
+                  <option key={cat} value={cat}>{cat}</option>
+                ))}
+              </select>
             </div>
 
             <div>

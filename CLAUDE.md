@@ -215,6 +215,7 @@ npx next build             # Production build
 - `blog_posts` — slug, title, excerpt, category, content (HTML), published
 - `inquiries` — name, email, phone, service, status, booked_price, completed_price, utm_*
 - `quotes` — inquiry_id, quote_number (PQ-001), items (jsonb), total, sent_at
+- `contracts` — inquiry_id (nullable), contract_number (PC-001), event_date, venue, service_description, total_price, advance_amount, balance_amount, balance_due, travel_cost, client_name, client_email, terms (jsonb), signature_data, signed_at, sent_at
 
 ## Environment Variables
 - `NEXT_PUBLIC_SUPABASE_URL` — Supabase project URL

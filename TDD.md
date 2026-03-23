@@ -73,7 +73,26 @@
 | Quote Builder | `/admin/inquiries/[id]/quote` | ✅ | Line items, PDF preview, send email |
 | Quotes List | `/admin/quotes` | ✅ | All/Sent/Not Sent filter |
 | Image Manager | `/admin/images` | ✅ | View grid, upload (single+bulk), delete, copy URL, search |
-| Proxy Auth | `proxy.ts` | ✅ | Protects /admin/* except /admin/login |
+| Contracts List | `/admin/contracts` | ✅ | All/Pending/Sent/Signed filter tabs |
+| New Contract | `/admin/contracts/new` | ✅ | Manual or auto-fill from inquiry (?inquiry_id=) |
+| Contract Detail | `/admin/contracts/[id]` | ✅ | View, edit, send link, copy link, download PDF |
+| Public Signing | `/sign/[id]` | ✅ | Customer draws signature on canvas, no auth |
+| Proxy Auth | `proxy.ts` | ✅ | Protects /admin/* except /admin/login, /sign/* is public |
+
+## Contract — Verification
+
+| Feature | Works | Notes |
+|---------|-------|-------|
+| Create from scratch | ✅ | All fields, default terms pre-filled |
+| Create from inquiry | ✅ | Auto-fills client name, email, service |
+| Send signing link | ✅ | Email via Microsoft Graph |
+| Copy signing link | ✅ | Clipboard copy |
+| Download PDF | ✅ | Branded with dark logo (for white bg) |
+| Customer signature canvas | ✅ | Draw with mouse/touch, clear button |
+| Signed PDF to both parties | ✅ | Email attachment after signing |
+| Contract PDF logo | ✅ | Uses printec-logo.png (dark, for white bg) |
+| Contract PDF email | ✅ | info@printecwrap.com |
+| Contract PDF phone | ✅ | +1 (571) 343-1598 |
 
 ## Email — Verification
 

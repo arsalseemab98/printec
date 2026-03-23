@@ -322,3 +322,37 @@
 - Fixed metadataBase URL: printeccorp.com → printecwrap.com
 - Performance: enabled AVIF format, 1-year image cache TTL, gzip compression, removed X-Powered-By header
 - Improved sitemap with priority tiers (service pages 0.9, SEO pages 0.8, locations 0.7, blog 0.6)
+
+---
+
+## 2026-03-22 — Digital Contract System
+
+### What was done
+- Built complete digital contract system for client agreements
+- Admin creates contracts at /admin/contracts (manual or auto-fill from inquiry)
+- Customer receives email with signing link (printecwrap.com/sign/[id])
+- Customer draws signature on canvas (mouse + touch), clicks "Sign & Submit"
+- Signed PDF generated and emailed to both customer and info@printecwrap.com
+- Contract PDF: branded with Printec logo (dark version for white bg), company info, terms, signatures
+- Contract list with All/Pending/Sent/Signed filter tabs
+- Contract detail page: view, edit, send link, copy link, download PDF
+- "Create Contract" button added to inquiry detail page
+- Sidebar nav updated with Contracts link
+
+### Database
+- New `contracts` table: contract_number (PC-001), event_date, venue, service_description, pricing fields (total, advance, balance, travel), client info, terms (jsonb), signature_data (base64), signed_at, sent_at
+
+### Default contract terms (pre-filled, editable)
+10 clauses matching the original PDF template: services, payment, deposit/cancellation, confidentiality, liability, governing law, entire agreement, film type, amendment, signatures
+
+### Fixes
+- Contract PDF uses dark logo (printec-logo.png) for white background (was using light version — invisible)
+- Updated email to info@printecwrap.com
+- Updated phone to +1 (571) 343-1598
+
+### Decisions
+- White background for contract PDF (printable, professional)
+- Public /sign/[id] page — no auth required for customer signing
+- Signature drawn on HTML canvas, saved as base64 PNG
+- React PDF for server-side PDF generation
+- Terms stored as jsonb array — each contract can have customized terms

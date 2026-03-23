@@ -356,3 +356,27 @@
 - Signature drawn on HTML canvas, saved as base64 PNG
 - React PDF for server-side PDF generation
 - Terms stored as jsonb array — each contract can have customized terms
+
+---
+
+## 2026-03-23 — Contract-Sales Integration
+
+### What was done
+- Added explicit `status` column to contracts table (Pending/Sent/Signed/Completed/Cancelled)
+- Added `completed_at` column for tracking when contracts are completed
+- Migrated existing contracts: status set from sent_at/signed_at timestamps
+- Dashboard sales metrics now include contract revenue:
+  - Booked Pipeline: inquiry booked_price + contract total_price (status=Signed)
+  - Completed Revenue: inquiry completed_price + contract total_price (status=Completed)
+  - Average Order: calculated across both completed inquiries and contracts
+- Contract list page: 6 filter tabs (All/Pending/Sent/Signed/Completed/Cancelled)
+- Contract detail page: status dropdown in header (replaces static badge)
+- Auto-transitions: sending → Sent, signing → Signed
+- Manual override: admin can change status via dropdown at any time
+- Confirmation prompts on Completed and Cancelled status changes
+- Edit/Send buttons hidden when contract is Cancelled
+
+### Decisions
+- Contracts and inquiries remain independent (no auto-sync between them)
+- Both contribute to dashboard sales metrics independently
+- Contract total_price is the value used for sales metrics (not advance or balance)

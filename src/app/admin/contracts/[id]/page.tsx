@@ -75,6 +75,40 @@ export default function ContractDetailPage({
   const [sending, setSending] = useState(false);
   const [copied, setCopied] = useState(false);
   const [downloadingPdf, setDownloadingPdf] = useState(false);
+  const [updatingStatus, setUpdatingStatus] = useState(false);
+
+  const CONTRACT_STATUSES = ["Pending", "Sent", "Signed", "Completed", "Cancelled"] as const;
+  const CONTRACT_STATUS_COLORS: Record<string, string> = {
+    Pending: "#eab308",
+    Sent: "#3b82f6",
+    Signed: "#22c55e",
+    Completed: "#F7941D",
+    Cancelled: "#ef4444",
+  };
+
+  async function handleStatusChange(newStatus: string) {
+    if (!contract) return;
+    if (newStatus === contract.status) return;
+    if (newStatus === "Completed" && !confirm("Mark this contract as completed? This will add it to Completed Revenue on the dashboard.")) return;
+    if (newStatus === "Cancelled" && !confirm("Cancel this contract? This will remove it from sales metrics.")) return;
+
+    setUpdatingStatus(true);
+    try {
+      const res = await fetch(`/api/admin/contracts/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: newStatus }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setContract(data);
+      }
+    } catch {
+      // silent
+    } finally {
+      setUpdatingStatus(false);
+    }
+  }
 
   const fetchContract = useCallback(async () => {
     try {
@@ -233,56 +267,33 @@ export default function ContractDetailPage({
     e.currentTarget.style.borderColor = "#333";
   }
 
-  function getStatusBadge() {
+  function renderStatusDropdown() {
     if (!contract) return null;
-    if (contract.signed_at) {
-      return (
-        <span
-          style={{
-            display: "inline-block",
-            padding: "0.3rem 0.75rem",
-            borderRadius: "4px",
-            background: "rgba(34,197,94,0.15)",
-            color: "#22c55e",
-            fontSize: "13px",
-            fontWeight: 600,
-          }}
-        >
-          Signed {formatDate(contract.signed_at)}
-        </span>
-      );
-    }
-    if (contract.sent_at) {
-      return (
-        <span
-          style={{
-            display: "inline-block",
-            padding: "0.3rem 0.75rem",
-            borderRadius: "4px",
-            background: "rgba(59,130,246,0.15)",
-            color: "#3b82f6",
-            fontSize: "13px",
-            fontWeight: 600,
-          }}
-        >
-          Sent {formatDate(contract.sent_at)}
-        </span>
-      );
-    }
+    const color = CONTRACT_STATUS_COLORS[contract.status] || "#888";
     return (
-      <span
+      <select
+        value={contract.status}
+        onChange={(e) => handleStatusChange(e.target.value)}
+        disabled={updatingStatus}
         style={{
-          display: "inline-block",
           padding: "0.3rem 0.75rem",
           borderRadius: "4px",
-          background: "rgba(234,179,8,0.15)",
-          color: "#eab308",
+          background: `${color}20`,
+          color: color,
+          border: `1px solid ${color}40`,
           fontSize: "13px",
           fontWeight: 600,
+          cursor: updatingStatus ? "wait" : "pointer",
+          outline: "none",
+          opacity: updatingStatus ? 0.6 : 1,
         }}
       >
-        Pending
-      </span>
+        {CONTRACT_STATUSES.map((s) => (
+          <option key={s} value={s} style={{ background: "#111", color: "#fff" }}>
+            {s}
+          </option>
+        ))}
+      </select>
     );
   }
 
@@ -294,7 +305,8 @@ export default function ContractDetailPage({
     return <p style={{ color: "#f87171" }}>Contract not found.</p>;
   }
 
-  const isSigned = !!contract.signed_at;
+  const isSigned = contract.status === "Signed" || contract.status === "Completed";
+  const isCancelled = contract.status === "Cancelled";
 
   return (
     <div>
@@ -348,12 +360,12 @@ export default function ContractDetailPage({
             >
               {contract.contract_number}
             </h1>
-            {getStatusBadge()}
+            {renderStatusDropdown()}
           </div>
         </div>
 
         <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
-          {!isSigned && !editing && (
+          {!isSigned && !isCancelled && !editing && (
             <button
               onClick={startEditing}
               style={{
@@ -701,7 +713,7 @@ export default function ContractDetailPage({
                 gap: "0.5rem",
               }}
             >
-              {!isSigned && (
+              {!isSigned && !isCancelled && (
                 <button
                   onClick={handleSend}
                   disabled={sending}

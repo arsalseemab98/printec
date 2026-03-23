@@ -28,6 +28,15 @@ interface Inquiry {
   created_at: string;
 }
 
+interface ContractMetric {
+  id: string;
+  total_price: number;
+  status: string;
+  signed_at: string | null;
+  completed_at: string | null;
+  created_at: string;
+}
+
 const STATUS_COLORS: Record<string, string> = {
   New: "#3b82f6",
   Contacted: "#eab308",
@@ -56,6 +65,7 @@ const PAGES = [
 export default function AdminDashboard() {
   const [blogCount, setBlogCount] = useState<number | null>(null);
   const [inquiries, setInquiries] = useState<Inquiry[]>([]);
+  const [contracts, setContracts] = useState<ContractMetric[]>([]);
   const [filter, setFilter] = useState<FilterOption>("All Time");
   const [selectedMonth, setSelectedMonth] = useState(() => {
     const now = new Date();
@@ -77,8 +87,15 @@ export default function AdminDashboard() {
       if (Array.isArray(data)) setInquiries(data);
     }
 
+    async function fetchContracts() {
+      const res = await fetch("/api/admin/contracts");
+      const data = await res.json();
+      if (Array.isArray(data)) setContracts(data);
+    }
+
     fetchBlogCount();
     fetchInquiries();
+    fetchContracts();
   }, []);
 
   // Filter inquiries by date
@@ -108,18 +125,55 @@ export default function AdminDashboard() {
     });
   }, [inquiries, filter, selectedMonth]);
 
-  // Calculate metrics from filtered data
+  // Filter contracts by date
+  const filteredContracts = useMemo(() => {
+    if (filter === "All Time") return contracts;
+
+    let startDate: Date;
+    let endDate: Date;
+
+    if (filter === "This Month") {
+      const now = new Date();
+      startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+      endDate = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59);
+    } else if (filter === "Last Month") {
+      const now = new Date();
+      startDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+      endDate = new Date(now.getFullYear(), now.getMonth(), 0, 23, 59, 59);
+    } else {
+      startDate = new Date(selectedMonth.year, selectedMonth.month, 1);
+      endDate = new Date(selectedMonth.year, selectedMonth.month + 1, 0, 23, 59, 59);
+    }
+
+    return contracts.filter((c) => {
+      const dateStr = c.completed_at || c.signed_at || c.created_at;
+      const d = new Date(dateStr);
+      return d >= startDate && d <= endDate;
+    });
+  }, [contracts, filter, selectedMonth]);
+
+  // Calculate metrics from filtered data (inquiries + contracts)
   const metrics = useMemo(() => {
     const booked = filteredInquiries.filter((i) => i.status === "Booked");
     const completed = filteredInquiries.filter((i) => i.status === "Completed");
     const newInq = filteredInquiries.filter((i) => i.status === "New");
 
-    const bookedPipeline = booked.reduce((sum, i) => sum + (i.booked_price || 0), 0);
-    const completedRevenue = completed.reduce((sum, i) => sum + (i.completed_price || 0), 0);
-    const averageOrder = completed.length > 0 ? completedRevenue / completed.length : 0;
+    const signedContracts = filteredContracts.filter((c) => c.status === "Signed");
+    const completedContracts = filteredContracts.filter((c) => c.status === "Completed");
+
+    const inquiryBooked = booked.reduce((sum, i) => sum + (i.booked_price || 0), 0);
+    const contractBooked = signedContracts.reduce((sum, c) => sum + (c.total_price || 0), 0);
+    const bookedPipeline = inquiryBooked + contractBooked;
+
+    const inquiryCompleted = completed.reduce((sum, i) => sum + (i.completed_price || 0), 0);
+    const contractCompleted = completedContracts.reduce((sum, c) => sum + (c.total_price || 0), 0);
+    const completedRevenue = inquiryCompleted + contractCompleted;
+
+    const totalCompletedCount = completed.length + completedContracts.length;
+    const averageOrder = totalCompletedCount > 0 ? completedRevenue / totalCompletedCount : 0;
 
     return { bookedPipeline, completedRevenue, averageOrder, newCount: newInq.length, totalCount: filteredInquiries.length };
-  }, [filteredInquiries]);
+  }, [filteredInquiries, filteredContracts]);
 
   function prevMonth() {
     setSelectedMonth((prev) => {

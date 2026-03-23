@@ -19,7 +19,7 @@ interface Contract {
   created_at: string;
 }
 
-type FilterTab = "all" | "pending" | "sent" | "signed";
+type FilterTab = "all" | "pending" | "sent" | "signed" | "completed" | "cancelled";
 
 export default function ContractsPage() {
   const router = useRouter();
@@ -47,10 +47,8 @@ export default function ContractsPage() {
   }
 
   const filtered = contracts.filter((c) => {
-    if (filter === "pending") return !c.sent_at && !c.signed_at;
-    if (filter === "sent") return !!c.sent_at && !c.signed_at;
-    if (filter === "signed") return !!c.signed_at;
-    return true;
+    if (filter === "all") return true;
+    return c.status.toLowerCase() === filter;
   });
 
   function formatCurrency(amount: number) {
@@ -68,42 +66,21 @@ export default function ContractsPage() {
     });
   }
 
+  const CONTRACT_STATUS_COLORS: Record<string, string> = {
+    Pending: "#eab308",
+    Sent: "#3b82f6",
+    Signed: "#22c55e",
+    Completed: "#F7941D",
+    Cancelled: "#ef4444",
+  };
+
   function getStatusBadge(contract: Contract) {
-    if (contract.signed_at) {
-      return (
-        <span
-          style={{
-            display: "inline-block",
-            padding: "0.2rem 0.6rem",
-            borderRadius: "4px",
-            background: "rgba(34,197,94,0.15)",
-            color: "#22c55e",
-            fontSize: "12px",
-            fontWeight: 600,
-            whiteSpace: "nowrap",
-          }}
-        >
-          Signed {formatDate(contract.signed_at)}
-        </span>
-      );
-    }
-    if (contract.sent_at) {
-      return (
-        <span
-          style={{
-            display: "inline-block",
-            padding: "0.2rem 0.6rem",
-            borderRadius: "4px",
-            background: "rgba(59,130,246,0.15)",
-            color: "#3b82f6",
-            fontSize: "12px",
-            fontWeight: 600,
-            whiteSpace: "nowrap",
-          }}
-        >
-          Sent
-        </span>
-      );
+    const color = CONTRACT_STATUS_COLORS[contract.status] || "#888";
+    let label = contract.status;
+    if (contract.status === "Signed" && contract.signed_at) {
+      label = `Signed ${formatDate(contract.signed_at)}`;
+    } else if (contract.status === "Sent" && contract.sent_at) {
+      label = `Sent ${formatDate(contract.sent_at)}`;
     }
     return (
       <span
@@ -111,13 +88,14 @@ export default function ContractsPage() {
           display: "inline-block",
           padding: "0.2rem 0.6rem",
           borderRadius: "4px",
-          background: "rgba(234,179,8,0.15)",
-          color: "#eab308",
+          background: `${color}20`,
+          color: color,
           fontSize: "12px",
           fontWeight: 600,
+          whiteSpace: "nowrap",
         }}
       >
-        Pending
+        {label}
       </span>
     );
   }
@@ -127,6 +105,8 @@ export default function ContractsPage() {
     { key: "pending", label: "Pending" },
     { key: "sent", label: "Sent" },
     { key: "signed", label: "Signed" },
+    { key: "completed", label: "Completed" },
+    { key: "cancelled", label: "Cancelled" },
   ];
 
   return (

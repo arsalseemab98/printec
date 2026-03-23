@@ -1,8 +1,23 @@
 import { MetadataRoute } from "next";
 import { BLOG_POSTS } from "@/lib/blog-data";
+import { createServerClient } from "@/lib/supabase";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://printecwrap.com";
+
+  // Fetch all catalogs from Supabase
+  let catalogSlugs: string[] = [];
+  try {
+    const supabase = createServerClient();
+    const { data } = await supabase
+      .from("catalogs")
+      .select("slug");
+    if (data) {
+      catalogSlugs = data.map((c: { slug: string }) => c.slug);
+    }
+  } catch {
+    // Silently fail — sitemap still generates without catalog entries
+  }
 
   const corePages = [
     { path: "", priority: 1.0, freq: "weekly" as const },
@@ -11,6 +26,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/portfolio", priority: 0.8, freq: "weekly" as const },
     { path: "/contact", priority: 0.9, freq: "monthly" as const },
     { path: "/blog", priority: 0.7, freq: "weekly" as const },
+    { path: "/catalogs", priority: 0.8, freq: "weekly" as const },
   ];
 
   const servicePages = [
@@ -76,5 +92,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
     })),
     ...blogPages,
+    ...catalogSlugs.map((slug) => ({
+      url: `${baseUrl}/catalogs/${slug}`,
+      lastModified: new Date(),
+      changeFrequency: "weekly" as const,
+      priority: 0.7,
+    })),
   ];
 }

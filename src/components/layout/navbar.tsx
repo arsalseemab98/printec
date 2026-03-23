@@ -26,6 +26,7 @@ import {
   BookOpen,
   Mail,
   Users,
+  Library,
 } from "lucide-react";
 
 const MOBILE_ICONS: Record<string, React.ReactNode> = {
@@ -34,6 +35,7 @@ const MOBILE_ICONS: Record<string, React.ReactNode> = {
   TEAM: <Users size={18} />,
   SERVICES: <Briefcase size={18} />,
   PORTFOLIO: <FolderOpen size={18} />,
+  CATALOGS: <Library size={18} />,
   BLOG: <BookOpen size={18} />,
   CONTACT: <Mail size={18} />,
 };
@@ -44,6 +46,7 @@ const MAIN_LINKS = [
   { label: "TEAM", href: "/team" },
   { label: "SERVICES", href: "#", hasDropdown: true },
   { label: "PORTFOLIO", href: "/portfolio" },
+  { label: "CATALOGS", href: "/catalogs" },
   { label: "BLOG", href: "/blog" },
   { label: "CONTACT", href: "/contact" },
 ];

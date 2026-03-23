@@ -113,8 +113,8 @@ const LEADERSHIP = [
     bio: "Aryan brings fresh energy and eagerness to learn to the Printec team. As a junior intern, he assists across departments — from design support to installation prep — gaining hands-on experience in the signage industry.",
     email: TEAM_EMAIL,
     phone: TEAM_PHONE,
-    image: "/images/team-aryan.webp",
-    imagePosition: "45% top",
+    image: "/images/team-aryan-v2.webp",
+    imagePosition: "center top",
   },
 ];
 

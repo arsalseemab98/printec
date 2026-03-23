@@ -315,6 +315,11 @@
   color: #F7941D !important;
 }
 
+/* ─── Catalog Card Hover ─── */
+.catalog-card:hover {
+  border-color: #F7941D !important;
+}
+
 /* ─── Responsive ─── */
 @media (max-width: 768px) {
   .about-grid {

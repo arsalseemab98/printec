@@ -145,6 +145,7 @@ export default function InquiriesPage() {
 
       {/* Status filter tabs */}
       <div
+        className="admin-filter-tabs"
         style={{
           display: "flex",
           gap: "0.5rem",

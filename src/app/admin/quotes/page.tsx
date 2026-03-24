@@ -116,10 +116,12 @@ export default function QuotesSentPage() {
 
       {/* Filter Tabs */}
       <div
+        className="admin-filter-tabs"
         style={{
           display: "flex",
           gap: "0.5rem",
           marginBottom: "1.5rem",
+          flexWrap: "wrap",
         }}
       >
         {tabs.map((tab) => (

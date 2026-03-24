@@ -2,47 +2,40 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { KeyboardEvent, useState } from "react";
+import { PORTFOLIO_IMAGES, PORTFOLIO_CATEGORIES, type PortfolioItem } from "@/lib/constants";
+import { Instagram } from "lucide-react";
 
 const ORANGE = "#F7941D";
-const TEAL = "#00897B";
 const BLACK = "#0C0C0C";
 const DARK1 = "#161616";
 const DARK2 = "#222222";
-const SPECTRUM = "linear-gradient(90deg, #FFD600, #F7941D, #E53935, #9B2D8E, #00897B, #8BC34A)";
 
-const galleryImages = [
-  { id: 1, url: "/images/portfolio/floor-as-monogram.webp", title: "A&S MONOGRAM WEDDING FLOOR", category: "Floor Wraps" },
-  { id: 2, url: "/images/portfolio/floor-mandala-colorful.webp", title: "COLORFUL MANDALA MEHNDI FLOOR", category: "Floor Wraps" },
-  { id: 3, url: "/images/portfolio/floor-mm-gold.webp", title: "M&M GOLD MONOGRAM FLOOR", category: "Floor Wraps" },
-  { id: 4, url: "/images/portfolio/floor-hz-orange.webp", title: "H&Z ORANGE MONOGRAM FLOOR", category: "Floor Wraps" },
-  { id: 5, url: "/images/portfolio/floor-anjana-aditya.webp", title: "ANJANA & ADITYA WEDDING FLOOR", category: "Floor Wraps" },
-  { id: 6, url: "/images/portfolio/floor-rv-wreath.webp", title: "R&V GOLD WREATH FLOOR", category: "Floor Wraps" },
-  { id: 7, url: "/images/portfolio/floor-pastel-mandala.webp", title: "PASTEL MANDALA FLOOR", category: "Floor Wraps" },
-  { id: 8, url: "/images/portfolio/floor-red-pattern.webp", title: "TRADITIONAL RED PATTERN FLOOR", category: "Floor Wraps" },
-  { id: 9, url: "/images/portfolio/floor-mehndi-colorful.webp", title: "VIBRANT MEHNDI FLOOR", category: "Floor Wraps" },
-];
-
-export function GalleryGridBlock() {
+export function GalleryGridBlock({ category }: { category?: string }) {
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
-  const [filter, setFilter] = useState<string>("All");
+  const [filter, setFilter] = useState<string>(category || "All");
 
-  const categories = ["All", ...new Set(galleryImages.map((img) => img.category))];
-  const filteredImages = filter === "All" ? galleryImages : galleryImages.filter((img) => img.category === filter);
+  // If a category is passed, only show that category (for service pages)
+  const availableImages = category
+    ? PORTFOLIO_IMAGES.filter((img) => img.category === category)
+    : PORTFOLIO_IMAGES;
+
+  const categories = category ? [] : PORTFOLIO_CATEGORIES;
+  const filteredImages = filter === "All" ? availableImages : availableImages.filter((img) => img.category === filter);
 
   const handleNext = () => {
     if (selectedImage !== null) {
-      const idx = galleryImages.findIndex((img) => img.id === selectedImage);
-      setSelectedImage(galleryImages[(idx + 1) % galleryImages.length].id);
+      const idx = availableImages.findIndex((img) => img.id === selectedImage);
+      setSelectedImage(availableImages[(idx + 1) % availableImages.length].id);
     }
   };
   const handlePrev = () => {
     if (selectedImage !== null) {
-      const idx = galleryImages.findIndex((img) => img.id === selectedImage);
-      setSelectedImage(galleryImages[(idx - 1 + galleryImages.length) % galleryImages.length].id);
+      const idx = availableImages.findIndex((img) => img.id === selectedImage);
+      setSelectedImage(availableImages[(idx - 1 + availableImages.length) % availableImages.length].id);
     }
   };
 
-  const selectedImageData = galleryImages.find((img) => img.id === selectedImage);
+  const selectedImageData = availableImages.find((img) => img.id === selectedImage);
 
   const handleCardKeyDown = (event: KeyboardEvent<HTMLDivElement>, imageId: number) => {
     if (event.key === "Enter" || event.key === " ") {
@@ -97,49 +90,51 @@ export function GalleryGridBlock() {
           </h2>
         </motion.div>
 
-        {/* Filter Tabs — street style */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.15, duration: 0.5 }}
-          style={{ display: "flex", flexWrap: "wrap", gap: "8px", marginBottom: "48px" }}
-        >
-          {categories.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setFilter(cat)}
-              style={{
-                padding: "10px 22px",
-                fontFamily: "'Arial Black', Impact, sans-serif",
-                fontWeight: 900,
-                fontSize: "11px",
-                letterSpacing: "2px",
-                textTransform: "uppercase",
-                border: `2px solid ${filter === cat ? ORANGE : DARK2}`,
-                background: filter === cat ? ORANGE : "transparent",
-                color: filter === cat ? BLACK : "rgba(255,255,255,0.5)",
-                cursor: "pointer",
-                transform: "skewX(-4deg)",
-                transition: "all 0.2s ease",
-              }}
-              onMouseEnter={(e) => {
-                if (filter !== cat) {
-                  e.currentTarget.style.borderColor = "rgba(255,255,255,0.4)";
-                  e.currentTarget.style.color = "#fff";
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (filter !== cat) {
-                  e.currentTarget.style.borderColor = DARK2;
-                  e.currentTarget.style.color = "rgba(255,255,255,0.5)";
-                }
-              }}
-            >
-              <span style={{ display: "inline-block", transform: "skewX(4deg)" }}>{cat}</span>
-            </button>
-          ))}
-        </motion.div>
+        {/* Filter Tabs (hidden when showing single category) */}
+        {categories.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.15, duration: 0.5 }}
+            style={{ display: "flex", flexWrap: "wrap", gap: "8px", marginBottom: "48px" }}
+          >
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setFilter(cat)}
+                style={{
+                  padding: "10px 22px",
+                  fontFamily: "'Arial Black', Impact, sans-serif",
+                  fontWeight: 900,
+                  fontSize: "11px",
+                  letterSpacing: "2px",
+                  textTransform: "uppercase",
+                  border: `2px solid ${filter === cat ? ORANGE : DARK2}`,
+                  background: filter === cat ? ORANGE : "transparent",
+                  color: filter === cat ? BLACK : "rgba(255,255,255,0.5)",
+                  cursor: "pointer",
+                  transform: "skewX(-4deg)",
+                  transition: "all 0.2s ease",
+                }}
+                onMouseEnter={(e) => {
+                  if (filter !== cat) {
+                    e.currentTarget.style.borderColor = "rgba(255,255,255,0.4)";
+                    e.currentTarget.style.color = "#fff";
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (filter !== cat) {
+                    e.currentTarget.style.borderColor = DARK2;
+                    e.currentTarget.style.color = "rgba(255,255,255,0.5)";
+                  }
+                }}
+              >
+                <span style={{ display: "inline-block", transform: "skewX(4deg)" }}>{cat}</span>
+              </button>
+            ))}
+          </motion.div>
+        )}
 
         {/* Gallery Grid */}
         <motion.div
@@ -188,9 +183,10 @@ export function GalleryGridBlock() {
                         display: "block",
                         transition: "transform 0.4s ease",
                       }}
+                      loading="lazy"
                     />
 
-                    {/* Hover overlay — shows on parent .gallery-card:hover */}
+                    {/* Hover overlay */}
                     <div
                       className="gallery-overlay"
                       style={{
@@ -205,7 +201,6 @@ export function GalleryGridBlock() {
                         padding: "20px",
                       }}
                     >
-                      {/* Category tag */}
                       <div
                         style={{
                           display: "inline-block",
@@ -261,6 +256,43 @@ export function GalleryGridBlock() {
               </motion.div>
             ))}
           </AnimatePresence>
+        </motion.div>
+
+        {/* Instagram CTA */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.2, duration: 0.5 }}
+          style={{ textAlign: "center", marginTop: "60px" }}
+        >
+          <a
+            href="https://www.instagram.com/printecvirginia/"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "10px",
+              padding: "14px 32px",
+              background: "transparent",
+              border: `2px solid ${ORANGE}`,
+              borderRadius: "4px",
+              color: ORANGE,
+              fontSize: "13px",
+              fontWeight: 900,
+              fontFamily: "'Arial Black', Impact, sans-serif",
+              letterSpacing: "2px",
+              textTransform: "uppercase",
+              textDecoration: "none",
+              transition: "all 0.2s",
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.background = ORANGE; e.currentTarget.style.color = BLACK; }}
+            onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = ORANGE; }}
+          >
+            <Instagram size={18} />
+            See More on Instagram
+          </a>
         </motion.div>
 
       </div>
@@ -319,7 +351,7 @@ export function GalleryGridBlock() {
                   top: "50%",
                   transform: "translateY(-50%)",
                   background: "rgba(255,255,255,0.08)",
-                  border: `1px solid rgba(255,255,255,0.15)`,
+                  border: "1px solid rgba(255,255,255,0.15)",
                   color: "#fff",
                   width: "40px",
                   height: "40px",
@@ -343,7 +375,7 @@ export function GalleryGridBlock() {
                   top: "50%",
                   transform: "translateY(-50%)",
                   background: "rgba(255,255,255,0.08)",
-                  border: `1px solid rgba(255,255,255,0.15)`,
+                  border: "1px solid rgba(255,255,255,0.15)",
                   color: "#fff",
                   width: "40px",
                   height: "40px",
@@ -367,10 +399,10 @@ export function GalleryGridBlock() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.2 }}
-                style={{ maxHeight: "75vh", width: "auto", maxWidth: "100%", display: "block" }}
+                style={{ maxHeight: "70vh", width: "auto", maxWidth: "100%", display: "block" }}
               />
 
-              {/* Info */}
+              {/* Info + Instagram CTA */}
               <div style={{ marginTop: "16px", textAlign: "center" }}>
                 <div
                   style={{
@@ -397,11 +429,29 @@ export function GalleryGridBlock() {
                     fontSize: "18px",
                     letterSpacing: "2px",
                     color: "#fff",
-                    margin: "4px 0 0",
+                    margin: "4px 0 12px",
                   }}
                 >
                   {selectedImageData.title}
                 </h3>
+                <a
+                  href="https://www.instagram.com/printecvirginia/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "6px",
+                    color: ORANGE,
+                    fontSize: "12px",
+                    fontWeight: 700,
+                    letterSpacing: "1px",
+                    textDecoration: "none",
+                  }}
+                >
+                  <Instagram size={14} />
+                  More photos on Instagram →
+                </a>
               </div>
             </motion.div>
           </motion.div>

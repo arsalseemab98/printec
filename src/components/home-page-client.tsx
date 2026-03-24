@@ -7,7 +7,7 @@ import { GalleryGridBlock } from "@/components/ui/gallery-grid-block-shadcnui";
 import { EtheralShadow } from "@/components/ui/etheral-shadow";
 import { SkewedButton } from "@/components/shared/skewed-button";
 import { ContainerTextFlip } from "@/components/ui/container-text-flip";
-import { PORTFOLIO_CATEGORIES, PORTFOLIO } from "@/lib/constants";
+import { PORTFOLIO_CATEGORIES, PORTFOLIO_IMAGES as PORTFOLIO } from "@/lib/constants";
 
 /* ─── BRAND CONSTANTS (matching Printec logo spectrum) ─── */
 const ORANGE = "#F7941D";

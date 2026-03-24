@@ -75,22 +75,43 @@ export const SERVICES_NAV = [
   { name: "Food Truck Wraps", href: "/food-truck-wraps" },
 ];
 
-/* ─── PORTFOLIO DATA ─── */
-export const PORTFOLIO_CATEGORIES = ["ALL", "SIGNAGE", "WALL WRAPS", "WINDOW WRAPS", "FLOOR WRAPS", "NEON SIGNS", "VINYL WRAPS"];
+/* ─── PORTFOLIO DATA (single source of truth) ─── */
+export interface PortfolioItem {
+  id: number;
+  url: string;
+  title: string;
+  category: string;
+}
 
-export const PORTFOLIO = [
-  { title: "AURORA & OAK CHANNEL LETTERS", category: "LED CHANNEL", filter: "SIGNAGE", angle: 12 },
-  { title: "MERIDIAN BUSINESS PARK SIGNS", category: "MONUMENT SIGN", filter: "SIGNAGE", angle: -8 },
-  { title: "SAVORA KITCHEN STOREFRONT", category: "CHANNEL LETTERS", filter: "SIGNAGE", angle: 5 },
-  { title: "RESTAURANT FEATURE WALL", category: "WALL MURAL", filter: "WALL WRAPS", angle: -15 },
-  { title: "CORPORATE LOBBY BRANDING", category: "WALL GRAPHICS", filter: "WALL WRAPS", angle: 20 },
-  { title: "LAKESIDE COFFEE WINDOWS", category: "WINDOW WRAP", filter: "WINDOW WRAPS", angle: 10 },
-  { title: "BREWERY STOREFRONT GRAPHICS", category: "STOREFRONT", filter: "WINDOW WRAPS", angle: -6 },
-  { title: "WEDDING MONOGRAM — A&J", category: "DANCE FLOOR", filter: "FLOOR WRAPS", angle: -12 },
-  { title: "CORPORATE GALA FLOOR WRAP", category: "EVENT FLOOR", filter: "FLOOR WRAPS", angle: 7 },
-  { title: "THIS WAY UP NEON SIGN", category: "LED NEON", filter: "NEON SIGNS", angle: -9 },
-  { title: "BAR NEON SIGNAGE", category: "CUSTOM NEON", filter: "NEON SIGNS", angle: 15 },
-  { title: "FOOD TRUCK FULL WRAP", category: "VEHICLE WRAP", filter: "VINYL WRAPS", angle: -5 },
+export const PORTFOLIO_CATEGORIES = ["All", "Floor Wraps", "Signage", "Wall Wraps", "Window Wraps", "Neon Signs", "Food Truck Wraps"];
+
+export const PORTFOLIO_IMAGES: PortfolioItem[] = [
+  // Floor Wraps
+  { id: 1, url: "/images/portfolio/floor-as-monogram.webp", title: "A&S MONOGRAM WEDDING FLOOR", category: "Floor Wraps" },
+  { id: 2, url: "/images/portfolio/floor-mandala-colorful.webp", title: "COLORFUL MANDALA MEHNDI FLOOR", category: "Floor Wraps" },
+  { id: 3, url: "/images/portfolio/floor-mm-gold.webp", title: "M&M GOLD MONOGRAM FLOOR", category: "Floor Wraps" },
+  { id: 4, url: "/images/portfolio/floor-hz-orange.webp", title: "H&Z ORANGE MONOGRAM FLOOR", category: "Floor Wraps" },
+  { id: 5, url: "/images/portfolio/floor-anjana-aditya.webp", title: "ANJANA & ADITYA WEDDING FLOOR", category: "Floor Wraps" },
+  { id: 6, url: "/images/portfolio/floor-rv-wreath.webp", title: "R&V GOLD WREATH FLOOR", category: "Floor Wraps" },
+  { id: 7, url: "/images/portfolio/floor-pastel-mandala.webp", title: "PASTEL MANDALA FLOOR", category: "Floor Wraps" },
+  { id: 8, url: "/images/portfolio/floor-red-pattern.webp", title: "TRADITIONAL RED PATTERN FLOOR", category: "Floor Wraps" },
+  { id: 9, url: "/images/portfolio/floor-mehndi-colorful.webp", title: "VIBRANT MEHNDI FLOOR", category: "Floor Wraps" },
+  // Signage
+  { id: 10, url: "/images/signage-hero.webp", title: "AURORA & OAK CHANNEL LETTERS", category: "Signage" },
+  { id: 11, url: "/images/signage-after.webp", title: "SAVORA KITCHEN STOREFRONT", category: "Signage" },
+  { id: 12, url: "/images/biz-signage-hero.webp", title: "MERIDIAN BUSINESS PARK", category: "Signage" },
+  { id: 13, url: "/images/biz-signage-after.webp", title: "CREATIVE SOLUTIONS HUB SIGNAGE", category: "Signage" },
+  // Wall Wraps
+  { id: 14, url: "/images/wall-wrap-hero.webp", title: "RESTAURANT FEATURE WALL", category: "Wall Wraps" },
+  { id: 15, url: "/images/wall-after.webp", title: "BAR WALL MURAL", category: "Wall Wraps" },
+  // Window Wraps
+  { id: 16, url: "/images/window-wrap-hero.webp", title: "STOREFRONT WINDOW GRAPHICS", category: "Window Wraps" },
+  { id: 17, url: "/images/window-after.webp", title: "BREWERY WINDOW WRAP", category: "Window Wraps" },
+  // Neon Signs
+  { id: 18, url: "/images/neon-hero.webp", title: "CUSTOM NEON BAR SIGN", category: "Neon Signs" },
+  { id: 19, url: "/images/neon-after.webp", title: "STAIRCASE NEON SIGNAGE", category: "Neon Signs" },
+  // Food Truck Wraps
+  { id: 20, url: "/images/foodtruck-after.webp", title: "STREET BITES FOOD TRUCK WRAP", category: "Food Truck Wraps" },
 ];
 
 /* ─── STATS DATA ─── */

@@ -3,6 +3,7 @@ import Script from "next/script";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { SiteShell } from "@/components/layout/site-shell";
+import { AutoRefresh } from "@/components/shared/auto-refresh";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -132,6 +133,7 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased" style={{ background: "#0C0C0C" }}>
+        <AutoRefresh />
         <SiteShell>{children}</SiteShell>
       </body>
     </html>

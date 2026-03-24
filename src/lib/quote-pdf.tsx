@@ -315,7 +315,7 @@ export function QuotePDF(props: QuotePDFProps) {
           {logoUrl ? (
             <Image src={logoUrl} style={s.logo} />
           ) : (
-            <Text style={s.companyName}>PRINTEC CORP</Text>
+            <Text style={s.companyName}>PRINTEC VIRGINIA LLC</Text>
           )}
           <View style={s.companyInfo}>
             <Text style={s.companyHighlight}>PRINTEC VIRGINIA LLC</Text>
@@ -403,7 +403,7 @@ export function QuotePDF(props: QuotePDFProps) {
         {/* ── Footer ── */}
         <View style={s.footer}>
           <View style={s.footerLeft}>
-            <Text style={s.footerBold}>PRINTEC CORP</Text>
+            <Text style={s.footerBold}>PRINTEC VIRGINIA LLC</Text>
             <Text style={s.footerText}>From Vision to Vinyl</Text>
           </View>
           <View style={s.footerRight}>

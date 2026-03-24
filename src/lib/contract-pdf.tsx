@@ -160,7 +160,7 @@ export function ContractPDF(props: ContractPDFProps) {
           {logoUrl ? (
             <Image src={logoUrl} style={s.logo} />
           ) : (
-            <Text style={s.companyName}>PRINTEC</Text>
+            <Text style={s.companyName}>PRINTEC VIRGINIA LLC</Text>
           )}
           <View style={s.companyInfo}>
             <Text style={s.companyHighlight}>Printec Virginia LLC</Text>

@@ -8,7 +8,7 @@
 |------|-------|--------|-------|----------|--------|--------|
 | Homepage | `/` | ✅ | ✅ | ✅ | N/A | Live |
 | About | `/about` | ✅ | ✅ | ✅ | ✅ Supabase | Live |
-| Team | `/team` | ✅ | ✅ | ✅ | ✅ 3 photos | Live |
+| Team | `/team` | ✅ | ✅ | ✅ | ✅ 4 photos (1200px) | Live |
 | Portfolio | `/portfolio` | ✅ | ✅ | ✅ | Placeholders | Live |
 | Contact | `/contact` | ✅ | ✅ | ✅ | N/A | Live |
 | Blog Hub | `/blog` | ✅ | ✅ | ✅ | N/A | Live |
@@ -17,7 +17,7 @@
 | Wall Wraps | `/wall-wraps` | ✅ | ✅ | ✅ | ✅ Hero + B/A | Live |
 | Window Wraps | `/window-wraps` | ✅ | ✅ | ✅ | ✅ Hero + B/A | Live |
 | Channel Letters | `/channel-letters-signage` | ✅ | ✅ | ✅ | ✅ Hero + B/A | Live |
-| Vinyl Wraps | `/vinyl-wraps` | ✅ | ✅ | ✅ | Placeholder | Live |
+| Vinyl Wraps | `/vinyl-wraps` | — | — | — | — | Removed |
 | Business Signage | `/business-signage` | ✅ | ✅ | ✅ | ✅ Hero | Live |
 | Custom Neon Signs | `/custom-neon-signs` | ✅ | ✅ | ✅ | ✅ Hero + B/A | Live |
 | Wedding Floor | `/wedding-floor-wrap` | ✅ | ✅ | ✅ | Placeholders | Live |
@@ -136,6 +136,21 @@
 | AVIF format enabled | ✅ |
 | 1-year image cache TTL | ✅ |
 | Admin image manager | ✅ |
+
+## Admin Mobile Responsive — Verification
+
+| Page | Mobile UI | Notes |
+|------|-----------|-------|
+| Layout/Sidebar | ✅ | Hamburger menu, bottom nav on mobile |
+| Dashboard | ✅ | 4-col → 2-col KPIs, 3-col → 1-col cards, filter wraps |
+| Statistics | ✅ | 6-col → 2-col KPIs, 2-col → 1-col charts, filter wraps |
+| Inquiries | ✅ | Horizontal scroll table |
+| Contracts | ✅ | Header wraps, filter tabs wrap, table scrolls |
+| Contract Form | ✅ | 2-col → 1-col on mobile |
+| Quotes | ✅ | Horizontal scroll table |
+| Blog | ✅ | Header wraps, grid rows collapse |
+| Images | ✅ | Auto-fill grid already responsive |
+| Pages | ✅ | Auto-fill grid already responsive |
 
 ## Performance — Verification
 

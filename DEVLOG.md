@@ -546,3 +546,63 @@
 - Inquiry form in catalog viewer posts to existing `/api/contact` with `source: "catalog"`
 - Inline styles (no Tailwind) matching existing codebase pattern
 - 18 sample projects seeded via Supabase SQL (3 per catalog, with specs)
+
+---
+
+## 2026-03-24 — Team Photos Update
+
+### What was done
+- New high-res team photos (1200px, q85 WebP) for Azhar, Shazal, Nomi, Aryan
+- All photos: workshop background with Printec logo polo, orange accent lighting
+- Per-person `objectPosition` for proper face centering in 4:5 cards
+- Added Nomi (Lead Designer, he/him) and Aryan W. (Junior Intern) to team
+- Removed Anton's photo (placeholder until new photo available)
+- Removed old low-res 600px photos
+- Card aspect ratio changed from 3:4 to 4:5 for better landscape photo fit
+
+### Team Members
+| Name | Role | Photo | Position |
+|------|------|-------|----------|
+| Muhammad Azhar | CEO | team-azhar-v2.webp (1200px) | center top |
+| Shazal Ali | Sales Rep | team-shazal-v3.webp (1200px) | 35% top |
+| Anton Andersson | Sales Rep | No photo | — |
+| Nomi | Lead Designer | team-nomi.webp (1200px) | center top |
+| Aryan W. | Junior Intern | team-aryan-v2.webp (1200px) | center top |
+
+---
+
+## 2026-03-24 — Admin Portal Mobile Responsive
+
+### What was done
+- Made all admin pages fully mobile responsive
+- Added CSS responsive classes in globals.css (768px + 480px breakpoints)
+- Sidebar already had mobile hamburger menu + bottom nav (no changes needed)
+
+### Responsive CSS Classes Added
+| Class | Desktop | Mobile (≤768px) |
+|-------|---------|-----------------|
+| `admin-grid-6` | 6 columns | 2 columns |
+| `admin-grid-4` | 4 columns | 2 columns (1 on ≤480px) |
+| `admin-grid-3` | 3 columns | 1 column |
+| `admin-grid-2` | 2 columns | 1 column |
+| `admin-header-row` | flex row | stacked column |
+| `admin-filter-bar` | flex row | stacked, centered |
+| `admin-filter-tabs` | flex row | wraps, smaller buttons |
+| `admin-table-wrap` | normal | horizontal scroll (min-width 600px) |
+| `admin-form-grid` | 2 columns | 1 column |
+| `admin-blog-row` | 5-column grid | 1 column |
+| `admin-stats-summary` | flex row | wraps |
+
+### Pages Fixed
+- Dashboard: KPIs, overview cards, quick links, filter bar, header
+- Statistics: KPIs, all chart grids, filter bar, header, UTM table
+- Contracts: header, filter tabs, table scroll
+- Inquiries: table scroll
+- Quotes: table scroll
+- Blog: header, grid rows
+- Contract form: 2-col → 1-col
+
+### Decisions
+- CSS class approach (not inline media queries) — cleaner, reusable across pages
+- Tables use horizontal scroll rather than hiding columns — preserves all data
+- 768px breakpoint for tablet, 480px for small phone

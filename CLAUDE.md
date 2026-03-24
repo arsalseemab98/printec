@@ -147,9 +147,10 @@ src/
     ├── images/                       # Local WebP backups (served from Supabase)
     │   ├── workshop.webp             # Workshop panoramic (188KB)
     │   ├── worker.webp               # Worker photo for chat modal (36KB)
-    │   ├── team-shazil.webp          # Shazal Ali team photo
-    │   ├── team-azhar.webp           # Muhammad Azhar team photo
-    │   ├── team-anton.webp           # Anton Andersson team photo
+    │   ├── team-shazal-v3.webp        # Shazal Ali team photo (1200px, workshop bg)
+    │   ├── team-azhar-v2.webp        # Muhammad Azhar team photo (1200px, workshop bg)
+    │   ├── team-nomi.webp            # Nomi team photo (1200px, workshop bg)
+    │   ├── team-aryan-v2.webp        # Aryan W. team photo (1200px, workshop bg)
     │   ├── dance-floor-hero.webp     # Wedding monogram hero
     │   ├── floor-before/after.webp   # Dance floor before/after
     │   ├── wall-wrap-hero.webp       # Restaurant wall wrap hero
@@ -177,10 +178,11 @@ npx next build             # Production build
 5. Use `next/image` with `fill`, `sizes`, and `priority` (for hero images)
 
 ## Team
-- **Muhammad Azhar** — CEO
-- **Shazal Ali** — Sales Representative
-- **Anton Andersson** — Sales Representative
-- **Maria Gonzalez** — Lead Designer
+- **Muhammad Azhar** — CEO (photo)
+- **Shazal Ali** — Sales Representative (photo)
+- **Anton Andersson** — Sales Representative (no photo)
+- **Nomi** — Lead Designer (photo)
+- **Aryan W.** — Junior Intern (photo)
 
 ## Brand Constants
 - Orange: #F7941D
@@ -227,6 +229,7 @@ npx next build             # Production build
   - Email-gated catalog viewer (fullscreen cinematic slideshow)
   - "Send This Design" inquiry form within catalog viewer (auto-fills service category)
   - Catalog leads saved to catalog_leads table with slug tracking
+  - **Fully mobile responsive** — all admin pages work on phone/tablet (responsive grids, horizontal scroll tables, collapsing layouts)
 
 ## Email Integration
 - **Provider**: Microsoft Graph API (Azure AD app)

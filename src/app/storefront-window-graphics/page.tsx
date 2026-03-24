@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Section } from "@/components/shared/section";
 import { CtaBanner } from "@/components/shared/cta-banner";
 import { SkewedButton } from "@/components/shared/skewed-button";
+import { BeforeAfterSlider } from "@/components/ui/before-after-slider";
 import {
   Maximize,
   Scissors,
@@ -187,25 +188,13 @@ export default function StorefrontWindowGraphicsPage() {
           padding: "160px 24px 100px",
         }}
       >
-        <div
-          style={{
-            width: "100%",
-            maxWidth: "900px",
-            aspectRatio: "16/7",
-            background: `linear-gradient(135deg, #111, ${DARK1})`,
-            borderRadius: "4px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontSize: "13px",
-            letterSpacing: "3px",
-            textTransform: "uppercase",
-            color: `${WHITE}33`,
-            fontFamily: "Arial, sans-serif",
-            marginBottom: "48px",
-          }}
-        >
-          Storefront Window Graphics Hero Image
+        <div style={{ width: "100%", maxWidth: "900px", marginBottom: "48px" }}>
+          <BeforeAfterSlider
+            beforeSrc="/images/storefront-before.webp"
+            afterSrc="/images/storefront-after.webp"
+            beforeAlt="Plain storefront with clear glass windows"
+            afterAlt="Storefront with professional Urban Essentials window graphics"
+          />
         </div>
 
         <div style={label}>BUSINESS</div>

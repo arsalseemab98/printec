@@ -82,6 +82,8 @@ export function PromoBar() {
 
   const slide = slides[currentIndex];
 
+  const PROMO_HEIGHT = "38px";
+
   const textContent = (
     <span
       style={{
@@ -105,16 +107,22 @@ export function PromoBar() {
   );
 
   return (
+    <>
+    {/* Spacer so page content isn't hidden behind fixed bar */}
+    <div style={{ height: PROMO_HEIGHT }} />
     <div
       style={{
         width: "100%",
-        height: "38px",
+        height: PROMO_HEIGHT,
         background: "#F7941D",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        position: "relative",
-        zIndex: 1001,
+        position: "fixed",
+        top: "64px",
+        left: 0,
+        right: 0,
+        zIndex: 999,
       }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
@@ -205,5 +213,6 @@ export function PromoBar() {
         &#10005;
       </button>
     </div>
+    </>
   );
 }

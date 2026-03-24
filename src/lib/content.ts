@@ -52,6 +52,16 @@ export async function getBlogPosts(publishedOnly = true) {
   return data ?? [];
 }
 
+export async function getPortfolioImages(category?: string) {
+  let query = supabase
+    .from("portfolio_images")
+    .select("id, url, title, category")
+    .order("sort_order", { ascending: true });
+  if (category) query = query.eq("category", category);
+  const { data } = await query;
+  return (data ?? []).map((row, i) => ({ ...row, id: i + 1 }));
+}
+
 export async function getBlogPostBySlug(slug: string) {
   const { data } = await supabase
     .from("blog_posts")

@@ -21,6 +21,7 @@ import {
   X,
   MessageSquare,
   Megaphone,
+  Grid3X3,
 } from "lucide-react";
 
 const NAV_ITEMS = [
@@ -32,6 +33,7 @@ const NAV_ITEMS = [
   { label: "Inquiries", href: "/admin/inquiries", icon: MessageSquare },
   { label: "Quotes", href: "/admin/quotes", icon: ClipboardList },
   { label: "Contracts", href: "/admin/contracts", icon: FileSignature },
+  { label: "Portfolio", href: "/admin/portfolio", icon: Grid3X3 },
   { label: "Blog", href: "/admin/blog", icon: FileText },
   { label: "Catalogs", href: "/admin/catalogs", icon: BookOpen },
   { label: "Promos", href: "/admin/promos", icon: Megaphone },

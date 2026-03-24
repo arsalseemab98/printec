@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
+import { ChevronLeft, ChevronRight, X, Sparkles } from "lucide-react";
 
 interface PromoSlide {
   id: string;
@@ -99,9 +100,12 @@ export function PromoBar() {
         textOverflow: "ellipsis",
         whiteSpace: "nowrap",
         maxWidth: "calc(100% - 80px)",
-        display: "inline-block",
+        display: "inline-flex",
+        alignItems: "center",
+        gap: "8px",
       }}
     >
+      <Sparkles size={14} strokeWidth={2.5} style={{ flexShrink: 0 }} />
       {slide.text}
     </span>
   );
@@ -146,7 +150,7 @@ export function PromoBar() {
           }}
           aria-label="Previous slide"
         >
-          &#9664;
+          <ChevronLeft size={14} strokeWidth={2.5} />
         </button>
       )}
 
@@ -187,7 +191,7 @@ export function PromoBar() {
           }}
           aria-label="Next slide"
         >
-          &#9654;
+          <ChevronRight size={14} strokeWidth={2.5} />
         </button>
       )}
 
@@ -210,7 +214,7 @@ export function PromoBar() {
         }}
         aria-label="Close promotions bar"
       >
-        &#10005;
+        <X size={14} strokeWidth={2.5} />
       </button>
     </div>
     </>

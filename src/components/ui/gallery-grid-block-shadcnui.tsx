@@ -10,15 +10,18 @@ const BLACK = "#0C0C0C";
 const DARK1 = "#161616";
 const DARK2 = "#222222";
 
-export function GalleryGridBlock({ category }: { category?: string }) {
+export function GalleryGridBlock({ category, data }: { category?: string; data?: PortfolioItem[] }) {
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
-  const [filter, setFilter] = useState<string>(category || "All");
+
+  // Use DB data if provided, otherwise fall back to constants
+  const sourceImages = data && data.length > 0 ? data : PORTFOLIO_IMAGES;
 
   // If a category is passed, only show that category (for service pages)
   const availableImages = category
-    ? PORTFOLIO_IMAGES.filter((img) => img.category === category)
-    : PORTFOLIO_IMAGES;
+    ? sourceImages.filter((img) => img.category === category)
+    : sourceImages;
 
+  const [filter, setFilter] = useState<string>(category || "All");
   const categories = category ? [] : PORTFOLIO_CATEGORIES;
   const filteredImages = filter === "All" ? availableImages : availableImages.filter((img) => img.category === filter);
 

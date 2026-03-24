@@ -4,6 +4,7 @@ import { Section } from "@/components/shared/section";
 import { SkewedButton } from "@/components/shared/skewed-button";
 import { BeforeAfterSlider } from "@/components/ui/before-after-slider";
 import { GalleryGridBlock } from "@/components/ui/gallery-grid-block-shadcnui";
+import { getPortfolioImages } from "@/lib/content";
 import {
   ORANGE,
   BLACK,
@@ -185,6 +186,7 @@ const FAQ_DATA = [
 
 export default async function DanceFloorWrapsPage() {
   const imgs = await getPageImages("dance-floor-wraps");
+  const portfolioData = await getPortfolioImages("Floor Wraps");
   return (
     <main style={{ background: BLACK }}>
 
@@ -464,7 +466,7 @@ export default async function DanceFloorWrapsPage() {
       </Section>
 
       {/* ── 5. GALLERY ── */}
-      <GalleryGridBlock category="Floor Wraps" />
+      <GalleryGridBlock category="Floor Wraps" data={portfolioData} />
 
       {/* ── 6. FAQ ── */}
       <Section style={{ background: BLACK, padding: "100px 24px" }}>

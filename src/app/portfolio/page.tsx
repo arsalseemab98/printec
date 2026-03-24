@@ -3,6 +3,7 @@ import { CtaBanner } from "@/components/shared/cta-banner";
 import { GalleryGridBlock } from "@/components/ui/gallery-grid-block-shadcnui";
 import { ServicesShowcase } from "./services-showcase";
 import { ORANGE, BLACK, WHITE } from "@/lib/constants";
+import { getPortfolioImages } from "@/lib/content";
 
 export const metadata: Metadata = {
   title: "Portfolio",
@@ -26,7 +27,8 @@ export const metadata: Metadata = {
   },
 };
 
-export default function PortfolioPage() {
+export default async function PortfolioPage() {
+  const portfolioData = await getPortfolioImages();
   return (
     <main>
       {/* Custom Hero */}
@@ -86,7 +88,7 @@ export default function PortfolioPage() {
       {/* Separator */}
       <div style={{ height: "1px", background: "#161616" }} />
 
-      <GalleryGridBlock />
+      <GalleryGridBlock data={portfolioData} />
 
       <ServicesShowcase />
 

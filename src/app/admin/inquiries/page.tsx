@@ -211,161 +211,104 @@ export default function InquiriesPage() {
         />
       </div>
 
-      {/* Table */}
+      {/* Data */}
       {loading ? (
         <p style={{ color: "rgba(255,255,255,0.4)" }}>Loading...</p>
       ) : filtered.length === 0 ? (
         <p style={{ color: "rgba(255,255,255,0.4)" }}>No inquiries found.</p>
       ) : (
-        <div className="admin-table-wrap" style={{ overflowX: "auto" }}>
-          <table
-            style={{
-              width: "100%",
-              borderCollapse: "collapse",
-              fontSize: "14px",
-            }}
-          >
-            <thead>
-              <tr>
-                {["Name", "Email", "Service", "Status", "Source", "Date", "Quick Action"].map(
-                  (h) => (
-                    <th
-                      key={h}
-                      style={{
-                        textAlign: "left",
-                        padding: "0.75rem 1rem",
-                        color: "rgba(255,255,255,0.4)",
-                        fontWeight: 500,
-                        fontSize: "12px",
-                        textTransform: "uppercase",
-                        letterSpacing: "1px",
-                        borderBottom: "1px solid #222",
-                      }}
-                    >
-                      {h}
-                    </th>
-                  )
-                )}
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map((inq) => (
-                <tr
-                  key={inq.id}
-                  onClick={() => router.push(`/admin/inquiries/${inq.id}`)}
-                  style={{
-                    cursor: "pointer",
-                    transition: "background 0.15s",
-                  }}
-                  onMouseEnter={(e) =>
-                    (e.currentTarget.style.background = "rgba(247,148,29,0.05)")
-                  }
-                  onMouseLeave={(e) =>
-                    (e.currentTarget.style.background = "transparent")
-                  }
-                >
-                  <td
-                    style={{
-                      padding: "0.75rem 1rem",
-                      color: "#fff",
-                      borderBottom: "1px solid #161616",
-                    }}
-                  >
-                    {inq.name}
-                  </td>
-                  <td
-                    style={{
-                      padding: "0.75rem 1rem",
-                      color: "rgba(255,255,255,0.5)",
-                      borderBottom: "1px solid #161616",
-                    }}
-                  >
-                    {inq.email}
-                  </td>
-                  <td
-                    style={{
-                      padding: "0.75rem 1rem",
-                      color: "rgba(255,255,255,0.5)",
-                      borderBottom: "1px solid #161616",
-                    }}
-                  >
-                    {inq.service}
-                  </td>
-                  <td
-                    style={{
-                      padding: "0.75rem 1rem",
-                      borderBottom: "1px solid #161616",
-                    }}
-                  >
-                    <span
-                      style={{
-                        display: "inline-block",
-                        padding: "0.2rem 0.6rem",
-                        borderRadius: "9999px",
-                        fontSize: "11px",
-                        fontWeight: 600,
-                        color: STATUS_COLORS[inq.status] || "#888",
-                        background: `${STATUS_COLORS[inq.status] || "#888"}20`,
-                        border: `1px solid ${STATUS_COLORS[inq.status] || "#888"}40`,
-                      }}
-                    >
-                      {inq.status}
-                    </span>
-                  </td>
-                  <td
-                    style={{
-                      padding: "0.75rem 1rem",
-                      color: "rgba(255,255,255,0.4)",
-                      borderBottom: "1px solid #161616",
-                    }}
-                  >
-                    {inq.source || "—"}
-                  </td>
-                  <td
-                    style={{
-                      padding: "0.75rem 1rem",
-                      color: "rgba(255,255,255,0.4)",
-                      borderBottom: "1px solid #161616",
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    {new Date(inq.created_at).toLocaleDateString()}
-                  </td>
-                  <td
-                    style={{
-                      padding: "0.75rem 0.5rem",
-                      borderBottom: "1px solid #161616",
-                    }}
-                  >
-                    <select
-                      value={inq.status}
-                      onClick={(e) => e.stopPropagation()}
-                      onChange={(e) => quickStatusChange(inq.id, e.target.value, e as unknown as React.MouseEvent)}
-                      style={{
-                        padding: "4px 8px",
-                        background: "#0C0C0C",
-                        border: `1px solid ${STATUS_COLORS[inq.status] || "#333"}`,
-                        borderRadius: "4px",
-                        color: STATUS_COLORS[inq.status] || "#fff",
-                        fontSize: "11px",
-                        fontWeight: 600,
-                        cursor: "pointer",
-                        outline: "none",
-                        minWidth: "100px",
-                      }}
-                    >
-                      {STATUS_LIST.map((s) => (
-                        <option key={s} value={s} style={{ color: "#fff", background: "#111" }}>
-                          {s}
-                        </option>
-                      ))}
-                    </select>
-                  </td>
+        <>
+          {/* Desktop Table */}
+          <div className="admin-desktop-only" style={{ overflowX: "auto" }}>
+            <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "14px" }}>
+              <thead>
+                <tr>
+                  {["Name", "Email", "Service", "Status", "Source", "Date", "Quick Action"].map((h) => (
+                    <th key={h} style={{ textAlign: "left", padding: "0.75rem 1rem", color: "rgba(255,255,255,0.4)", fontWeight: 500, fontSize: "12px", textTransform: "uppercase", letterSpacing: "1px", borderBottom: "1px solid #222" }}>{h}</th>
+                  ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {filtered.map((inq) => (
+                  <tr
+                    key={inq.id}
+                    onClick={() => router.push(`/admin/inquiries/${inq.id}`)}
+                    style={{ cursor: "pointer", transition: "background 0.15s" }}
+                    onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(247,148,29,0.05)")}
+                    onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+                  >
+                    <td style={{ padding: "0.75rem 1rem", color: "#fff", borderBottom: "1px solid #161616" }}>{inq.name}</td>
+                    <td style={{ padding: "0.75rem 1rem", color: "rgba(255,255,255,0.5)", borderBottom: "1px solid #161616" }}>{inq.email}</td>
+                    <td style={{ padding: "0.75rem 1rem", color: "rgba(255,255,255,0.5)", borderBottom: "1px solid #161616" }}>{inq.service}</td>
+                    <td style={{ padding: "0.75rem 1rem", borderBottom: "1px solid #161616" }}>
+                      <span style={{ display: "inline-block", padding: "0.2rem 0.6rem", borderRadius: "9999px", fontSize: "11px", fontWeight: 600, color: STATUS_COLORS[inq.status] || "#888", background: `${STATUS_COLORS[inq.status] || "#888"}20`, border: `1px solid ${STATUS_COLORS[inq.status] || "#888"}40` }}>{inq.status}</span>
+                    </td>
+                    <td style={{ padding: "0.75rem 1rem", color: "rgba(255,255,255,0.4)", borderBottom: "1px solid #161616" }}>{inq.source || "—"}</td>
+                    <td style={{ padding: "0.75rem 1rem", color: "rgba(255,255,255,0.4)", borderBottom: "1px solid #161616", whiteSpace: "nowrap" }}>{new Date(inq.created_at).toLocaleDateString()}</td>
+                    <td style={{ padding: "0.75rem 0.5rem", borderBottom: "1px solid #161616" }}>
+                      <select
+                        value={inq.status}
+                        onClick={(e) => e.stopPropagation()}
+                        onChange={(e) => quickStatusChange(inq.id, e.target.value, e as unknown as React.MouseEvent)}
+                        style={{ padding: "4px 8px", background: "#0C0C0C", border: `1px solid ${STATUS_COLORS[inq.status] || "#333"}`, borderRadius: "4px", color: STATUS_COLORS[inq.status] || "#fff", fontSize: "11px", fontWeight: 600, cursor: "pointer", outline: "none", minWidth: "100px" }}
+                      >
+                        {STATUS_LIST.map((s) => (
+                          <option key={s} value={s} style={{ color: "#fff", background: "#111" }}>{s}</option>
+                        ))}
+                      </select>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Mobile Cards */}
+          <div className="admin-mobile-only" style={{ display: "none", flexDirection: "column", gap: "0.75rem" }}>
+            {filtered.map((inq) => (
+              <div
+                key={inq.id}
+                onClick={() => router.push(`/admin/inquiries/${inq.id}`)}
+                style={{
+                  background: "#111",
+                  border: "1px solid #222",
+                  borderRadius: "4px",
+                  padding: "1rem",
+                  cursor: "pointer",
+                  transition: "border-color 0.2s",
+                }}
+              >
+                {/* Top row: Name + Status */}
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.5rem" }}>
+                  <span style={{ color: "#fff", fontWeight: 600, fontSize: "15px" }}>{inq.name}</span>
+                  <span style={{ display: "inline-block", padding: "0.2rem 0.6rem", borderRadius: "9999px", fontSize: "11px", fontWeight: 600, color: STATUS_COLORS[inq.status] || "#888", background: `${STATUS_COLORS[inq.status] || "#888"}20`, border: `1px solid ${STATUS_COLORS[inq.status] || "#888"}40` }}>{inq.status}</span>
+                </div>
+                {/* Email */}
+                <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "13px", margin: "0 0 0.25rem" }}>{inq.email}</p>
+                {/* Service */}
+                {inq.service && (
+                  <p style={{ color: "#F7941D", fontSize: "13px", margin: "0 0 0.5rem", fontWeight: 500 }}>{inq.service}</p>
+                )}
+                {/* Bottom row: Source + Date + Status dropdown */}
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingTop: "0.5rem", borderTop: "1px solid #1a1a1a" }}>
+                  <span style={{ color: "rgba(255,255,255,0.35)", fontSize: "12px" }}>
+                    {inq.source === "contact-form" ? "Contact Form" : inq.source === "floating-widget" ? "Chat Widget" : inq.source || "—"} &middot; {new Date(inq.created_at).toLocaleDateString()}
+                  </span>
+                  <select
+                    value={inq.status}
+                    onClick={(e) => e.stopPropagation()}
+                    onChange={(e) => quickStatusChange(inq.id, e.target.value, e as unknown as React.MouseEvent)}
+                    style={{ padding: "4px 8px", background: "#0C0C0C", border: `1px solid ${STATUS_COLORS[inq.status] || "#333"}`, borderRadius: "4px", color: STATUS_COLORS[inq.status] || "#fff", fontSize: "11px", fontWeight: 600, cursor: "pointer", outline: "none" }}
+                  >
+                    {STATUS_LIST.map((s) => (
+                      <option key={s} value={s} style={{ color: "#fff", background: "#111" }}>{s}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            ))}
+          </div>
+        </>
       )}
     </div>
   );

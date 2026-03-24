@@ -167,229 +167,94 @@ export default function QuotesSentPage() {
           </p>
         </div>
       ) : (
-        <div
-          className="admin-table-wrap"
-          style={{
-            background: "#111",
-            border: "1px solid #222",
-            borderRadius: "4px",
-            overflow: "auto",
-          }}
-        >
-          <table
-            style={{
-              width: "100%",
-              borderCollapse: "collapse",
-              fontSize: "14px",
-            }}
-          >
-            <thead>
-              <tr
-                style={{
-                  borderBottom: "1px solid #222",
-                  textAlign: "left",
-                }}
-              >
-                {["Quote #", "Customer", "Email", "Service", "Total", "Status", "Created", "Actions"].map(
-                  (col) => (
-                    <th
-                      key={col}
-                      style={{
-                        padding: "0.75rem 1rem",
-                        color: "rgba(255,255,255,0.4)",
-                        fontWeight: 500,
-                        fontSize: "12px",
-                        textTransform: "uppercase",
-                        letterSpacing: "1px",
-                        whiteSpace: "nowrap",
-                      }}
-                    >
-                      {col}
-                    </th>
-                  )
-                )}
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map((q) => (
-                <tr
-                  key={q.id}
-                  style={{
-                    borderBottom: "1px solid #1a1a1a",
-                    transition: "background 0.15s",
-                  }}
-                  onMouseEnter={(e) =>
-                    (e.currentTarget.style.background = "rgba(255,255,255,0.02)")
-                  }
-                  onMouseLeave={(e) =>
-                    (e.currentTarget.style.background = "transparent")
-                  }
-                >
-                  {/* Quote Number */}
-                  <td style={{ padding: "0.75rem 1rem" }}>
-                    <Link
-                      href={`/admin/inquiries/${q.inquiry_id}/quote?quote_id=${q.id}`}
-                      style={{
-                        color: "#F7941D",
-                        textDecoration: "none",
-                        fontWeight: 600,
-                      }}
-                    >
-                      {q.quote_number}
-                    </Link>
-                  </td>
-
-                  {/* Customer Name */}
-                  <td
-                    style={{
-                      padding: "0.75rem 1rem",
-                      color: "#fff",
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    {q.inquiries?.name ?? "—"}
-                  </td>
-
-                  {/* Email */}
-                  <td
-                    style={{
-                      padding: "0.75rem 1rem",
-                      color: "rgba(255,255,255,0.5)",
-                    }}
-                  >
-                    {q.inquiries?.email ?? "—"}
-                  </td>
-
-                  {/* Service */}
-                  <td
-                    style={{
-                      padding: "0.75rem 1rem",
-                      color: "rgba(255,255,255,0.5)",
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    {q.inquiries?.service ?? "—"}
-                  </td>
-
-                  {/* Total */}
-                  <td
-                    style={{
-                      padding: "0.75rem 1rem",
-                      color: "#F7941D",
-                      fontWeight: 600,
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    {formatCurrency(q.total)}
-                  </td>
-
-                  {/* Status */}
-                  <td style={{ padding: "0.75rem 1rem" }}>
-                    {q.sent_at ? (
-                      <span
-                        style={{
-                          display: "inline-block",
-                          padding: "0.2rem 0.6rem",
-                          borderRadius: "4px",
-                          background: "rgba(76,175,80,0.15)",
-                          color: "#4CAF50",
-                          fontSize: "12px",
-                          fontWeight: 600,
-                          whiteSpace: "nowrap",
-                        }}
-                      >
-                        Sent {formatDate(q.sent_at)}
-                      </span>
-                    ) : (
-                      <span
-                        style={{
-                          display: "inline-block",
-                          padding: "0.2rem 0.6rem",
-                          borderRadius: "4px",
-                          background: "rgba(255,255,255,0.06)",
-                          color: "rgba(255,255,255,0.4)",
-                          fontSize: "12px",
-                          fontWeight: 500,
-                        }}
-                      >
-                        Not Sent
-                      </span>
-                    )}
-                  </td>
-
-                  {/* Created */}
-                  <td
-                    style={{
-                      padding: "0.75rem 1rem",
-                      color: "rgba(255,255,255,0.4)",
-                      whiteSpace: "nowrap",
-                      fontSize: "13px",
-                    }}
-                  >
-                    {formatDate(q.created_at)}
-                  </td>
-
-                  {/* Actions */}
-                  <td style={{ padding: "0.75rem 1rem" }}>
-                    <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
-                      <Link
-                        href={`/admin/inquiries/${q.inquiry_id}`}
-                        style={{
-                          display: "inline-flex",
-                          alignItems: "center",
-                          gap: "0.35rem",
-                          padding: "0.35rem 0.75rem",
-                          borderRadius: "4px",
-                          border: "1px solid #222",
-                          background: "transparent",
-                          color: "rgba(255,255,255,0.6)",
-                          fontSize: "12px",
-                          textDecoration: "none",
-                          whiteSpace: "nowrap",
-                          transition: "all 0.2s",
-                        }}
-                      >
-                        <Eye size={13} />
-                        View
-                      </Link>
-                      {q.sent_at && (
-                        <button
-                          onClick={() => handleResend(q.id)}
-                          disabled={resending === q.id}
-                          style={{
-                            display: "inline-flex",
-                            alignItems: "center",
-                            gap: "0.35rem",
-                            padding: "0.35rem 0.75rem",
-                            borderRadius: "4px",
-                            border: "1px solid #F7941D",
-                            background: "rgba(247,148,29,0.1)",
-                            color: "#F7941D",
-                            fontSize: "12px",
-                            cursor: resending === q.id ? "wait" : "pointer",
-                            opacity: resending === q.id ? 0.5 : 1,
-                            whiteSpace: "nowrap",
-                            transition: "all 0.2s",
-                          }}
-                        >
-                          <RefreshCw
-                            size={13}
-                            style={
-                              resending === q.id
-                                ? { animation: "spin 1s linear infinite" }
-                                : undefined
-                            }
-                          />
-                          Resend
-                        </button>
-                      )}
-                    </div>
-                  </td>
+        <>
+          {/* Desktop Table */}
+          <div className="admin-desktop-only" style={{ background: "#111", border: "1px solid #222", borderRadius: "4px", overflow: "auto" }}>
+            <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "14px" }}>
+              <thead>
+                <tr style={{ borderBottom: "1px solid #222", textAlign: "left" }}>
+                  {["Quote #", "Customer", "Email", "Service", "Total", "Status", "Created", "Actions"].map((col) => (
+                    <th key={col} style={{ padding: "0.75rem 1rem", color: "rgba(255,255,255,0.4)", fontWeight: 500, fontSize: "12px", textTransform: "uppercase", letterSpacing: "1px", whiteSpace: "nowrap" }}>{col}</th>
+                  ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {filtered.map((q) => (
+                  <tr key={q.id} style={{ borderBottom: "1px solid #1a1a1a", transition: "background 0.15s" }} onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.02)")} onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}>
+                    <td style={{ padding: "0.75rem 1rem" }}><Link href={`/admin/inquiries/${q.inquiry_id}/quote?quote_id=${q.id}`} style={{ color: "#F7941D", textDecoration: "none", fontWeight: 600 }}>{q.quote_number}</Link></td>
+                    <td style={{ padding: "0.75rem 1rem", color: "#fff", whiteSpace: "nowrap" }}>{q.inquiries?.name ?? "—"}</td>
+                    <td style={{ padding: "0.75rem 1rem", color: "rgba(255,255,255,0.5)" }}>{q.inquiries?.email ?? "—"}</td>
+                    <td style={{ padding: "0.75rem 1rem", color: "rgba(255,255,255,0.5)", whiteSpace: "nowrap" }}>{q.inquiries?.service ?? "—"}</td>
+                    <td style={{ padding: "0.75rem 1rem", color: "#F7941D", fontWeight: 600, whiteSpace: "nowrap" }}>{formatCurrency(q.total)}</td>
+                    <td style={{ padding: "0.75rem 1rem" }}>
+                      {q.sent_at ? (
+                        <span style={{ display: "inline-block", padding: "0.2rem 0.6rem", borderRadius: "4px", background: "rgba(76,175,80,0.15)", color: "#4CAF50", fontSize: "12px", fontWeight: 600, whiteSpace: "nowrap" }}>Sent {formatDate(q.sent_at)}</span>
+                      ) : (
+                        <span style={{ display: "inline-block", padding: "0.2rem 0.6rem", borderRadius: "4px", background: "rgba(255,255,255,0.06)", color: "rgba(255,255,255,0.4)", fontSize: "12px", fontWeight: 500 }}>Not Sent</span>
+                      )}
+                    </td>
+                    <td style={{ padding: "0.75rem 1rem", color: "rgba(255,255,255,0.4)", whiteSpace: "nowrap", fontSize: "13px" }}>{formatDate(q.created_at)}</td>
+                    <td style={{ padding: "0.75rem 1rem" }}>
+                      <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
+                        <Link href={`/admin/inquiries/${q.inquiry_id}`} style={{ display: "inline-flex", alignItems: "center", gap: "0.35rem", padding: "0.35rem 0.75rem", borderRadius: "4px", border: "1px solid #222", background: "transparent", color: "rgba(255,255,255,0.6)", fontSize: "12px", textDecoration: "none", whiteSpace: "nowrap" }}><Eye size={13} />View</Link>
+                        {q.sent_at && (
+                          <button onClick={() => handleResend(q.id)} disabled={resending === q.id} style={{ display: "inline-flex", alignItems: "center", gap: "0.35rem", padding: "0.35rem 0.75rem", borderRadius: "4px", border: "1px solid #F7941D", background: "rgba(247,148,29,0.1)", color: "#F7941D", fontSize: "12px", cursor: resending === q.id ? "wait" : "pointer", opacity: resending === q.id ? 0.5 : 1, whiteSpace: "nowrap" }}>
+                            <RefreshCw size={13} style={resending === q.id ? { animation: "spin 1s linear infinite" } : undefined} />Resend
+                          </button>
+                        )}
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Mobile Cards */}
+          <div className="admin-mobile-only" style={{ display: "none", flexDirection: "column", gap: "0.75rem" }}>
+            {filtered.map((q) => (
+              <Link
+                key={q.id}
+                href={`/admin/inquiries/${q.inquiry_id}/quote?quote_id=${q.id}`}
+                style={{ textDecoration: "none" }}
+              >
+                <div style={{ background: "#111", border: "1px solid #222", borderRadius: "4px", padding: "1rem", transition: "border-color 0.2s" }}>
+                  {/* Top row: Quote # + Total */}
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.5rem" }}>
+                    <span style={{ color: "#F7941D", fontWeight: 700, fontSize: "14px" }}>{q.quote_number}</span>
+                    <span style={{ color: "#F7941D", fontWeight: 700, fontSize: "16px" }}>{formatCurrency(q.total)}</span>
+                  </div>
+                  {/* Customer */}
+                  <p style={{ color: "#fff", fontSize: "15px", fontWeight: 600, margin: "0 0 0.2rem" }}>{q.inquiries?.name ?? "—"}</p>
+                  <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "13px", margin: "0 0 0.25rem" }}>{q.inquiries?.email ?? "—"}</p>
+                  {q.inquiries?.service && (
+                    <p style={{ color: "rgba(255,255,255,0.4)", fontSize: "13px", margin: "0 0 0.5rem" }}>{q.inquiries.service}</p>
+                  )}
+                  {/* Bottom row: Status + Date + Actions */}
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingTop: "0.5rem", borderTop: "1px solid #1a1a1a" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                      {q.sent_at ? (
+                        <span style={{ padding: "0.2rem 0.6rem", borderRadius: "4px", background: "rgba(76,175,80,0.15)", color: "#4CAF50", fontSize: "11px", fontWeight: 600 }}>Sent</span>
+                      ) : (
+                        <span style={{ padding: "0.2rem 0.6rem", borderRadius: "4px", background: "rgba(255,255,255,0.06)", color: "rgba(255,255,255,0.4)", fontSize: "11px" }}>Not Sent</span>
+                      )}
+                      <span style={{ color: "rgba(255,255,255,0.3)", fontSize: "12px" }}>{formatDate(q.created_at)}</span>
+                    </div>
+                    {q.sent_at && (
+                      <button
+                        onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleResend(q.id); }}
+                        disabled={resending === q.id}
+                        style={{ display: "inline-flex", alignItems: "center", gap: "4px", padding: "4px 10px", borderRadius: "4px", border: "1px solid #F7941D", background: "rgba(247,148,29,0.1)", color: "#F7941D", fontSize: "11px", cursor: "pointer" }}
+                      >
+                        <RefreshCw size={12} style={resending === q.id ? { animation: "spin 1s linear infinite" } : undefined} />Resend
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </>
       )}
     </div>
   );

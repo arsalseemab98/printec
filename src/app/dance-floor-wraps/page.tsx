@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Section } from "@/components/shared/section";
 import { SkewedButton } from "@/components/shared/skewed-button";
 import { BeforeAfterSlider } from "@/components/ui/before-after-slider";
+import { GalleryGridBlock } from "@/components/ui/gallery-grid-block-shadcnui";
 import {
   ORANGE,
   BLACK,
@@ -463,56 +464,7 @@ export default async function DanceFloorWrapsPage() {
       </Section>
 
       {/* ── 5. GALLERY ── */}
-      <Section style={{ background: DARK1, padding: "100px 24px" }}>
-        <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
-          <div style={{ marginBottom: "60px" }}>
-            <p style={LABEL}>PORTFOLIO</p>
-            <h2 style={H2}>Recent Work</h2>
-            <hr style={SEPARATOR} />
-          </div>
-
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 320px), 1fr))",
-              gap: "16px",
-            }}
-          >
-            {[
-              { src: "/images/portfolio/floor-as-monogram.webp", alt: "A&S monogram wedding floor wrap with gold wreath design" },
-              { src: "/images/portfolio/floor-mandala-colorful.webp", alt: "Colorful mandala mehndi dance floor wrap in pink, blue and yellow" },
-              { src: "/images/portfolio/floor-mm-gold.webp", alt: "M&M gold monogram wedding dance floor wrap" },
-              { src: "/images/portfolio/floor-hz-orange.webp", alt: "H&Z orange monogram wedding floor wrap" },
-              { src: "/images/portfolio/floor-anjana-aditya.webp", alt: "Anjana & Aditya wedding dance floor with blue lighting" },
-              { src: "/images/portfolio/floor-rv-wreath.webp", alt: "R&V gold wreath monogram dance floor wrap" },
-              { src: "/images/portfolio/floor-pastel-mandala.webp", alt: "Pastel pink and purple mandala dance floor wrap" },
-              { src: "/images/portfolio/floor-red-pattern.webp", alt: "Traditional red cross-stitch pattern dance floor wrap" },
-              { src: "/images/portfolio/floor-mehndi-colorful.webp", alt: "Vibrant mehndi mandala floor wrap with chandeliers" },
-            ].map((img) => (
-              <div
-                key={img.src}
-                style={{
-                  position: "relative",
-                  aspectRatio: "4 / 3",
-                  borderRadius: "4px",
-                  overflow: "hidden",
-                  border: "1px solid #222",
-                  transition: "border-color 0.3s ease",
-                }}
-                className="card-hover"
-              >
-                <Image
-                  src={img.src}
-                  alt={img.alt}
-                  fill
-                  sizes="(max-width: 768px) 100vw, (max-width: 1100px) 50vw, 33vw"
-                  style={{ objectFit: "cover" }}
-                />
-              </div>
-            ))}
-          </div>
-        </div>
-      </Section>
+      <GalleryGridBlock category="Floor Wraps" />
 
       {/* ── 6. FAQ ── */}
       <Section style={{ background: BLACK, padding: "100px 24px" }}>

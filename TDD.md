@@ -200,6 +200,71 @@
 | Company name in emails | ✅ | "Printec Virginia LLC" (was "Printec Corp") |
 | Company name in FAB | ✅ | "Printec Virginia LLC" (was "Printec Corp") |
 
+## Catalogs — Public Pages Verification
+
+| Page | Route | Builds | Loads | SEO Meta | Status |
+|------|-------|--------|-------|----------|--------|
+| Catalogs Landing | `/catalogs` | ✅ | ✅ | ✅ | Live |
+| Channel Letters Catalog | `/catalogs/channel-letters-signage` | ✅ | ✅ | ✅ | Live (3 projects) |
+| Vehicle Wraps Catalog | `/catalogs/vehicle-wraps` | ✅ | ✅ | ✅ | Live (3 projects) |
+| Window Graphics Catalog | `/catalogs/window-storefront-graphics` | ✅ | ✅ | ✅ | Live (3 projects) |
+| Wall Wraps Catalog | `/catalogs/wall-wraps-murals` | ✅ | ✅ | ✅ | Live (3 projects) |
+| Floor Wraps Catalog | `/catalogs/dance-floor-wedding-wraps` | ✅ | ✅ | ✅ | Live (3 projects) |
+| Neon Signs Catalog | `/catalogs/neon-signs` | ✅ | ✅ | ✅ | Live (3 projects) |
+
+## Catalogs — Admin Verification
+
+| Feature | Route | Works | Notes |
+|---------|-------|-------|-------|
+| Catalog List | `/admin/catalogs` | ✅ | Create, delete, view project count |
+| Catalog Detail | `/admin/catalogs/[id]` | ✅ | Edit title/slug/desc, manage projects |
+| Add Project | `/admin/catalogs/[id]` | ✅ | Creates "Untitled Project" with auto sort_order |
+| Upload Image | `/admin/catalogs/[id]` | ✅ | Uploads to Supabase Storage, auto-saves URL |
+| Edit Specs | `/admin/catalogs/[id]` | ✅ | Add/remove label-value pairs |
+| Reorder Projects | `/admin/catalogs/[id]` | ✅ | Up/down arrows, PATCH reorder |
+| Delete Project | `/admin/catalogs/[id]` | ✅ | window.confirm, cascades |
+| Catalog Leads | `/admin/catalogs/leads` | ✅ | Filter by catalog, search, copy emails |
+| Customers | `/admin/customers` | ✅ | Unified inquiries + leads, filter/search/export |
+
+## Catalogs — Component Verification
+
+| Component | Works | Notes |
+|-----------|-------|-------|
+| EmailGate | ✅ | Real Printec logo, sessionStorage, close (X) button, lead capture |
+| CatalogViewer | ✅ | Fullscreen slideshow, keyboard/swipe/dots nav, staggered animations |
+| CatalogPage | ✅ | Gate → viewer wrapper, manages unlock state |
+| Send This Design modal | ✅ | Quick form, auto-fills category from catalog, posts to /api/contact |
+| Responsive (mobile) | ✅ | Right panel becomes bottom overlay, title shrinks |
+| 0 projects edge case | ✅ | Shows "No projects" message |
+| 1 project edge case | ✅ | Hides navigation controls |
+
+## Catalogs — Database Verification
+
+| Table | Works | Notes |
+|-------|-------|-------|
+| catalogs | ✅ | 6 catalogs seeded, slug unique index |
+| catalog_projects | ✅ | 18 projects seeded, FK cascade delete, sort_order index |
+| catalog_leads | ✅ | Captures name, email, catalog_slug |
+
+## Catalogs — API Verification
+
+| Endpoint | Method | Works | Notes |
+|----------|--------|-------|-------|
+| /api/admin/catalogs | GET | ✅ | Returns catalogs with project_count |
+| /api/admin/catalogs | POST | ✅ | Creates with title/slug validation |
+| /api/admin/catalogs/[id] | GET | ✅ | Returns catalog + sorted projects |
+| /api/admin/catalogs/[id] | PUT | ✅ | Updates title/slug/description |
+| /api/admin/catalogs/[id] | DELETE | ✅ | Cascade deletes projects |
+| /api/admin/catalogs/[id]/projects | GET | ✅ | Sorted by sort_order |
+| /api/admin/catalogs/[id]/projects | POST | ✅ | Auto sort_order (max+1) |
+| /api/admin/catalogs/[id]/projects | PATCH | ✅ | Reorder via {order: [...]} |
+| /api/admin/catalogs/[id]/projects/[pid] | PUT | ✅ | Updates all fields |
+| /api/admin/catalogs/[id]/projects/[pid] | DELETE | ✅ | Deletes project |
+| /api/catalog-leads | POST | ✅ | Public lead capture |
+| /api/catalogs/[slug] | GET | ✅ | Public, 404 if not found |
+| /api/admin/catalog-leads | GET | ✅ | Lists all leads |
+| /api/admin/customers | GET | ✅ | Merged inquiries + leads |
+
 ## Planned Tests
 - [ ] E2E: Navigation between all 32 pages
 - [ ] E2E: Contact form submission (API + Supabase)

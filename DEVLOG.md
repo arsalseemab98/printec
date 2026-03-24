@@ -463,3 +463,86 @@
 - home-page-client.tsx, footer.tsx, contact-form.tsx, floating-action-button.tsx
 - cta-banner.tsx, business-signage/page.tsx, dance-floor-wraps/page.tsx, vinyl-wraps/page.tsx
 - contract-pdf.tsx, quote-pdf.tsx, admin/page.tsx
+
+---
+
+## 2026-03-23 — Interactive Web Catalog System
+
+### What was done
+- Built complete interactive web catalog system with 6 service categories
+- Fullscreen cinematic slideshow viewer (Template #4 — dark theme, immersive)
+- Email-gated access with lead capture (per-catalog sessionStorage)
+- Admin CRUD for catalogs and projects (images, specs, reorder)
+- Unified Customers page merging inquiries + catalog leads
+- "Send This Design" inquiry modal within catalog viewer
+
+### Catalog Categories (seeded with 3 projects each)
+1. Channel Letters & Signage
+2. Vehicle & Food Truck Wraps
+3. Window & Storefront Graphics
+4. Wall Wraps & Murals
+5. Dance Floor & Wedding Wraps
+6. Neon Signs
+
+### Public Pages Created
+- `/catalogs` — Landing page with grid of 6 catalog cards
+- `/catalogs/[slug]` — Fullscreen slideshow viewer with email gate
+
+### Admin Pages Created
+- `/admin/catalogs` — Catalog list (create/delete)
+- `/admin/catalogs/[id]` — Edit catalog + manage projects (upload images, edit specs, reorder)
+- `/admin/catalogs/leads` — View captured leads (filter, search, export emails)
+- `/admin/customers` — Unified customer view (inquiries + catalog leads)
+
+### API Routes Created (7)
+- `/api/admin/catalogs` — Catalogs CRUD (GET list, POST create)
+- `/api/admin/catalogs/[id]` — Single catalog (GET, PUT, DELETE)
+- `/api/admin/catalogs/[id]/projects` — Projects CRUD + reorder (GET, POST, PATCH)
+- `/api/admin/catalogs/[id]/projects/[projectId]` — Single project (PUT, DELETE)
+- `/api/admin/catalog-leads` — Admin: list catalog leads
+- `/api/catalog-leads` — Public: capture lead email
+- `/api/catalogs/[slug]` — Public: fetch catalog by slug
+- `/api/admin/customers` — Unified customers (inquiries + leads merged)
+
+### Components Created
+- `email-gate.tsx` — Modal overlay with name/email form, sessionStorage persistence, close button
+- `catalog-viewer.tsx` — Fullscreen slideshow (keyboard, swipe, dots, progress bar, staggered animations)
+- `catalog-page.tsx` — Gate + viewer wrapper
+
+### Catalog Viewer Features
+- Fullscreen cinematic slideshow (100vh, dark theme)
+- Left: full-bleed project image with gradient overlay
+- Right: project details (counter, title, description, specs grid, CTA)
+- Staggered slide-up text animations on slide change
+- Navigation: prev/next buttons, dot indicators, keyboard arrows, touch swipe
+- Progress bar showing position
+- "Send This Design" button → quick inquiry modal (auto-fills catalog category)
+- "Get a Quote" button → links to /contact
+- Floating "Request Quote" CTA with pulse glow
+- Real Printec logo in top bar and email gate
+- Responsive: mobile-friendly bottom panel layout
+
+### Database Tables Created
+- `catalogs` — id, title, slug (unique), description, created_at
+- `catalog_projects` — id, catalog_id (FK, cascade), title, description, image_url, specs (jsonb), sort_order, created_at
+- `catalog_leads` — id, catalog_slug, name, email, created_at
+
+### Navigation Updates
+- Added "Catalogs" to navbar (between Portfolio and Blog)
+- Added "Catalogs" to footer (Company links)
+- Added "Catalogs" and "Customers" to admin sidebar
+- Updated sitemap with catalog URLs (priority 0.7-0.8)
+
+### Bug Fixes
+- Fixed catalog API returning wrong project count format
+- Fixed PDF fallback text: "PRINTEC CORP" → "PRINTEC VIRGINIA LLC" in quote-pdf.tsx and contract-pdf.tsx
+- Replaced fake "P + PRINTEC" text logos with real `/printec-logo-light.png` in catalog components
+- Removed Location specs from all seeded catalog projects
+- Added close (X) button to email gate modal
+
+### Decisions
+- Catalogs live on main domain (`/catalogs`) not a subdomain — SEO + lead flow benefits
+- Email gate is per-catalog (Option B) — tracks which catalog each lead viewed
+- Inquiry form in catalog viewer posts to existing `/api/contact` with `source: "catalog"`
+- Inline styles (no Tailwind) matching existing codebase pattern
+- 18 sample projects seeded via Supabase SQL (3 per catalog, with specs)

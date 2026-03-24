@@ -62,6 +62,9 @@ src/
 │   ├── channel-letter-signs-near-me/ # SEO landing page
 │   ├── storefront-window-graphics/   # SEO landing page
 │   ├── locations/                    # Location SEO pages (9 cities)
+│   ├── catalogs/                     # Interactive web catalogs
+│   │   ├── page.tsx                  # Public catalogs landing (grid of 6 catalogs)
+│   │   └── [slug]/page.tsx           # Fullscreen slideshow viewer + email gate
 │   ├── admin/                        # Admin portal
 │   │   ├── layout.tsx                # Admin sidebar layout
 │   │   ├── login/page.tsx            # Password login
@@ -71,6 +74,11 @@ src/
 │   │   ├── inquiries/                # CRM: inquiry list, detail, quote builder
 │   │   │   ├── page.tsx              # Inquiry list (status filter, search)
 │   │   │   └── [id]/                 # Inquiry detail + quote builder
+│   │   ├── catalogs/                 # Catalog management
+│   │   │   ├── page.tsx              # Catalog list (create/delete)
+│   │   │   ├── [id]/page.tsx         # Catalog detail (edit + manage projects)
+│   │   │   └── leads/page.tsx        # Catalog leads list (filter/search/export)
+│   │   ├── customers/page.tsx        # Unified customer list (inquiries + catalog leads)
 │   │   ├── statistics/page.tsx         # Full analytics dashboard (Recharts)
 │   │   ├── images/page.tsx            # Image manager (view, upload, delete)
 │   │   ├── contracts/                # Digital contract management
@@ -82,6 +90,8 @@ src/
 │   ├── api/
 │   │   ├── contact/route.ts          # Contact form → email + save to DB
 │   │   ├── contracts/[id]/sign/      # Public: customer signs contract
+│   │   ├── catalog-leads/route.ts    # Public: capture catalog email leads
+│   │   ├── catalogs/[slug]/route.ts  # Public: fetch catalog by slug
 │   │   └── admin/                    # Admin API routes
 │   │       ├── login/route.ts        # Password auth
 │   │       ├── logout/route.ts       # Clear session
@@ -90,6 +100,9 @@ src/
 │   │       ├── blog/                 # Blog posts CRUD
 │   │       ├── inquiries/            # Inquiries CRUD
 │   │       ├── images/route.ts       # Image list, upload, delete (Supabase Storage)
+│   │       ├── catalogs/             # Catalogs + projects CRUD + reorder
+│   │       ├── catalog-leads/        # Admin: list catalog leads
+│   │       ├── customers/            # Unified customers API (inquiries + leads)
 │   │       ├── contracts/            # Contracts CRUD + send signing link
 │   │       └── quotes/              # Quotes CRUD + send PDF
 │   ├── sitemap.ts                    # Auto-generated sitemap
@@ -108,6 +121,10 @@ src/
 │   │   ├── tape-strip.tsx            # Spectrum gradient strip (homepage only)
 │   │   ├── contact-form.tsx          # Contact form → /api/contact (email + UTM)
 │   │   └── floating-action-button.tsx # Chat modal → /api/contact (with service dropdown)
+│   ├── catalogs/
+│   │   ├── email-gate.tsx            # Email gate overlay (name+email to unlock)
+│   │   ├── catalog-viewer.tsx        # Fullscreen cinematic slideshow viewer
+│   │   └── catalog-page.tsx          # Gate + viewer wrapper (manages unlock state)
 │   ├── admin/
 │   │   └── tiptap-editor.tsx         # WYSIWYG editor for blog posts
 │   └── ui/
@@ -204,6 +221,12 @@ npx next build             # Production build
   - Public signing page at /sign/[id] (customer draws signature on canvas)
   - Signed PDF emailed to both parties after signing
   - Create contracts from inquiries (auto-fills client details)
+  - **Catalogs**: Create/edit/delete portfolio catalogs, manage projects (images, specs, reorder), view leads
+  - **Customers**: Unified view of all inquiries + catalog leads with filter/search/export
+  - Interactive web catalogs: 6 categories (channel letters, vehicle wraps, window graphics, wall wraps, floor wraps, neon signs)
+  - Email-gated catalog viewer (fullscreen cinematic slideshow)
+  - "Send This Design" inquiry form within catalog viewer (auto-fills service category)
+  - Catalog leads saved to catalog_leads table with slug tracking
 
 ## Email Integration
 - **Provider**: Microsoft Graph API (Azure AD app)
@@ -221,6 +244,9 @@ npx next build             # Production build
 - `inquiries` — name, email, phone, service, status, booked_price, completed_price, utm_*
 - `quotes` — inquiry_id, quote_number (PQ-001), items (jsonb), total, sent_at
 - `contracts` — inquiry_id (nullable), contract_number (PC-001), event_date, venue, service_description, total_price, advance_amount, balance_amount, balance_due, travel_cost, client_name, client_email, terms (jsonb), signature_data, signed_at, sent_at, status (Pending/Sent/Signed/Completed/Cancelled), completed_at
+- `catalogs` — id (uuid), title, slug (unique), description, created_at
+- `catalog_projects` — id (uuid), catalog_id (FK→catalogs, cascade delete), title, description, image_url, specs (jsonb array of {label,value}), sort_order, created_at
+- `catalog_leads` — id (uuid), catalog_slug, name, email, created_at
 
 ## Environment Variables
 - `NEXT_PUBLIC_SUPABASE_URL` — Supabase project URL

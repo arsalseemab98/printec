@@ -206,7 +206,7 @@ export default function AdminDashboard() {
   return (
     <div>
       {/* Header */}
-      <div style={{ marginBottom: "2rem", display: "flex", alignItems: "flex-end", justifyContent: "space-between" }}>
+      <div className="admin-header-row" style={{ marginBottom: "2rem", display: "flex", alignItems: "flex-end", justifyContent: "space-between" }}>
         <div>
           <p
             style={{
@@ -260,6 +260,7 @@ export default function AdminDashboard() {
 
       {/* Date Filter Bar */}
       <div
+        className="admin-filter-bar"
         style={{
           display: "flex",
           alignItems: "center",
@@ -360,6 +361,7 @@ export default function AdminDashboard() {
 
       {/* Sales Metrics */}
       <div
+        className="admin-grid-4"
         style={{
           display: "grid",
           gridTemplateColumns: "repeat(4, 1fr)",
@@ -410,6 +412,7 @@ export default function AdminDashboard() {
 
       {/* Overview Cards */}
       <div
+        className="admin-grid-3"
         style={{
           display: "grid",
           gridTemplateColumns: "repeat(3, 1fr)",
@@ -516,7 +519,7 @@ export default function AdminDashboard() {
         <h2 style={{ fontSize: "20px", fontWeight: 700, color: "#fff", marginBottom: "1rem" }}>
           Quick Links
         </h2>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "0.75rem" }}>
+        <div className="admin-grid-3" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "0.75rem" }}>
           {PAGES.map((page) => (
             <Link
               key={page.href}

@@ -489,3 +489,95 @@
 .admin-light main [style*="background:#F7941D"],
 .admin-light main button[style*="background: #F7941D"],
 .admin-light main button[style*="background:#F7941D"] { background: #F7941D !important; color: #fff !important; }
+
+/* ═══════ ADMIN MOBILE RESPONSIVE ═══════ */
+@media (max-width: 768px) {
+  /* Grids collapse to fewer columns */
+  .admin-grid-6 { grid-template-columns: repeat(2, 1fr) !important; gap: 0.75rem !important; }
+  .admin-grid-4 { grid-template-columns: repeat(2, 1fr) !important; gap: 0.75rem !important; }
+  .admin-grid-3 { grid-template-columns: 1fr !important; gap: 0.75rem !important; }
+  .admin-grid-2 { grid-template-columns: 1fr !important; gap: 0.75rem !important; }
+
+  /* Flex header wraps */
+  .admin-header-row {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 12px !important;
+  }
+
+  /* Filter bar wraps */
+  .admin-filter-bar {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+    padding: 12px !important;
+  }
+  .admin-filter-bar > div {
+    justify-content: center !important;
+    flex-wrap: wrap !important;
+  }
+
+  /* Filter tabs scroll */
+  .admin-filter-tabs {
+    flex-wrap: wrap !important;
+    gap: 4px !important;
+  }
+  .admin-filter-tabs button {
+    padding: 5px 10px !important;
+    font-size: 11px !important;
+  }
+
+  /* Tables scroll horizontally */
+  .admin-table-wrap {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+  .admin-table-wrap table {
+    min-width: 600px;
+  }
+
+  /* Blog grid collapses */
+  .admin-blog-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .admin-blog-row {
+    grid-template-columns: 1fr !important;
+    gap: 4px !important;
+  }
+
+  /* Form 2-column collapses */
+  .admin-form-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Stats top bar summary */
+  .admin-stats-summary {
+    flex-wrap: wrap !important;
+    gap: 12px !important;
+  }
+  .admin-stats-summary > div {
+    text-align: left !important;
+  }
+
+  /* Reduce chart heights */
+  .admin-chart-card .recharts-responsive-container {
+    min-height: 200px;
+  }
+
+  /* Main content padding */
+  main {
+    padding: 1rem !important;
+  }
+
+  /* KPI card text size */
+  .admin-grid-6 p[style*="font-size: 24px"],
+  .admin-grid-4 p[style*="font-size: 28px"] {
+    font-size: 20px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-grid-6 { grid-template-columns: 1fr 1fr !important; }
+  .admin-grid-4 { grid-template-columns: 1fr !important; }
+  .admin-grid-3 { grid-template-columns: 1fr !important; }
+}

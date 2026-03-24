@@ -52,6 +52,7 @@ export default function BlogListPage() {
     <div>
       {/* Header */}
       <div
+        className="admin-header-row"
         style={{
           display: "flex",
           justifyContent: "space-between",
@@ -160,6 +161,7 @@ export default function BlogListPage() {
         >
           {/* Table header */}
           <div
+            className="admin-blog-row"
             style={{
               display: "grid",
               gridTemplateColumns: "1fr 140px 110px 130px 90px",
@@ -184,6 +186,7 @@ export default function BlogListPage() {
           {posts.map((post) => (
             <div
               key={post.id}
+              className="admin-blog-row"
               style={{
                 display: "grid",
                 gridTemplateColumns: "1fr 140px 110px 130px 90px",

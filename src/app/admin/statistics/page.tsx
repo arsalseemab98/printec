@@ -442,7 +442,7 @@ export default function StatisticsPage() {
   return (
     <div>
       {/* Header + Sales Summary Bar */}
-      <div style={{ marginBottom: "1.5rem", display: "flex", alignItems: "flex-end", justifyContent: "space-between" }}>
+      <div className="admin-header-row" style={{ marginBottom: "1.5rem", display: "flex", alignItems: "flex-end", justifyContent: "space-between" }}>
         <div>
           <p style={{ fontSize: "10px", textTransform: "uppercase", letterSpacing: "4px", color: ORANGE, fontWeight: 500, marginBottom: "0.5rem" }}>
             Admin
@@ -452,7 +452,7 @@ export default function StatisticsPage() {
           </h1>
         </div>
         {/* Top bar sales summary */}
-        <div style={{ display: "flex", alignItems: "center", gap: "24px" }}>
+        <div className="admin-stats-summary" style={{ display: "flex", alignItems: "center", gap: "24px" }}>
           {[
             { label: "Pipeline", value: `$${kpis.bookedPipeline.toLocaleString()}`, color: "#22c55e" },
             { label: "Revenue", value: `$${kpis.completedRevenue.toLocaleString()}`, color: ORANGE },
@@ -468,7 +468,7 @@ export default function StatisticsPage() {
       </div>
 
       {/* Date Filter Bar */}
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", background: "#111", border: "1px solid #222", borderRadius: "4px", padding: "12px 20px", marginBottom: "1.5rem" }}>
+      <div className="admin-filter-bar" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", background: "#111", border: "1px solid #222", borderRadius: "4px", padding: "12px 20px", marginBottom: "1.5rem" }}>
         <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
           <Calendar size={16} color={ORANGE} />
           <span style={{ fontSize: "13px", color: "rgba(255,255,255,0.5)", letterSpacing: "1px", textTransform: "uppercase" }}>Period</span>
@@ -516,7 +516,7 @@ export default function StatisticsPage() {
       </div>
 
       {/* KPI Cards */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: "1rem", marginBottom: "2rem" }}>
+      <div className="admin-grid-6" style={{ display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: "1rem", marginBottom: "2rem" }}>
         {[
           { icon: Inbox, label: "Total Inquiries", value: kpis.total, color: "#3b82f6" },
           { icon: Users, label: "New Inquiries", value: kpis.newCount, color: "#22c55e" },
@@ -536,7 +536,7 @@ export default function StatisticsPage() {
       {/* ═══════ INQUIRY ANALYTICS ═══════ */}
       <p style={SECTION_TITLE}>Inquiry Analytics</p>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.25rem", marginBottom: "1.25rem" }}>
+      <div className="admin-grid-2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.25rem", marginBottom: "1.25rem" }}>
         {/* Inquiries Over Time */}
         <div style={CARD}>
           <p style={CARD_TITLE}>Inquiries Over Time</p>
@@ -570,7 +570,7 @@ export default function StatisticsPage() {
         </div>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.25rem", marginBottom: "1.25rem" }}>
+      <div className="admin-grid-2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.25rem", marginBottom: "1.25rem" }}>
         {/* Conversion Funnel */}
         <div style={CARD}>
           <p style={CARD_TITLE}>Conversion Funnel</p>
@@ -612,7 +612,7 @@ export default function StatisticsPage() {
       {/* ═══════ REVENUE ANALYTICS ═══════ */}
       <p style={SECTION_TITLE}>Revenue Analytics</p>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.25rem", marginBottom: "1.25rem" }}>
+      <div className="admin-grid-2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.25rem", marginBottom: "1.25rem" }}>
         {/* Revenue Over Time */}
         <div style={CARD}>
           <p style={CARD_TITLE}>Revenue Over Time</p>
@@ -658,7 +658,7 @@ export default function StatisticsPage() {
         </div>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.25rem", marginBottom: "1.25rem" }}>
+      <div className="admin-grid-2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.25rem", marginBottom: "1.25rem" }}>
         {/* Avg Deal Size */}
         <div style={CARD}>
           <p style={CARD_TITLE}>Average Deal Size Over Time</p>
@@ -697,7 +697,7 @@ export default function StatisticsPage() {
       {/* ═══════ TRAFFIC & FORM ANALYTICS ═══════ */}
       <p style={SECTION_TITLE}>Traffic & Form Analytics</p>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.25rem", marginBottom: "1.25rem" }}>
+      <div className="admin-grid-2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.25rem", marginBottom: "1.25rem" }}>
         {/* Top Pages */}
         <div style={CARD}>
           <p style={CARD_TITLE}>Top Pages Generating Inquiries</p>
@@ -736,7 +736,7 @@ export default function StatisticsPage() {
         </div>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.25rem", marginBottom: "1.25rem" }}>
+      <div className="admin-grid-2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.25rem", marginBottom: "1.25rem" }}>
         {/* Submissions by Hour */}
         <div style={CARD}>
           <p style={CARD_TITLE}>Submissions by Hour of Day</p>
@@ -775,6 +775,7 @@ export default function StatisticsPage() {
       <div style={CARD}>
         <p style={CARD_TITLE}>UTM Campaign Breakdown</p>
         {utmBreakdown.length > 0 ? (
+          <div className="admin-table-wrap">
           <table style={{ width: "100%", borderCollapse: "collapse" }}>
             <thead>
               <tr>
@@ -796,6 +797,7 @@ export default function StatisticsPage() {
               ))}
             </tbody>
           </table>
+          </div>
         ) : (
           <p style={{ color: "rgba(255,255,255,0.3)", fontSize: "13px", textAlign: "center", padding: "2rem 0" }}>
             No UTM data yet. Inquiries from campaigns with UTM parameters will appear here.

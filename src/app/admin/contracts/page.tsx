@@ -197,6 +197,7 @@ export default function ContractsPage() {
     <div>
       {/* Header */}
       <div
+        className="admin-header-row"
         style={{
           display: "flex",
           alignItems: "center",
@@ -252,10 +253,12 @@ export default function ContractsPage() {
 
       {/* Filter Tabs */}
       <div
+        className="admin-filter-tabs"
         style={{
           display: "flex",
           gap: "0.5rem",
           marginBottom: "1.5rem",
+          flexWrap: "wrap",
         }}
       >
         {tabs.map((tab) => (
@@ -346,6 +349,7 @@ export default function ContractsPage() {
         </div>
       ) : (
         <div
+          className="admin-table-wrap"
           style={{
             background: "#111",
             border: "1px solid #222",

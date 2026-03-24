@@ -30,7 +30,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ];
 
   const servicePages = [
-    "/vinyl-wraps",
     "/business-signage",
     "/dance-floor-wraps",
     "/wall-wraps",

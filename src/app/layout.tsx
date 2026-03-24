@@ -124,7 +124,7 @@ export default function RootLayout({
                   { "@type": "Offer", itemOffered: { "@type": "Service", name: "Window Wraps & Graphics" } },
                   { "@type": "Offer", itemOffered: { "@type": "Service", name: "Wall Wraps & Murals" } },
                   { "@type": "Offer", itemOffered: { "@type": "Service", name: "Dance Floor Wraps" } },
-                  { "@type": "Offer", itemOffered: { "@type": "Service", name: "Vinyl Wraps" } },
+                  { "@type": "Offer", itemOffered: { "@type": "Service", name: "Food Truck Wraps" } },
                 ],
               },
             }),

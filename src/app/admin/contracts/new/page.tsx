@@ -186,6 +186,7 @@ function NewContractPage() {
 
       <form onSubmit={handleSubmit}>
         <div
+          className="admin-form-grid"
           style={{
             display: "grid",
             gridTemplateColumns: "1fr 1fr",

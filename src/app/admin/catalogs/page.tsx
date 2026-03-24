@@ -149,6 +149,7 @@ export default function CatalogsListPage() {
 
       {/* Header */}
       <div
+        className="admin-header-row"
         style={{
           display: "flex",
           justifyContent: "space-between",
@@ -354,6 +355,7 @@ export default function CatalogsListPage() {
         >
           {/* Table header */}
           <div
+            className="admin-blog-row"
             style={{
               display: "grid",
               gridTemplateColumns: "1fr 150px 100px 130px 140px",
@@ -378,6 +380,7 @@ export default function CatalogsListPage() {
           {catalogs.map((catalog) => (
             <div
               key={catalog.id}
+              className="admin-blog-row"
               style={{
                 display: "grid",
                 gridTemplateColumns: "1fr 150px 100px 130px 140px",

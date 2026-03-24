@@ -366,7 +366,7 @@ export default function CustomersPage() {
           </p>
         </div>
       ) : (
-        <div style={{ overflowX: "auto" }}>
+        <div className="admin-table-wrap" style={{ overflowX: "auto" }}>
           <table
             style={{
               width: "100%",

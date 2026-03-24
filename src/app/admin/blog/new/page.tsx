@@ -199,7 +199,7 @@ export default function NewBlogPostPage() {
         </div>
 
         {/* Category + Read Time row */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+        <div className="admin-form-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
           <div>
             <label style={labelStyle}>Category</label>
             <select

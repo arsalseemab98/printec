@@ -419,6 +419,7 @@ export default function QuoteBuilderPage({
       )}
 
       <div
+        className="admin-grid-2"
         style={{
           display: "grid",
           gridTemplateColumns: "1fr 340px",

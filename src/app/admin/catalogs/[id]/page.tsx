@@ -678,6 +678,7 @@ export default function CatalogDetailPage() {
                 }}
               >
                 <div
+                  className="admin-grid-2"
                   style={{
                     display: "grid",
                     gridTemplateColumns: "280px 1fr",

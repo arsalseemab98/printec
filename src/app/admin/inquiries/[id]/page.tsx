@@ -251,6 +251,7 @@ export default function InquiryDetailPage({
 
       {/* Two columns */}
       <div
+        className="admin-grid-2"
         style={{
           display: "grid",
           gridTemplateColumns: "1fr 1fr",

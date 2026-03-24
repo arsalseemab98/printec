@@ -20,6 +20,7 @@ import {
   Menu,
   X,
   MessageSquare,
+  Megaphone,
 } from "lucide-react";
 
 const NAV_ITEMS = [
@@ -33,6 +34,7 @@ const NAV_ITEMS = [
   { label: "Contracts", href: "/admin/contracts", icon: FileSignature },
   { label: "Blog", href: "/admin/blog", icon: FileText },
   { label: "Catalogs", href: "/admin/catalogs", icon: BookOpen },
+  { label: "Promos", href: "/admin/promos", icon: Megaphone },
 ];
 
 const BOTTOM_TAB_ITEMS = [

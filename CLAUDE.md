@@ -229,7 +229,9 @@ npx next build             # Production build
   - Email-gated catalog viewer (fullscreen cinematic slideshow)
   - "Send This Design" inquiry form within catalog viewer (auto-fills service category)
   - Catalog leads saved to catalog_leads table with slug tracking
-  - **Fully mobile responsive** — all admin pages work on phone/tablet (responsive grids, horizontal scroll tables, collapsing layouts)
+  - **Fully mobile responsive** — all admin pages work on phone/tablet (responsive grids, collapsing layouts)
+  - **Inquiries & Quotes**: card layout on mobile (no horizontal scroll), full table on desktop (admin-desktop-only / admin-mobile-only CSS toggle)
+  - **Auto-refresh**: browser auto-reloads when new deploy goes live (polls /api/version every 30s)
 
 ## Email Integration
 - **Provider**: Microsoft Graph API (Azure AD app)

@@ -44,6 +44,7 @@
 | Component | Works | Notes |
 |-----------|-------|-------|
 | Navbar | ✅ | Desktop + mobile, services dropdown (8 items), active links |
+| PromoBar | ✅ | Orange slider below navbar, auto-rotate 4s, fade transitions, hover pause, close (X), session dismiss |
 | Footer | ✅ | 4 columns, social links, responsive |
 | FloatingActionButton | ✅ | Chat modal with form + 11 services dropdown + worker photo, submits to /api/contact |
 | SkewedButton (neon) | ✅ | Pulse animation, hover states |
@@ -78,6 +79,7 @@
 | Contract Detail | `/admin/contracts/[id]` | ✅ | View, edit, send link, copy link, download PDF, status dropdown |
 | Public Signing | `/sign/[id]` | ✅ | Customer draws signature on canvas, no auth |
 | Statistics | `/admin/statistics` | ✅ | 13 charts (Recharts), date filter, KPI cards |
+| Promos | `/admin/promos` | ✅ | Create/edit/delete/toggle/reorder promo slides |
 | Proxy Auth | `proxy.ts` | ✅ | Protects /admin/* except /admin/login, /sign/* is public |
 
 ## Contract — Verification

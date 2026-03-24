@@ -606,3 +606,43 @@
 - CSS class approach (not inline media queries) — cleaner, reusable across pages
 - Tables use horizontal scroll rather than hiding columns — preserves all data
 - 768px breakpoint for tablet, 480px for small phone
+
+---
+
+## 2026-03-24 — Promotional Slider Bar
+
+### What was done
+- Built promotional slider bar below navbar for special offers
+- Orange bar (#F7941D bg, black text, 38px height) auto-rotates every 4 seconds
+- Fade transitions between slides, pauses on hover
+- Clickable slides link to any page (service pages, contact, catalogs)
+- Close (X) button hides bar for the session (sessionStorage)
+- Admin management page at /admin/promos
+- Added "Promos" to admin sidebar with Megaphone icon
+
+### Admin Features
+- Create/edit/delete promo slides
+- Toggle active/inactive per slide (green=active, gray=inactive)
+- Reorder with up/down arrows
+- Set text + link URL per slide
+- Only active slides shown on public site
+
+### Database
+- New `promo_slides` table: id, text, link, active (boolean), sort_order, created_at
+- 3 sample offers seeded
+
+### Files Created
+- `src/components/layout/promo-bar.tsx` — Client component, auto-rotating slider
+- `src/app/admin/promos/page.tsx` — Admin management page
+- `src/app/api/promo-slides/route.ts` — Public: fetch active slides
+- `src/app/api/admin/promo-slides/route.ts` — Admin: list all + create
+- `src/app/api/admin/promo-slides/[id]/route.ts` — Admin: update + delete
+
+### Files Modified
+- `src/components/layout/site-shell.tsx` — Renders PromoBar after Navbar
+- `src/app/admin/layout.tsx` — Added Promos nav item
+
+### Decisions
+- Orange background (brand color) makes the bar stand out without clashing
+- Session-based dismissal (not permanent) — bar returns on next visit
+- Auto-rotate with hover pause — non-intrusive but visible

@@ -79,6 +79,7 @@ src/
 │   │   │   ├── [id]/page.tsx         # Catalog detail (edit + manage projects)
 │   │   │   └── leads/page.tsx        # Catalog leads list (filter/search/export)
 │   │   ├── customers/page.tsx        # Unified customer list (inquiries + catalog leads)
+│   │   ├── promos/page.tsx           # Promo slider management (create/edit/toggle/reorder)
 │   │   ├── statistics/page.tsx         # Full analytics dashboard (Recharts)
 │   │   ├── images/page.tsx            # Image manager (view, upload, delete)
 │   │   ├── contracts/                # Digital contract management
@@ -103,16 +104,19 @@ src/
 │   │       ├── catalogs/             # Catalogs + projects CRUD + reorder
 │   │       ├── catalog-leads/        # Admin: list catalog leads
 │   │       ├── customers/            # Unified customers API (inquiries + leads)
+│   │       ├── promo-slides/         # Promo slides CRUD + toggle active
 │   │       ├── contracts/            # Contracts CRUD + send signing link
 │   │       └── quotes/              # Quotes CRUD + send PDF
+│   ├── api/promo-slides/route.ts     # Public: fetch active promo slides
 │   ├── sitemap.ts                    # Auto-generated sitemap
 │   ├── robots.ts                     # Robots.txt
 │   └── globals.css                   # Global styles + CSS animations
 ├── components/
 │   ├── layout/
 │   │   ├── navbar.tsx                # Site-wide nav with services dropdown
+│   │   ├── promo-bar.tsx             # Orange promo slider bar (below navbar, auto-rotating offers)
 │   │   ├── footer.tsx                # 5-column footer (Company, Services, Locations, Connect, Hours)
-│   │   └── site-shell.tsx            # Hides nav/footer on /admin routes
+│   │   └── site-shell.tsx            # Wraps Navbar + PromoBar + Footer (hides on /admin)
 │   ├── shared/
 │   │   ├── section.tsx               # IntersectionObserver reveal wrapper
 │   │   ├── page-hero.tsx             # Reusable inner-page hero
@@ -229,6 +233,7 @@ npx next build             # Production build
   - Email-gated catalog viewer (fullscreen cinematic slideshow)
   - "Send This Design" inquiry form within catalog viewer (auto-fills service category)
   - Catalog leads saved to catalog_leads table with slug tracking
+  - **Promos**: Promotional slider bar below navbar with auto-rotating offers, admin CRUD at /admin/promos (create/edit/toggle active/reorder/delete)
   - **Fully mobile responsive** — all admin pages work on phone/tablet (responsive grids, collapsing layouts)
   - **Inquiries & Quotes**: card layout on mobile (no horizontal scroll), full table on desktop (admin-desktop-only / admin-mobile-only CSS toggle)
   - **Auto-refresh**: browser auto-reloads when new deploy goes live (polls /api/version every 30s)
@@ -252,6 +257,7 @@ npx next build             # Production build
 - `catalogs` — id (uuid), title, slug (unique), description, created_at
 - `catalog_projects` — id (uuid), catalog_id (FK→catalogs, cascade delete), title, description, image_url, specs (jsonb array of {label,value}), sort_order, created_at
 - `catalog_leads` — id (uuid), catalog_slug, name, email, created_at
+- `promo_slides` — id (uuid), text, link, active (boolean), sort_order, created_at
 
 ## Environment Variables
 - `NEXT_PUBLIC_SUPABASE_URL` — Supabase project URL

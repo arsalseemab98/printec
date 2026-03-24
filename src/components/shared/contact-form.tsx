@@ -3,7 +3,7 @@
 import { useState, FormEvent } from "react";
 import { ORANGE, BLACK, WHITE, DARK1, DARK2 } from "@/lib/constants";
 import { Section } from "@/components/shared/section";
-import { Phone, Mail, MessageCircle, MapPin, Clock, User, Send, Map, Instagram, Facebook } from "lucide-react";
+import { Phone, Mail, MessageCircle, MapPin, Clock, User, Send, Instagram, Facebook } from "lucide-react";
 
 const BUDGET_OPTIONS = [
   "Under $500",
@@ -217,7 +217,7 @@ export function ContactForm() {
               <div>
                 <div style={INFO_LABEL_STYLE}>ADDRESS</div>
                 <div style={INFO_VALUE_STYLE}>
-                  Woodbridge, VA 22191
+                  Virginia, USA
                 </div>
               </div>
             </div>
@@ -611,133 +611,6 @@ export function ContactForm() {
         `}</style>
       </Section>
 
-      {/* ── Map Placeholder Section ── */}
-      <Section
-        style={{
-          background: BLACK,
-          padding: "0 24px 80px",
-        }}
-      >
-        <div
-          style={{
-            maxWidth: "1200px",
-            margin: "0 auto",
-          }}
-        >
-          <div
-            style={{
-              background: DARK2,
-              border: `2px solid ${DARK1}`,
-              minHeight: "360px",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              padding: "40px 24px",
-              position: "relative",
-              overflow: "hidden",
-            }}
-          >
-            {/* Grid pattern overlay */}
-            <div
-              style={{
-                position: "absolute",
-                inset: 0,
-                backgroundImage: `
-                  linear-gradient(${DARK1}66 1px, transparent 1px),
-                  linear-gradient(90deg, ${DARK1}66 1px, transparent 1px)
-                `,
-                backgroundSize: "40px 40px",
-                pointerEvents: "none",
-              }}
-            />
-
-            {/* Map pin icon */}
-            <div
-              style={{
-                position: "relative",
-                zIndex: 1,
-                width: "64px",
-                height: "64px",
-                background: ORANGE,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                borderRadius: "4px",
-                marginBottom: "24px",
-              }}
-            >
-              <Map size={28} color={BLACK} strokeWidth={2.5} />
-            </div>
-
-            <h3
-              style={{
-                position: "relative",
-                zIndex: 1,
-                fontFamily: "'Arial Black', 'Impact', sans-serif",
-                fontWeight: 900,
-                fontSize: "18px",
-                letterSpacing: "2px",
-                textTransform: "uppercase",
-                color: WHITE,
-                margin: "0 0 8px 0",
-                textAlign: "center",
-              }}
-            >
-              1234 COMMERCE DRIVE
-            </h3>
-            <p
-              style={{
-                position: "relative",
-                zIndex: 1,
-                fontFamily: "Arial, sans-serif",
-                fontSize: "14px",
-                color: `${WHITE}88`,
-                letterSpacing: "1px",
-                margin: "0 0 24px 0",
-                textAlign: "center",
-              }}
-            >
-              Woodbridge, VA 22191
-            </p>
-
-            <a
-              href="https://www.google.com/maps/search/1234+Commerce+Drive+Virginia+Beach+VA+23456"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                position: "relative",
-                zIndex: 1,
-                display: "inline-block",
-                padding: "12px 28px",
-                background: "transparent",
-                border: `2px solid ${ORANGE}`,
-                color: ORANGE,
-                fontFamily: "'Arial Black', 'Impact', sans-serif",
-                fontWeight: 900,
-                fontSize: "12px",
-                letterSpacing: "2px",
-                textTransform: "uppercase",
-                textDecoration: "none",
-                borderRadius: "4px",
-                transition: "all 0.2s ease",
-              }}
-            >
-              <span style={{ display: "inline-block", transform: "skewX(4deg)" }}>
-                VIEW ON GOOGLE MAPS
-              </span>
-            </a>
-          </div>
-
-          {/* Separator under map */}
-          <div
-            style={{
-              height: "1px",
-              background: "#161616",
-            }}
-          />
-        </div>
-      </Section>
     </>
   );
 }

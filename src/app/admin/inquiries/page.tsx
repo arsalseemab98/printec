@@ -216,7 +216,7 @@ export default function InquiriesPage() {
       ) : filtered.length === 0 ? (
         <p style={{ color: "rgba(255,255,255,0.4)" }}>No inquiries found.</p>
       ) : (
-        <div style={{ overflowX: "auto" }}>
+        <div className="admin-table-wrap" style={{ overflowX: "auto" }}>
           <table
             style={{
               width: "100%",

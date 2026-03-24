@@ -166,6 +166,7 @@ export default function QuotesSentPage() {
         </div>
       ) : (
         <div
+          className="admin-table-wrap"
           style={{
             background: "#111",
             border: "1px solid #222",

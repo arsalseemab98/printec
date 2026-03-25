@@ -81,12 +81,12 @@ const SOLUTIONS = [
 ];
 
 const INDUSTRIES = [
-  { name: "Restaurants", desc: "Menu highlights, daily specials, and mouth-watering food photography on your front windows.", icon: UtensilsCrossed, img: "Restaurant Window" },
-  { name: "Retail", desc: "Sale promotions, brand imagery, and product showcases that draw shoppers through your door.", icon: Store, img: "Retail Storefront" },
-  { name: "Salons & Spas", desc: "Elegant frosted films and service menus that create an inviting, premium atmosphere.", icon: Scissors, img: "Salon Window" },
-  { name: "Real Estate", desc: "Property listings, agent branding, and office privacy films for professional offices.", icon: Home, img: "Real Estate Office" },
-  { name: "Medical & Dental", desc: "Privacy films, service lists, and professional branding that build patient trust.", icon: Stethoscope, img: "Medical Office" },
-  { name: "Fitness & Gyms", desc: "Motivational graphics, class schedules, and high-energy brand imagery that energize your space.", icon: Dumbbell, img: "Gym Window" },
+  { name: "Restaurants", desc: "Menu highlights, daily specials, and mouth-watering food photography on your front windows.", icon: UtensilsCrossed, img: "/images/industry-restaurant.webp" },
+  { name: "Retail", desc: "Sale promotions, brand imagery, and product showcases that draw shoppers through your door.", icon: Store, img: "/images/industry-retail.webp" },
+  { name: "Salons & Spas", desc: "Elegant frosted films and service menus that create an inviting, premium atmosphere.", icon: Scissors, img: null },
+  { name: "Real Estate", desc: "Property listings, agent branding, and office privacy films for professional offices.", icon: Home, img: "/images/industry-realestate.webp" },
+  { name: "Medical & Dental", desc: "Privacy films, service lists, and professional branding that build patient trust.", icon: Stethoscope, img: "/images/industry-medical.webp" },
+  { name: "Fitness & Gyms", desc: "Motivational graphics, class schedules, and high-energy brand imagery that energize your space.", icon: Dumbbell, img: "/images/industry-gym.webp" },
 ];
 
 const BEFORE_AFTER = [
@@ -367,18 +367,23 @@ export default function StorefrontWindowGraphicsPage() {
                       aspectRatio: "16/9",
                       background: `linear-gradient(135deg, #111, ${DARK1})`,
                       borderRadius: "4px",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      fontSize: "11px",
-                      letterSpacing: "2px",
-                      textTransform: "uppercase",
-                      color: `${WHITE}44`,
-                      fontFamily: "Arial, sans-serif",
+                      overflow: "hidden",
+                      position: "relative",
                       marginBottom: "20px",
                     }}
                   >
-                    {ind.img}
+                    {ind.img ? (
+                      <img
+                        src={ind.img}
+                        alt={`${ind.name} window graphics`}
+                        style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                        loading="lazy"
+                      />
+                    ) : (
+                      <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "11px", letterSpacing: "2px", textTransform: "uppercase", color: `${WHITE}44`, fontFamily: "Arial, sans-serif" }}>
+                        {ind.name}
+                      </div>
+                    )}
                   </div>
 
                   <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "10px" }}>

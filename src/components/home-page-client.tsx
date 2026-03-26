@@ -8,6 +8,7 @@ import { EtheralShadow } from "@/components/ui/etheral-shadow";
 import { SkewedButton } from "@/components/shared/skewed-button";
 import { ContainerTextFlip } from "@/components/ui/container-text-flip";
 import { PORTFOLIO_CATEGORIES, PORTFOLIO_IMAGES as PORTFOLIO } from "@/lib/constants";
+import { trackEvent } from "@/lib/gtag";
 
 /* ─── BRAND CONSTANTS (matching Printec logo spectrum) ─── */
 const ORANGE = "#F7941D";
@@ -253,14 +254,14 @@ function CtaSectionAnimated() {
           animate={visible ? { opacity: 1, y: 0 } : {}}
           transition={{ delay: 0.7, duration: 0.3 }}
         >
-          <SkewedButton href="/contact">START YOUR PROJECT</SkewedButton>
+          <SkewedButton href="/contact" onClick={() => trackEvent("cta_click", { button_text: "START YOUR PROJECT", destination: "/contact", page: "/" })}>START YOUR PROJECT</SkewedButton>
         </motion.div>
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={visible ? { opacity: 1, y: 0 } : {}}
           transition={{ delay: 0.8, duration: 0.3 }}
         >
-          <SkewedButton href="tel:+17155035444" filled={false}>
+          <SkewedButton href="tel:+17155035444" filled={false} onClick={() => trackEvent("phone_click", { page: "/", location: "hero" })}>
             +1 715-503-5444
           </SkewedButton>
         </motion.div>
@@ -672,7 +673,7 @@ export function HomePageClient() {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5, delay: 1.3 }}
               >
-                <SkewedButton href="/contact">GET A QUOTE</SkewedButton>
+                <SkewedButton href="/contact" onClick={() => trackEvent("cta_click", { button_text: "GET A QUOTE", destination: "/contact", page: "/" })}>GET A QUOTE</SkewedButton>
               </motion.div>
               <motion.div
                 initial={{ opacity: 0, x: 30 }}

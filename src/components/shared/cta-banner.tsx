@@ -4,6 +4,7 @@ import { WHITE, ORANGE, BLACK } from "@/lib/constants";
 import { SkewedButton } from "@/components/shared/skewed-button";
 import { Section } from "@/components/shared/section";
 import { Sparkles, Phone, ArrowRight } from "lucide-react";
+import { trackEvent } from "@/lib/gtag";
 
 export function CtaBanner() {
   return (
@@ -78,7 +79,7 @@ export function CtaBanner() {
         </p>
 
         {/* CTA button */}
-        <SkewedButton href="/contact">
+        <SkewedButton href="/contact" onClick={() => trackEvent("cta_click", { button_text: "GET A QUOTE", destination: "/contact", page: window.location.pathname })}>
           GET A QUOTE <ArrowRight size={16} style={{ marginLeft: "6px" }} />
         </SkewedButton>
 

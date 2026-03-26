@@ -2,6 +2,7 @@
 
 import { useState, FormEvent } from "react";
 import { ORANGE, BLACK, WHITE, DARK1, DARK2 } from "@/lib/constants";
+import { trackEvent } from "@/lib/gtag";
 import { Section } from "@/components/shared/section";
 import { Phone, Mail, MessageCircle, MapPin, Clock, User, Send, Instagram, Facebook } from "lucide-react";
 
@@ -121,6 +122,7 @@ export function ContactForm() {
         return;
       }
       setSubmitted(true);
+      trackEvent("generate_lead", { source: "contact-form", service: formData.service, page: window.location.pathname });
     } catch (err) {
       console.error("[ContactForm] Submission failed:", err);
       setError("Failed to send. Please check your connection and try again.");
@@ -172,7 +174,7 @@ export function ContactForm() {
               </div>
               <div>
                 <div style={INFO_LABEL_STYLE}>PHONE</div>
-                <a href="tel:+17155035444" style={{ ...INFO_VALUE_STYLE, textDecoration: "none" }}>
+                <a href="tel:+17155035444" style={{ ...INFO_VALUE_STYLE, textDecoration: "none" }} onClick={() => trackEvent("phone_click", { page: window.location.pathname, location: "contact-form" })}>
                   (715) 503-5444
                 </a>
               </div>
@@ -185,7 +187,7 @@ export function ContactForm() {
               </div>
               <div>
                 <div style={INFO_LABEL_STYLE}>EMAIL</div>
-                <a href="mailto:info@printecwrap.com" style={{ ...INFO_VALUE_STYLE, textDecoration: "none" }}>
+                <a href="mailto:info@printecwrap.com" style={{ ...INFO_VALUE_STYLE, textDecoration: "none" }} onClick={() => trackEvent("email_click", { page: window.location.pathname, location: "contact-form" })}>
                   info@printecwrap.com
                 </a>
               </div>
@@ -203,6 +205,7 @@ export function ContactForm() {
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{ ...INFO_VALUE_STYLE, textDecoration: "none" }}
+                  onClick={() => trackEvent("whatsapp_click", { page: window.location.pathname, location: "contact-form" })}
                 >
                   (715) 503-5444
                 </a>

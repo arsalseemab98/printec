@@ -2,6 +2,7 @@
 
 import { useState, useEffect, FormEvent } from "react";
 import Image from "next/image";
+import { trackEvent } from "@/lib/gtag";
 
 interface EmailGateProps {
   catalogTitle: string;
@@ -50,6 +51,7 @@ export default function EmailGate({ catalogTitle, catalogSlug, onUnlock }: Email
         throw new Error(data.error || "Something went wrong.");
       }
       sessionStorage.setItem("catalog_unlocked_" + catalogSlug, "true");
+      trackEvent("catalog_email_capture", { catalog_slug: catalogSlug });
       onUnlock();
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Something went wrong.");

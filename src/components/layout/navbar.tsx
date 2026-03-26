@@ -28,6 +28,7 @@ import {
   Users,
   Library,
 } from "lucide-react";
+import { trackEvent } from "@/lib/gtag";
 
 const MOBILE_ICONS: Record<string, React.ReactNode> = {
   HOME: <Home size={18} />,
@@ -265,7 +266,7 @@ export function Navbar() {
               </Link>
             )
           )}
-          <SkewedButton href="tel:+17155035444" style={{ padding: "10px 24px", fontSize: "12px" }}>
+          <SkewedButton href="tel:+17155035444" style={{ padding: "10px 24px", fontSize: "12px" }} onClick={() => trackEvent("phone_click", { page: window.location.pathname, location: "navbar" })}>
             <Phone size={16} style={{ marginRight: "6px" }} />
             CALL NOW
           </SkewedButton>
@@ -415,7 +416,7 @@ export function Navbar() {
                 )
               )}
               <div style={{ paddingTop: "16px" }}>
-                <SkewedButton href="tel:+17155035444">
+                <SkewedButton href="tel:+17155035444" onClick={() => trackEvent("phone_click", { page: window.location.pathname, location: "navbar-mobile" })}>
                   <Phone size={18} style={{ marginRight: "6px" }} />
                   CALL NOW
                 </SkewedButton>

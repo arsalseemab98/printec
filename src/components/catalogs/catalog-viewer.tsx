@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { trackEvent } from "@/lib/gtag";
 
 const ORANGE = "#F7941D";
 const BLACK = "#0C0C0C";
@@ -70,6 +71,7 @@ export default function CatalogViewer({ catalog, projects }: CatalogViewerProps)
         }),
       });
       setInquirySent(true);
+      trackEvent("generate_lead", { source: "catalog", service: catalog.title, page: window.location.pathname });
       setTimeout(() => {
         setShowInquiry(false);
         setInquiryName("");

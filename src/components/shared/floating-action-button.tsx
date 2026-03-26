@@ -13,6 +13,7 @@ import {
   Mail,
   CheckCircle,
 } from "lucide-react";
+import { trackEvent } from "@/lib/gtag";
 import { ORANGE, BLACK, DARK1, DARK2, WHITE, IMG } from "@/lib/constants";
 import Image from "next/image";
 
@@ -92,6 +93,7 @@ export function FloatingActionButton() {
         return;
       }
       setView("success");
+      trackEvent("generate_lead", { source: "floating-widget", service: formData.service || "general", page: window.location.pathname });
     } catch (err) {
       console.error("[FloatingWidget] Submission failed:", err);
       setError("Failed to send. Please try again.");
@@ -315,6 +317,7 @@ export function FloatingActionButton() {
                 {/* Get a Quote */}
                 <a
                   href="/contact"
+                  onClick={() => trackEvent("cta_click", { button_text: "Get a Free Quote", destination: "/contact", page: window.location.pathname })}
                   style={{
                     display: "flex",
                     alignItems: "center",
@@ -347,6 +350,7 @@ export function FloatingActionButton() {
                 {/* Call */}
                 <a
                   href="tel:+17155035444"
+                  onClick={() => trackEvent("phone_click", { page: window.location.pathname, location: "floating-widget" })}
                   style={{
                     display: "flex",
                     alignItems: "center",

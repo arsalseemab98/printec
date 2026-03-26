@@ -14,6 +14,7 @@ import {
   Instagram,
   Facebook,
 } from "lucide-react";
+import { trackEvent } from "@/lib/gtag";
 import {
   ORANGE,
   RED,
@@ -264,6 +265,7 @@ export function Footer() {
                     }}
                     onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = ORANGE; }}
                     onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = `${WHITE}bb`; }}
+                    onClick={() => trackEvent(item.label === "Phone" ? "phone_click" : item.label === "Email" ? "email_click" : "whatsapp_click", { page: window.location.pathname, location: "footer" })}
                   >
                     {item.value}
                   </a>

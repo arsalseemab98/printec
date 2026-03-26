@@ -68,6 +68,20 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
       <head>
+        {/* Google Analytics (gtag.js) — Measurement ID: G-6K8LW0P8B9 */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-6K8LW0P8B9"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`if(!window.location.pathname.startsWith("/admin")&&!window.location.pathname.startsWith("/sign")){
+            window.dataLayer=window.dataLayer||[];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js',new Date());
+            gtag('config','G-6K8LW0P8B9',{page_path:window.location.pathname});
+          }`}
+        </Script>
+        {/* Microsoft Clarity */}
         <Script id="microsoft-clarity" strategy="afterInteractive">
           {`(function(c,l,a,r,i,t,y){
             if(l.location.pathname.startsWith("/admin")||l.location.pathname.startsWith("/sign"))return;

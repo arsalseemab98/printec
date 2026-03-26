@@ -698,3 +698,17 @@
 ### What was done
 - Removed "LATEST WORK" placeholder grid (6 empty boxes) from homepage social section
 - Was below the "Follow Our Work" social media cards, showing placeholder text only
+
+---
+
+## 2026-03-26 — Admin Catalog Mobile UI
+
+### What was done
+- Catalogs list: added mobile card layout (desktop table + mobile cards toggle)
+- Catalog detail: fixed mobile layout for project editor
+  - Header wraps on mobile
+  - Project image + form grid stacks vertically (280px sidebar → full width)
+  - Image area min-height 200px when stacked
+  - Upload button works on touch devices
+  - Fixed duplicate className bug on project grid
+- Updated CLAUDE.md, TDD.md, DEVLOG.md with all recent changes

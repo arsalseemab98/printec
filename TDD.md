@@ -153,6 +153,9 @@
 | Blog | ✅ | Header wraps, grid rows collapse |
 | Images | ✅ | Auto-fill grid already responsive |
 | Pages | ✅ | Auto-fill grid already responsive |
+| Catalogs List | ✅ | Desktop table + mobile cards |
+| Catalog Detail | ✅ | Header wraps, image+form stacks, upload works on touch |
+| Catalog Leads | ✅ | Table scroll |
 
 ## Performance — Verification
 

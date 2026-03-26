@@ -283,14 +283,20 @@ npx next build             # Production build
 - Sitemap base URL: https://printecwrap.com
 - Phone number: +1 (715) 503-5444 (used across all pages)
 - Email: info@printecwrap.com (NOT printeccorp.com)
-- Address: Woodbridge, VA 22191
+- Address: Virginia, USA (no specific street address shown publicly)
 - Company name: Printec Virginia LLC (NOT "Printec Corp")
 - Homepage is server component wrapper → imports HomePageClient (client component)
 - JSON-LD LocalBusiness structured data in root layout (schema.org)
-- Microsoft Clarity analytics (ID: vzki5lbs56)
+- Microsoft Clarity analytics (ID: vzki5lbs56) — disabled on /admin/* and /sign/* pages
 - Logo spin+bounce animation on first visit (sessionStorage)
 - AVIF + WebP image formats enabled, 1-year cache TTL
 - Portfolio categories match actual services (single source of truth in constants.ts)
+- Portfolio gallery is DB-driven (admin manages via /admin/portfolio)
+- Catalogs page shows "Coming Soon" (full catalog system built but not live yet)
+- Contact page: no map placeholder, address shows "Virginia, USA"
+- Homepage: "LATEST WORK" placeholder grid removed from social section
+- Storefront Window Graphics page has before/after slider + industry images
+- Food Truck Wraps page has Taco Fiesta wrap image in portfolio
 
 ## SEO Features
 - Unique metadata (title, description, keywords, openGraph) on all 32 pages

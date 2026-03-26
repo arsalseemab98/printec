@@ -170,7 +170,7 @@
 
 | Feature | Status |
 |---------|--------|
-| Microsoft Clarity (vzki5lbs56) | ✅ |
+| Microsoft Clarity (vzki5lbs56) | ✅ | Disabled on /admin/* and /sign/* |
 | UTM parameter tracking in forms | ✅ |
 | Page source tracking in forms | ✅ |
 
@@ -196,8 +196,13 @@
 | Company name = Printec Virginia LLC | ✅ |
 | Phone = +1 (715) 503-5444 | ✅ (all pages) |
 | Email = info@printecwrap.com | ✅ (all pages) |
-| Address = Woodbridge, VA 22191 | ✅ (all pages) |
+| Address = Virginia, USA | ✅ (all pages) |
 | Portfolio categories match services | ✅ (single source of truth) |
+| Contact page map placeholder | ✅ | Removed — no fake address |
+| Homepage LATEST WORK grid | ✅ | Removed — was placeholder |
+| Catalogs page | ✅ | Shows "Coming Soon" |
+| Portfolio gallery DB-driven | ✅ | Admin manages via /admin/portfolio |
+| Auto-refresh on deploy | ✅ | Polls /api/version every 30s |
 
 ## Forms — Verification
 

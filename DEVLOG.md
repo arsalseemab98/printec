@@ -646,3 +646,55 @@
 - Orange background (brand color) makes the bar stand out without clashing
 - Session-based dismissal (not permanent) — bar returns on next visit
 - Auto-rotate with hover pause — non-intrusive but visible
+
+---
+
+## 2026-03-24 — Admin Portfolio Manager
+
+### What was done
+- Built DB-driven portfolio gallery at /admin/portfolio
+- Admin can manage portfolio images (add, edit, delete, reorder)
+- Public portfolio page reads from Supabase instead of hardcoded data
+
+---
+
+## 2026-03-24 — Contact Page Cleanup
+
+### What was done
+- Removed map placeholder section from contact page (was showing fake "1234 Commerce Drive" address)
+- Changed address in contact info from "Woodbridge, VA 22191" to "Virginia, USA"
+- No specific street address shown publicly
+
+---
+
+## 2026-03-24 — Clarity Disabled on Admin
+
+### What was done
+- Microsoft Clarity analytics script now skips /admin/* and /sign/* pages
+- Prevents admin activity from being tracked in heatmaps/session recordings
+
+---
+
+## 2026-03-25 — Catalogs Coming Soon
+
+### What was done
+- Replaced full catalogs page with "Coming Soon" landing page
+- Clean design: title, "Coming Soon" badge, description, "Get in Touch" CTA
+- Full catalog system (6 categories, email gate, slideshow viewer) still built but not live
+
+---
+
+## 2026-03-25 — Food Truck & Storefront Updates
+
+### What was done
+- Added Taco Fiesta food truck wrap image to portfolio and food truck wraps page
+- Added before/after slider to storefront window graphics page
+- Added industry-specific images to storefront window graphics page
+
+---
+
+## 2026-03-25 — Homepage Cleanup
+
+### What was done
+- Removed "LATEST WORK" placeholder grid (6 empty boxes) from homepage social section
+- Was below the "Follow Our Work" social media cards, showing placeholder text only

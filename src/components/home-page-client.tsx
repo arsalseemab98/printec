@@ -1036,43 +1036,6 @@ export function HomePageClient() {
           ))}
         </div>
 
-        {/* Instagram-style Feed Grid Placeholders */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(6, 1fr)",
-            gap: "8px",
-          }}
-          className="feed-grid"
-        >
-          {Array.from({ length: 6 }).map((_, i) => (
-            <div
-              key={i}
-              style={{
-                aspectRatio: "1",
-                background: "#111",
-                border: "1px solid #222",
-                borderRadius: "2px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <span
-                style={{
-                  fontFamily: "'Arial Black', Impact, sans-serif",
-                  fontWeight: 900,
-                  fontSize: "9px",
-                  letterSpacing: "2px",
-                  color: "rgba(255,255,255,0.15)",
-                  textTransform: "uppercase",
-                }}
-              >
-                LATEST WORK
-              </span>
-            </div>
-          ))}
-        </div>
       </Section>
 
       {/* ─── TAPE STRIP ─── */}

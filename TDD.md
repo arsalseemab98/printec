@@ -171,11 +171,20 @@
 
 ## Analytics — Verification
 
-| Feature | Status |
-|---------|--------|
+| Feature | Status | Notes |
+|---------|--------|-------|
+| Google Analytics 4 (G-6K8LW0P8B9) | ✅ | gtag.js loaded on all public pages |
+| GA4 disabled on admin/sign | ✅ | Same exclusion as Clarity |
+| GA4 generate_lead event | ✅ | Fires on contact form, FAB widget, catalog inquiry |
+| GA4 catalog_email_capture event | ✅ | Fires on email gate unlock |
+| GA4 phone_click event | ✅ | All tel: links (navbar, footer, hero, contact, FAB) |
+| GA4 email_click event | ✅ | mailto: links (contact form, footer) |
+| GA4 whatsapp_click event | ✅ | WhatsApp links (contact form, footer) |
+| GA4 cta_click event | ✅ | "Get a Quote", "Start Your Project" buttons |
+| GA4 event helper (gtag.ts) | ✅ | Type-safe, graceful fallback if gtag missing |
 | Microsoft Clarity (vzki5lbs56) | ✅ | Disabled on /admin/* and /sign/* |
-| UTM parameter tracking in forms | ✅ |
-| Page source tracking in forms | ✅ |
+| UTM parameter tracking in forms | ✅ | |
+| Page source tracking in forms | ✅ | |
 
 ## SEO Verification
 

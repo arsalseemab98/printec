@@ -141,6 +141,7 @@ src/
 │   ├── blog-data.ts                  # Blog articles (fallback if Supabase empty)
 │   ├── supabase.ts                   # Supabase client (lazy init for build safety)
 │   ├── content.ts                    # Helpers: getPageImage, getBlogPosts, etc.
+│   ├── gtag.ts                       # Google Analytics 4 event tracking helper
 │   ├── quote-pdf.tsx                 # React PDF template for branded quotes
 │   └── contract-pdf.tsx              # React PDF template for client agreements
 └── public/
@@ -306,4 +307,8 @@ npx next build             # Production build
 - Canonical URL on homepage
 - Meta descriptions all under 160 chars
 - 9 location pages for local SEO (DC, VA, MD, Seattle, NYC, LA, Chicago, Dallas, Houston)
+- Google Analytics 4 (Measurement ID: G-6K8LW0P8B9) — page views, custom events, conversion tracking
+- GA4 custom events: generate_lead, catalog_email_capture, phone_click, email_click, whatsapp_click, cta_click
+- GA4 event helper: `src/lib/gtag.ts` — trackEvent() wrapper used across 8 components
+- GA4 disabled on /admin/* and /sign/* pages (same as Clarity)
 - Microsoft Clarity for heatmaps and session recordings

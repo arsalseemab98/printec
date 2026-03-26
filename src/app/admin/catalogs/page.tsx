@@ -343,159 +343,49 @@ export default function CatalogsListPage() {
         </div>
       )}
 
-      {/* Catalogs table */}
+      {/* Catalogs list */}
       {!loading && catalogs.length > 0 && (
-        <div
-          style={{
-            background: "#111",
-            border: "1px solid #222",
-            borderRadius: "4px",
-            overflow: "hidden",
-          }}
-        >
-          {/* Table header */}
-          <div
-            className="admin-blog-row"
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1fr 150px 100px 130px 140px",
-              gap: "1rem",
-              padding: "0.875rem 1.25rem",
-              borderBottom: "1px solid #222",
-              fontSize: "11px",
-              fontWeight: 600,
-              textTransform: "uppercase",
-              letterSpacing: "2px",
-              color: "rgba(255,255,255,0.35)",
-            }}
-          >
-            <span>Title</span>
-            <span>Slug</span>
-            <span>Projects</span>
-            <span>Created</span>
-            <span>Actions</span>
+        <>
+          {/* Desktop Table */}
+          <div className="admin-desktop-only" style={{ background: "#111", border: "1px solid #222", borderRadius: "4px", overflow: "hidden" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 150px 100px 130px 140px", gap: "1rem", padding: "0.875rem 1.25rem", borderBottom: "1px solid #222", fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "2px", color: "rgba(255,255,255,0.35)" }}>
+              <span>Title</span><span>Slug</span><span>Projects</span><span>Created</span><span>Actions</span>
+            </div>
+            {catalogs.map((catalog) => (
+              <div key={catalog.id} style={{ display: "grid", gridTemplateColumns: "1fr 150px 100px 130px 140px", gap: "1rem", padding: "0.875rem 1.25rem", borderBottom: "1px solid #1a1a1a", alignItems: "center", fontSize: "14px", transition: "background 0.15s" }} onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(247,148,29,0.05)")} onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}>
+                <span style={{ color: "#fff", fontWeight: 500, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{catalog.title}</span>
+                <span style={{ color: "rgba(255,255,255,0.5)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{catalog.slug}</span>
+                <span style={{ color: "rgba(255,255,255,0.5)" }}>{catalog.project_count ?? 0}</span>
+                <span style={{ color: "rgba(255,255,255,0.4)", fontSize: "13px" }}>{new Date(catalog.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</span>
+                <span style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
+                  <Link href={`/admin/catalogs/${catalog.id}`} style={{ color: "rgba(255,255,255,0.5)", transition: "color 0.15s" }} title="Edit" onMouseEnter={(e) => (e.currentTarget.style.color = "#F7941D")} onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.5)")}><Pencil size={16} /></Link>
+                  <button onClick={() => handleDelete(catalog.id, catalog.title)} style={{ background: "none", border: "none", color: "rgba(239,68,68,0.7)", cursor: "pointer", padding: 0, transition: "color 0.15s" }} title="Delete"><Trash2 size={16} /></button>
+                  <Link href="/admin/catalogs/leads" style={{ color: "rgba(255,255,255,0.5)", transition: "color 0.15s", textDecoration: "none", display: "inline-flex" }} title="View Leads"><ExternalLink size={16} /></Link>
+                </span>
+              </div>
+            ))}
           </div>
 
-          {/* Rows */}
-          {catalogs.map((catalog) => (
-            <div
-              key={catalog.id}
-              className="admin-blog-row"
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 150px 100px 130px 140px",
-                gap: "1rem",
-                padding: "0.875rem 1.25rem",
-                borderBottom: "1px solid #1a1a1a",
-                alignItems: "center",
-                fontSize: "14px",
-                transition: "background 0.15s",
-              }}
-              onMouseEnter={(e) =>
-                (e.currentTarget.style.background =
-                  "rgba(247,148,29,0.05)")
-              }
-              onMouseLeave={(e) =>
-                (e.currentTarget.style.background = "transparent")
-              }
-            >
-              <span
-                style={{
-                  color: "#fff",
-                  fontWeight: 500,
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                  whiteSpace: "nowrap",
-                }}
-              >
-                {catalog.title}
-              </span>
-              <span
-                style={{
-                  color: "rgba(255,255,255,0.5)",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                  whiteSpace: "nowrap",
-                }}
-              >
-                {catalog.slug}
-              </span>
-              <span style={{ color: "rgba(255,255,255,0.5)" }}>
-                {catalog.project_count ?? 0}
-              </span>
-              <span
-                style={{
-                  color: "rgba(255,255,255,0.4)",
-                  fontSize: "13px",
-                }}
-              >
-                {new Date(catalog.created_at).toLocaleDateString("en-US", {
-                  month: "short",
-                  day: "numeric",
-                  year: "numeric",
-                })}
-              </span>
-              <span style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
-                <Link
-                  href={`/admin/catalogs/${catalog.id}`}
-                  style={{
-                    color: "rgba(255,255,255,0.5)",
-                    cursor: "pointer",
-                    transition: "color 0.15s",
-                  }}
-                  title="Edit"
-                  onMouseEnter={(e) =>
-                    (e.currentTarget.style.color = "#F7941D")
-                  }
-                  onMouseLeave={(e) =>
-                    (e.currentTarget.style.color = "rgba(255,255,255,0.5)")
-                  }
-                >
-                  <Pencil size={16} />
-                </Link>
-                <button
-                  onClick={() => handleDelete(catalog.id, catalog.title)}
-                  style={{
-                    background: "none",
-                    border: "none",
-                    color: "rgba(239,68,68,0.7)",
-                    cursor: "pointer",
-                    padding: 0,
-                    transition: "color 0.15s",
-                  }}
-                  title="Delete"
-                  onMouseEnter={(e) =>
-                    (e.currentTarget.style.color = "#ef4444")
-                  }
-                  onMouseLeave={(e) =>
-                    (e.currentTarget.style.color = "rgba(239,68,68,0.7)")
-                  }
-                >
-                  <Trash2 size={16} />
-                </button>
-                <Link
-                  href="/admin/catalogs/leads"
-                  style={{
-                    color: "rgba(255,255,255,0.5)",
-                    cursor: "pointer",
-                    transition: "color 0.15s",
-                    textDecoration: "none",
-                    display: "inline-flex",
-                  }}
-                  title="View Leads"
-                  onMouseEnter={(e) =>
-                    (e.currentTarget.style.color = "#F7941D")
-                  }
-                  onMouseLeave={(e) =>
-                    (e.currentTarget.style.color = "rgba(255,255,255,0.5)")
-                  }
-                >
-                  <ExternalLink size={16} />
-                </Link>
-              </span>
-            </div>
-          ))}
-        </div>
+          {/* Mobile Cards */}
+          <div className="admin-mobile-only" style={{ display: "none", flexDirection: "column", gap: "0.75rem" }}>
+            {catalogs.map((catalog) => (
+              <div key={catalog.id} style={{ background: "#111", border: "1px solid #222", borderRadius: "4px", padding: "1rem" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.5rem" }}>
+                  <Link href={`/admin/catalogs/${catalog.id}`} style={{ color: "#fff", fontWeight: 600, fontSize: "15px", textDecoration: "none" }}>{catalog.title}</Link>
+                  <span style={{ color: "#F7941D", fontSize: "13px", fontWeight: 600 }}>{catalog.project_count ?? 0} projects</span>
+                </div>
+                <p style={{ color: "rgba(255,255,255,0.4)", fontSize: "13px", margin: "0 0 0.5rem", fontFamily: "monospace" }}>{catalog.slug}</p>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingTop: "0.5rem", borderTop: "1px solid #1a1a1a" }}>
+                  <span style={{ color: "rgba(255,255,255,0.35)", fontSize: "12px" }}>{new Date(catalog.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</span>
+                  <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
+                    <Link href={`/admin/catalogs/${catalog.id}`} style={{ color: "#F7941D", fontSize: "13px", fontWeight: 600, textDecoration: "none" }}>Edit</Link>
+                    <button onClick={() => handleDelete(catalog.id, catalog.title)} style={{ background: "none", border: "none", color: "#ef4444", cursor: "pointer", padding: 0, fontSize: "13px", fontWeight: 600 }}>Delete</button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </>
       )}
     </div>
   );

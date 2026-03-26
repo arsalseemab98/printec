@@ -359,6 +359,7 @@ export default function CatalogDetailPage() {
 
       {/* Header */}
       <div
+        className="admin-header-row"
         style={{
           display: "flex",
           alignItems: "center",
@@ -421,6 +422,7 @@ export default function CatalogDetailPage() {
         }}
       >
         <div
+          className="admin-header-row"
           style={{
             display: "flex",
             justifyContent: "space-between",
@@ -695,6 +697,7 @@ export default function CatalogDetailPage() {
                       justifyContent: "center",
                       overflow: "hidden",
                       borderRight: "1px solid #222",
+                      minHeight: "200px",
                     }}
                   >
                     {edit.image_url ? (

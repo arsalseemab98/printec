@@ -98,37 +98,37 @@ const WHO_ITS_FOR = [
     title: "Weddings",
     desc: "Elegant monograms, floral patterns, and bespoke designs that transform your reception into a one-of-a-kind celebration.",
     icon: Heart,
-    img: "weddings",
+    img: "/images/floor-ind-wedding.webp",
   },
   {
     title: "Corporate Events",
     desc: "Logo placements, brand activations, and themed floor graphics that reinforce your corporate identity from the ground up.",
     icon: Building2,
-    img: "corporate",
+    img: "/images/floor-ind-corporate.webp",
   },
   {
     title: "Trade Shows",
     desc: "High-traffic booth flooring that draws attention and differentiates your exhibit space from every other booth on the floor.",
     icon: Ticket,
-    img: "trade-shows",
+    img: "/images/floor-ind-tradeshow.webp",
   },
   {
     title: "Galas & Fundraisers",
     desc: "Sophisticated, black-tie-ready floor wraps that set the tone for upscale charity events and formal dinner galas.",
     icon: Award,
-    img: "galas",
+    img: "/images/floor-ind-gala.webp",
   },
   {
     title: "Venues & Hotels",
     desc: "Permanent and semi-permanent installations for lobbies, ballrooms, and event spaces that elevate your venue year-round.",
     icon: Landmark,
-    img: "venues",
+    img: "/images/floor-ind-venue.webp",
   },
   {
     title: "DJs & Entertainment",
     desc: "Stage wraps and performance branding that give artists, DJs, and entertainers a polished, professional look on any platform.",
     icon: Music,
-    img: "djs",
+    img: "/images/floor-ind-dj.webp",
   },
 ];
 
@@ -321,23 +321,21 @@ export default async function DanceFloorWrapsPage() {
                 }}
                 className="card-hover"
               >
-                {/* Card image placeholder */}
+                {/* Card image */}
                 <div
                   style={{
                     width: "100%",
                     aspectRatio: "16 / 9",
-                    background: "#0e0e0e",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    color: "rgba(255,255,255,0.15)",
-                    fontSize: "12px",
-                    letterSpacing: "2px",
-                    fontWeight: 500,
+                    overflow: "hidden",
                     borderBottom: "1px solid #222",
                   }}
                 >
-                  {card.title} — 400x180
+                  <img
+                    src={card.img}
+                    alt={`${card.title} dance floor wrap`}
+                    style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                    loading="lazy"
+                  />
                 </div>
 
                 <div style={{ padding: "24px" }}>

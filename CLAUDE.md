@@ -50,14 +50,14 @@ src/
 │   ├── portfolio/                    # Portfolio/Gallery
 │   ├── contact/                      # Contact / Get a Quote
 │   ├── blog/                         # Blog hub + [slug] (reads from Supabase with fallback)
-│   ├── dance-floor-wraps/            # Service page (hero + before/after)
+│   ├── dance-floor-wraps/            # Service page — "Floor Wraps" in nav (hero + before/after)
 │   ├── wall-wraps/                   # Service page (hero + before/after)
 │   ├── window-wraps/                 # Service page (hero + before/after)
 │   ├── channel-letters-signage/      # Service page (hero + before/after)
-│   ├── vinyl-wraps/                  # Service page
+│   ├── vinyl-wraps/                  # Service page (removed from nav)
 │   ├── business-signage/             # Service page (hero image)
 │   ├── custom-neon-signs/            # Service page (hero + before/after)
-│   ├── wedding-floor-wrap/           # SEO landing page
+│   ├── wedding-floor-wrap/           # SEO landing page (hero + 6 design cards with real images)
 │   ├── led-channel-letters/          # SEO landing page
 │   ├── channel-letter-signs-near-me/ # SEO landing page
 │   ├── storefront-window-graphics/   # SEO landing page

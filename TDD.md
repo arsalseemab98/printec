@@ -9,18 +9,18 @@
 | Homepage | `/` | ✅ | ✅ | ✅ | N/A | Live |
 | About | `/about` | ✅ | ✅ | ✅ | ✅ Supabase | Live |
 | Team | `/team` | ✅ | ✅ | ✅ | ✅ 4 photos (1200px) | Live |
-| Portfolio | `/portfolio` | ✅ | ✅ | ✅ | Placeholders | Live |
+| Portfolio | `/portfolio` | ✅ | ✅ | ✅ | ✅ DB-driven | Live |
 | Contact | `/contact` | ✅ | ✅ | ✅ | N/A | Live |
 | Blog Hub | `/blog` | ✅ | ✅ | ✅ | N/A | Live |
 | Blog Posts | `/blog/[slug]` | ✅ | ✅ | ✅ | N/A | 6 posts |
-| Dance Floor Wraps | `/dance-floor-wraps` | ✅ | ✅ | ✅ | ✅ Hero + B/A | Live |
+| Floor Wraps | `/dance-floor-wraps` | ✅ | ✅ | ✅ | ✅ Hero + B/A | Live |
 | Wall Wraps | `/wall-wraps` | ✅ | ✅ | ✅ | ✅ Hero + B/A | Live |
 | Window Wraps | `/window-wraps` | ✅ | ✅ | ✅ | ✅ Hero + B/A | Live |
 | Channel Letters | `/channel-letters-signage` | ✅ | ✅ | ✅ | ✅ Hero + B/A | Live |
 | Vinyl Wraps | `/vinyl-wraps` | — | — | — | — | Removed |
 | Business Signage | `/business-signage` | ✅ | ✅ | ✅ | ✅ Hero | Live |
 | Custom Neon Signs | `/custom-neon-signs` | ✅ | ✅ | ✅ | ✅ Hero + B/A | Live |
-| Wedding Floor | `/wedding-floor-wrap` | ✅ | ✅ | ✅ | Placeholders | Live |
+| Wedding Floor | `/wedding-floor-wrap` | ✅ | ✅ | ✅ | ✅ Hero + 6 design cards | Live |
 | LED Channel | `/led-channel-letters` | ✅ | ✅ | ✅ | Placeholders | Live |
 | Near Me | `/channel-letter-signs-near-me` | ✅ | ✅ | ✅ | N/A | Live |
 | Storefront | `/storefront-window-graphics` | ✅ | ✅ | ✅ | Placeholders | Live |
@@ -43,7 +43,7 @@
 
 | Component | Works | Notes |
 |-----------|-------|-------|
-| Navbar | ✅ | Desktop + mobile, services dropdown (8 items), active links |
+| Navbar | ✅ | Desktop + mobile, services dropdown (7 items — "Floor Wraps" not "Dance Floor"), active links |
 | PromoBar | ✅ | Orange slider below navbar, auto-rotate 4s, fade transitions, hover pause, close (X), session dismiss |
 | Footer | ✅ | 4 columns, social links, responsive |
 | FloatingActionButton | ✅ | Chat modal with form + 11 services dropdown + worker photo, submits to /api/contact |

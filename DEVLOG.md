@@ -712,3 +712,37 @@
   - Upload button works on touch devices
   - Fixed duplicate className bug on project grid
 - Updated CLAUDE.md, TDD.md, DEVLOG.md with all recent changes
+
+---
+
+## 2026-03-27 — Wedding Floor Wrap Images Connected
+
+### What was done
+- Connected 7 existing wedding floor wrap images to `/wedding-floor-wrap` page
+- Hero: `wedding-floral-border.webp` (floral border tent design)
+- 6 Design Ideas cards mapped to real images:
+  - Classic Monogram → `wedding-am-wreath.webp` (A&M white rose wreath)
+  - Floral Garden → `wedding-am-floral.webp` (A&M floral ballroom)
+  - Starry Night → `wedding-starry-night.webp` (Sarah & Michael celestial)
+  - Photo Collage → `wedding-photo-collage.webp` (heart photo collage)
+  - Geometric Gold → `wedding-aj-geometric.webp` (A&J gold geometric)
+  - Custom Illustration → `wedding-illustration.webp` (Leo & Maya custom art)
+- All using `next/image` with `fill` + responsive `sizes`
+- Replaced gradient placeholders with real WebP images
+
+---
+
+## 2026-03-27 — Navigation: "Dance Floor Wraps" → "Floor Wraps"
+
+### What was done
+- Renamed "Dance Floor Wraps" to "Floor Wraps" in navbar dropdown, homepage services, admin pages
+- Broader label covers weddings, corporate events, mehndi, trade shows
+- Portfolio category already used "Floor Wraps" — now consistent
+- URL unchanged (`/dance-floor-wraps`) to avoid breaking existing links
+- Wedding Floor Wraps remains as separate SEO page in footer
+
+### Files changed
+- `src/lib/constants.ts` — SERVICES_NAV label
+- `src/components/home-page-client.tsx` — homepage service #06 title
+- `src/app/admin/pages/page.tsx` — admin page list display name
+- `src/app/admin/pages/[slug]/page.tsx` — admin page detail display name

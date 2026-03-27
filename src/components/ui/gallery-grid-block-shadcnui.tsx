@@ -2,6 +2,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { KeyboardEvent, useState } from "react";
+import Image from "next/image";
 import { PORTFOLIO_IMAGES, PORTFOLIO_CATEGORIES, type PortfolioItem } from "@/lib/constants";
 import { Instagram } from "lucide-react";
 
@@ -174,19 +175,17 @@ export function GalleryGridBlock({ category, data }: { category?: string; data?:
                   }}
                 >
                   <div style={{ position: "relative", aspectRatio: "1", overflow: "hidden" }}>
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
+                    <Image
                       src={image.url}
                       alt={image.title}
+                      fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       className="gallery-img"
                       style={{
-                        width: "100%",
-                        height: "100%",
                         objectFit: "cover",
-                        display: "block",
                         transition: "transform 0.4s ease",
                       }}
-                      loading="lazy"
+                      loading={index < 6 ? "eager" : "lazy"}
                     />
 
                     {/* Hover overlay */}
@@ -325,7 +324,7 @@ export function GalleryGridBlock({ category, data }: { category?: string; data?:
               exit={{ scale: 0.8, opacity: 0 }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
               onClick={(e) => e.stopPropagation()}
-              style={{ position: "relative", maxHeight: "90vh", maxWidth: "900px" }}
+              style={{ position: "relative", maxHeight: "90vh", maxWidth: "900px", width: "100%" }}
             >
               {/* Close */}
               <button
@@ -393,17 +392,18 @@ export function GalleryGridBlock({ category, data }: { category?: string; data?:
                 ›
               </button>
 
-              {/* Image */}
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <motion.img
-                key={selectedImage}
-                src={selectedImageData.url}
-                alt={selectedImageData.title}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.2 }}
-                style={{ maxHeight: "70vh", width: "auto", maxWidth: "100%", display: "block" }}
-              />
+              {/* Lightbox Image */}
+              <div style={{ position: "relative", width: "100%", aspectRatio: "4/3" }}>
+                <Image
+                  key={selectedImage}
+                  src={selectedImageData.url}
+                  alt={selectedImageData.title}
+                  fill
+                  sizes="900px"
+                  style={{ objectFit: "contain" }}
+                  priority
+                />
+              </div>
 
               {/* Info + Instagram CTA */}
               <div style={{ marginTop: "16px", textAlign: "center" }}>

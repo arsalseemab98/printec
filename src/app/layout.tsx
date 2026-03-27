@@ -68,6 +68,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
       <head>
+        {/* Preconnect to Supabase CDN for faster image loading */}
+        <link rel="preconnect" href="https://eofjaizkkxqxbynnvemi.supabase.co" />
+        <link rel="dns-prefetch" href="https://eofjaizkkxqxbynnvemi.supabase.co" />
         {/* Google Analytics (gtag.js) — Measurement ID: G-6K8LW0P8B9 */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-6K8LW0P8B9"

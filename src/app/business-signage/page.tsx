@@ -102,37 +102,37 @@ const WHO_ITS_FOR = [
     title: "Retail & Shopping",
     desc: "Eye-catching storefront signs, window displays, and wayfinding systems that drive foot traffic and reinforce your retail brand identity.",
     icon: ShoppingBag,
-    img: "retail",
+    img: "/images/signage-ind-retail.webp",
   },
   {
     title: "Corporate Offices",
     desc: "Lobby signs, suite identifiers, conference room plaques, and branded wall graphics that project professionalism from the moment visitors arrive.",
     icon: Building2,
-    img: "corporate",
+    img: "/images/signage-ind-corporate.webp",
   },
   {
     title: "Restaurants & Hospitality",
     desc: "Menu boards, blade signs, illuminated awnings, and patio signage that attract diners and set the tone for your dining experience.",
     icon: Coffee,
-    img: "restaurants",
+    img: "/images/signage-ind-restaurant.webp",
   },
   {
     title: "Healthcare",
     desc: "ADA-compliant wayfinding, room identification, and exterior monument signs that help patients navigate your facility with confidence.",
     icon: Heart,
-    img: "healthcare",
+    img: "/images/signage-ind-medical.webp",
   },
   {
     title: "Construction & Industrial",
     desc: "Job site signs, safety signage, directional banners, and durable outdoor panels engineered to withstand harsh conditions and heavy use.",
     icon: HardHat,
-    img: "construction",
+    img: "/images/signage-ind-construction.webp",
   },
   {
     title: "Property Management",
     desc: "Tenant directories, parking signs, community entrance monuments, and property identification systems for residential and commercial complexes.",
     icon: KeyRound,
-    img: "property",
+    img: "/images/signage-ind-property.webp",
   },
 ];
 
@@ -329,23 +329,21 @@ export default async function BusinessSignagePage() {
                 }}
                 className="card-hover"
               >
-                {/* Card image placeholder */}
+                {/* Card image */}
                 <div
                   style={{
                     width: "100%",
                     aspectRatio: "16 / 9",
-                    background: "#0e0e0e",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    color: "rgba(255,255,255,0.15)",
-                    fontSize: "12px",
-                    letterSpacing: "2px",
-                    fontWeight: 500,
+                    overflow: "hidden",
                     borderBottom: "1px solid #222",
                   }}
                 >
-                  {card.title} — 400x180
+                  <img
+                    src={card.img}
+                    alt={`${card.title} signage`}
+                    style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                    loading="lazy"
+                  />
                 </div>
 
                 <div style={{ padding: "24px" }}>

@@ -102,24 +102,28 @@ const CHANNEL_TYPES = [
     tag: "Most Popular",
     desc: "The industry standard for business signage. Front-lit channel letters feature LED modules inside an aluminum housing with a translucent acrylic face that illuminates forward, delivering maximum visibility day and night.",
     icon: Sun,
+    img: "/images/channel-frontlit.webp",
   },
   {
     title: "Back-Lit (Halo) Letters",
     tag: "Premium",
     desc: "Back-lit channel letters project a soft halo of light onto the wall behind each letter, creating an elegant, high-end aesthetic favored by upscale brands, hotels, medical offices, and financial institutions.",
     icon: Moon,
+    img: "/images/channel-halo.webp",
   },
   {
     title: "Combination Lit",
     tag: "Best of Both",
     desc: "Combination-lit channel letters feature both front and back illumination, delivering maximum impact with a glowing face and a halo effect simultaneously. Ideal for high-visibility locations demanding the most striking signage.",
     icon: Blend,
+    img: "/images/channel-combo.webp",
   },
   {
     title: "Open Face Letters",
     tag: "Classic",
     desc: "Open face channel letters expose the LED or neon light source directly with no acrylic face cover. This bold, vintage-inspired look is popular with restaurants, bars, and entertainment venues seeking an industrial or retro aesthetic.",
     icon: Lightbulb,
+    img: "/images/channel-openface.webp",
   },
 ];
 
@@ -315,16 +319,16 @@ export default async function ChannelLettersSignagePage() {
                   style={{
                     aspectRatio: "16 / 9",
                     background: "#0a0a0a",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    ...bodyStyle,
-                    color: `${WHITE}33`,
-                    fontSize: "12px",
+                    overflow: "hidden",
                     position: "relative",
                   }}
                 >
-                  {item.title} — 640x360
+                  <img
+                    src={item.img}
+                    alt={item.title}
+                    style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                    loading="lazy"
+                  />
                   {/* Tag */}
                   <span
                     style={{

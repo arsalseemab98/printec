@@ -67,7 +67,7 @@ export const NAV_LINKS = ["HOME", "ABOUT", "SERVICES", "PORTFOLIO", "BLOG", "CON
 /* ─── SERVICES NAV (dropdown items) ─── */
 export const SERVICES_NAV = [
   { name: "Business Signage", href: "/business-signage" },
-  { name: "Dance Floor Wraps", href: "/dance-floor-wraps" },
+  { name: "Floor Wraps", href: "/dance-floor-wraps" },
   { name: "Wall Wraps", href: "/wall-wraps" },
   { name: "Window Wraps", href: "/window-wraps" },
   { name: "Channel Letters & Signage", href: "/channel-letters-signage" },

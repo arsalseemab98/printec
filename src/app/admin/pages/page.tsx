@@ -5,7 +5,7 @@ import { ArrowRight, ImageIcon } from "lucide-react";
 
 const PAGES = [
   { slug: "about", name: "About Us", slots: ["hero", "story"] },
-  { slug: "dance-floor-wraps", name: "Dance Floor Wraps", slots: ["hero", "before", "after"] },
+  { slug: "dance-floor-wraps", name: "Floor Wraps", slots: ["hero", "before", "after"] },
   { slug: "wall-wraps", name: "Wall Wraps", slots: ["hero", "before", "after"] },
   { slug: "window-wraps", name: "Window Wraps", slots: ["hero", "before", "after"] },
   { slug: "channel-letters-signage", name: "Channel Letters & Signage", slots: ["hero", "before", "after"] },

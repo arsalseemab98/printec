@@ -35,7 +35,7 @@ const SERVICES = [
   { num: "03", title: "WINDOW WRAPS", desc: "Transform storefront glass into prime advertising space with vivid, full-color window graphics.", href: "/window-wraps" },
   { num: "04", title: "STOREFRONT GRAPHICS", desc: "Professional window decals and storefront signage that drive foot traffic and boost curb appeal.", href: "/storefront-window-graphics" },
   { num: "05", title: "WALL WRAPS", desc: "Turn blank walls into bold brand statements for offices, retail stores, restaurants, and gyms.", href: "/wall-wraps" },
-  { num: "06", title: "DANCE FLOOR WRAPS", desc: "Custom vinyl floor graphics for weddings, corporate events, trade shows, and brand activations.", href: "/dance-floor-wraps" },
+  { num: "06", title: "FLOOR WRAPS", desc: "Custom vinyl floor graphics for weddings, corporate events, trade shows, and brand activations.", href: "/dance-floor-wraps" },
   { num: "07", title: "WEDDING FLOOR WRAPS", desc: "Elegant monograms, florals, and photo-realistic floor decals that make your special day unforgettable.", href: "/wedding-floor-wrap" },
   { num: "08", title: "VEHICLE WRAPS", desc: "Full and partial vehicle wraps that turn your fleet into mobile billboards — cars, trucks, vans, and trailers.", href: "/contact" },
   { num: "09", title: "GRAPHIC DESIGN", desc: "Logo design, brand identity, marketing materials, and campaign visuals — from concept to print-ready files.", href: "/contact" },

@@ -97,21 +97,25 @@ const WINDOW_TYPES = [
     title: "Full Window Wraps",
     desc: "Complete coverage window wraps that transform your storefront glass into a massive, high-impact advertising canvas. Ideal for seasonal campaigns, grand openings, and businesses that want maximum visibility from the street.",
     icon: Maximize,
+    img: "/images/wintype-fullwrap.webp",
   },
   {
     title: "Perforated Vinyl",
     desc: "See-through window graphics that display vibrant, full-color imagery on the outside while maintaining clear visibility from the inside. The most popular choice for storefront window wraps because it delivers bold branding without blocking natural light.",
     icon: Eye,
+    img: "/images/wintype-perforated.webp",
   },
   {
     title: "Frosted Films",
     desc: "Elegant frosted and etched glass films that add privacy to conference rooms, medical offices, and storefronts without sacrificing natural light. Available with custom patterns, logos, and text cut into the frosted layer.",
     icon: Snowflake,
+    img: "/images/wintype-frosted.webp",
   },
   {
     title: "Cut Vinyl Lettering",
     desc: "Precision-cut individual letters, logos, and graphics applied directly to glass surfaces. Perfect for business hours, contact information, regulatory signage, and clean, minimalist branding in hundreds of colors and metallic finishes.",
     icon: Type,
+    img: "/images/wintype-cutvinyl.webp",
   },
 ];
 
@@ -285,15 +289,15 @@ export default async function WindowWrapsPage() {
                   style={{
                     aspectRatio: "16 / 9",
                     background: "#0a0a0a",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    ...bodyStyle,
-                    color: `${WHITE}33`,
-                    fontSize: "12px",
+                    overflow: "hidden",
                   }}
                 >
-                  {item.title} — 640x360
+                  <img
+                    src={item.img}
+                    alt={item.title}
+                    style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                    loading="lazy"
+                  />
                 </div>
                 <div style={{ padding: "24px" }}>
                   <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "10px" }}>

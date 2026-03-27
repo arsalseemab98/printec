@@ -102,31 +102,37 @@ const WHO_ITS_FOR = [
     title: "Offices",
     desc: "Reinforce your brand culture with mission statements, core values, and branded graphics in every hallway, conference room, and lobby space.",
     icon: Building2,
+    img: "/images/wallwrap-office.webp",
   },
   {
     title: "Retail Stores",
     desc: "Guide customers with larger-than-life product imagery, seasonal promotions, and lifestyle graphics that refresh your retail environment instantly.",
     icon: Store,
+    img: "/images/wallwrap-retail.webp",
   },
   {
     title: "Restaurants",
     desc: "Set the mood with custom murals, menu highlights, and immersive themed environments that guests photograph and share on social media.",
     icon: UtensilsCrossed,
+    img: "/images/wallwrap-restaurant.webp",
   },
   {
     title: "Gyms & Fitness",
     desc: "Motivational quotes, action photography, and bold geometric patterns that energize members the moment they walk through the door.",
     icon: Dumbbell,
+    img: "/images/wallwrap-gym.webp",
   },
   {
     title: "Hotels",
     desc: "Elevate guest experiences with curated wall art, wayfinding graphics, and branded environments that distinguish your property from competitors.",
     icon: Hotel,
+    img: "/images/wallwrap-hotel.webp",
   },
   {
     title: "Schools",
     desc: "Celebrate school pride with mascot murals, inspirational messaging, achievement walls, and colorful educational graphics throughout campus.",
     icon: GraduationCap,
+    img: "/images/wallwrap-school.webp",
   },
 ];
 
@@ -320,15 +326,15 @@ export default async function WallWrapsPage() {
                   style={{
                     aspectRatio: "16 / 9",
                     background: "#0a0a0a",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    ...bodyStyle,
-                    color: `${WHITE}33`,
-                    fontSize: "12px",
+                    overflow: "hidden",
                   }}
                 >
-                  {item.title} — 640x360
+                  <img
+                    src={item.img}
+                    alt={`${item.title} wall wrap`}
+                    style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                    loading="lazy"
+                  />
                 </div>
                 <div style={{ padding: "24px" }}>
                   <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "10px" }}>
@@ -499,27 +505,27 @@ export default async function WallWrapsPage() {
             }}
           >
             {[
-              "Office Lobby Mural — 600x400",
-              "Retail Accent Wall — 600x400",
-              "Restaurant Interior — 600x400",
-              "Gym Motivational Wall — 600x400",
-            ].map((label) => (
+              { src: "/images/wallwrap-office.webp", alt: "Office lobby branded wall mural" },
+              { src: "/images/wallwrap-retail.webp", alt: "Retail store accent wall wrap" },
+              { src: "/images/wallwrap-restaurant.webp", alt: "Restaurant tropical wall mural" },
+              { src: "/images/wallwrap-gym.webp", alt: "Gym motivational wall wrap" },
+            ].map((img) => (
               <div
-                key={label}
+                key={img.src}
                 style={{
                   aspectRatio: "3 / 2",
                   background: "#0a0a0a",
                   borderRadius: "4px",
                   border: `1px solid ${DARK2}`,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  ...bodyStyle,
-                  color: `${WHITE}33`,
-                  fontSize: "12px",
+                  overflow: "hidden",
                 }}
               >
-                {label}
+                <img
+                  src={img.src}
+                  alt={img.alt}
+                  style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                  loading="lazy"
+                />
               </div>
             ))}
           </div>

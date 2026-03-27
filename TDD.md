@@ -159,15 +159,22 @@
 
 ## Performance — Verification
 
-| Feature | Status |
-|---------|--------|
-| AVIF + WebP image formats | ✅ |
-| minimumCacheTTL 1 year | ✅ |
-| Gzip compression enabled | ✅ |
-| X-Powered-By header removed | ✅ |
-| Static pages (SSG) | ✅ |
-| next/font zero layout shift | ✅ |
-| Logo animation (sessionStorage) | ✅ |
+| Feature | Status | Notes |
+|---------|--------|-------|
+| AVIF + WebP image formats | ✅ | next.config.ts formats config |
+| minimumCacheTTL 1 year | ✅ | 31536000 seconds |
+| Gzip compression enabled | ✅ | |
+| X-Powered-By header removed | ✅ | |
+| Static pages (SSG) | ✅ | |
+| next/font zero layout shift | ✅ | |
+| Logo animation (sessionStorage) | ✅ | |
+| Gallery uses Next.js `<Image>` | ✅ | Switched from raw `<img>` — auto AVIF/resize |
+| Gallery responsive sizes | ✅ | `(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw` |
+| Gallery eager/lazy split | ✅ | First 6 eager, rest lazy-loaded |
+| Lightbox uses Next.js `<Image>` | ✅ | With priority loading |
+| Preconnect to Supabase CDN | ✅ | `<link rel="preconnect">` + dns-prefetch in layout |
+| Homepage load time | ✅ | 567ms (was 3000ms — 5.3x improvement) |
+| Slowest image load | ✅ | 189ms (was 1183ms — 6.3x improvement) |
 
 ## Analytics — Verification
 

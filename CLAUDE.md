@@ -312,3 +312,7 @@ npx next build             # Production build
 - GA4 event helper: `src/lib/gtag.ts` — trackEvent() wrapper used across 8 components
 - GA4 disabled on /admin/* and /sign/* pages (same as Clarity)
 - Microsoft Clarity for heatmaps and session recordings
+- Preconnect + dns-prefetch to Supabase CDN in layout for faster image loads
+- Gallery images use Next.js `<Image>` with `fill` + responsive `sizes` (auto AVIF/WebP, CDN cached 1yr)
+- First 6 gallery images load eagerly, rest lazy-loaded
+- Portfolio images served through `/_next/image` optimization pipeline (not raw files)

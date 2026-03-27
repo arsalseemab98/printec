@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { Section } from "@/components/shared/section";
 import { CtaBanner } from "@/components/shared/cta-banner";
 import { SkewedButton } from "@/components/shared/skewed-button";
@@ -55,37 +56,37 @@ const DESIGN_IDEAS = [
     title: "Classic Monogram",
     desc: "Timeless intertwined initials with elegant serif typography. The most popular wedding floor decal choice for formal receptions.",
     icon: Crown,
-    img: "Monogram Floor Wrap",
+    img: "/images/portfolio/wedding-am-wreath.webp",
   },
   {
     title: "Floral Garden",
     desc: "Lush botanical arrangements — roses, peonies, eucalyptus — printed in vivid full color directly onto your dance floor wrap.",
     icon: Flower2,
-    img: "Floral Floor Design",
+    img: "/images/portfolio/wedding-am-floral.webp",
   },
   {
     title: "Starry Night",
     desc: "A celestial design with constellations, moons, and metallic accents. Perfect for evening receptions and outdoor tent weddings.",
     icon: Star,
-    img: "Starry Night Floor",
+    img: "/images/portfolio/wedding-starry-night.webp",
   },
   {
     title: "Photo Collage",
     desc: "Your engagement photos, love story timeline, or family portraits printed in stunning photo-realistic quality on vinyl.",
     icon: Camera,
-    img: "Photo Collage Floor",
+    img: "/images/portfolio/wedding-photo-collage.webp",
   },
   {
     title: "Geometric Gold",
     desc: "Modern geometric patterns with faux-gold metallic finish. A striking wedding floor graphic for contemporary venues.",
     icon: Hexagon,
-    img: "Geometric Floor Design",
+    img: "/images/portfolio/wedding-aj-geometric.webp",
   },
   {
     title: "Custom Illustration",
     desc: "Fully bespoke hand-drawn artwork — your venue, your pets, your portrait — transformed into a one-of-a-kind floor decal.",
     icon: PenTool,
-    img: "Custom Illustration Floor",
+    img: "/images/portfolio/wedding-illustration.webp",
   },
 ];
 
@@ -262,26 +263,26 @@ export default function WeddingFloorWrapPage() {
           padding: "160px 24px 100px",
         }}
       >
-        {/* Hero image placeholder */}
+        {/* Hero image */}
         <div
           style={{
             width: "100%",
             maxWidth: "900px",
             aspectRatio: "16/7",
-            background: `linear-gradient(135deg, #111, ${DARK1})`,
             borderRadius: "4px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontSize: "13px",
-            letterSpacing: "3px",
-            textTransform: "uppercase",
-            color: `${WHITE}33`,
-            fontFamily: "Arial, sans-serif",
+            overflow: "hidden",
+            position: "relative",
             marginBottom: "48px",
           }}
         >
-          Wedding Floor Wrap Hero Image
+          <Image
+            src="/images/portfolio/wedding-floral-border.webp"
+            alt="Wedding dance floor wrap with floral border design"
+            fill
+            sizes="(max-width: 900px) 100vw, 900px"
+            style={{ objectFit: "cover" }}
+            priority
+          />
         </div>
 
         <div style={label}>WEDDINGS</div>
@@ -382,7 +383,15 @@ export default function WeddingFloorWrapPage() {
               const Icon = idea.icon;
               return (
                 <div key={idea.title} style={card}>
-                  <div style={imgPlaceholder("16/10", idea.img)}>{idea.img}</div>
+                  <div style={{ position: "relative", aspectRatio: "16/10", borderRadius: "4px", overflow: "hidden", marginBottom: "20px" }}>
+                    <Image
+                      src={idea.img}
+                      alt={`${idea.title} wedding floor wrap design`}
+                      fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      style={{ objectFit: "cover" }}
+                    />
+                  </div>
                   <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "12px" }}>
                     <Icon size={18} color={ORANGE} />
                     <h3

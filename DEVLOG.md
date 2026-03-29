@@ -746,3 +746,32 @@
 - `src/components/home-page-client.tsx` — homepage service #06 title
 - `src/app/admin/pages/page.tsx` — admin page list display name
 - `src/app/admin/pages/[slug]/page.tsx` — admin page detail display name
+
+---
+
+## 2026-03-28 — Google Ads Plan & Marketing Documentation
+
+### What was done
+- Created comprehensive Google Ads plan for $100 test budget
+- Single Search campaign with 2 ad groups: Wall Wraps (~$50) + Floor Wraps (~$50)
+- 16 high-intent keywords (8 per ad group) — phrase + exact match only
+- 15 negative keywords to block DIY/tutorial/job traffic
+- Responsive search ad copy written for both ad groups (5 headlines + 2 descriptions each)
+- Landing pages mapped: /wall-wraps, /dance-floor-wraps, /wedding-floor-wrap
+- UTM parameters defined for tracking in existing contact form + admin statistics
+- Conversion tracking strategy: GA4 `generate_lead` as primary, `phone_click` as secondary
+- Created MARKETING.md — central reference for all marketing activities
+- Created design doc: docs/plans/2026-03-28-google-ads-plan-design.md
+
+### Decisions
+- Maximize Clicks bidding (not Maximize Conversions) — need data first at $100 budget
+- Max CPC cap of $5 to prevent single expensive clicks burning budget
+- No broad match keywords — too risky at this spend level
+- Mon–Sat 8AM–7PM schedule (business hours + buffer)
+- Search only (no Display, no Search Partners) — highest intent traffic
+
+### Next Steps
+- Link GA4 property (G-6K8LW0P8B9) to Google Ads account
+- Create campaign in Google Ads dashboard using the plan
+- Mark `generate_lead` as Key Event (conversion) in GA4 once events appear
+- Monitor for 30 days, then scale or optimize based on results

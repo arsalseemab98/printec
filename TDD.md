@@ -306,6 +306,21 @@
 | /api/admin/catalog-leads | GET | ✅ | Lists all leads |
 | /api/admin/customers | GET | ✅ | Merged inquiries + leads |
 
+## Marketing — Verification
+
+| Feature | Status | Notes |
+|---------|--------|-------|
+| Google Ads plan documented | ✅ | docs/plans/2026-03-28-google-ads-plan-design.md |
+| MARKETING.md created | ✅ | Campaign structure, keywords, ad copy, UTM params |
+| Wall Wraps ad group keywords (8) | ✅ | Phrase + exact match, high-intent only |
+| Floor Wraps ad group keywords (8) | ✅ | Phrase + exact match, high-intent only |
+| Negative keywords list | ✅ | 15 terms blocking DIY/job/tutorial traffic |
+| UTM parameters defined | ✅ | utm_source=google, utm_medium=cpc, per-campaign |
+| Landing pages identified | ✅ | /wall-wraps, /dance-floor-wraps, /wedding-floor-wrap |
+| GA4 conversion tracking ready | ✅ | generate_lead as primary, phone_click as secondary |
+| GA4 → Google Ads linking | ⬜ | Pending: link GA4 property to Google Ads account |
+| Google Ads campaign live | ⬜ | Pending: create campaign in Google Ads dashboard |
+
 ## Planned Tests
 - [ ] E2E: Navigation between all 32 pages
 - [ ] E2E: Contact form submission (API + Supabase)

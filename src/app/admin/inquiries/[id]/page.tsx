@@ -22,6 +22,7 @@ interface Inquiry {
   booked_price: number | null;
   completed_price: number | null;
   notes: string;
+  event_date: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -61,7 +62,7 @@ export default function InquiryDetailPage({
   const [notes, setNotes] = useState("");
   const [saving, setSaving] = useState(false);
   const [editing, setEditing] = useState(false);
-  const [editData, setEditData] = useState({ name: "", email: "", phone: "", service: "", budget: "", description: "" });
+  const [editData, setEditData] = useState({ name: "", email: "", phone: "", service: "", budget: "", description: "", event_date: "" });
   const [savingEdit, setSavingEdit] = useState(false);
 
   useEffect(() => {
@@ -129,6 +130,7 @@ export default function InquiryDetailPage({
       service: inquiry.service || "",
       budget: inquiry.budget || "",
       description: inquiry.description || "",
+      event_date: inquiry.event_date || "",
     });
     setEditing(true);
   }
@@ -176,6 +178,7 @@ export default function InquiryDetailPage({
     { label: "UTM Source", value: inquiry.utm_source },
     { label: "UTM Medium", value: inquiry.utm_medium },
     { label: "UTM Campaign", value: inquiry.utm_campaign },
+    { label: "Event Date", value: inquiry.event_date ? new Date(inquiry.event_date).toLocaleDateString() : "" },
   ];
 
   return (
@@ -335,6 +338,7 @@ export default function InquiryDetailPage({
                 { key: "phone", label: "Phone", type: "tel" },
                 { key: "service", label: "Service", type: "text" },
                 { key: "budget", label: "Budget", type: "text" },
+                { key: "event_date", label: "Event Date", type: "date" },
               ].map((f) => (
                 <div key={f.key} style={{ marginBottom: "0.75rem" }}>
                   <label style={{ fontSize: "11px", textTransform: "uppercase", letterSpacing: "1px", color: "rgba(255,255,255,0.35)", display: "block", marginBottom: "4px" }}>

@@ -29,7 +29,7 @@ export async function PUT(
   const supabase = createServerClient();
   const body = await req.json();
 
-  const allowed = ["status", "notes", "booked_price", "completed_price"];
+  const allowed = ["status", "notes", "booked_price", "completed_price", "name", "email", "phone", "service", "budget", "description", "event_date"];
   const updates: Record<string, unknown> = {};
   for (const key of allowed) {
     if (body[key] !== undefined) updates[key] = body[key];

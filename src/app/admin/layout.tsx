@@ -22,11 +22,13 @@ import {
   MessageSquare,
   Megaphone,
   Grid3X3,
+  CalendarDays,
 } from "lucide-react";
 
 const NAV_ITEMS = [
   { label: "Dashboard", href: "/admin", icon: LayoutDashboard },
   { label: "Statistics", href: "/admin/statistics", icon: BarChart3 },
+  { label: "Calendar", href: "/admin/calendar", icon: CalendarDays },
   { label: "Customers", href: "/admin/customers", icon: Users },
   { label: "Pages", href: "/admin/pages", icon: FileImage },
   { label: "Images", href: "/admin/images", icon: ImageIcon },

@@ -14,6 +14,10 @@ import {
   ChevronLeft,
   ChevronRight,
   Calendar,
+  Mail,
+  AlertTriangle,
+  CheckCircle,
+  XCircle,
 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 
@@ -66,6 +70,15 @@ export default function AdminDashboard() {
   const [blogCount, setBlogCount] = useState<number | null>(null);
   const [inquiries, setInquiries] = useState<Inquiry[]>([]);
   const [contracts, setContracts] = useState<ContractMetric[]>([]);
+  const [azureStatus, setAzureStatus] = useState<{
+    status: string;
+    canSendEmail: boolean;
+    emailError?: string;
+    secretExpiry?: string;
+    secretDaysLeft?: number;
+    checkedAt?: string;
+    message?: string;
+  } | null>(null);
   const [filter, setFilter] = useState<FilterOption>("All Time");
   const [selectedMonth, setSelectedMonth] = useState(() => {
     const now = new Date();
@@ -93,9 +106,20 @@ export default function AdminDashboard() {
       if (Array.isArray(data)) setContracts(data);
     }
 
+    async function fetchAzureStatus() {
+      try {
+        const res = await fetch("/api/admin/azure-status");
+        const data = await res.json();
+        setAzureStatus(data);
+      } catch {
+        setAzureStatus({ status: "error", canSendEmail: false, message: "Failed to check" });
+      }
+    }
+
     fetchBlogCount();
     fetchInquiries();
     fetchContracts();
+    fetchAzureStatus();
   }, []);
 
   // Filter inquiries by date
@@ -511,6 +535,71 @@ export default function AdminDashboard() {
               </Link>
             ))}
           </div>
+        </div>
+      )}
+
+      {/* Azure Email Status */}
+      {azureStatus && (
+        <div style={{
+          background: "#111",
+          border: `1px solid ${
+            azureStatus.status === "healthy" ? "#222"
+            : azureStatus.status === "degraded" ? "rgba(234,179,8,0.4)"
+            : "rgba(239,68,68,0.4)"
+          }`,
+          borderRadius: "4px",
+          padding: "16px 20px",
+          marginBottom: "1.5rem",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          flexWrap: "wrap",
+          gap: "12px",
+        }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+            <Mail size={18} color={azureStatus.canSendEmail ? "#22C55E" : "#EF4444"} />
+            <div>
+              <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                <span style={{ fontSize: "14px", fontWeight: 700, color: "#fff" }}>
+                  Email Service
+                </span>
+                {azureStatus.canSendEmail ? (
+                  <span style={{ display: "inline-flex", alignItems: "center", gap: "4px", fontSize: "11px", fontWeight: 600, color: "#22C55E" }}>
+                    <CheckCircle size={12} /> Active
+                  </span>
+                ) : (
+                  <span style={{ display: "inline-flex", alignItems: "center", gap: "4px", fontSize: "11px", fontWeight: 600, color: "#EF4444" }}>
+                    <XCircle size={12} /> {azureStatus.message || azureStatus.emailError || "Down"}
+                  </span>
+                )}
+              </div>
+              {azureStatus.secretExpiry && azureStatus.secretDaysLeft != null && (
+                <div style={{
+                  fontSize: "12px",
+                  color: azureStatus.secretDaysLeft <= 14 ? "#EF4444"
+                    : azureStatus.secretDaysLeft <= 30 ? "#EAB308"
+                    : "rgba(255,255,255,0.4)",
+                  marginTop: "4px",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "4px",
+                }}>
+                  {azureStatus.secretDaysLeft <= 30 && <AlertTriangle size={12} />}
+                  Secret expires: {new Date(azureStatus.secretExpiry).toLocaleDateString()} ({azureStatus.secretDaysLeft} days left)
+                </div>
+              )}
+              {!azureStatus.canSendEmail && azureStatus.status === "error" && (
+                <div style={{ fontSize: "12px", color: "#EF4444", marginTop: "4px" }}>
+                  Contact forms are saving to DB but emails are not being sent. Check Azure credentials.
+                </div>
+              )}
+            </div>
+          </div>
+          {azureStatus.checkedAt && (
+            <div style={{ fontSize: "11px", color: "rgba(255,255,255,0.25)" }}>
+              Checked {new Date(azureStatus.checkedAt).toLocaleTimeString()}
+            </div>
+          )}
         </div>
       )}
 

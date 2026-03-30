@@ -188,6 +188,30 @@ export async function POST(req: NextRequest) {
 
     console.log(`[Contact API] New submission: source=${source}, service=${service || "none"}, email=${email}`);
 
+    // ── Save inquiry to database FIRST (never lose a customer) ──
+    try {
+      const serverClient = createServerClient();
+      await serverClient.from("inquiries").insert({
+        name,
+        email,
+        phone: phone || null,
+        service: service || null,
+        description: description || null,
+        budget: budget || null,
+        source,
+        page: page || null,
+        utm_source: utm_source || null,
+        utm_medium: utm_medium || null,
+        utm_campaign: utm_campaign || null,
+        utm_term: utm_term || null,
+        utm_content: utm_content || null,
+        status: "New",
+      });
+      console.log(`[Contact API] Inquiry saved to DB for ${email}`);
+    } catch (dbError) {
+      console.error("[Contact API] Failed to save inquiry to database:", dbError);
+    }
+
     // ── Build emails ──
     const emailFrom = process.env.EMAIL_FROM!;
     const client = getGraphClient();
@@ -223,7 +247,7 @@ export async function POST(req: NextRequest) {
       console.log(`[Contact API] Notification email sent to ${emailFrom}`);
     } catch (emailErr) {
       console.error("[Contact API] Failed to send notification email:", emailErr);
-      throw emailErr;
+      // Don't throw — DB save already happened, still try confirmation
     }
 
     // ── Send confirmation to customer ──
@@ -238,31 +262,6 @@ export async function POST(req: NextRequest) {
       console.log(`[Contact API] Confirmation email sent to ${email}`);
     } catch (emailErr) {
       console.error("[Contact API] Failed to send confirmation email:", emailErr);
-      // Don't throw — notification already sent, DB save should still happen
-    }
-
-    // ── Save inquiry to database ──
-    try {
-      const serverClient = createServerClient();
-      await serverClient.from("inquiries").insert({
-        name,
-        email,
-        phone: phone || null,
-        service: service || null,
-        description: description || null,
-        budget: budget || null,
-        source,
-        page: page || null,
-        utm_source: utm_source || null,
-        utm_medium: utm_medium || null,
-        utm_campaign: utm_campaign || null,
-        utm_term: utm_term || null,
-        utm_content: utm_content || null,
-        status: "New",
-      });
-      console.log(`[Contact API] Inquiry saved to DB for ${email}`);
-    } catch (dbError) {
-      console.error("[Contact API] Failed to save inquiry to database:", dbError);
     }
 
     return NextResponse.json({ success: true });

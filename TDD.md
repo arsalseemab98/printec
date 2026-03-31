@@ -80,6 +80,11 @@
 | Public Signing | `/sign/[id]` | ✅ | Customer draws signature on canvas, no auth |
 | Statistics | `/admin/statistics` | ✅ | 13 charts (Recharts), date filter, KPI cards |
 | Promos | `/admin/promos` | ✅ | Create/edit/delete/toggle/reorder promo slides |
+| Calendar | `/admin/calendar` | ✅ | Monthly/weekly/daily views, contracts + inquiries color-coded |
+| Emails Dashboard | `/admin/emails` | ✅ | Sent log, stats, quick links to compose/templates |
+| Email Compose | `/admin/emails/compose` | ✅ | Tiptap WYSIWYG, recipient picker, placeholders, bulk send |
+| Email Templates | `/admin/emails/templates` | ✅ | Save/load/edit/delete reusable templates |
+| Azure Health | `/admin` (dashboard card) | ✅ | Email service status, secret expiry, warning colors |
 | Proxy Auth | `proxy.ts` | ✅ | Protects /admin/* except /admin/login, /sign/* is public |
 
 ## Contract — Verification
@@ -113,6 +118,27 @@
 | Page source in emails | ✅ | Which page form was submitted from |
 | Quote PDF email | ✅ | Branded PDF attachment via Microsoft Graph |
 | Rate limiting | ✅ | 60s cooldown per email+source |
+| DB-first save | ✅ | Contact form saves to DB before email send (prevents data loss) |
+| Email marketing compose | ✅ | Tiptap WYSIWYG + recipient picker + placeholders |
+| Email templates CRUD | ✅ | Save/load/edit/delete reusable templates |
+| Bulk send (individual) | ✅ | Per-recipient via Graph API with {name} personalization |
+| Email sent log | ✅ | All sends logged with success/failed status |
+| Azure health check | ✅ | Tests credentials + email access, shows secret expiry |
+| Azure expiry warning | ✅ | Red ≤14 days, yellow ≤30 days on dashboard |
+
+## Calendar — Verification
+
+| Feature | Works | Notes |
+|---------|-------|-------|
+| Monthly view | ✅ | 7-column grid, entries in day cells, today highlighted |
+| Weekly view | ✅ | 7 columns with taller rows |
+| Daily view | ✅ | Single column with full entry cards |
+| Contracts on calendar | ✅ | Uses event_date, color by status |
+| Inquiries on calendar | ✅ | Uses event_date or created_at fallback |
+| Inquiry→contract dedup | ✅ | Linked inquiries hidden when contract exists |
+| Color legend guide | ✅ | Toggle panel explaining all colors |
+| Click to navigate | ✅ | Entries link to contract/inquiry detail |
+| Inquiry event_date | ✅ | New field, editable on detail page |
 
 ## Database — Verification
 
@@ -121,8 +147,10 @@
 | page_images | ✅ | ✅ | Public read, service role write |
 | page_content | ✅ | ✅ | Public read, service role write |
 | blog_posts | ✅ | ✅ | Public read published only, service role all |
-| inquiries | ✅ | ✅ | Service role only |
+| inquiries | ✅ | ✅ | Service role only, has event_date field |
 | quotes | ✅ | ✅ | Service role only, FK to inquiries |
+| email_templates | ✅ | ✅ | Service role only |
+| email_logs | ✅ | ✅ | Service role only, FK to email_templates |
 
 ## Image Pipeline — Verification
 
@@ -318,8 +346,20 @@
 | UTM parameters defined | ✅ | utm_source=google, utm_medium=cpc, per-campaign |
 | Landing pages identified | ✅ | /wall-wraps, /dance-floor-wraps, /wedding-floor-wrap |
 | GA4 conversion tracking ready | ✅ | generate_lead as primary, phone_click as secondary |
-| GA4 → Google Ads linking | ⬜ | Pending: link GA4 property to Google Ads account |
-| Google Ads campaign live | ⬜ | Pending: create campaign in Google Ads dashboard |
+| Google Ads account created | ✅ | Account ID: 342-087-0676 |
+| GA4 → Google Ads linking | ✅ | Property 530146539 linked during account creation |
+| Budget set to $300/month | ✅ | $10/day, Maximize Clicks bidding |
+| PMax campaign removed | ✅ | Permanently removed from account |
+| Search campaign draft created | ✅ | Bidding: Maximize Clicks, Networks: Search only |
+| Campaign locations set | ✅ | Virginia, Maryland, District of Columbia |
+| Campaign keywords added | ✅ | 72 keywords across 7 services (wall wraps, floor wraps, window wraps, channel letters, neon signs, food truck wraps, business signage) |
+| Campaign ads created | ✅ | 5 headlines + 2 descriptions |
+| Campaign budget set | ✅ | $10/day ($300/month), est. 155 clicks/week at $0.45 CPC |
+| GA4 gtag on live site | ✅ | G-6K8LW0P8B9 loading, dataLayer active |
+| generate_lead event | ✅ | Fires from contact form, catalog viewer, floating widget |
+| Campaign published | ⬜ | Pending: click Publish in Review step |
+| Advertiser verification | ⬜ | Pending: Google requires before ads run |
+| Import GA4 conversions | ⬜ | Pending: import generate_lead + phone_click in Google Ads |
 
 ## Planned Tests
 - [ ] E2E: Navigation between all 32 pages

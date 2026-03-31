@@ -752,8 +752,8 @@
 ## 2026-03-28 — Google Ads Plan & Marketing Documentation
 
 ### What was done
-- Created comprehensive Google Ads plan for $100 test budget
-- Single Search campaign with 2 ad groups: Wall Wraps (~$50) + Floor Wraps (~$50)
+- Created comprehensive Google Ads plan
+- Single Search campaign with 2 ad groups: Wall Wraps + Floor Wraps
 - 16 high-intent keywords (8 per ad group) — phrase + exact match only
 - 15 negative keywords to block DIY/tutorial/job traffic
 - Responsive search ad copy written for both ad groups (5 headlines + 2 descriptions each)
@@ -764,14 +764,109 @@
 - Created design doc: docs/plans/2026-03-28-google-ads-plan-design.md
 
 ### Decisions
-- Maximize Clicks bidding (not Maximize Conversions) — need data first at $100 budget
-- Max CPC cap of $5 to prevent single expensive clicks burning budget
-- No broad match keywords — too risky at this spend level
+- Maximize Clicks bidding (not Maximize Conversions) — need data first
 - Mon–Sat 8AM–7PM schedule (business hours + buffer)
 - Search only (no Display, no Search Partners) — highest intent traffic
 
+---
+
+## 2026-03-29 — Google Ads Account Setup & Campaign Decision
+
+### What was done
+- Created Google Ads account: **342-087-0676**
+- GA4 property **530146539** (G-6K8LW0P8B9) linked to Google Ads during account creation
+- Budget set to **$300/month** ($10/day) — upgraded from initial $100 test
+- Bidding: Maximize Clicks
+- Locations configured: Virginia, Maryland, Washington D.C.
+- Payment method added: Mastercard ****1410
+
+### Issues & Pivots
+- Google's new account wizard defaulted to **Performance Max** campaign (not Search)
+- PMax requires images and shows ads across all Google channels (Search, Display, YouTube, Maps, Gmail)
+- User decided: **Search-only campaign** is better for the budget — text ads targeting high-intent searchers
+- **Permanently removed** PMax campaign #1 from account
+- Created new **Search campaign draft**: `Printec – Wall & Floor Wraps – Search`
+  - Bidding: Maximize Clicks
+  - Networks: Search only (unchecked Search Partners + Display Network)
+  - Location: Virginia added (MD + DC to be added manually — dropdown keeps selecting congressional districts)
+
+### Updated Documentation
+- MARKETING.md: $300/month budget, account ID, GA4 linking, setup TODO checklist
+- TDD.md: Added progress tracking for each campaign setup step
+- CLAUDE.md: Updated campaign status
+- DEVLOG.md: Full session log
+
+### Campaign Setup Completed
+- Locations: Virginia, Maryland, District of Columbia (all states)
+- Keywords: **32 total** (16 wall wrap + 16 floor wrap) — expanded from original 16
+- Ad copy: 5 headlines (Custom Wall & Floor Wraps, Free Quote - Fast Turnaround, Serving VA MD & DC, Printec Virginia LLC, Professional Installation) + 2 descriptions
+- Budget: $10/day ($300/month)
+- Estimated performance: 155 weekly clicks, $0.45 avg CPC, $70/week
+- Networks: Search only (Display + Search Partners unchecked)
+- AI Max: Off
+
+### GA4 Verification (Live Site)
+- `gtag()` function: working on printecwrap.com
+- Measurement ID: G-6K8LW0P8B9 confirmed loading
+- DataLayer: active (4 entries on page load)
+- `generate_lead` fires from: contact form, catalog viewer, floating widget (3 sources)
+- `phone_click` fires from: all tel: links across site
+- GA4 linked to Google Ads: confirmed (Property 530146539)
+
 ### Next Steps
-- Link GA4 property (G-6K8LW0P8B9) to Google Ads account
-- Create campaign in Google Ads dashboard using the plan
-- Mark `generate_lead` as Key Event (conversion) in GA4 once events appear
-- Monitor for 30 days, then scale or optimize based on results
+1. Publish campaign (click Publish in Review step)
+2. Complete advertiser verification (Google requires before ads run)
+3. Import GA4 `generate_lead` as primary conversion in Google Ads
+4. Monitor for 30 days
+
+---
+
+## 2026-03-29 — Booking Calendar
+
+### What was done
+- Created `/admin/calendar` page with monthly, weekly, and daily views
+- Shows contracts (by event_date) and inquiries (by event_date or created_at)
+- Color-coded: blue=inquiry, yellow=pending, orange=sent, green=signed, gray=completed, red=cancelled
+- Inquiries linked to a contract are hidden (no duplicates)
+- Toggleable color guide panel explaining all statuses
+- Click any entry → navigates to contract/inquiry detail
+- Added `event_date` column to inquiries table (nullable, editable on detail page)
+- Added Calendar to admin sidebar nav (position 3, after Statistics)
+
+---
+
+## 2026-03-29 — Email Marketing System
+
+### What was done
+- Built complete email marketing system at `/admin/emails`
+- **Compose page**: Tiptap WYSIWYG editor + recipient picker sidebar
+- **Recipients**: pulls from inquiries + catalog leads + contracts, deduplicated by email
+- **Filters**: by source (Inquiry/Catalog/Contract) + search by name/email
+- **Placeholders**: `{name}`, `{email}`, `{service}` auto-replaced per recipient
+- **Sending**: individual sends via Microsoft Graph (personalized, not BCC)
+- **Templates**: save/load/edit/delete reusable email templates
+- **Sent log**: tracks every email with success/failed status
+- **Branded wrapper**: dark/orange Printec theme on every outbound email
+- Added Emails to admin sidebar nav (after Quotes)
+
+### Database
+- `email_templates` — name, subject, body (HTML)
+- `email_logs` — template_id, subject, recipient_email, recipient_name, status, sent_at
+
+---
+
+## 2026-03-30 — Contact Form Bug Fix & Azure Health Check
+
+### What was done
+- **Bug fix**: Contact form was sending notification email BEFORE saving to DB. If email failed (Azure auth error, rate limit), the `throw` killed the request and inquiry was never saved. Customer Leslie Gonzales was lost this way.
+- **Fix**: DB save now happens FIRST. Email failures no longer prevent customer from being saved.
+- **Manually added** Leslie Gonzales inquiry to Supabase (was lost before fix)
+- **Azure health check**: New `/api/admin/azure-status` endpoint tests credentials + email access
+- **Dashboard card**: Shows email service status (Active green / Down red)
+- **Secret expiry**: Shows client secret expiry date + days remaining
+- **Warning colors**: red at ≤14 days, yellow at ≤30 days
+- **Alert**: When emails are down, dashboard warns "Contact forms saving to DB but emails not being sent"
+
+### Decisions
+- DB-first is non-negotiable — never lose a customer due to email infrastructure failure
+- Azure health check runs on dashboard load (not a cron — lightweight enough)

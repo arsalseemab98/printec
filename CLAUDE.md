@@ -82,6 +82,11 @@ src/
 │   │   ├── promos/page.tsx           # Promo slider management (create/edit/toggle/reorder)
 │   │   ├── statistics/page.tsx         # Full analytics dashboard (Recharts)
 │   │   ├── images/page.tsx            # Image manager (view, upload, delete)
+│   │   ├── calendar/page.tsx          # Booking calendar (monthly/weekly/daily views)
+│   │   ├── emails/                   # Email marketing system
+│   │   │   ├── page.tsx              # Email dashboard (sent log, stats)
+│   │   │   ├── compose/page.tsx      # Compose email (Tiptap WYSIWYG + recipient picker)
+│   │   │   └── templates/page.tsx    # Saved email templates CRUD
 │   │   ├── contracts/                # Digital contract management
 │   │   │   ├── page.tsx              # Contract list (Pending/Sent/Signed filter)
 │   │   │   ├── new/page.tsx          # Create contract (manual or from inquiry)
@@ -106,7 +111,9 @@ src/
 │   │       ├── customers/            # Unified customers API (inquiries + leads)
 │   │       ├── promo-slides/         # Promo slides CRUD + toggle active
 │   │       ├── contracts/            # Contracts CRUD + send signing link
-│   │       └── quotes/              # Quotes CRUD + send PDF
+│   │       ├── quotes/              # Quotes CRUD + send PDF
+│   │       ├── emails/              # Email marketing (send, templates, recipients, logs)
+│   │       └── azure-status/        # Azure email health check endpoint
 │   ├── api/promo-slides/route.ts     # Public: fetch active promo slides
 │   ├── sitemap.ts                    # Auto-generated sitemap
 │   ├── robots.ts                     # Robots.txt
@@ -235,6 +242,9 @@ npx next build             # Production build
   - "Send This Design" inquiry form within catalog viewer (auto-fills service category)
   - Catalog leads saved to catalog_leads table with slug tracking
   - **Promos**: Promotional slider bar below navbar with auto-rotating offers, admin CRUD at /admin/promos (create/edit/toggle active/reorder/delete)
+  - **Calendar**: Booking calendar (/admin/calendar) — monthly/weekly/daily views, contracts + inquiries color-coded, click to detail
+  - **Emails**: Email marketing system (/admin/emails) — compose with Tiptap WYSIWYG, recipient picker (inquiries + catalog leads + contracts), placeholders {name}/{email}/{service}, save/load templates, individual sends via Microsoft Graph, sent log
+  - **Azure Health**: Dashboard shows email service status (active/down), client secret expiry date + days remaining, warning at ≤30 days
   - **Fully mobile responsive** — all admin pages work on phone/tablet (responsive grids, collapsing layouts)
   - **Inquiries & Quotes**: card layout on mobile (no horizontal scroll), full table on desktop (admin-desktop-only / admin-mobile-only CSS toggle)
   - **Auto-refresh**: browser auto-reloads when new deploy goes live (polls /api/version every 30s)
@@ -247,18 +257,24 @@ npx next build             # Production build
 - **Contract emails**: Signing link sent to customer, signed PDF to both parties
 - **UTM tracking**: Captured from URL params, included in notification emails
 - **Rate limiting**: 60s cooldown per email+source
+- **DB-first**: Contact form saves inquiry to DB before sending emails (prevents data loss if email fails)
+- **Email marketing**: Compose + send bulk emails from /admin/emails with Tiptap editor
+- **Templates**: Save reusable email templates with placeholder support
+- **Azure health check**: /api/admin/azure-status tests credentials + shows secret expiry
 
 ## Database Tables (Supabase)
 - `page_images` — page_slug, slot, url, alt_text
 - `page_content` — page_slug, field, value
 - `blog_posts` — slug, title, excerpt, category, content (HTML), published
-- `inquiries` — name, email, phone, service, status, booked_price, completed_price, utm_*
+- `inquiries` — name, email, phone, service, status, booked_price, completed_price, event_date, utm_*
 - `quotes` — inquiry_id, quote_number (PQ-001), items (jsonb), total, sent_at
 - `contracts` — inquiry_id (nullable), contract_number (PC-001), event_date, venue, service_description, total_price, advance_amount, balance_amount, balance_due, travel_cost, client_name, client_email, terms (jsonb), signature_data, signed_at, sent_at, status (Pending/Sent/Signed/Completed/Cancelled), completed_at
 - `catalogs` — id (uuid), title, slug (unique), description, created_at
 - `catalog_projects` — id (uuid), catalog_id (FK→catalogs, cascade delete), title, description, image_url, specs (jsonb array of {label,value}), sort_order, created_at
 - `catalog_leads` — id (uuid), catalog_slug, name, email, created_at
 - `promo_slides` — id (uuid), text, link, active (boolean), sort_order, created_at
+- `email_templates` — id (uuid), name, subject, body (HTML), created_at
+- `email_logs` — id (uuid), template_id (FK→email_templates, nullable), subject, recipient_email, recipient_name, status (sent/failed), sent_at
 
 ## Environment Variables
 - `NEXT_PUBLIC_SUPABASE_URL` — Supabase project URL
@@ -312,7 +328,8 @@ npx next build             # Production build
 - GA4 event helper: `src/lib/gtag.ts` — trackEvent() wrapper used across 8 components
 - GA4 disabled on /admin/* and /sign/* pages (same as Clarity)
 - Microsoft Clarity for heatmaps and session recordings
-- Google Ads: Search campaign planned for Wall Wraps + Floor Wraps (DMV area, $100 test budget)
+- Google Ads: Account 342-087-0676, Search campaign ready to publish (PMax removed). 72 keywords across 7 services, $10/day, DMV area
+- GA4 linked to Google Ads (Property 530146539). GA4 verified on live site. Pending: publish campaign, advertiser verification, import conversions
 - Marketing plan documented in MARKETING.md (campaigns, UTM params, scaling strategy)
 - Preconnect + dns-prefetch to Supabase CDN in layout for faster image loads
 - Gallery images use Next.js `<Image>` with `fill` + responsive `sizes` (auto AVIF/WebP, CDN cached 1yr)

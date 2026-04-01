@@ -336,16 +336,34 @@ export function Footer() {
           >
             &copy; 2026 Printec Virginia LLC. All rights reserved.
           </span>
-          <span
+          <a
+            href="https://www.swiftcore.se/"
+            target="_blank"
+            rel="noopener noreferrer"
             style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "6px",
               fontSize: "12px",
               fontFamily: "Arial, sans-serif",
               color: `${WHITE}44`,
               letterSpacing: "0.5px",
+              textDecoration: "none",
+              transition: "color 0.15s",
             }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = ORANGE; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = `${WHITE}44`; }}
           >
-            Woodbridge, VA 22191
-          </span>
+            Created by
+            <Image
+              src="/swiftcore-logo.png"
+              alt="SwiftCore"
+              width={20}
+              height={20}
+              style={{ height: "16px", width: "auto", opacity: 0.5, transition: "opacity 0.15s" }}
+            />
+            SwiftCore
+          </a>
         </div>
       </div>
     </footer>

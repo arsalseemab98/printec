@@ -22,3 +22,36 @@ export async function GET(req: NextRequest) {
 
   return NextResponse.json(data);
 }
+
+export async function POST(req: NextRequest) {
+  const supabase = createServerClient();
+  const body = await req.json();
+  const { name, email, phone, service, description, source, status } = body;
+
+  if (!name || !email) {
+    return NextResponse.json(
+      { error: "Name and email are required." },
+      { status: 400 }
+    );
+  }
+
+  const { data, error } = await supabase
+    .from("inquiries")
+    .insert({
+      name,
+      email,
+      phone: phone || null,
+      service: service || null,
+      description: description || null,
+      source: source || "admin",
+      status: status || "New",
+    })
+    .select()
+    .single();
+
+  if (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+
+  return NextResponse.json(data, { status: 201 });
+}

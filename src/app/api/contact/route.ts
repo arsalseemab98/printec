@@ -3,6 +3,7 @@ import { ClientSecretCredential } from "@azure/identity";
 import { Client } from "@microsoft/microsoft-graph-client";
 import { TokenCredentialAuthenticationProvider } from "@microsoft/microsoft-graph-client/authProviders/azureTokenCredentials";
 import { createServerClient } from "@/lib/supabase";
+import { runAntiSpamChecks } from "@/lib/antispam";
 
 // ── Rate limiting (in-memory) ──
 const recentSubmissions = new Map<string, number>();
@@ -153,7 +154,25 @@ function escapeHtml(str: string): string {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { name, email, phone, service, description, budget, source, page, utm_source, utm_medium, utm_campaign, utm_term, utm_content } = body;
+    const { name, email, phone, service, description, budget, source, page, utm_source, utm_medium, utm_campaign, utm_term, utm_content, turnstileToken, _hp_website, _formLoadedAt } = body;
+
+    // ── Anti-spam checks ──
+    const spamCheck = await runAntiSpamChecks({
+      turnstileToken,
+      email: email || "",
+      honeypot: _hp_website,
+      formLoadedAt: _formLoadedAt,
+      name: name || "",
+      message: description || "",
+    });
+    if (!spamCheck.ok) {
+      // Honeypot: silently return success so bots think it worked
+      if (spamCheck.error === "__honeypot__") {
+        return NextResponse.json({ success: true });
+      }
+      console.warn(`[Contact API] Anti-spam blocked: ${spamCheck.error}`);
+      return NextResponse.json({ error: spamCheck.error }, { status: 400 });
+    }
 
     cleanupRateLimit();
 

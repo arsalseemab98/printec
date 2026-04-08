@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Search, Copy, Check } from "lucide-react";
+import { ArrowLeft, Search, Copy, Check, Plus, FileText } from "lucide-react";
 import Link from "next/link";
 
 interface Customer {
@@ -106,6 +106,39 @@ export default function CustomersPage() {
       router.push(`/admin/inquiries/${c.id}`);
     } else {
       router.push("/admin/catalogs/leads");
+    }
+  }
+
+  async function handleCreateInquiry(c: Customer, e: React.MouseEvent) {
+    e.stopPropagation();
+    const res = await fetch("/api/admin/inquiries", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: c.name,
+        email: c.email,
+        phone: c.phone || null,
+        service: c.service || null,
+        source: "catalog-lead",
+      }),
+    });
+    if (res.ok) {
+      const data = await res.json();
+      router.push(`/admin/inquiries/${data.id}`);
+    }
+  }
+
+  function handleCreateContract(c: Customer, e: React.MouseEvent) {
+    e.stopPropagation();
+    if (c.type === "inquiry") {
+      router.push(`/admin/contracts/new?inquiry_id=${c.id}`);
+    } else {
+      // For catalog leads, pass name/email as query params
+      const params = new URLSearchParams({
+        client_name: c.name,
+        client_email: c.email,
+      });
+      router.push(`/admin/contracts/new?${params.toString()}`);
     }
   }
 
@@ -384,6 +417,7 @@ export default function CustomersPage() {
                   "Type",
                   "Status",
                   "Date",
+                  "Actions",
                 ].map((h) => (
                   <th
                     key={h}
@@ -513,6 +547,62 @@ export default function CustomersPage() {
                       day: "numeric",
                       year: "numeric",
                     })}
+                  </td>
+                  <td
+                    style={{
+                      padding: "0.75rem 0.5rem",
+                      borderBottom: "1px solid #161616",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    <div style={{ display: "flex", gap: "6px" }}>
+                      {c.type === "catalog_lead" && (
+                        <button
+                          onClick={(e) => handleCreateInquiry(c, e)}
+                          title="Create Inquiry from this lead"
+                          style={{
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: "4px",
+                            padding: "4px 10px",
+                            background: "rgba(59,130,246,0.1)",
+                            border: "1px solid rgba(59,130,246,0.3)",
+                            borderRadius: "4px",
+                            color: "#3b82f6",
+                            fontSize: "11px",
+                            fontWeight: 600,
+                            cursor: "pointer",
+                            transition: "all 0.2s",
+                          }}
+                          onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(59,130,246,0.2)"; }}
+                          onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(59,130,246,0.1)"; }}
+                        >
+                          <Plus size={12} /> Inquiry
+                        </button>
+                      )}
+                      <button
+                        onClick={(e) => handleCreateContract(c, e)}
+                        title="Create Contract for this customer"
+                        style={{
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: "4px",
+                          padding: "4px 10px",
+                          background: "rgba(247,148,29,0.1)",
+                          border: "1px solid rgba(247,148,29,0.3)",
+                          borderRadius: "4px",
+                          color: "#F7941D",
+                          fontSize: "11px",
+                          fontWeight: 600,
+                          cursor: "pointer",
+                          transition: "all 0.2s",
+                        }}
+                        onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(247,148,29,0.2)"; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(247,148,29,0.1)"; }}
+                      >
+                        <FileText size={12} /> Contract
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}

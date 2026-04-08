@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { trackEvent } from "@/lib/gtag";
+import { Turnstile } from "@/components/shared/turnstile";
 
 const ORANGE = "#F7941D";
 const BLACK = "#0C0C0C";
@@ -45,6 +46,10 @@ export default function CatalogViewer({ catalog, projects }: CatalogViewerProps)
   const [inquiryMessage, setInquiryMessage] = useState("");
   const [inquirySending, setInquirySending] = useState(false);
   const [inquirySent, setInquirySent] = useState(false);
+  const [turnstileToken, setTurnstileToken] = useState("");
+  const inquiryLoadedAt = useRef(Date.now());
+  const handleTurnstileVerify = useCallback((token: string) => setTurnstileToken(token), []);
+  const handleTurnstileExpire = useCallback(() => setTurnstileToken(""), []);
 
   function openInquiry() {
     setInquirySent(false);
@@ -68,6 +73,9 @@ export default function CatalogViewer({ catalog, projects }: CatalogViewerProps)
           description: `[Catalog Inquiry] Interested in: "${currentProject?.title}" from the "${catalog.title}" catalog.\n\n${inquiryMessage.trim() || "No additional message."}`,
           source: "catalog",
           budget: "",
+          turnstileToken,
+          _hp_website: (document.getElementById("_hp_cv_website") as HTMLInputElement)?.value || "",
+          _formLoadedAt: inquiryLoadedAt.current,
         }),
       });
       setInquirySent(true);
@@ -826,6 +834,14 @@ export default function CatalogViewer({ catalog, projects }: CatalogViewerProps)
                         onBlur={(e) => { e.currentTarget.style.borderColor = DARK2; }}
                       />
                     </div>
+                    {/* Honeypot */}
+                    <div style={{ position: "absolute", left: "-9999px", opacity: 0, height: 0, overflow: "hidden" }} aria-hidden="true">
+                      <input type="text" id="_hp_cv_website" name="_hp_website" tabIndex={-1} autoComplete="off" />
+                    </div>
+
+                    {/* Turnstile */}
+                    <Turnstile onVerify={handleTurnstileVerify} onExpire={handleTurnstileExpire} />
+
                     <button
                       type="submit"
                       disabled={inquirySending}

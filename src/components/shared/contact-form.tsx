@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, FormEvent } from "react";
+import { useState, useRef, FormEvent, useCallback } from "react";
 import { ORANGE, BLACK, WHITE, DARK1, DARK2 } from "@/lib/constants";
 import { trackEvent } from "@/lib/gtag";
 import { Section } from "@/components/shared/section";
+import { Turnstile } from "@/components/shared/turnstile";
 import { Phone, Mail, MessageCircle, MapPin, Clock, User, Send, Instagram, Facebook } from "lucide-react";
 
 const BUDGET_OPTIONS = [
@@ -90,6 +91,10 @@ export function ContactForm() {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [turnstileToken, setTurnstileToken] = useState("");
+  const formLoadedAt = useRef(Date.now());
+  const handleTurnstileVerify = useCallback((token: string) => setTurnstileToken(token), []);
+  const handleTurnstileExpire = useCallback(() => setTurnstileToken(""), []);
 
   function handleChange(
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
@@ -109,6 +114,9 @@ export function ContactForm() {
           ...formData,
           source: "contact-form",
           page: window.location.pathname,
+          turnstileToken,
+          _hp_website: (document.getElementById("_hp_website") as HTMLInputElement)?.value || "",
+          _formLoadedAt: formLoadedAt.current,
           ...Object.fromEntries(
             ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content"]
               .map((k) => [k, new URLSearchParams(window.location.search).get(k)])
@@ -532,6 +540,17 @@ export function ContactForm() {
                     onFocus={(e) => (e.currentTarget.style.borderColor = ORANGE)}
                     onBlur={(e) => (e.currentTarget.style.borderColor = "#222")}
                   />
+                </div>
+
+                {/* Honeypot — hidden from humans */}
+                <div style={{ position: "absolute", left: "-9999px", opacity: 0, height: 0, overflow: "hidden" }} aria-hidden="true">
+                  <label htmlFor="_hp_website">Website</label>
+                  <input type="text" id="_hp_website" name="_hp_website" tabIndex={-1} autoComplete="off" />
+                </div>
+
+                {/* Turnstile CAPTCHA */}
+                <div style={{ marginBottom: "20px" }}>
+                  <Turnstile onVerify={handleTurnstileVerify} onExpire={handleTurnstileExpire} />
                 </div>
 
                 {/* Error message */}

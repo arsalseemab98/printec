@@ -1,10 +1,27 @@
 import { NextResponse } from "next/server";
 import { createServerClient } from "@/lib/supabase";
+import { runAntiSpamChecks } from "@/lib/antispam";
 
 export async function POST(req: Request) {
   const supabase = createServerClient();
   const body = await req.json();
-  const { name, email, catalog_slug } = body;
+  const { name, email, catalog_slug, turnstileToken, _hp_website, _formLoadedAt } = body;
+
+  // ── Anti-spam checks ──
+  const spamCheck = await runAntiSpamChecks({
+    turnstileToken,
+    email: email || "",
+    honeypot: _hp_website,
+    formLoadedAt: _formLoadedAt,
+    name: name || "",
+  });
+  if (!spamCheck.ok) {
+    if (spamCheck.error === "__honeypot__") {
+      return NextResponse.json({ id: "fake", name, email, catalog_slug }, { status: 201 });
+    }
+    console.warn(`[Catalog Leads API] Anti-spam blocked: ${spamCheck.error}`);
+    return NextResponse.json({ error: spamCheck.error }, { status: 400 });
+  }
 
   if (!name || !email || !catalog_slug) {
     return NextResponse.json(

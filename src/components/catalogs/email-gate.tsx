@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useEffect, FormEvent } from "react";
+import { useState, useEffect, useRef, useCallback, FormEvent } from "react";
 import Image from "next/image";
 import { trackEvent } from "@/lib/gtag";
+import { Turnstile } from "@/components/shared/turnstile";
 
 interface EmailGateProps {
   catalogTitle: string;
@@ -21,6 +22,10 @@ export default function EmailGate({ catalogTitle, catalogSlug, onUnlock }: Email
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [visible, setVisible] = useState(false);
+  const [turnstileToken, setTurnstileToken] = useState("");
+  const formLoadedAt = useRef(Date.now());
+  const handleTurnstileVerify = useCallback((token: string) => setTurnstileToken(token), []);
+  const handleTurnstileExpire = useCallback(() => setTurnstileToken(""), []);
 
   useEffect(() => {
     const key = "catalog_unlocked_" + catalogSlug;
@@ -44,7 +49,14 @@ export default function EmailGate({ catalogTitle, catalogSlug, onUnlock }: Email
       const res = await fetch("/api/catalog-leads", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: name.trim(), email: email.trim(), catalog_slug: catalogSlug }),
+        body: JSON.stringify({
+          name: name.trim(),
+          email: email.trim(),
+          catalog_slug: catalogSlug,
+          turnstileToken,
+          _hp_website: (document.getElementById("_hp_gate_website") as HTMLInputElement)?.value || "",
+          _formLoadedAt: formLoadedAt.current,
+        }),
       });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
@@ -224,6 +236,16 @@ export default function EmailGate({ catalogTitle, catalogSlug, onUnlock }: Email
               style={{ ...inputStyle, marginBottom: "16px" }}
               required
             />
+
+            {/* Honeypot */}
+            <div style={{ position: "absolute", left: "-9999px", opacity: 0, height: 0, overflow: "hidden" }} aria-hidden="true">
+              <input type="text" id="_hp_gate_website" name="_hp_website" tabIndex={-1} autoComplete="off" />
+            </div>
+
+            {/* Turnstile */}
+            <div style={{ marginBottom: "12px" }}>
+              <Turnstile onVerify={handleTurnstileVerify} onExpire={handleTurnstileExpire} />
+            </div>
 
             {error && (
               <p style={{ fontSize: "13px", color: "#E53935", margin: "0 0 12px" }}>{error}</p>

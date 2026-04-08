@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useCallback } from "react";
 import {
   MessageCircle,
   X,
@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { trackEvent } from "@/lib/gtag";
 import { ORANGE, BLACK, DARK1, DARK2, WHITE, IMG } from "@/lib/constants";
+import { Turnstile } from "@/components/shared/turnstile";
 import Image from "next/image";
 
 type View = "menu" | "form" | "success";
@@ -63,6 +64,10 @@ export function FloatingActionButton() {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [turnstileToken, setTurnstileToken] = useState("");
+  const formLoadedAt = useRef(Date.now());
+  const handleTurnstileVerify = useCallback((token: string) => setTurnstileToken(token), []);
+  const handleTurnstileExpire = useCallback(() => setTurnstileToken(""), []);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -80,6 +85,9 @@ export function FloatingActionButton() {
           description: formData.message,
           source: "floating-widget",
           page: window.location.pathname,
+          turnstileToken,
+          _hp_website: (document.getElementById("_hp_fab_website") as HTMLInputElement)?.value || "",
+          _formLoadedAt: formLoadedAt.current,
           ...Object.fromEntries(
             ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content"]
               .map((k) => [k, new URLSearchParams(window.location.search).get(k)])
@@ -478,6 +486,14 @@ export function FloatingActionButton() {
                   <option value="Graphic Design">Graphic Design</option>
                   <option value="Other">Other</option>
                 </select>
+                {/* Honeypot */}
+                <div style={{ position: "absolute", left: "-9999px", opacity: 0, height: 0, overflow: "hidden" }} aria-hidden="true">
+                  <input type="text" id="_hp_fab_website" name="_hp_website" tabIndex={-1} autoComplete="off" />
+                </div>
+
+                {/* Turnstile */}
+                <Turnstile onVerify={handleTurnstileVerify} onExpire={handleTurnstileExpire} />
+
                 {error && (
                   <div
                     style={{

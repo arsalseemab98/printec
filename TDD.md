@@ -269,6 +269,28 @@
 | Company name in emails | ✅ | "Printec Virginia LLC" (was "Printec Corp") |
 | Company name in FAB | ✅ | "Printec Virginia LLC" (was "Printec Corp") |
 
+## Anti-Spam / Bot Protection — Verification
+
+| Feature | Status | Notes |
+|---------|--------|-------|
+| Honeypot field (contact form) | ✅ | Hidden `_hp_website` input, bots auto-fill → silently rejected |
+| Honeypot field (FAB widget) | ✅ | Hidden `_hp_fab_website` input |
+| Honeypot field (email gate) | ✅ | Hidden `_hp_gate_website` input |
+| Honeypot field (catalog viewer) | ✅ | Hidden `_hp_cv_website` input |
+| Timing check (all forms) | ✅ | Rejects submissions < 3 seconds, `_formLoadedAt` timestamp |
+| Server-side email regex | ✅ | Validates format + domain has dot, rejects garbage |
+| Honeypot returns fake success | ✅ | API returns `{ success: true }` to fool bots |
+| Anti-spam utility (`antispam.ts`) | ✅ | Shared checks used by both API routes |
+| `/api/contact` anti-spam | ✅ | Runs all checks before validation/rate-limit |
+| `/api/catalog-leads` anti-spam | ✅ | Runs all checks before insert |
+| Turnstile widget (contact form) | ⚠️ | Component integrated, dark theme — NOT ACTIVE (no keys) |
+| Turnstile widget (FAB widget) | ⚠️ | Component integrated — NOT ACTIVE (no keys) |
+| Turnstile widget (email gate) | ⚠️ | Component integrated — NOT ACTIVE (no keys) |
+| Turnstile widget (catalog viewer) | ⚠️ | Component integrated — NOT ACTIVE (no keys) |
+| Turnstile server verification | ⚠️ | `verifyTurnstile()` in antispam.ts — fails open if keys missing |
+| Turnstile env vars on Vercel | ⬜ | Pending: `NEXT_PUBLIC_TURNSTILE_SITE_KEY` + `TURNSTILE_SECRET_KEY` |
+| Cloudflare Turnstile account setup | ⬜ | Pending: create site at dash.cloudflare.com, add printecwrap.com + localhost |
+
 ## Catalogs — Public Pages Verification
 
 | Page | Route | Builds | Loads | SEO Meta | Status |

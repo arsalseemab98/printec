@@ -256,8 +256,12 @@ npx next build             # Production build
 - **Quote emails**: Branded PDF attachment with quote details
 - **Contract emails**: Signing link sent to customer, signed PDF to both parties
 - **UTM tracking**: Captured from URL params, included in notification emails
-- **Rate limiting**: 60s cooldown per email+source
+- **Rate limiting**: 60s cooldown per email+source (in-memory)
 - **DB-first**: Contact form saves inquiry to DB before sending emails (prevents data loss if email fails)
+- **Anti-spam**: All public forms protected with honeypot field, timing check (3s minimum), server-side email regex validation
+- **Turnstile**: Cloudflare Turnstile CAPTCHA integrated but NOT ACTIVE yet — needs site key + secret key from Cloudflare dashboard. Fails open (won't block users if keys missing/invalid)
+- **Anti-spam utility**: `src/lib/antispam.ts` — shared server-side checks used by both `/api/contact` and `/api/catalog-leads`
+- **Turnstile component**: `src/components/shared/turnstile.tsx` — reusable client widget (dark theme, explicit render)
 - **Email marketing**: Compose + send bulk emails from /admin/emails with Tiptap editor
 - **Templates**: Save reusable email templates with placeholder support
 - **Azure health check**: /api/admin/azure-status tests credentials + shows secret expiry
@@ -285,6 +289,8 @@ npx next build             # Production build
 - `AZURE_CLIENT_ID` — Microsoft Graph auth
 - `AZURE_CLIENT_SECRET` — Microsoft Graph auth
 - `EMAIL_FROM` — Sender email (info@printecwrap.com)
+- `NEXT_PUBLIC_TURNSTILE_SITE_KEY` — Cloudflare Turnstile site key (anti-bot) — NOT YET CONFIGURED
+- `TURNSTILE_SECRET_KEY` — Cloudflare Turnstile secret key (server-side verification) — NOT YET CONFIGURED
 
 ## Important Notes
 - Company established in **2017** (~9 years, NOT 25 years)

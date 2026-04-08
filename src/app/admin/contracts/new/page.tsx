@@ -70,26 +70,33 @@ function NewContractPage() {
 
   const balanceAmount = totalPrice - advanceAmount;
 
-  // Pre-fill from inquiry if inquiry_id is present
+  // Pre-fill from inquiry if inquiry_id is present, or from query params
   useEffect(() => {
-    if (!inquiryId) return;
-    async function loadInquiry() {
-      try {
-        const res = await fetch(`/api/admin/inquiries/${inquiryId}`);
-        if (res.ok) {
-          const data = await res.json();
-          setClientName(data.name || "");
-          setClientEmail(data.email || "");
-          setServiceDescription(data.service || "");
+    if (inquiryId) {
+      async function loadInquiry() {
+        try {
+          const res = await fetch(`/api/admin/inquiries/${inquiryId}`);
+          if (res.ok) {
+            const data = await res.json();
+            setClientName(data.name || "");
+            setClientEmail(data.email || "");
+            setServiceDescription(data.service || "");
+          }
+        } catch {
+          // silent
+        } finally {
+          setLoadingInquiry(false);
         }
-      } catch {
-        // silent
-      } finally {
-        setLoadingInquiry(false);
       }
+      loadInquiry();
+    } else {
+      // Pre-fill from query params (e.g. from catalog lead)
+      const name = searchParams.get("client_name");
+      const email = searchParams.get("client_email");
+      if (name) setClientName(name);
+      if (email) setClientEmail(email);
     }
-    loadInquiry();
-  }, [inquiryId]);
+  }, [inquiryId, searchParams]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();

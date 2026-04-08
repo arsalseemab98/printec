@@ -2,6 +2,41 @@
 
 ---
 
+## 2026-04-08 — Anti-Spam / Bot Protection
+
+### What was done
+- **Problem**: Bots were sending spam through all public forms (contact form, floating widget, email gate, catalog viewer inquiry). No CAPTCHA, no honeypot, no server-side email validation — forms were wide open.
+- **Honeypot fields**: Added hidden `_hp_website` inputs to all 4 forms. Bots auto-fill these; server silently returns fake success so bots think it worked.
+- **Timing check**: All forms send `_formLoadedAt` timestamp. Server rejects submissions faster than 3 seconds (bots submit instantly).
+- **Server-side email regex**: Validates format + domain has at least one dot. Catches garbage emails bots submit.
+- **Cloudflare Turnstile**: Integrated the widget (dark theme) into all 4 forms and server-side verification in both API routes. **NOT ACTIVE YET** — needs Cloudflare account + site key + secret key. Fails open so real customers aren't blocked while keys are missing.
+- **Shared utility**: Created `src/lib/antispam.ts` with `runAntiSpamChecks()` — single function runs honeypot, timing, email, and Turnstile checks in order.
+- **Reusable component**: Created `src/components/shared/turnstile.tsx` — handles script loading, explicit render, cleanup on unmount.
+
+### Files changed
+- `src/lib/antispam.ts` — NEW: server-side anti-spam checks
+- `src/components/shared/turnstile.tsx` — NEW: Turnstile client widget
+- `src/app/api/contact/route.ts` — Added anti-spam checks before processing
+- `src/app/api/catalog-leads/route.ts` — Added anti-spam checks before insert
+- `src/components/shared/contact-form.tsx` — Honeypot + Turnstile + timing
+- `src/components/shared/floating-action-button.tsx` — Honeypot + Turnstile + timing
+- `src/components/catalogs/email-gate.tsx` — Honeypot + Turnstile + timing
+- `src/components/catalogs/catalog-viewer.tsx` — Honeypot + Turnstile + timing
+- `.env.local` — Added placeholder Turnstile env vars
+
+### Decisions
+- Honeypot returns fake success (not 400) — bots should think submission worked, otherwise they adapt
+- Turnstile fails open — if Cloudflare is down or keys aren't set, real customers pass through. Better to let some spam through than block customers.
+- 3-second minimum timing — generous enough for fast typists, still catches instant bot submissions
+- Each form has its own honeypot ID (`_hp_website`, `_hp_fab_website`, `_hp_gate_website`, `_hp_cv_website`) to avoid DOM ID conflicts since multiple forms can exist on the same page
+
+### TODO
+- [ ] Create Cloudflare account and Turnstile site (printecwrap.com + localhost)
+- [ ] Add `NEXT_PUBLIC_TURNSTILE_SITE_KEY` and `TURNSTILE_SECRET_KEY` to Vercel env vars
+- [ ] Monitor spam levels — if honeypot + timing aren't enough, activate Turnstile
+
+---
+
 ## 2026-03-18 — Initial Build
 
 ### What was done

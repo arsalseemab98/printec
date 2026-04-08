@@ -234,7 +234,9 @@ npx next build             # Production build
   - Contract signing/completion feeds into dashboard sales metrics
   - Public signing page at /sign/[id] (customer draws signature on canvas)
   - Signed PDF emailed to both parties after signing
-  - Create contracts from inquiries (auto-fills client details)
+  - Create contracts from inquiries (auto-fills client details) or from catalog leads (via query params)
+  - Customers page: "+ Inquiry" action for catalog leads, "+ Contract" action for all customers
+  - POST /api/admin/inquiries — create inquiry from admin (used when converting catalog lead to inquiry)
   - **Catalogs**: Create/edit/delete portfolio catalogs, manage projects (images, specs, reorder), view leads
   - **Customers**: Unified view of all inquiries + catalog leads with filter/search/export
   - Interactive web catalogs: 6 categories (channel letters, vehicle wraps, window graphics, wall wraps, floor wraps, neon signs)
@@ -258,7 +260,8 @@ npx next build             # Production build
 - **UTM tracking**: Captured from URL params, included in notification emails
 - **Rate limiting**: 60s cooldown per email+source (in-memory)
 - **DB-first**: Contact form saves inquiry to DB before sending emails (prevents data loss if email fails)
-- **Anti-spam**: All public forms protected with honeypot field, timing check (3s minimum), server-side email regex validation
+- **Anti-spam**: All public forms protected with honeypot field, timing check (3s minimum), server-side email regex validation, gibberish detection
+- **Gibberish detection**: Catches bot-generated random strings — no-space names >10 chars, low vowel ratio (<15%), mixed case patterns, no-space messages >12 chars. Silent rejection (fake success).
 - **Turnstile**: Cloudflare Turnstile CAPTCHA integrated but NOT ACTIVE yet — needs site key + secret key from Cloudflare dashboard. Fails open (won't block users if keys missing/invalid)
 - **Anti-spam utility**: `src/lib/antispam.ts` — shared server-side checks used by both `/api/contact` and `/api/catalog-leads`
 - **Turnstile component**: `src/components/shared/turnstile.tsx` — reusable client widget (dark theme, explicit render)

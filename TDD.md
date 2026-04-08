@@ -288,8 +288,25 @@
 | Turnstile widget (email gate) | ⚠️ | Component integrated — NOT ACTIVE (no keys) |
 | Turnstile widget (catalog viewer) | ⚠️ | Component integrated — NOT ACTIVE (no keys) |
 | Turnstile server verification | ⚠️ | `verifyTurnstile()` in antispam.ts — fails open if keys missing |
+| Gibberish name detection | ✅ | No-space names >10 chars, low vowel ratio <15%, mixed case — silent reject |
+| Gibberish message detection | ✅ | No-space messages >12 chars, short messages with low vowel ratio — silent reject |
+| Real names pass gibberish check | ✅ | "Ali", "Muhammad", "Sarah Johnson", "Shazal Ali" all pass |
+| Spam names blocked | ✅ | "pNCzSrofeWYqYHZcu", "wpEPmvpNzokYywaYZNkXY", "xKjRtMwPqNvLs" all blocked |
+| Spam messages blocked | ✅ | "ySidLwybqINlmARubiRFCH", "lrJGanLQYQNOkcPiJF", "kPmNtRwXyZqLvBcD" all blocked |
 | Turnstile env vars on Vercel | ⬜ | Pending: `NEXT_PUBLIC_TURNSTILE_SITE_KEY` + `TURNSTILE_SECRET_KEY` |
 | Cloudflare Turnstile account setup | ⬜ | Pending: create site at dash.cloudflare.com, add printecwrap.com + localhost |
+
+## Customer Actions — Verification
+
+| Feature | Status | Notes |
+|---------|--------|-------|
+| "+ Inquiry" button on catalog leads | ✅ | Creates inquiry with name/email pre-filled, redirects to detail page |
+| "+ Contract" button on inquiries | ✅ | Links to `/admin/contracts/new?inquiry_id=` with auto-fill |
+| "+ Contract" button on catalog leads | ✅ | Links to `/admin/contracts/new?client_name=&client_email=` |
+| POST /api/admin/inquiries | ✅ | Creates inquiry from admin with name, email, phone, service, source |
+| Contract new page accepts query params | ✅ | `client_name` + `client_email` for catalog leads without inquiry_id |
+| Actions column in desktop table | ✅ | Shows per-row action buttons |
+| Actions in mobile cards | ✅ | Same buttons in card layout |
 
 ## Catalogs — Public Pages Verification
 

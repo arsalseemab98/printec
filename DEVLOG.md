@@ -14,7 +14,7 @@
 - **Reusable component**: Created `src/components/shared/turnstile.tsx` — handles script loading, explicit render, cleanup on unmount.
 
 ### Files changed
-- `src/lib/antispam.ts` — NEW: server-side anti-spam checks
+- `src/lib/antispam.ts` — NEW: server-side anti-spam checks (honeypot, timing, email regex, gibberish detection, Turnstile)
 - `src/components/shared/turnstile.tsx` — NEW: Turnstile client widget
 - `src/app/api/contact/route.ts` — Added anti-spam checks before processing
 - `src/app/api/catalog-leads/route.ts` — Added anti-spam checks before insert
@@ -22,18 +22,34 @@
 - `src/components/shared/floating-action-button.tsx` — Honeypot + Turnstile + timing
 - `src/components/catalogs/email-gate.tsx` — Honeypot + Turnstile + timing
 - `src/components/catalogs/catalog-viewer.tsx` — Honeypot + Turnstile + timing
+- `src/app/admin/customers/page.tsx` — Added Actions column with "+ Inquiry" and "+ Contract" buttons
+- `src/app/api/admin/inquiries/route.ts` — Added POST handler to create inquiries from admin
+- `src/app/admin/contracts/new/page.tsx` — Accept `client_name` + `client_email` query params for catalog leads
 - `.env.local` — Added placeholder Turnstile env vars
+
+### Gibberish detection (added after initial deploy — spam was bypassing honeypot/timing)
+- Bots like "pNCzSrofeWYqYHZcu" / "wpEPmvpNzokYywaYZNkXY" were getting through because they used valid emails, waited long enough, and didn't fill honeypot
+- Added `checkGibberish()` to detect: no-space names >10 chars, vowel ratio <15%, mixed case patterns (2+ uppercase + 2+ lowercase in a single word), no-space messages >12 chars
+- Tested against real names (Ali, Muhammad, Sarah Johnson, Shazal Ali) — all pass
+- Tested against spam names (pNCzSrofeWYqYHZcu, xKjRtMwPqNvLs) — all blocked
+- Silent rejection (returns fake success so bots don't adapt)
+
+### Customer actions (added same session)
+- Customers page now has Actions column: "+ Inquiry" for catalog leads, "+ Contract" for all
+- "+ Inquiry" creates a new inquiry via POST /api/admin/inquiries with name/email pre-filled from the catalog lead
+- "+ Contract" navigates to contract creation with auto-fill (via inquiry_id or client_name/client_email query params)
 
 ### Decisions
 - Honeypot returns fake success (not 400) — bots should think submission worked, otherwise they adapt
 - Turnstile fails open — if Cloudflare is down or keys aren't set, real customers pass through. Better to let some spam through than block customers.
 - 3-second minimum timing — generous enough for fast typists, still catches instant bot submissions
 - Each form has its own honeypot ID (`_hp_website`, `_hp_fab_website`, `_hp_gate_website`, `_hp_cv_website`) to avoid DOM ID conflicts since multiple forms can exist on the same page
+- Gibberish detection uses silent reject (fake success) — same philosophy as honeypot
 
 ### TODO
 - [ ] Create Cloudflare account and Turnstile site (printecwrap.com + localhost)
 - [ ] Add `NEXT_PUBLIC_TURNSTILE_SITE_KEY` and `TURNSTILE_SECRET_KEY` to Vercel env vars
-- [ ] Monitor spam levels — if honeypot + timing aren't enough, activate Turnstile
+- [ ] Monitor spam levels — if honeypot + timing + gibberish aren't enough, activate Turnstile
 
 ---
 

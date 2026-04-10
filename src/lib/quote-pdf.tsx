@@ -346,7 +346,7 @@ export function QuotePDF(props: QuotePDFProps) {
             <Text style={s.sectionLabel}>Prepared For</Text>
             <View style={s.infoBox}>
               <Text style={s.infoBold}>{customer.name}</Text>
-              <Text style={s.infoText}>{customer.email}</Text>
+              {customer.email && <Text style={s.infoText}>{customer.email}</Text>}
               {customer.phone && <Text style={s.infoText}>{customer.phone}</Text>}
               {customer.service && (
                 <Text style={s.infoText}>Service: {customer.service}</Text>

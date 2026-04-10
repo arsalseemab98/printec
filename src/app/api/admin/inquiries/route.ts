@@ -26,7 +26,7 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   const supabase = createServerClient();
   const body = await req.json();
-  const { name, email, phone, service, description, source, status } = body;
+  const { name, email, phone, service, description, budget, event_date, source, status } = body;
 
   if (!name) {
     return NextResponse.json(
@@ -43,6 +43,8 @@ export async function POST(req: NextRequest) {
       phone: phone || null,
       service: service || null,
       description: description || null,
+      budget: budget || null,
+      event_date: event_date || null,
       source: source || "admin",
       status: status || "New",
     })

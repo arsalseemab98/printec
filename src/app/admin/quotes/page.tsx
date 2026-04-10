@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Send, Eye, RefreshCw } from "lucide-react";
+import { Send, Eye, RefreshCw, Plus } from "lucide-react";
 
 interface Quote {
   id: string;
@@ -102,17 +102,37 @@ export default function QuotesSentPage() {
       >
         Quotes
       </p>
-      <h1
-        style={{
-          fontSize: "36px",
-          fontFamily: "Arial Black, Arial, sans-serif",
-          fontWeight: 900,
-          color: "#fff",
-          margin: "0 0 1.5rem 0",
-        }}
-      >
-        All Quotes
-      </h1>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem" }}>
+        <h1
+          style={{
+            fontSize: "36px",
+            fontFamily: "Arial Black, Arial, sans-serif",
+            fontWeight: 900,
+            color: "#fff",
+            margin: 0,
+          }}
+        >
+          All Quotes
+        </h1>
+        <Link
+          href="/admin/quotes/new"
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "0.5rem",
+            padding: "0.5rem 1rem",
+            background: "#F7941D",
+            border: "none",
+            borderRadius: "4px",
+            color: "#fff",
+            fontSize: "13px",
+            fontWeight: 600,
+            textDecoration: "none",
+          }}
+        >
+          <Plus size={14} /> Create Quote
+        </Link>
+      </div>
 
       {/* Filter Tabs */}
       <div

@@ -24,6 +24,7 @@ import {
   Grid3X3,
   CalendarDays,
   Mail,
+  PlusCircle,
 } from "lucide-react";
 
 const NAV_ITEMS = [
@@ -35,6 +36,7 @@ const NAV_ITEMS = [
   { label: "Images", href: "/admin/images", icon: ImageIcon },
   { label: "Inquiries", href: "/admin/inquiries", icon: MessageSquare },
   { label: "Quotes", href: "/admin/quotes", icon: ClipboardList },
+  { label: "  + New Quote", href: "/admin/quotes/new", icon: PlusCircle },
   { label: "Emails", href: "/admin/emails", icon: Mail },
   { label: "Contracts", href: "/admin/contracts", icon: FileSignature },
   { label: "Portfolio", href: "/admin/portfolio", icon: Grid3X3 },

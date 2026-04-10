@@ -34,6 +34,7 @@ export default function NewQuotePage() {
 
   const [name, setName] = useState("");
   const [service, setService] = useState("");
+  const [customService, setCustomService] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [description, setDescription] = useState("");
@@ -55,7 +56,8 @@ export default function NewQuotePage() {
     setError("");
 
     const trimmedName = name.trim();
-    if (!trimmedName || !service) {
+    const finalService = service === "Other" ? customService.trim() : service;
+    if (!trimmedName || !finalService) {
       setError("Name and Service are required.");
       return;
     }
@@ -70,7 +72,7 @@ export default function NewQuotePage() {
           name: trimmedName,
           email: email.trim() || null,
           phone: phone.trim() || null,
-          service,
+          service: finalService,
           description: description.trim() || null,
           budget: budget.trim() || null,
           event_date: eventDate || null,
@@ -197,7 +199,10 @@ export default function NewQuotePage() {
               </label>
               <select
                 value={service}
-                onChange={(e) => setService(e.target.value)}
+                onChange={(e) => {
+                  setService(e.target.value);
+                  if (e.target.value !== "Other") setCustomService("");
+                }}
                 style={{ ...inputStyle, cursor: "pointer", appearance: "auto" }}
                 onFocus={handleFocus}
                 onBlur={handleBlur}
@@ -208,7 +213,19 @@ export default function NewQuotePage() {
                     {s.name}
                   </option>
                 ))}
+                <option value="Other">Other</option>
               </select>
+              {service === "Other" && (
+                <input
+                  type="text"
+                  value={customService}
+                  onChange={(e) => setCustomService(e.target.value)}
+                  placeholder="Enter custom service name..."
+                  style={{ ...inputStyle, marginTop: "0.5rem" }}
+                  onFocus={handleFocus}
+                  onBlur={handleBlur}
+                />
+              )}
             </div>
 
             {/* Email */}

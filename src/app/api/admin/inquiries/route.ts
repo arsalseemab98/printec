@@ -28,9 +28,9 @@ export async function POST(req: NextRequest) {
   const body = await req.json();
   const { name, email, phone, service, description, source, status } = body;
 
-  if (!name || !email) {
+  if (!name) {
     return NextResponse.json(
-      { error: "Name and email are required." },
+      { error: "Name is required." },
       { status: 400 }
     );
   }
@@ -39,7 +39,7 @@ export async function POST(req: NextRequest) {
     .from("inquiries")
     .insert({
       name,
-      email,
+      email: email || null,
       phone: phone || null,
       service: service || null,
       description: description || null,

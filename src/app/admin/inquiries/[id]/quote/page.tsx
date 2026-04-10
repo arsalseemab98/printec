@@ -350,28 +350,30 @@ export default function QuoteBuilderPage({
               >
                 <Download size={14} /> Download PDF
               </button>
-              <button
-                onClick={handleSend}
-                disabled={sending}
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "0.5rem",
-                  padding: "0.5rem 1rem",
-                  background: sending
-                    ? "rgba(247,148,29,0.3)"
-                    : "rgba(247,148,29,0.15)",
-                  border: "1px solid #F7941D",
-                  borderRadius: "4px",
-                  color: "#F7941D",
-                  fontSize: "13px",
-                  fontWeight: 600,
-                  cursor: sending ? "wait" : "pointer",
-                  opacity: sending ? 0.6 : 1,
-                }}
-              >
-                <Send size={14} /> {sending ? "Sending..." : "Send to Customer"}
-              </button>
+              {inquiry?.email && (
+                <button
+                  onClick={handleSend}
+                  disabled={sending}
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "0.5rem",
+                    padding: "0.5rem 1rem",
+                    background: sending
+                      ? "rgba(247,148,29,0.3)"
+                      : "rgba(247,148,29,0.15)",
+                    border: "1px solid #F7941D",
+                    borderRadius: "4px",
+                    color: "#F7941D",
+                    fontSize: "13px",
+                    fontWeight: 600,
+                    cursor: sending ? "wait" : "pointer",
+                    opacity: sending ? 0.6 : 1,
+                  }}
+                >
+                  <Send size={14} /> {sending ? "Sending..." : "Send to Customer"}
+                </button>
+              )}
             </>
           )}
         </div>

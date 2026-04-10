@@ -71,8 +71,9 @@
 | Blog Editor | `/admin/blog/[slug]` | ✅ | Tiptap WYSIWYG, cover image |
 | Inquiries | `/admin/inquiries` | ✅ | Status filter tabs, search, color badges |
 | Inquiry Detail | `/admin/inquiries/[id]` | ✅ | Editable customer info, status change, notes |
-| Quote Builder | `/admin/inquiries/[id]/quote` | ✅ | Line items, PDF preview, send email |
-| Quotes List | `/admin/quotes` | ✅ | All/Sent/Not Sent filter |
+| Quote Builder | `/admin/inquiries/[id]/quote` | ✅ | Line items, PDF preview, send email (hidden if no email) |
+| Quotes List | `/admin/quotes` | ✅ | All/Sent/Not Sent filter, Create Quote button |
+| Manual Quote | `/admin/quotes/new` | ✅ | Customer form → auto-creates inquiry → redirects to quote builder |
 | Image Manager | `/admin/images` | ✅ | View grid, upload (single+bulk), delete, copy URL, search |
 | Contracts List | `/admin/contracts` | ✅ | All/Pending/Sent/Signed/Completed/Cancelled filter tabs |
 | New Contract | `/admin/contracts/new` | ✅ | Manual or auto-fill from inquiry (?inquiry_id=) |

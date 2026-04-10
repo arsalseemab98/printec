@@ -74,6 +74,9 @@ src/
 │   │   ├── inquiries/                # CRM: inquiry list, detail, quote builder
 │   │   │   ├── page.tsx              # Inquiry list (status filter, search)
 │   │   │   └── [id]/                 # Inquiry detail + quote builder
+│   │   ├── quotes/                   # Quote management
+│   │   │   ├── page.tsx              # All quotes listing (filter: All/Sent/Not Sent)
+│   │   │   └── new/page.tsx          # Manual quote creation (customer form → quote builder)
 │   │   ├── catalogs/                 # Catalog management
 │   │   │   ├── page.tsx              # Catalog list (create/delete)
 │   │   │   ├── [id]/page.tsx         # Catalog detail (edit + manage projects)
@@ -226,8 +229,9 @@ npx next build             # Production build
   - CRM: Inquiry list with status pipeline (New → Contacted → Follow Up → Quoted → Booked → Completed)
   - Editable customer details (name, email, phone, service, budget, description)
   - PDF quote generator (branded dark theme with logo, line items, totals)
-  - Quote sending via Microsoft Graph email (PDF attachment)
-  - All quotes listing page (/admin/quotes)
+  - Quote sending via Microsoft Graph email (PDF attachment) — hidden when inquiry has no email, download PDF always available
+  - Manual quote creation (/admin/quotes/new) — create quotes for walk-in/phone customers without existing inquiry (auto-creates inquiry with status "Quoted")
+  - All quotes listing page (/admin/quotes) with "Create Quote" button
   - Image manager: view all Supabase Storage images, single + bulk upload, delete, copy URL, search/filter
   - Digital contracts: create, edit, send signing link, download PDF, status management (Pending/Sent/Signed/Completed/Cancelled)
   - Contract status dropdown on detail page (manual override)

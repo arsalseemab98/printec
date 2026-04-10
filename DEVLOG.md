@@ -2,6 +2,28 @@
 
 ---
 
+## 2026-04-10 — Manual Quote Creation
+
+### What was done
+- **Problem**: Quotes were tightly coupled to inquiries — no way to create a quote for walk-in/phone customers without first creating an inquiry manually.
+- **Solution**: New `/admin/quotes/new` page that collects customer details (name + service required, email/phone/description/budget/event date optional), auto-creates an inquiry with status "Quoted", and redirects to the existing quote builder.
+- **API change**: Relaxed `POST /api/admin/inquiries` validation to require only name (email now optional, stored as null when missing).
+- **Conditional send**: "Send to Customer" button in quote builder is now hidden when the inquiry has no email — "Save" and "Download PDF" always available.
+- **Entry points**: "Create Quote" button on quotes listing page + "+ New Quote" link in admin sidebar.
+
+### Decisions
+- Chose to auto-create an inquiry rather than making quotes standalone — keeps data model intact, customer appears in CRM pipeline for tracking.
+- Required only name + service (not email) to support walk-in customers who just want a printed quote.
+
+### Files changed
+- `src/app/api/admin/inquiries/route.ts` — Relaxed validation (name only)
+- `src/app/admin/quotes/new/page.tsx` — NEW: manual quote creation form
+- `src/app/admin/quotes/page.tsx` — Added "Create Quote" button
+- `src/app/admin/layout.tsx` — Added sidebar nav item
+- `src/app/admin/inquiries/[id]/quote/page.tsx` — Conditional send button
+
+---
+
 ## 2026-04-08 — Anti-Spam / Bot Protection
 
 ### What was done

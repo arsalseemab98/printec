@@ -320,7 +320,7 @@ export default function NewQuotePage() {
                 opacity: submitting ? 0.6 : 1,
               }}
             >
-              {submitting ? "Creating..." : "Create Quote"} <ArrowRight size={14} />
+              {submitting ? "Creating..." : "Continue to Quote Builder"} <ArrowRight size={14} />
             </button>
           </div>
         </form>

@@ -18,6 +18,8 @@ import {
   AlertTriangle,
   CheckCircle,
   XCircle,
+  FileSignature,
+  Receipt,
 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 
@@ -38,6 +40,13 @@ interface ContractMetric {
   status: string;
   signed_at: string | null;
   completed_at: string | null;
+  created_at: string;
+}
+
+interface QuoteMetric {
+  id: string;
+  total: number;
+  sent_at: string | null;
   created_at: string;
 }
 
@@ -70,6 +79,7 @@ export default function AdminDashboard() {
   const [blogCount, setBlogCount] = useState<number | null>(null);
   const [inquiries, setInquiries] = useState<Inquiry[]>([]);
   const [contracts, setContracts] = useState<ContractMetric[]>([]);
+  const [quotes, setQuotes] = useState<QuoteMetric[]>([]);
   const [azureStatus, setAzureStatus] = useState<{
     status: string;
     canSendEmail: boolean;
@@ -106,6 +116,16 @@ export default function AdminDashboard() {
       if (Array.isArray(data)) setContracts(data);
     }
 
+    async function fetchQuotes() {
+      try {
+        const res = await fetch("/api/admin/quotes");
+        const data = await res.json();
+        if (Array.isArray(data)) setQuotes(data);
+      } catch {
+        setQuotes([]);
+      }
+    }
+
     async function fetchAzureStatus() {
       try {
         const res = await fetch("/api/admin/azure-status");
@@ -119,6 +139,7 @@ export default function AdminDashboard() {
     fetchBlogCount();
     fetchInquiries();
     fetchContracts();
+    fetchQuotes();
     fetchAzureStatus();
   }, []);
 
@@ -176,7 +197,30 @@ export default function AdminDashboard() {
     });
   }, [contracts, filter, selectedMonth]);
 
-  // Calculate metrics from filtered data (inquiries + contracts)
+  // Filter quotes by date (using sent_at when available, else created_at)
+  const filteredQuotes = useMemo(() => {
+    if (filter === "All Time") return quotes;
+    let startDate: Date;
+    let endDate: Date;
+    if (filter === "This Month") {
+      const now = new Date();
+      startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+      endDate = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59);
+    } else if (filter === "Last Month") {
+      const now = new Date();
+      startDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+      endDate = new Date(now.getFullYear(), now.getMonth(), 0, 23, 59, 59);
+    } else {
+      startDate = new Date(selectedMonth.year, selectedMonth.month, 1);
+      endDate = new Date(selectedMonth.year, selectedMonth.month + 1, 0, 23, 59, 59);
+    }
+    return quotes.filter((q) => {
+      const d = new Date(q.sent_at || q.created_at);
+      return d >= startDate && d <= endDate;
+    });
+  }, [quotes, filter, selectedMonth]);
+
+  // Calculate metrics from filtered data (inquiries + contracts + quotes)
   const metrics = useMemo(() => {
     const booked = filteredInquiries.filter((i) => i.status === "Booked");
     const completed = filteredInquiries.filter((i) => i.status === "Completed");
@@ -184,6 +228,7 @@ export default function AdminDashboard() {
 
     const signedContracts = filteredContracts.filter((c) => c.status === "Signed");
     const completedContracts = filteredContracts.filter((c) => c.status === "Completed");
+    const sentContracts = filteredContracts.filter((c) => c.status === "Sent");
 
     const inquiryBooked = booked.reduce((sum, i) => sum + (i.booked_price || 0), 0);
     const contractBooked = signedContracts.reduce((sum, c) => sum + (c.total_price || 0), 0);
@@ -196,8 +241,23 @@ export default function AdminDashboard() {
     const totalCompletedCount = completed.length + completedContracts.length;
     const averageOrder = totalCompletedCount > 0 ? completedRevenue / totalCompletedCount : 0;
 
-    return { bookedPipeline, completedRevenue, averageOrder, newCount: newInq.length, totalCount: filteredInquiries.length };
-  }, [filteredInquiries, filteredContracts]);
+    // Quoted = value of quotes sent + value of contracts in Sent status
+    const sentQuotes = filteredQuotes.filter((q) => q.sent_at);
+    const quotedValue =
+      sentQuotes.reduce((s, q) => s + Number(q.total || 0), 0) +
+      sentContracts.reduce((s, c) => s + Number(c.total_price || 0), 0);
+    const invoiceCount = sentQuotes.length;
+
+    return {
+      bookedPipeline,
+      completedRevenue,
+      averageOrder,
+      newCount: newInq.length,
+      totalCount: filteredInquiries.length,
+      quotedValue,
+      invoiceCount,
+    };
+  }, [filteredInquiries, filteredContracts, filteredQuotes]);
 
   function prevMonth() {
     setSelectedMonth((prev) => {
@@ -388,14 +448,14 @@ export default function AdminDashboard() {
         className="admin-grid-4"
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(4, 1fr)",
-          gap: "1.25rem",
+          gridTemplateColumns: "repeat(6, 1fr)",
+          gap: "1rem",
           marginBottom: "2.5rem",
         }}
       >
-        <div style={{ background: "#111", border: "1px solid #222", borderRadius: "4px", padding: "1.5rem" }}>
+        <div style={{ background: "#111", border: "1px solid #222", borderRadius: "4px", padding: "1.25rem" }}>
           <DollarSign size={20} style={{ color: "#22c55e", marginBottom: "0.75rem" }} />
-          <p style={{ fontSize: "28px", fontWeight: 700, color: "#22c55e", margin: "0 0 0.25rem" }}>
+          <p style={{ fontSize: "26px", fontWeight: 700, color: "#22c55e", margin: "0 0 0.25rem" }}>
             ${metrics.bookedPipeline.toLocaleString()}
           </p>
           <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.45)", margin: 0 }}>
@@ -403,9 +463,9 @@ export default function AdminDashboard() {
           </p>
         </div>
 
-        <div style={{ background: "#111", border: "1px solid #222", borderRadius: "4px", padding: "1.5rem" }}>
+        <div style={{ background: "#111", border: "1px solid #222", borderRadius: "4px", padding: "1.25rem" }}>
           <TrendingUp size={20} style={{ color: "#F7941D", marginBottom: "0.75rem" }} />
-          <p style={{ fontSize: "28px", fontWeight: 700, color: "#F7941D", margin: "0 0 0.25rem" }}>
+          <p style={{ fontSize: "26px", fontWeight: 700, color: "#F7941D", margin: "0 0 0.25rem" }}>
             ${metrics.completedRevenue.toLocaleString()}
           </p>
           <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.45)", margin: 0 }}>
@@ -413,9 +473,9 @@ export default function AdminDashboard() {
           </p>
         </div>
 
-        <div style={{ background: "#111", border: "1px solid #222", borderRadius: "4px", padding: "1.5rem" }}>
+        <div style={{ background: "#111", border: "1px solid #222", borderRadius: "4px", padding: "1.25rem" }}>
           <BarChart3 size={20} style={{ color: "#06b6d4", marginBottom: "0.75rem" }} />
-          <p style={{ fontSize: "28px", fontWeight: 700, color: "#06b6d4", margin: "0 0 0.25rem" }}>
+          <p style={{ fontSize: "26px", fontWeight: 700, color: "#06b6d4", margin: "0 0 0.25rem" }}>
             ${Math.round(metrics.averageOrder).toLocaleString()}
           </p>
           <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.45)", margin: 0 }}>
@@ -423,9 +483,29 @@ export default function AdminDashboard() {
           </p>
         </div>
 
-        <div style={{ background: "#111", border: "1px solid #222", borderRadius: "4px", padding: "1.5rem" }}>
+        <div style={{ background: "#111", border: "1px solid #222", borderRadius: "4px", padding: "1.25rem" }}>
+          <FileSignature size={20} style={{ color: "#a855f7", marginBottom: "0.75rem" }} />
+          <p style={{ fontSize: "26px", fontWeight: 700, color: "#a855f7", margin: "0 0 0.25rem" }}>
+            ${metrics.quotedValue.toLocaleString()}
+          </p>
+          <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.45)", margin: 0 }}>
+            Quoted
+          </p>
+        </div>
+
+        <div style={{ background: "#111", border: "1px solid #222", borderRadius: "4px", padding: "1.25rem" }}>
+          <Receipt size={20} style={{ color: "#eab308", marginBottom: "0.75rem" }} />
+          <p style={{ fontSize: "26px", fontWeight: 700, color: "#eab308", margin: "0 0 0.25rem" }}>
+            {metrics.invoiceCount}
+          </p>
+          <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.45)", margin: 0 }}>
+            Invoices Sent
+          </p>
+        </div>
+
+        <div style={{ background: "#111", border: "1px solid #222", borderRadius: "4px", padding: "1.25rem" }}>
           <Inbox size={20} style={{ color: "#3b82f6", marginBottom: "0.75rem" }} />
-          <p style={{ fontSize: "28px", fontWeight: 700, color: "#3b82f6", margin: "0 0 0.25rem" }}>
+          <p style={{ fontSize: "26px", fontWeight: 700, color: "#3b82f6", margin: "0 0 0.25rem" }}>
             {metrics.newCount}
           </p>
           <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.45)", margin: 0 }}>

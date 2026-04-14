@@ -21,11 +21,19 @@ interface Contract {
 }
 
 const ORANGE = "#F7941D";
-const ORDER_STATUSES = ["All", "Signed", "Completed"] as const;
+const ORDER_STATUSES = ["All", "Quoted", "Signed", "Completed"] as const;
 const STATUS_COLORS: Record<string, string> = {
+  Sent: "#F7941D",
   Signed: "#22C55E",
   Completed: "#6B7280",
 };
+// Visual label shown in the table — contracts with status "Sent" are treated as "Quoted".
+const STATUS_LABELS: Record<string, string> = {
+  Sent: "Quoted",
+};
+function isOrder(c: Contract) {
+  return c.status === "Sent" || c.status === "Signed" || c.status === "Completed";
+}
 
 function fmtDate(d: string | null) {
   if (!d) return "—";
@@ -51,11 +59,7 @@ export default function OrdersPage() {
     setLoading(true);
     const res = await fetch("/api/admin/contracts");
     const all: Contract[] = await res.json();
-    setOrders(
-      Array.isArray(all)
-        ? all.filter((c) => c.status === "Signed" || c.status === "Completed")
-        : []
-    );
+    setOrders(Array.isArray(all) ? all.filter(isOrder) : []);
     setLoading(false);
   }, []);
 
@@ -64,7 +68,9 @@ export default function OrdersPage() {
   }, [loadOrders]);
 
   const filtered = orders.filter((o) => {
-    if (filter !== "All" && o.status !== filter) return false;
+    if (filter === "Quoted" && o.status !== "Sent") return false;
+    if (filter === "Signed" && o.status !== "Signed") return false;
+    if (filter === "Completed" && o.status !== "Completed") return false;
     if (query) {
       const q = query.toLowerCase();
       return (
@@ -167,7 +173,7 @@ export default function OrdersPage() {
                 <div style={{ color: o.balance_amount > 0 ? "#EAB308" : "#22C55E", fontWeight: 600 }}>{fmtMoney(o.balance_amount)}</div>
                 <div>
                   <span style={{ background: STATUS_COLORS[o.status] || "#666", color: "#0C0C0C", padding: "2px 8px", borderRadius: 3, fontSize: 10, fontWeight: 700, letterSpacing: 1, textTransform: "uppercase" }}>
-                    {o.status}
+                    {STATUS_LABELS[o.status] || o.status}
                   </span>
                 </div>
               </Link>
@@ -184,7 +190,7 @@ export default function OrdersPage() {
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
                   <span style={{ color: ORANGE, fontWeight: 700, fontSize: 13 }}>{o.contract_number}</span>
                   <span style={{ background: STATUS_COLORS[o.status] || "#666", color: "#0C0C0C", padding: "2px 8px", borderRadius: 3, fontSize: 10, fontWeight: 700, letterSpacing: 1, textTransform: "uppercase" }}>
-                    {o.status}
+                    {STATUS_LABELS[o.status] || o.status}
                   </span>
                 </div>
                 <div style={{ fontSize: 15, fontWeight: 700, marginBottom: 4 }}>{o.client_name || "—"}</div>

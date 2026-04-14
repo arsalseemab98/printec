@@ -58,7 +58,7 @@ export async function POST(req: NextRequest) {
       travel_cost: Number(body.travel_cost) || 0,
       client_name: body.client_name || null,
       client_email: body.client_email || null,
-      terms: body.terms || null,
+      terms: Array.isArray(body.terms) ? body.terms : [],
       category: body.category || "Other",
       status: body.status || "Pending",
     })

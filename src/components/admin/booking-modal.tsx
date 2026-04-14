@@ -95,8 +95,8 @@ export function BookingModal({
   if (!open) return null;
 
   async function handleSubmit() {
-    if (!form.client_name.trim() || !form.event_date || !form.total_price) {
-      alert("Client name, event date, and total price are required.");
+    if (!form.client_name.trim() || !form.event_date) {
+      alert("Client name and event date are required.");
       return;
     }
     setSaving(true);
@@ -162,7 +162,7 @@ export function BookingModal({
 
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem", marginBottom: "0.75rem" }}>
           <div>
-            <label style={labelStyle}>Total Price *</label>
+            <label style={labelStyle}>Total Price</label>
             <input
               type="number"
               value={form.total_price}

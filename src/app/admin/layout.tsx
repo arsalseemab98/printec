@@ -25,6 +25,8 @@ import {
   CalendarDays,
   Mail,
   PlusCircle,
+  Package,
+  GripVertical,
 } from "lucide-react";
 
 const NAV_ITEMS = [
@@ -39,11 +41,13 @@ const NAV_ITEMS = [
   { label: "  + New Quote", href: "/admin/quotes/new", icon: PlusCircle },
   { label: "Emails", href: "/admin/emails", icon: Mail },
   { label: "Contracts", href: "/admin/contracts", icon: FileSignature },
+  { label: "Orders", href: "/admin/orders", icon: Package },
   { label: "Portfolio", href: "/admin/portfolio", icon: Grid3X3 },
   { label: "Blog", href: "/admin/blog", icon: FileText },
   { label: "Catalogs", href: "/admin/catalogs", icon: BookOpen },
   { label: "Promos", href: "/admin/promos", icon: Megaphone },
 ];
+const NAV_ORDER_KEY = "admin-nav-order-v1";
 
 const BOTTOM_TAB_ITEMS = [
   { label: "Home", href: "/admin", icon: LayoutDashboard },
@@ -91,11 +95,51 @@ export default function AdminLayout({
   const pathname = usePathname();
   const [light, setLight] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [navOrder, setNavOrder] = useState<string[]>(() => NAV_ITEMS.map((i) => i.href));
+  const [dragIndex, setDragIndex] = useState<number | null>(null);
+  const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
 
   useEffect(() => {
     const saved = localStorage.getItem("admin-theme");
     if (saved === "light") setLight(true);
+
+    const savedOrder = localStorage.getItem(NAV_ORDER_KEY);
+    if (savedOrder) {
+      try {
+        const parsed = JSON.parse(savedOrder) as string[];
+        const known = new Set(NAV_ITEMS.map((i) => i.href));
+        const merged = [
+          ...parsed.filter((h) => known.has(h)),
+          ...NAV_ITEMS.map((i) => i.href).filter((h) => !parsed.includes(h)),
+        ];
+        setNavOrder(merged);
+      } catch {
+        /* use default */
+      }
+    }
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem(NAV_ORDER_KEY, JSON.stringify(navOrder));
+  }, [navOrder]);
+
+  const orderedNavItems = navOrder
+    .map((href) => NAV_ITEMS.find((i) => i.href === href))
+    .filter((i): i is (typeof NAV_ITEMS)[number] => Boolean(i));
+
+  function moveItem(from: number, to: number) {
+    setNavOrder((prev) => {
+      const next = [...prev];
+      const [m] = next.splice(from, 1);
+      next.splice(to, 0, m);
+      return next;
+    });
+  }
+
+  function resetNavOrder() {
+    setNavOrder(NAV_ITEMS.map((i) => i.href));
+    localStorage.removeItem(NAV_ORDER_KEY);
+  }
 
   useEffect(() => {
     localStorage.setItem("admin-theme", light ? "light" : "dark");
@@ -142,28 +186,50 @@ export default function AdminLayout({
           Admin
         </p>
 
-        <nav style={{ flex: 1 }}>
-          {NAV_ITEMS.map((item) => (
-            <Link
+        <nav style={{ flex: 1, overflowY: "auto" }}>
+          {orderedNavItems.map((item, idx) => (
+            <div
               key={item.href}
-              href={item.href}
+              draggable
+              onDragStart={() => setDragIndex(idx)}
+              onDragOver={(e) => { e.preventDefault(); setDragOverIndex(idx); }}
+              onDragEnd={() => { setDragIndex(null); setDragOverIndex(null); }}
+              onDrop={(e) => {
+                e.preventDefault();
+                if (dragIndex !== null && dragIndex !== idx) moveItem(dragIndex, idx);
+                setDragIndex(null);
+                setDragOverIndex(null);
+              }}
               style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "0.75rem",
-                padding: "0.75rem 1.25rem",
-                color: isActive(item.href) ? activeColor : textColor,
-                textDecoration: "none",
-                fontSize: "14px",
-                fontWeight: isActive(item.href) ? 600 : 400,
-                borderLeft: isActive(item.href) ? `3px solid ${activeColor}` : "3px solid transparent",
-                background: isActive(item.href) ? activeTextBg : "transparent",
-                transition: "all 0.2s",
+                opacity: dragIndex === idx ? 0.35 : 1,
+                borderTop: dragOverIndex === idx && dragIndex !== null && dragIndex < idx ? `2px solid ${activeColor}` : "2px solid transparent",
+                borderBottom: dragOverIndex === idx && dragIndex !== null && dragIndex > idx ? `2px solid ${activeColor}` : "2px solid transparent",
               }}
             >
-              <item.icon size={18} />
-              {item.label}
-            </Link>
+              <Link
+                href={item.href}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                  padding: "0.75rem 1rem 0.75rem 0.5rem",
+                  color: isActive(item.href) ? activeColor : textColor,
+                  textDecoration: "none",
+                  fontSize: "14px",
+                  fontWeight: isActive(item.href) ? 600 : 400,
+                  borderLeft: isActive(item.href) ? `3px solid ${activeColor}` : "3px solid transparent",
+                  background: isActive(item.href) ? activeTextBg : "transparent",
+                  transition: "background 0.2s, color 0.2s",
+                }}
+              >
+                <GripVertical
+                  size={14}
+                  style={{ color: "rgba(255,255,255,0.15)", cursor: "grab", flexShrink: 0 }}
+                />
+                <item.icon size={18} />
+                <span style={{ flex: 1 }}>{item.label}</span>
+              </Link>
+            </div>
           ))}
         </nav>
 
@@ -174,6 +240,12 @@ export default function AdminLayout({
           >
             {light ? <Moon size={18} /> : <Sun size={18} />}
             {light ? "Dark Mode" : "Light Mode"}
+          </button>
+          <button
+            onClick={resetNavOrder}
+            style={{ display: "flex", alignItems: "center", gap: "0.75rem", padding: "0.4rem 1.25rem", background: "none", border: "none", color: "rgba(255,255,255,0.25)", fontSize: 11, cursor: "pointer", width: "100%", textAlign: "left" }}
+          >
+            Reset nav order
           </button>
           <LogoutButton textColor={textColor} />
         </div>
@@ -230,8 +302,8 @@ export default function AdminLayout({
               </button>
             </div>
 
-            <nav style={{ flex: 1, padding: "0.5rem 0" }}>
-              {NAV_ITEMS.map((item) => (
+            <nav style={{ flex: 1, padding: "0.5rem 0", overflowY: "auto" }}>
+              {orderedNavItems.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}

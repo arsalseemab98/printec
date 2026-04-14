@@ -138,7 +138,9 @@ export default function ContractsPage() {
   }
 
   function formatDate(dateStr: string) {
-    return new Date(dateStr).toLocaleDateString("en-US", {
+    const [y, m, d] = dateStr.slice(0, 10).split("-").map(Number);
+    const local = new Date(y, (m || 1) - 1, d || 1);
+    return local.toLocaleDateString("en-US", {
       month: "short",
       day: "numeric",
       year: "numeric",

@@ -247,7 +247,9 @@ export default function ContractDetailPage({
   }
 
   function formatDate(dateStr: string) {
-    return new Date(dateStr).toLocaleDateString("en-US", {
+    const [y, m, d] = dateStr.slice(0, 10).split("-").map(Number);
+    const local = new Date(y, (m || 1) - 1, d || 1);
+    return local.toLocaleDateString("en-US", {
       month: "long",
       day: "numeric",
       year: "numeric",
@@ -557,23 +559,25 @@ export default function ContractDetailPage({
                   label: "Service Description",
                   value: contract.service_description,
                 },
-              ].map((f) => (
-                <div key={f.label} style={{ marginBottom: "0.875rem" }}>
-                  <p style={{ ...labelStyle, margin: "0 0 0.25rem" }}>
-                    {f.label}
-                  </p>
-                  <p
-                    style={{
-                      fontSize: "14px",
-                      color: "#fff",
-                      margin: 0,
-                      lineHeight: 1.6,
-                    }}
-                  >
-                    {f.value || "\u2014"}
-                  </p>
-                </div>
-              ))}
+              ]
+                .filter((f) => f.value && String(f.value).trim() !== "")
+                .map((f) => (
+                  <div key={f.label} style={{ marginBottom: "0.875rem" }}>
+                    <p style={{ ...labelStyle, margin: "0 0 0.25rem" }}>
+                      {f.label}
+                    </p>
+                    <p
+                      style={{
+                        fontSize: "14px",
+                        color: "#fff",
+                        margin: 0,
+                        lineHeight: 1.6,
+                      }}
+                    >
+                      {f.value}
+                    </p>
+                  </div>
+                ))}
             </>
           )}
         </div>

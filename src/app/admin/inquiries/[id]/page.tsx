@@ -178,7 +178,7 @@ export default function InquiryDetailPage({
     { label: "UTM Source", value: inquiry.utm_source },
     { label: "UTM Medium", value: inquiry.utm_medium },
     { label: "UTM Campaign", value: inquiry.utm_campaign },
-    { label: "Event Date", value: inquiry.event_date ? new Date(inquiry.event_date).toLocaleDateString() : "" },
+    { label: "Event Date", value: inquiry.event_date ? (() => { const [y, m, d] = inquiry.event_date!.slice(0, 10).split("-").map(Number); return new Date(y, (m || 1) - 1, d || 1).toLocaleDateString(); })() : "" },
   ];
 
   return (

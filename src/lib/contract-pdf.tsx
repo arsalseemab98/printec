@@ -17,6 +17,7 @@ export interface ContractPDFProps {
   signature_data: string | null;
   signed_at: string | null;
   logoUrl?: string;
+  providerSignatureUrl?: string;
 }
 
 const ORANGE = "#F7941D";
@@ -39,14 +40,16 @@ function fmtDate(d: string | null) {
 const s = StyleSheet.create({
   page: {
     padding: 0,
+    paddingBottom: 56,
     fontFamily: "Helvetica",
     fontSize: 10,
     color: BLACK,
     backgroundColor: WHITE,
   },
   accentBar: { height: 4, backgroundColor: ORANGE },
+  accentBarBottom: { height: 4, backgroundColor: ORANGE, position: "absolute", bottom: 0, left: 0, right: 0 },
   banner: {
-    padding: "28 48 20 48",
+    padding: "20 48 14 48",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "flex-start",
@@ -65,7 +68,7 @@ const s = StyleSheet.create({
   companyHighlight: { fontSize: 8, color: ORANGE, marginTop: 2, fontFamily: "Helvetica-Bold" },
 
   titleSection: {
-    padding: "24 48 16 48",
+    padding: "16 48 10 48",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "flex-end",
@@ -84,7 +87,7 @@ const s = StyleSheet.create({
 
   divider: { height: 1, backgroundColor: BORDER, marginHorizontal: 48 },
 
-  infoRow: { flexDirection: "row", padding: "18 48", gap: 30 },
+  infoRow: { flexDirection: "row", padding: "12 48", gap: 30 },
   infoCol: { flex: 1 },
   sectionLabel: {
     fontSize: 8,
@@ -104,12 +107,12 @@ const s = StyleSheet.create({
   infoBold: { fontSize: 11, fontFamily: "Helvetica-Bold", color: BLACK, marginBottom: 3 },
   infoText: { fontSize: 9, color: GREY, marginBottom: 2, lineHeight: 1.5 },
 
-  termsSection: { paddingHorizontal: 48, paddingTop: 14 },
-  termRow: { flexDirection: "row", marginBottom: 6 },
+  termsSection: { paddingHorizontal: 48, paddingTop: 8 },
+  termRow: { flexDirection: "row", marginBottom: 4 },
   termNum: { width: 24, fontSize: 9, fontFamily: "Helvetica-Bold", color: ORANGE },
   termText: { flex: 1, fontSize: 9, color: GREY, lineHeight: 1.6 },
 
-  sigSection: { padding: "18 48", flexDirection: "row", justifyContent: "space-between" },
+  sigSection: { padding: "12 48", flexDirection: "row", justifyContent: "space-between" },
   sigCol: { width: "45%" },
   sigLabel: { fontSize: 8, color: LIGHT_GREY, marginBottom: 4, textTransform: "uppercase" as const, letterSpacing: 1 },
   sigName: { fontSize: 11, fontFamily: "Helvetica-Bold", color: BLACK, marginBottom: 4 },
@@ -118,9 +121,12 @@ const s = StyleSheet.create({
   sigLine: { height: 1, backgroundColor: "#AAAAAA", marginBottom: 4, marginTop: 8 },
 
   footer: {
-    marginTop: "auto",
+    position: "absolute",
+    left: 0,
+    right: 0,
+    bottom: 4,
     backgroundColor: BG_LIGHT,
-    padding: "14 48",
+    padding: "10 48",
     borderTopWidth: 1,
     borderTopColor: BORDER,
     flexDirection: "row",
@@ -148,6 +154,7 @@ export function ContractPDF(props: ContractPDFProps) {
     signature_data,
     signed_at,
     logoUrl,
+    providerSignatureUrl,
   } = props;
 
   return (
@@ -245,15 +252,20 @@ export function ContractPDF(props: ContractPDFProps) {
           </View>
           <View style={s.sigCol}>
             <Text style={s.sectionLabel}>Provider</Text>
-            <Text style={s.sigName}>Printec Virginia LLC</Text>
-            <Text style={s.sigRole}>Muhammad Azhar</Text>
-            <Text style={s.sigRole}>CEO / Founder</Text>
+            <Text style={s.sigName}>Muhammad Azhar</Text>
+            {providerSignatureUrl ? (
+              <Image src={providerSignatureUrl} style={s.sigImage} />
+            ) : (
+              <View style={s.sigLine} />
+            )}
+            <Text style={s.sigLabel}>Signature</Text>
+            <Text style={s.sigRole}>CEO / Founder, Printec Virginia LLC</Text>
             {signed_at && <Text style={{ ...s.sigRole, marginTop: 4 }}>Date: {fmtDate(signed_at)}</Text>}
           </View>
         </View>
 
-        {/* Footer */}
-        <View style={s.footer}>
+        {/* Footer (anchored) */}
+        <View style={s.footer} fixed>
           <View>
             <Text style={s.footerBold}>PRINTEC VIRGINIA LLC</Text>
             <Text style={s.footerText}>From Vision to Vinyl</Text>
@@ -263,7 +275,7 @@ export function ContractPDF(props: ContractPDFProps) {
             <Text style={s.footerText}>+1 (715) 503-5444 | printecwrap.com</Text>
           </View>
         </View>
-        <View style={s.accentBar} />
+        <View style={s.accentBarBottom} fixed />
       </Page>
     </Document>
   );

@@ -102,6 +102,7 @@ export async function POST(
       signature_data: updated.signature_data,
       signed_at: updated.signed_at,
       logoUrl: "https://printecwrap.com/printec-logo.png",
+      providerSignatureUrl: "https://printecwrap.com/azhar-signature.png",
     });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const pdfBuffer = await renderToBuffer(pdfElement as any);

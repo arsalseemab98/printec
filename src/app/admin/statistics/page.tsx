@@ -29,6 +29,8 @@ import {
   Inbox,
   ArrowDownRight,
   ArrowUpRight,
+  FileSignature,
+  Receipt,
 } from "lucide-react";
 
 /* ─── Types ─── */
@@ -60,6 +62,13 @@ interface Contract {
   service_description: string | null;
   signed_at: string | null;
   completed_at: string | null;
+  created_at: string;
+}
+
+interface Quote {
+  id: string;
+  total: number;
+  sent_at: string | null;
   created_at: string;
 }
 
@@ -131,6 +140,7 @@ function ChartTooltip({ active, payload, label }: { active?: boolean; payload?: 
 export default function StatisticsPage() {
   const [inquiries, setInquiries] = useState<Inquiry[]>([]);
   const [contracts, setContracts] = useState<Contract[]>([]);
+  const [quotes, setQuotes] = useState<Quote[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<FilterOption>("All Time");
   const [selectedMonth, setSelectedMonth] = useState(() => {
@@ -141,14 +151,19 @@ export default function StatisticsPage() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const [inqRes, conRes] = await Promise.all([
+        const [inqRes, conRes, quoRes] = await Promise.all([
           fetch("/api/admin/inquiries"),
           fetch("/api/admin/contracts"),
+          fetch("/api/admin/quotes").catch(() => null),
         ]);
         const inqData = await inqRes.json();
         const conData = await conRes.json();
         if (Array.isArray(inqData)) setInquiries(inqData);
         if (Array.isArray(conData)) setContracts(conData);
+        if (quoRes && quoRes.ok) {
+          const quoData = await quoRes.json();
+          if (Array.isArray(quoData)) setQuotes(quoData);
+        }
       } catch (err) {
         console.error("[Statistics] Failed to fetch data:", err);
       } finally {
@@ -196,6 +211,15 @@ export default function StatisticsPage() {
     });
   }, [contracts, getDateRange]);
 
+  const filteredQuotes = useMemo(() => {
+    if (!getDateRange) return quotes;
+    const { startDate, endDate } = getDateRange;
+    return quotes.filter((q) => {
+      const d = new Date(q.sent_at || q.created_at);
+      return d >= startDate && d <= endDate;
+    });
+  }, [quotes, getDateRange]);
+
   /* ─── KPI Cards ─── */
   const kpis = useMemo(() => {
     const total = filtered.length;
@@ -218,8 +242,16 @@ export default function StatisticsPage() {
 
     const conversionRate = total > 0 ? ((booked.length + completed.length) / total * 100) : 0;
 
-    return { total, newCount, bookedPipeline, completedRevenue, avgOrder, conversionRate };
-  }, [filtered, filteredContracts]);
+    // Quoted = value of sent quotes + value of contracts in Sent status
+    const sentContracts = filteredContracts.filter((c) => c.status === "Sent");
+    const sentQuotes = filteredQuotes.filter((q) => q.sent_at);
+    const quotedValue =
+      sentQuotes.reduce((s, q) => s + Number(q.total || 0), 0) +
+      sentContracts.reduce((s, c) => s + Number(c.total_price || 0), 0);
+    const invoiceCount = sentQuotes.length;
+
+    return { total, newCount, bookedPipeline, completedRevenue, avgOrder, conversionRate, quotedValue, invoiceCount };
+  }, [filtered, filteredContracts, filteredQuotes]);
 
   /* ─── 1. Inquiries Over Time (monthly bar chart) ─── */
   const inquiriesOverTime = useMemo(() => {
@@ -455,7 +487,9 @@ export default function StatisticsPage() {
         <div className="admin-stats-summary" style={{ display: "flex", alignItems: "center", gap: "24px" }}>
           {[
             { label: "Pipeline", value: `$${kpis.bookedPipeline.toLocaleString()}`, color: "#22c55e" },
+            { label: "Quoted", value: `$${kpis.quotedValue.toLocaleString()}`, color: "#a855f7" },
             { label: "Revenue", value: `$${kpis.completedRevenue.toLocaleString()}`, color: ORANGE },
+            { label: "Invoices", value: String(kpis.invoiceCount), color: "#eab308" },
             { label: "Avg Order", value: `$${Math.round(kpis.avgOrder).toLocaleString()}`, color: "#06b6d4" },
             { label: "Inquiries", value: String(kpis.total), color: "#3b82f6" },
           ].map((item) => (
@@ -516,11 +550,13 @@ export default function StatisticsPage() {
       </div>
 
       {/* KPI Cards */}
-      <div className="admin-grid-6" style={{ display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: "1rem", marginBottom: "2rem" }}>
+      <div className="admin-grid-6" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "1rem", marginBottom: "2rem" }}>
         {[
           { icon: Inbox, label: "Total Inquiries", value: kpis.total, color: "#3b82f6" },
           { icon: Users, label: "New Inquiries", value: kpis.newCount, color: "#22c55e" },
           { icon: DollarSign, label: "Booked Pipeline", value: `$${kpis.bookedPipeline.toLocaleString()}`, color: "#22c55e" },
+          { icon: FileSignature, label: "Quoted", value: `$${kpis.quotedValue.toLocaleString()}`, color: "#a855f7" },
+          { icon: Receipt, label: "Invoices Sent", value: kpis.invoiceCount, color: "#eab308" },
           { icon: TrendingUp, label: "Completed Revenue", value: `$${kpis.completedRevenue.toLocaleString()}`, color: ORANGE },
           { icon: BarChart3, label: "Avg Order", value: `$${Math.round(kpis.avgOrder).toLocaleString()}`, color: "#06b6d4" },
           { icon: ArrowUpRight, label: "Conversion Rate", value: `${kpis.conversionRate.toFixed(1)}%`, color: "#a855f7" },

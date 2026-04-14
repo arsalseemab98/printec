@@ -401,6 +401,42 @@
 | Advertiser verification | ⬜ | Pending: Google requires before ads run |
 | Import GA4 conversions | ⬜ | Pending: import generate_lead + phone_click in Google Ads |
 
+## 2026-04-14 — Calendar Bookings + Orders + Nav + RLS
+
+### Manual QA checklist (run on each deploy)
+
+| Test | Status | Notes |
+|---|---|---|
+| Edit a contract event_date → saved value equals displayed value | ✅ | Was off-by-one in EST/EDT due to UTC midnight parsing |
+| Contract detail view hides empty fields | ✅ | Only filled fields render |
+| Signed contract PDF shows Azhar signature in Provider column | ✅ | Fetched from /azhar-signature.png |
+| Signed contract PDF has no blank trailing page | ✅ | Footer + accent bar use react-pdf `fixed` |
+| Calendar "+ Add Booking" opens modal pre-filled with today | ✅ | |
+| Calendar click-empty-day opens modal pre-filled with that date | ✅ | Cells with entries keep existing click behavior |
+| Create booking with only name + date (no price, no email) | ✅ | Optional fields; price defaults to 0 |
+| Booking with empty terms doesn't error | ✅ | API defaults contracts.terms to [] |
+| New booking appears on calendar immediately | ✅ | loadEntries re-runs after POST |
+| /admin/orders shows Sent (Quoted), Signed, Completed only | ✅ | Pending/Cancelled excluded |
+| Order filter tabs (All/Quoted/Signed/Completed) work | ✅ | |
+| Order search filters by contract number, client, category | ✅ | |
+| "+ Add Order" defaults status to Signed | ✅ | Appears in Signed tab immediately |
+| Dashboard Quoted card = $ of sent quotes + Sent-status contracts | ✅ | Respects date filter |
+| Dashboard Invoices Sent = count of quotes.sent_at IS NOT NULL | ✅ | |
+| Statistics KPI grid shows Quoted + Invoices cards | ✅ | Also in top summary bar |
+| Sidebar nav drag reorders and persists to localStorage | ✅ | Key: admin-nav-order-v1 |
+| New nav items appended when code adds them (no wipe) | ✅ | Merge logic in useEffect |
+| "Reset nav order" restores the default order | ✅ | Clears localStorage key |
+| /api/contact INSERT works under anon + new RLS policy | ⬜ | Verify on next real submission |
+| /api/catalog-leads INSERT works under anon + new RLS policy | ⬜ | Verify on next real submission |
+| /catalogs/[slug] page still loads via anon SELECT policy | ⬜ | Verify on live deploy |
+| Admin flows unchanged (service role bypasses RLS) | ✅ | Contracts/inquiries/quotes verified |
+
+### Regression guards
+- Never send null to contracts.terms — jsonb NOT NULL.
+- Never add service-role DB access to a public (unauthenticated) code path. Use anon + narrow RLS.
+- When adding nav items to NAV_ITEMS, they'll appear at the end for existing browsers (merge logic handles it).
+- HTML input[type=date] strings are YYYY-MM-DD — never feed raw DB date strings through new Date(...) for display without local-time parsing.
+
 ## Planned Tests
 - [ ] E2E: Navigation between all 32 pages
 - [ ] E2E: Contact form submission (API + Supabase)

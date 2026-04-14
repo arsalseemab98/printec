@@ -2,6 +2,64 @@
 
 ---
 
+## 2026-04-14 — Edit Bugs, Contract PDF, Calendar Bookings, Orders, Nav, RLS Hardening
+
+### What was done
+**Contract / quote edit flow audit**
+- Confirmed dates and prices save correctly through edit forms, API whitelist, and DB update; surfaced the real bug as a display-only timezone issue.
+- Fixed timezone off-by-one: `new Date("YYYY-MM-DD")` parses as UTC midnight and renders as the previous day in EST/EDT. Now parsed as local date across contracts detail/list, inquiry detail, and public signing page.
+- Contract detail view hides empty fields in read mode (no more em-dashes for missing values).
+
+**Contract PDF**
+- Added Muhammad Azhar's signature image (`public/azhar-signature.png`) to the Provider column of `src/lib/contract-pdf.tsx`.
+- Fixed blank second page: footer + bottom accent bar are now `position: absolute` with react-pdf `fixed`, so they anchor to every page instead of being pushed into flow. Paddings trimmed so content fits on a single A4 page.
+- Sign route (`/api/contracts/[id]/sign`) and admin download both pass `providerSignatureUrl`.
+
+**Manual bookings on the calendar**
+- "+ Add Booking" button in the calendar header; clicking an empty day cell also opens the modal with that date prefilled.
+- Modal fields: client name, email (optional), event date, venue, service description, category, total price (optional), advance (optional), status. Posts to `/api/admin/contracts`.
+- Contracts POST now accepts `status` and defaults `terms` to `[]` (was writing null → violated jsonb NOT NULL constraint).
+
+**Orders page**
+- New `/admin/orders` listing contracts with status Sent (labeled "Quoted"), Signed, or Completed. Filters, search, revenue total, mobile card layout.
+- "+ Add Order" opens the shared BookingModal with status defaulted to Signed.
+- Extracted `src/components/admin/booking-modal.tsx` so calendar and orders use one source of truth for categories, statuses, and the POST payload.
+
+**Reorderable sidebar nav**
+- HTML5 drag-and-drop on each sidebar item; order persisted per browser in `localStorage.admin-nav-order-v1`. Gracefully merges in any new nav items added to the codebase.
+- "Reset nav order" link above Logout.
+
+**Dashboard + Statistics**
+- Two new KPI cards: **Quoted** ($ = sent quotes + contracts in Sent status) and **Invoices Sent** (count of quotes with `sent_at`).
+- Dashboard KPI grid expanded to 6 columns. Statistics KPI grid expanded to 4×2 + top summary bar mirrors the same metrics.
+
+**Public-routes RLS hardening**
+- `/api/contact`, `/api/catalog-leads`, `/api/catalogs/[slug]`, and `/catalogs/[slug]` page now use the anon Supabase client.
+- Applied migration `tighten_public_rls_insert_select_only`:
+  - `inquiries`: removed permissive "allow all" policy; added `anon_insert_inquiries` (INSERT-only for anon).
+  - `catalog_leads`: RLS enabled; added `anon_insert_catalog_leads`.
+  - `catalogs` + `catalog_projects`: RLS enabled; added `anon_select_*`.
+- Admin routes unchanged — they continue to use `createServerClient()` (service role bypasses RLS).
+- `src/lib/supabase.ts` refactored so `getSupabase()` has a proper typed return (`ReturnType<typeof createClient>` was collapsing generics to `never`).
+
+### Decisions
+- Bookings, Orders, and Calendar all write to `contracts` rather than introducing a new table — contracts already have `event_date`, `category`, `total_price`, `status`, and feed the dashboard.
+- "Quoted" in the UI means `contracts.status = 'Sent'` plus `quotes.sent_at IS NOT NULL` — one concept, aggregated from both data sources.
+- Nav order persisted in localStorage (not DB) because admin is single-user.
+- Public routes use service role nowhere — anon + narrow RLS is the new bar.
+
+### Commits
+- `15ad37e` / `9ae0659` — timezone fix + hide empty fields
+- `302e52a` — Azhar signature + blank-second-page fix
+- `92d5b4f` — manual calendar bookings, Orders page, reorderable nav
+- `82e13f2` — shared BookingModal + Add Order
+- `878a215` — Quoted filter in Orders + Quoted/Invoices KPIs on dashboard
+- `756418c` — Quoted/Invoices KPIs on Statistics
+- `d17c9be` — booking-modal: null terms fix + optional email/price
+- `d815f92` — anon client for public routes + narrow RLS policies
+
+---
+
 ## 2026-04-10 — Manual Quote Creation
 
 ### What was done

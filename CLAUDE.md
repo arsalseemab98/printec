@@ -248,7 +248,10 @@ npx next build             # Production build
   - "Send This Design" inquiry form within catalog viewer (auto-fills service category)
   - Catalog leads saved to catalog_leads table with slug tracking
   - **Promos**: Promotional slider bar below navbar with auto-rotating offers, admin CRUD at /admin/promos (create/edit/toggle active/reorder/delete)
-  - **Calendar**: Booking calendar (/admin/calendar) — monthly/weekly/daily views, contracts + inquiries color-coded, click to detail
+  - **Calendar**: Booking calendar (/admin/calendar) — monthly/weekly/daily views, contracts + inquiries color-coded, click to detail. "+ Add Booking" button and click-empty-day quick-create use the shared BookingModal (src/components/admin/booking-modal.tsx) to POST /api/admin/contracts — the single source of truth for manual booking/order creation.
+  - **Orders** (/admin/orders): confirmed-jobs view listing contracts in status Sent (labeled "Quoted"), Signed, or Completed. Filter tabs, search, revenue total, mobile card layout. "+ Add Order" button opens the shared BookingModal with status defaulted to Signed.
+  - **Reorderable sidebar nav**: admin nav items are drag-and-drop reorderable (HTML5 DnD); order persisted per browser in localStorage.admin-nav-order-v1. "Reset nav order" link restores the default.
+  - Dashboard KPI grid includes **Quoted** ($ of quotes sent + contracts in Sent status) and **Invoices Sent** (count). Statistics page mirrors the same two metrics in its KPI grid and top summary bar.
   - **Emails**: Email marketing system (/admin/emails) — compose with Tiptap WYSIWYG, recipient picker (inquiries + catalog leads + contracts), placeholders {name}/{email}/{service}, save/load templates, individual sends via Microsoft Graph, sent log
   - **Azure Health**: Dashboard shows email service status (active/down), client secret expiry date + days remaining, warning at ≤30 days
   - **Fully mobile responsive** — all admin pages work on phone/tablet (responsive grids, collapsing layouts)
@@ -272,6 +275,14 @@ npx next build             # Production build
 - **Email marketing**: Compose + send bulk emails from /admin/emails with Tiptap editor
 - **Templates**: Save reusable email templates with placeholder support
 - **Azure health check**: /api/admin/azure-status tests credentials + shows secret expiry
+
+## Supabase Access & RLS Policy
+- **Service role** (`SUPABASE_SERVICE_ROLE_KEY`) is used ONLY by admin API routes under `/api/admin/*` via `createServerClient()` in `src/lib/supabase.ts`. These routes are gated by `proxy.ts` password auth.
+- **Anon client** (`getSupabase()`) is used by all public routes/pages. Public access is constrained by RLS:
+  - `inquiries` — anon INSERT only
+  - `catalog_leads` — anon INSERT only
+  - `catalogs`, `catalog_projects` — anon SELECT only
+- **Never add service-role usage to a public route** (no admin auth). Use the anon client and add the narrowest RLS policy needed.
 
 ## Database Tables (Supabase)
 - `page_images` — page_slug, slot, url, alt_text

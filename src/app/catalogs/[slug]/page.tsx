@@ -1,10 +1,10 @@
-import { createServerClient } from "@/lib/supabase";
+import { getSupabase } from "@/lib/supabase";
 import { notFound } from "next/navigation";
 import CatalogPage from "@/components/catalogs/catalog-page";
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const supabase = createServerClient();
+  const supabase = getSupabase();
   const { data } = await supabase.from("catalogs").select("title, description").eq("slug", slug).single();
   if (!data) return { title: "Catalog Not Found" };
   return {
@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const supabase = createServerClient();
+  const supabase = getSupabase();
   const { data } = await supabase
     .from("catalogs")
     .select("*, catalog_projects(*)")

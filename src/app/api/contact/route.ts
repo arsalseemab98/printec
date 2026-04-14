@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { ClientSecretCredential } from "@azure/identity";
 import { Client } from "@microsoft/microsoft-graph-client";
 import { TokenCredentialAuthenticationProvider } from "@microsoft/microsoft-graph-client/authProviders/azureTokenCredentials";
-import { createServerClient } from "@/lib/supabase";
+import { getSupabase } from "@/lib/supabase";
 import { runAntiSpamChecks } from "@/lib/antispam";
 
 // ── Rate limiting (in-memory) ──
@@ -209,8 +209,8 @@ export async function POST(req: NextRequest) {
 
     // ── Save inquiry to database FIRST (never lose a customer) ──
     try {
-      const serverClient = createServerClient();
-      await serverClient.from("inquiries").insert({
+      const anon = getSupabase();
+      await anon.from("inquiries").insert({
         name,
         email,
         phone: phone || null,

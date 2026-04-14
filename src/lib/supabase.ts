@@ -3,14 +3,13 @@ import { createClient } from "@supabase/supabase-js";
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "";
 
-// Public client (for frontend reads)
-let _supabase: ReturnType<typeof createClient> | null = null;
+// Public client (for frontend reads + public writes permitted by RLS)
+const _supabase = supabaseUrl ? createClient(supabaseUrl, supabaseAnonKey) : (null as never);
 export function getSupabase() {
-  if (!_supabase) _supabase = createClient(supabaseUrl, supabaseAnonKey);
   return _supabase;
 }
 // Legacy export for existing imports
-export const supabase = supabaseUrl ? createClient(supabaseUrl, supabaseAnonKey) : (null as never);
+export const supabase = _supabase;
 
 // Server client (for admin writes — service role bypasses RLS)
 export function createServerClient() {

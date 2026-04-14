@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
-import { createServerClient } from "@/lib/supabase";
+import { getSupabase } from "@/lib/supabase";
 import { runAntiSpamChecks } from "@/lib/antispam";
 
 export async function POST(req: Request) {
-  const supabase = createServerClient();
+  const supabase = getSupabase();
   const body = await req.json();
   const { name, email, catalog_slug, turnstileToken, _hp_website, _formLoadedAt } = body;
 

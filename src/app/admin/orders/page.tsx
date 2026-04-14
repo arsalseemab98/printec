@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
-import { Search } from "lucide-react";
+import { Search, PlusCircle } from "lucide-react";
+import { BookingModal } from "@/components/admin/booking-modal";
 
 interface Contract {
   id: string;
@@ -44,19 +45,23 @@ export default function OrdersPage() {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<(typeof ORDER_STATUSES)[number]>("All");
   const [query, setQuery] = useState("");
+  const [showAddModal, setShowAddModal] = useState(false);
+
+  const loadOrders = useCallback(async () => {
+    setLoading(true);
+    const res = await fetch("/api/admin/contracts");
+    const all: Contract[] = await res.json();
+    setOrders(
+      Array.isArray(all)
+        ? all.filter((c) => c.status === "Signed" || c.status === "Completed")
+        : []
+    );
+    setLoading(false);
+  }, []);
 
   useEffect(() => {
-    (async () => {
-      const res = await fetch("/api/admin/contracts");
-      const all: Contract[] = await res.json();
-      setOrders(
-        Array.isArray(all)
-          ? all.filter((c) => c.status === "Signed" || c.status === "Completed")
-          : []
-      );
-      setLoading(false);
-    })();
-  }, []);
+    loadOrders();
+  }, [loadOrders]);
 
   const filtered = orders.filter((o) => {
     if (filter !== "All" && o.status !== filter) return false;
@@ -75,15 +80,25 @@ export default function OrdersPage() {
 
   return (
     <div>
-      <p style={{ fontSize: 10, textTransform: "uppercase", letterSpacing: 4, color: ORANGE, fontWeight: 500, marginBottom: "0.5rem" }}>
-        CONFIRMED JOBS
-      </p>
-      <h1 style={{ fontSize: 36, fontWeight: 900, color: "#fff", fontFamily: "'Arial Black', Arial, sans-serif", margin: "0 0 0.25rem" }}>
-        Orders
-      </h1>
-      <p style={{ color: "rgba(255,255,255,0.5)", fontSize: 14, margin: "0 0 1.5rem" }}>
-        {filtered.length} {filtered.length === 1 ? "order" : "orders"} · {fmtMoney(totalRevenue)} total
-      </p>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 12, marginBottom: "1.5rem" }}>
+        <div>
+          <p style={{ fontSize: 10, textTransform: "uppercase", letterSpacing: 4, color: ORANGE, fontWeight: 500, marginBottom: "0.5rem" }}>
+            CONFIRMED JOBS
+          </p>
+          <h1 style={{ fontSize: 36, fontWeight: 900, color: "#fff", fontFamily: "'Arial Black', Arial, sans-serif", margin: "0 0 0.25rem" }}>
+            Orders
+          </h1>
+          <p style={{ color: "rgba(255,255,255,0.5)", fontSize: 14, margin: 0 }}>
+            {filtered.length} {filtered.length === 1 ? "order" : "orders"} · {fmtMoney(totalRevenue)} total
+          </p>
+        </div>
+        <button
+          onClick={() => setShowAddModal(true)}
+          style={{ display: "flex", alignItems: "center", gap: 6, padding: "8px 14px", background: ORANGE, border: "none", borderRadius: 4, color: "#0C0C0C", fontSize: 12, fontWeight: 700, cursor: "pointer", letterSpacing: 1, textTransform: "uppercase" }}
+        >
+          <PlusCircle size={14} /> Add Order
+        </button>
+      </div>
 
       <div style={{ display: "flex", gap: 8, marginBottom: 20, flexWrap: "wrap", alignItems: "center" }}>
         {ORDER_STATUSES.map((s) => (
@@ -187,6 +202,16 @@ export default function OrdersPage() {
           </div>
         </>
       )}
+
+      <BookingModal
+        open={showAddModal}
+        onClose={() => setShowAddModal(false)}
+        onCreated={loadOrders}
+        defaultStatus="Signed"
+        title="Add Order"
+        subtitle="Creates a confirmed contract (status Signed) that appears here and on the dashboard."
+        ctaLabel="Create Order"
+      />
 
       <style>{`
         @media (max-width: 768px) {

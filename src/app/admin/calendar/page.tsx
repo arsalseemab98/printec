@@ -3,19 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ChevronLeft, ChevronRight, Info, PlusCircle } from "lucide-react";
-
-const CONTRACT_CATEGORIES = [
-  "Vehicle Wrap",
-  "Channel Letters",
-  "Window Wrap",
-  "Wall Wrap",
-  "Floor Wrap",
-  "Neon Sign",
-  "Business Signage",
-  "Event / Wedding",
-  "Other",
-];
-const BOOKING_STATUSES = ["Pending", "Sent", "Signed", "Completed"];
+import { BookingModal } from "@/components/admin/booking-modal";
 
 const ORANGE = "#F7941D";
 const BLACK = "#0C0C0C";
@@ -95,18 +83,6 @@ export default function CalendarPage() {
 
   const [showAddModal, setShowAddModal] = useState(false);
   const [addModalDate, setAddModalDate] = useState<string>("");
-  const [savingBooking, setSavingBooking] = useState(false);
-  const [bookingForm, setBookingForm] = useState({
-    client_name: "",
-    client_email: "",
-    event_date: "",
-    category: "Other",
-    venue: "",
-    service_description: "",
-    total_price: "",
-    advance_amount: "",
-    status: "Pending",
-  });
 
   const loadEntries = useCallback(async () => {
     setLoading(true);
@@ -164,54 +140,8 @@ export default function CalendarPage() {
   }, [loadEntries]);
 
   function openAddModal(forDate?: string) {
-    const d = forDate || dateKey(new Date());
-    setAddModalDate(d);
-    setBookingForm({
-      client_name: "",
-      client_email: "",
-      event_date: d,
-      category: "Other",
-      venue: "",
-      service_description: "",
-      total_price: "",
-      advance_amount: "",
-      status: "Pending",
-    });
+    setAddModalDate(forDate || dateKey(new Date()));
     setShowAddModal(true);
-  }
-
-  async function handleCreateBooking() {
-    if (!bookingForm.client_name.trim() || !bookingForm.event_date || !bookingForm.total_price) {
-      alert("Client name, event date, and total price are required.");
-      return;
-    }
-    setSavingBooking(true);
-    try {
-      const res = await fetch("/api/admin/contracts", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          client_name: bookingForm.client_name.trim(),
-          client_email: bookingForm.client_email.trim() || null,
-          event_date: bookingForm.event_date,
-          venue: bookingForm.venue.trim() || null,
-          service_description: bookingForm.service_description.trim() || null,
-          category: bookingForm.category,
-          total_price: Number(bookingForm.total_price) || 0,
-          advance_amount: Number(bookingForm.advance_amount) || 0,
-          status: bookingForm.status,
-        }),
-      });
-      if (!res.ok) {
-        const err = await res.json().catch(() => ({}));
-        alert(err.error || "Failed to create booking.");
-        return;
-      }
-      setShowAddModal(false);
-      await loadEntries();
-    } finally {
-      setSavingBooking(false);
-    }
   }
 
   const entriesByDate: Record<string, CalendarEntry[]> = {};
@@ -624,108 +554,15 @@ export default function CalendarPage() {
         </div>
       )}
 
-      {showAddModal && (
-        <div
-          onClick={() => !savingBooking && setShowAddModal(false)}
-          style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.7)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 500, padding: 16 }}
-        >
-          <div
-            onClick={(e) => e.stopPropagation()}
-            style={{ background: "#111", border: "1px solid #222", borderRadius: 8, padding: "1.5rem", width: "min(520px, 100%)", maxHeight: "90vh", overflowY: "auto" }}
-          >
-            <h3 style={{ margin: "0 0 0.25rem", fontSize: 20, color: "#fff", fontWeight: 700 }}>Add Booking</h3>
-            <p style={{ color: "rgba(255,255,255,0.4)", fontSize: 12, margin: "0 0 1.25rem" }}>Creates a contract that will show on the calendar, orders, and dashboard.</p>
-
-            {[
-              { key: "client_name", label: "Client Name", type: "text", required: true },
-              { key: "client_email", label: "Client Email", type: "email" },
-              { key: "event_date", label: "Event Date", type: "date", required: true },
-              { key: "venue", label: "Venue", type: "text" },
-              { key: "service_description", label: "Service Description", type: "text" },
-            ].map((f) => (
-              <div key={f.key} style={{ marginBottom: "0.75rem" }}>
-                <label style={{ display: "block", fontSize: 10, textTransform: "uppercase", letterSpacing: 2, color: "rgba(255,255,255,0.4)", marginBottom: 4 }}>
-                  {f.label}{f.required ? " *" : ""}
-                </label>
-                <input
-                  type={f.type}
-                  value={bookingForm[f.key as keyof typeof bookingForm]}
-                  onChange={(e) => setBookingForm((p) => ({ ...p, [f.key]: e.target.value }))}
-                  style={{ width: "100%", padding: "0.55rem", background: "#0C0C0C", border: "1px solid #333", borderRadius: 4, color: "#fff", fontSize: 14, colorScheme: "dark", boxSizing: "border-box" }}
-                />
-              </div>
-            ))}
-
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem", marginBottom: "0.75rem" }}>
-              <div>
-                <label style={{ display: "block", fontSize: 10, textTransform: "uppercase", letterSpacing: 2, color: "rgba(255,255,255,0.4)", marginBottom: 4 }}>Total Price *</label>
-                <input
-                  type="number"
-                  value={bookingForm.total_price}
-                  onChange={(e) => setBookingForm((p) => ({ ...p, total_price: e.target.value }))}
-                  placeholder="0"
-                  style={{ width: "100%", padding: "0.55rem", background: "#0C0C0C", border: "1px solid #333", borderRadius: 4, color: "#fff", fontSize: 14, boxSizing: "border-box" }}
-                />
-              </div>
-              <div>
-                <label style={{ display: "block", fontSize: 10, textTransform: "uppercase", letterSpacing: 2, color: "rgba(255,255,255,0.4)", marginBottom: 4 }}>Advance</label>
-                <input
-                  type="number"
-                  value={bookingForm.advance_amount}
-                  onChange={(e) => setBookingForm((p) => ({ ...p, advance_amount: e.target.value }))}
-                  placeholder="0"
-                  style={{ width: "100%", padding: "0.55rem", background: "#0C0C0C", border: "1px solid #333", borderRadius: 4, color: "#fff", fontSize: 14, boxSizing: "border-box" }}
-                />
-              </div>
-            </div>
-
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem", marginBottom: "1.25rem" }}>
-              <div>
-                <label style={{ display: "block", fontSize: 10, textTransform: "uppercase", letterSpacing: 2, color: "rgba(255,255,255,0.4)", marginBottom: 4 }}>Category</label>
-                <select
-                  value={bookingForm.category}
-                  onChange={(e) => setBookingForm((p) => ({ ...p, category: e.target.value }))}
-                  style={{ width: "100%", padding: "0.55rem", background: "#0C0C0C", border: "1px solid #333", borderRadius: 4, color: "#fff", fontSize: 14 }}
-                >
-                  {CONTRACT_CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
-                </select>
-              </div>
-              <div>
-                <label style={{ display: "block", fontSize: 10, textTransform: "uppercase", letterSpacing: 2, color: "rgba(255,255,255,0.4)", marginBottom: 4 }}>Status</label>
-                <select
-                  value={bookingForm.status}
-                  onChange={(e) => setBookingForm((p) => ({ ...p, status: e.target.value }))}
-                  style={{ width: "100%", padding: "0.55rem", background: "#0C0C0C", border: "1px solid #333", borderRadius: 4, color: "#fff", fontSize: 14 }}
-                >
-                  {BOOKING_STATUSES.map((s) => <option key={s} value={s}>{s}</option>)}
-                </select>
-              </div>
-            </div>
-
-            <div style={{ display: "flex", gap: 8, justifyContent: "flex-end" }}>
-              <button
-                onClick={() => setShowAddModal(false)}
-                disabled={savingBooking}
-                style={{ background: "#222", color: "#fff", border: "none", padding: "0.55rem 1.25rem", borderRadius: 4, cursor: "pointer", fontSize: 13 }}
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleCreateBooking}
-                disabled={savingBooking}
-                style={{ background: ORANGE, color: BLACK, border: "none", padding: "0.55rem 1.25rem", borderRadius: 4, cursor: "pointer", fontSize: 13, fontWeight: 700, opacity: savingBooking ? 0.6 : 1 }}
-              >
-                {savingBooking ? "Saving..." : "Create Booking"}
-              </button>
-            </div>
-            {addModalDate && (
-              <p style={{ color: "rgba(255,255,255,0.25)", fontSize: 11, margin: "0.75rem 0 0", textAlign: "center" }}>
-                Source date: {addModalDate}
-              </p>
-            )}
-          </div>
-        </div>
-      )}
+      <BookingModal
+        open={showAddModal}
+        onClose={() => setShowAddModal(false)}
+        onCreated={loadEntries}
+        defaultDate={addModalDate}
+        title="Add Booking"
+        subtitle="Creates a contract that will show on the calendar, orders, and dashboard."
+        ctaLabel="Create Booking"
+      />
     </div>
   );
 }

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useCallback } from "react";
 
-const SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!;
+const SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || "";
 
 interface TurnstileProps {
   onVerify: (token: string) => void;
@@ -15,24 +15,33 @@ export function Turnstile({ onVerify, onExpire }: TurnstileProps) {
   const scriptLoaded = useRef(false);
 
   const renderWidget = useCallback(() => {
+    if (!SITE_KEY) return;
     if (!containerRef.current || widgetIdRef.current !== null) return;
     if (!window.turnstile) return;
 
-    widgetIdRef.current = window.turnstile.render(containerRef.current, {
-      sitekey: SITE_KEY,
-      theme: "dark",
-      callback: onVerify,
-      "expired-callback": onExpire,
-      "error-callback": () => {
-        // On error, reset so user can retry
-        if (widgetIdRef.current !== null) {
-          window.turnstile.reset(widgetIdRef.current);
-        }
-      },
-    });
+    try {
+      widgetIdRef.current = window.turnstile.render(containerRef.current, {
+        sitekey: SITE_KEY,
+        theme: "dark",
+        callback: onVerify,
+        "expired-callback": onExpire,
+        "error-callback": () => {
+          // Do NOT call reset() here — it re-triggers render which re-triggers error,
+          // producing an infinite error loop (observed in Clarity). Clear the widget
+          // and stop; anti-spam still covers us server-side.
+          widgetIdRef.current = null;
+        },
+      });
+    } catch (err) {
+      console.warn("[Turnstile] render failed, failing open:", err);
+      widgetIdRef.current = null;
+    }
   }, [onVerify, onExpire]);
 
   useEffect(() => {
+    // If no site key configured, render nothing — server-side anti-spam still protects.
+    if (!SITE_KEY) return;
+
     // If Turnstile script is already loaded, render immediately
     if (window.turnstile) {
       renderWidget();
@@ -49,11 +58,15 @@ export function Turnstile({ onVerify, onExpire }: TurnstileProps) {
       document.head.appendChild(script);
     }
 
-    // Poll briefly in case another instance loaded the script
+    // Poll briefly in case another instance loaded the script; give up after ~5s
+    let attempts = 0;
     const interval = setInterval(() => {
+      attempts++;
       if (window.turnstile) {
         clearInterval(interval);
         renderWidget();
+      } else if (attempts > 25) {
+        clearInterval(interval);
       }
     }, 200);
 

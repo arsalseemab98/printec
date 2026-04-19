@@ -39,7 +39,7 @@ export default function SignContractPage({
 
   const fetchContract = useCallback(async () => {
     try {
-      const res = await fetch(`/api/admin/contracts/${id}`);
+      const res = await fetch(`/api/contracts/${id}/public-view`);
       if (!res.ok) {
         setNotFound(true);
         return;

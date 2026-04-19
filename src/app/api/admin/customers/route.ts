@@ -6,7 +6,7 @@ export async function GET() {
 
   const { data: inquiries, error: inqError } = await supabase
     .from("inquiries")
-    .select("id, name, email, phone, service, status, source, created_at")
+    .select("id, name, email, phone, service, status, source, industry, created_at")
     .order("created_at", { ascending: false });
 
   const { data: leads, error: leadError } = await supabase
@@ -37,6 +37,7 @@ export async function GET() {
       service: inq.service || "",
       status: inq.status || "New",
       source: inq.source || "",
+      industry: inq.industry ?? null,
       type: "inquiry" as const,
       created_at: inq.created_at,
     })),
@@ -48,6 +49,7 @@ export async function GET() {
       service: lead.catalog_slug || "",
       status: "Lead",
       source: "Catalog: " + (lead.catalog_slug || ""),
+      industry: null,
       type: "catalog_lead" as const,
       created_at: lead.created_at,
     })),
@@ -59,6 +61,7 @@ export async function GET() {
       service: c.service_description || "",
       status: c.status || "Pending",
       source: "Contract",
+      industry: null,
       type: "contract" as const,
       created_at: c.created_at,
     })),

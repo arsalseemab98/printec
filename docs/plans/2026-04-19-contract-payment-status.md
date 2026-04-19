@@ -178,10 +178,14 @@ export async function POST(req: NextRequest) {
       .single();
 
     if (inqErr) {
-      console.error("Auto-create inquiry failed; continuing with null inquiry_id:", inqErr);
-    } else {
-      inquiryId = newInquiry?.id ?? null;
+      // Surface loudly — user explicitly does not want silent fallbacks.
+      console.error("Auto-create inquiry failed:", inqErr);
+      return NextResponse.json(
+        { error: `Failed to create linked inquiry: ${inqErr.message}` },
+        { status: 500 }
+      );
     }
+    inquiryId = newInquiry?.id ?? null;
   }
 
   const { data, error } = await supabase
@@ -765,6 +769,67 @@ Visit `/admin/contracts`. Expected: each row shows a payment-status pill (gray f
 git add src/app/admin/contracts/page.tsx
 git commit -m "ui: payment-status pill on contracts list"
 ```
+
+---
+
+## Task 7.5: Verify RLS + Supabase logs are clean
+
+**Files:** none (verification-only task).
+
+**Step 1: Confirm RLS still constrains anon access on changed tables**
+
+In Supabase SQL editor:
+
+```sql
+SELECT tablename, policyname, cmd, roles
+FROM pg_policies
+WHERE tablename IN ('contracts', 'inquiries', 'catalog_leads')
+ORDER BY tablename, policyname;
+```
+
+Expected:
+- `inquiries`: anon INSERT only (no SELECT/UPDATE/DELETE for anon).
+- `contracts`: NO anon policies (admin server-role only). If any anon policy is listed for `contracts`, STOP and ask before continuing.
+- `catalog_leads`: anon INSERT only.
+
+**Step 2: Probe with the anon key (real RLS check)**
+
+```bash
+# Get anon key from .env.local
+ANON_KEY=$(grep NEXT_PUBLIC_SUPABASE_ANON_KEY /Users/arsalseemab/Desktop/github/printec/.env.local | cut -d'=' -f2 | tr -d '"' | tr -d "'")
+
+# Anon SHOULD NOT be able to read contracts
+curl -s -H "apikey: $ANON_KEY" -H "Authorization: Bearer $ANON_KEY" \
+  "https://eofjaizkkxqxbynnvemi.supabase.co/rest/v1/contracts?select=id&limit=1"
+# Expected: [] or RLS error — NOT a populated array
+
+# Anon SHOULD NOT be able to read inquiries
+curl -s -H "apikey: $ANON_KEY" -H "Authorization: Bearer $ANON_KEY" \
+  "https://eofjaizkkxqxbynnvemi.supabase.co/rest/v1/inquiries?select=id&limit=1"
+# Expected: [] or RLS error — NOT a populated array
+
+# Anon SHOULD still be able to INSERT inquiry (public contact form path)
+curl -s -X POST -H "apikey: $ANON_KEY" -H "Authorization: Bearer $ANON_KEY" \
+  -H "Content-Type: application/json" -H "Prefer: return=representation" \
+  "https://eofjaizkkxqxbynnvemi.supabase.co/rest/v1/inquiries" \
+  -d '{"name":"RLS Test","email":"rls@test.local","service":"test","source":"rls-test"}'
+# Expected: 201 with the new row
+
+# Cleanup the test row via SQL editor:
+#   DELETE FROM inquiries WHERE source='rls-test';
+```
+
+If any expectation fails, STOP and surface the result before proceeding.
+
+**Step 3: Check Supabase logs for silent errors**
+
+Open Supabase dashboard → Project `eofjaizkkxqxbynnvemi` → Logs → Postgres Logs. Filter to last hour. Look for any `ERROR` or `FATAL` entries from our routes. If anything related to `contracts`, `inquiries`, or our payment-status work shows up, paste it here before marking complete.
+
+Also check Logs → Edge / API Logs filtered to `/rest/v1/contracts` and `/rest/v1/inquiries`. Expected: only the requests you triggered, all 200/201.
+
+**Step 4: Commit (verification notes only)**
+
+No file changes — this task is a gate. If everything passed, no commit needed; just proceed to Task 8.
 
 ---
 

@@ -18,6 +18,7 @@ interface Contract {
   sent_at: string | null;
   signed_at: string | null;
   created_at: string;
+  payment_status: "Not Paid" | "Half Paid" | "Full Paid";
 }
 
 const CONTRACT_STATUSES = ["Pending", "Sent", "Signed", "Completed", "Cancelled"] as const;
@@ -501,6 +502,31 @@ export default function ContractsPage() {
                   {/* Status */}
                   <td style={{ padding: "0.75rem 1rem" }}>
                     {renderStatusDropdown(c)}
+                    <span
+                      style={{
+                        fontSize: 10,
+                        padding: "2px 8px",
+                        borderRadius: 4,
+                        fontWeight: 700,
+                        textTransform: "uppercase",
+                        letterSpacing: 1,
+                        marginLeft: 6,
+                        background:
+                          c.payment_status === "Full Paid"
+                            ? "rgba(34,197,94,0.15)"
+                            : c.payment_status === "Half Paid"
+                              ? "rgba(247,148,29,0.15)"
+                              : "rgba(255,255,255,0.08)",
+                        color:
+                          c.payment_status === "Full Paid"
+                            ? "#22c55e"
+                            : c.payment_status === "Half Paid"
+                              ? "#F7941D"
+                              : "rgba(255,255,255,0.5)",
+                      }}
+                    >
+                      {c.payment_status}
+                    </span>
                   </td>
 
                   {/* Event Date */}

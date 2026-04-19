@@ -448,3 +448,14 @@
 - [ ] Accessibility: WCAG compliance
 - [ ] SEO: Structured data validation
 - [ ] Images: All Supabase CDN URLs return 200
+
+## Contract Payment Status (2026-04-19)
+
+- [PASSING] Create contract via BookingModal with client_name+email → row appears in /admin/customers as Booked, source=contract; matching inquiry exists in DB.
+- [PASSING] Insert orphan contract directly via SQL → still appears in /admin/customers as type:contract via the safety-net merge in /api/admin/customers.
+- [PASSING] Change contract.payment_status Not Paid → Half Paid → Full Paid via UI dropdown; persists via PUT /api/admin/contracts/[id].
+- [PASSING] Send Payment Update at payment_status=Not Paid → button disabled with tooltip "Set payment status to Half Paid or Full Paid first".
+- [PASSING] Send at Half Paid → email arrives with paid-so-far + remaining-balance + balance-due lines; payment_email_sent_at updated.
+- [PASSING] Send at Full Paid → "Paid In Full" email arrives with PAID IN FULL status row; payment_email_sent_at updated.
+- [PASSING] Contract with no client_email → send button disabled with tooltip "No client email on file".
+- [PASSING] /admin/contracts list shows payment-status pill on every row; gray/orange/green for Not Paid/Half Paid/Full Paid.

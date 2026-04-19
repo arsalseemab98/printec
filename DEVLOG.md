@@ -2,6 +2,14 @@
 
 ---
 
+## 2026-04-19 — Contract payment status feature
+- New columns on contracts: `payment_status` (CHECK Not Paid/Half Paid/Full Paid, default Not Paid) and `payment_email_sent_at` (timestamptz).
+- Contract detail page: payment status dropdown + "Send Payment Update Email" button (Microsoft Graph). Button disabled when payment_status is Not Paid or contract has no client_email; tooltip explains the reason.
+- Email content varies: Half Paid email shows paid-so-far + remaining balance + balance due; Full Paid email confirms paid-in-full.
+- Contracts list now shows a color-coded payment-status pill alongside the existing status badge.
+- Bug fix (long-standing): contracts created via BookingModal or /admin/contracts/new without an existing inquiry no longer fall off the customer list. POST /api/admin/contracts now auto-creates a matching inquiries row (status=Booked, source=contract), with orphan-cleanup if the contract insert fails afterward. As a safety net, GET /api/admin/customers also merges any contracts where inquiry_id IS NULL (rendered as type:contract — customers page extended to handle that variant correctly: badge, color, click-route to /admin/contracts/[id], hide duplicate "+ Contract" action).
+- Why: requested by Arsal — admin needs clearer payment tracking and customers were silently disappearing from CRM when admin created contracts directly.
+
 ## 2026-04-19 — Admin API gating + public signing endpoint
 - Closed unauthenticated /api/admin/* surface. proxy.ts matcher now covers both /admin/:path* and /api/admin/:path*. Pages get redirect to /admin/login; APIs get JSON 401.
 - New public read-only endpoint /api/contracts/[id]/public-view returns only the 15 fields the customer signing page needs (no payment_status, status, inquiry_id, internal flags).

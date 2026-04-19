@@ -235,6 +235,9 @@ npx next build             # Production build
   - Image manager: view all Supabase Storage images, single + bulk upload, delete, copy URL, search/filter
   - Digital contracts: create, edit, send signing link, download PDF, status management (Pending/Sent/Signed/Completed/Cancelled)
   - Contract status dropdown on detail page (manual override)
+  - Payment status (Not Paid / Half Paid / Full Paid) on contracts detail page; "Send Payment Update Email" button (Microsoft Graph) sends a Half-Paid or Full-Paid email to the customer with current balance details (button disabled when payment_status is Not Paid or no client_email)
+  - Payment-status pill (color-coded: gray/orange/green) on /admin/contracts list rows
+  - Customers page now also surfaces orphan contracts (`type: "contract"`) that have no linked inquiry — safety net plus auto-create inquiry on every new contract created via BookingModal or /admin/contracts/new
   - Contract signing/completion feeds into dashboard sales metrics
   - Public signing page at /sign/[id] (customer draws signature on canvas)
   - Signed PDF emailed to both parties after signing
@@ -275,6 +278,7 @@ npx next build             # Production build
 - **Email marketing**: Compose + send bulk emails from /admin/emails with Tiptap editor
 - **Templates**: Save reusable email templates with placeholder support
 - **Azure health check**: /api/admin/azure-status tests credentials + shows secret expiry
+- Payment update emails (Microsoft Graph): manual send from contract detail page; subject + body vary by Half Paid vs Full Paid; recorded in contracts.payment_email_sent_at
 
 ## Supabase Access & RLS Policy
 - **Service role** (`SUPABASE_SERVICE_ROLE_KEY`) is used ONLY by admin API routes under `/api/admin/*` via `createServerClient()` in `src/lib/supabase.ts`. These routes are gated by `proxy.ts` admin session cookie.
@@ -295,7 +299,7 @@ npx next build             # Production build
 - `blog_posts` — slug, title, excerpt, category, content (HTML), published
 - `inquiries` — name, email, phone, service, status, booked_price, completed_price, event_date, utm_*
 - `quotes` — inquiry_id, quote_number (PQ-001), items (jsonb), total, sent_at
-- `contracts` — inquiry_id (nullable), contract_number (PC-001), event_date, venue, service_description, total_price, advance_amount, balance_amount, balance_due, travel_cost, client_name, client_email, terms (jsonb), signature_data, signed_at, sent_at, status (Pending/Sent/Signed/Completed/Cancelled), completed_at
+- `contracts` — inquiry_id (nullable), contract_number (PC-001), event_date, venue, service_description, total_price, advance_amount, balance_amount, balance_due, travel_cost, client_name, client_email, terms (jsonb), signature_data, signed_at, sent_at, status (Pending/Sent/Signed/Completed/Cancelled), completed_at, payment_status (Not Paid/Half Paid/Full Paid), payment_email_sent_at, category
 - `catalogs` — id (uuid), title, slug (unique), description, created_at
 - `catalog_projects` — id (uuid), catalog_id (FK→catalogs, cascade delete), title, description, image_url, specs (jsonb array of {label,value}), sort_order, created_at
 - `catalog_leads` — id (uuid), catalog_slug, name, email, created_at

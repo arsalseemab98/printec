@@ -27,7 +27,6 @@ export async function POST(req: NextRequest) {
   const supabase = createServerClient();
   const body = await req.json();
 
-  // Auto-generate contract number
   const { count, error: countError } = await supabase
     .from("contracts")
     .select("*", { count: "exact", head: true });
@@ -38,15 +37,40 @@ export async function POST(req: NextRequest) {
 
   const contractNumber = `PC-${String((count ?? 0) + 1).padStart(3, "0")}`;
 
-  // Auto-calculate balance
   const totalPrice = Number(body.total_price) || 0;
   const advanceAmount = Number(body.advance_amount) || 0;
   const balanceAmount = totalPrice - advanceAmount;
 
+  // If admin created the contract without picking an inquiry, mint one so the
+  // customer surfaces in the Customers list and CRM pipeline.
+  let inquiryId: string | null = body.inquiry_id || null;
+  if (!inquiryId && body.client_name) {
+    const { data: newInquiry, error: inqErr } = await supabase
+      .from("inquiries")
+      .insert({
+        name: body.client_name,
+        email: body.client_email || null,
+        service: body.service_description || body.category || null,
+        status: "Booked",
+        source: "contract",
+      })
+      .select("id")
+      .single();
+
+    if (inqErr) {
+      console.error("Auto-create inquiry failed:", inqErr);
+      return NextResponse.json(
+        { error: `Failed to create linked inquiry: ${inqErr.message}` },
+        { status: 500 }
+      );
+    }
+    inquiryId = newInquiry?.id ?? null;
+  }
+
   const { data, error } = await supabase
     .from("contracts")
     .insert({
-      inquiry_id: body.inquiry_id || null,
+      inquiry_id: inquiryId,
       contract_number: contractNumber,
       event_date: body.event_date || null,
       venue: body.venue || null,

@@ -13,11 +13,11 @@ interface Customer {
   service: string;
   status: string;
   source: string;
-  type: "inquiry" | "catalog_lead";
+  type: "inquiry" | "catalog_lead" | "contract";
   created_at: string;
 }
 
-const SOURCE_TABS = ["All", "Inquiries", "Catalog Leads"];
+const SOURCE_TABS = ["All", "Inquiries", "Catalog Leads", "Contracts"];
 const STATUS_FILTERS = [
   "All",
   "New",
@@ -41,6 +41,7 @@ const STATUS_COLORS: Record<string, string> = {
 const TYPE_COLORS: Record<string, string> = {
   inquiry: "#3b82f6",
   catalog_lead: "#F7941D",
+  contract: "#22c55e",
 };
 
 export default function CustomersPage() {
@@ -71,11 +72,13 @@ export default function CustomersPage() {
     // Source filter
     if (sourceTab === "Inquiries" && c.type !== "inquiry") return false;
     if (sourceTab === "Catalog Leads" && c.type !== "catalog_lead") return false;
+    if (sourceTab === "Contracts" && c.type !== "contract") return false;
 
     // Status filter (only applies to inquiries)
     if (statusFilter !== "All") {
       if (c.type === "inquiry" && c.status !== statusFilter) return false;
       if (c.type === "catalog_lead") return false; // hide catalog leads when filtering by inquiry status
+      if (c.type === "contract") return false;
     }
 
     // Search
@@ -92,6 +95,7 @@ export default function CustomersPage() {
 
   const inquiryCount = customers.filter((c) => c.type === "inquiry").length;
   const leadCount = customers.filter((c) => c.type === "catalog_lead").length;
+  const contractCount = customers.filter((c) => c.type === "contract").length;
 
   function handleCopyEmails() {
     const emails = Array.from(new Set(filtered.map((c) => c.email))).join(", ");
@@ -104,6 +108,8 @@ export default function CustomersPage() {
   function handleRowClick(c: Customer) {
     if (c.type === "inquiry") {
       router.push(`/admin/inquiries/${c.id}`);
+    } else if (c.type === "contract") {
+      router.push(`/admin/contracts/${c.id}`);
     } else {
       router.push("/admin/catalogs/leads");
     }
@@ -197,6 +203,7 @@ export default function CustomersPage() {
             { label: "Total", value: customers.length },
             { label: "Inquiries", value: inquiryCount },
             { label: "Catalog Leads", value: leadCount },
+            { label: "Contracts", value: contractCount },
           ].map((stat) => (
             <div
               key={stat.label}
@@ -508,7 +515,7 @@ export default function CustomersPage() {
                         border: `1px solid ${TYPE_COLORS[c.type] || "#888"}40`,
                       }}
                     >
-                      {c.type === "inquiry" ? "Inquiry" : "Catalog Lead"}
+                      {c.type === "inquiry" ? "Inquiry" : c.type === "contract" ? "Contract" : "Catalog Lead"}
                     </span>
                   </td>
                   <td
@@ -580,28 +587,30 @@ export default function CustomersPage() {
                           <Plus size={12} /> Inquiry
                         </button>
                       )}
-                      <button
-                        onClick={(e) => handleCreateContract(c, e)}
-                        title="Create Contract for this customer"
-                        style={{
-                          display: "inline-flex",
-                          alignItems: "center",
-                          gap: "4px",
-                          padding: "4px 10px",
-                          background: "rgba(247,148,29,0.1)",
-                          border: "1px solid rgba(247,148,29,0.3)",
-                          borderRadius: "4px",
-                          color: "#F7941D",
-                          fontSize: "11px",
-                          fontWeight: 600,
-                          cursor: "pointer",
-                          transition: "all 0.2s",
-                        }}
-                        onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(247,148,29,0.2)"; }}
-                        onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(247,148,29,0.1)"; }}
-                      >
-                        <FileText size={12} /> Contract
-                      </button>
+                      {c.type !== "contract" && (
+                        <button
+                          onClick={(e) => handleCreateContract(c, e)}
+                          title="Create Contract for this customer"
+                          style={{
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: "4px",
+                            padding: "4px 10px",
+                            background: "rgba(247,148,29,0.1)",
+                            border: "1px solid rgba(247,148,29,0.3)",
+                            borderRadius: "4px",
+                            color: "#F7941D",
+                            fontSize: "11px",
+                            fontWeight: 600,
+                            cursor: "pointer",
+                            transition: "all 0.2s",
+                          }}
+                          onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(247,148,29,0.2)"; }}
+                          onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(247,148,29,0.1)"; }}
+                        >
+                          <FileText size={12} /> Contract
+                        </button>
+                      )}
                     </div>
                   </td>
                 </tr>

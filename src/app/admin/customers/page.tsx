@@ -15,6 +15,7 @@ interface Customer {
   source: string;
   type: "inquiry" | "catalog_lead" | "contract";
   created_at: string;
+  industry: string | null;
 }
 
 const SOURCE_TABS = ["All", "Inquiries", "Catalog Leads", "Contracts"];
@@ -50,6 +51,7 @@ export default function CustomersPage() {
   const [loading, setLoading] = useState(true);
   const [sourceTab, setSourceTab] = useState("All");
   const [statusFilter, setStatusFilter] = useState("All");
+  const [industryFilter, setIndustryFilter] = useState("All");
   const [search, setSearch] = useState("");
   const [copied, setCopied] = useState(false);
 
@@ -80,6 +82,9 @@ export default function CustomersPage() {
       if (c.type === "catalog_lead") return false; // hide catalog leads when filtering by inquiry status
       if (c.type === "contract") return false;
     }
+
+    // Industry filter (catalog_lead and contract rows have null industry → hidden when filter is set)
+    if (industryFilter !== "All" && c.industry !== industryFilter) return false;
 
     // Search
     if (search) {
@@ -344,6 +349,34 @@ export default function CustomersPage() {
           />
         </div>
 
+        {/* Industry filter */}
+        {(() => {
+          const allIndustries = Array.from(
+            new Set(customers.map((c) => c.industry).filter((x): x is string => !!x))
+          ).sort();
+          return (
+            <select
+              value={industryFilter}
+              onChange={(e) => setIndustryFilter(e.target.value)}
+              style={{
+                padding: "0.625rem 0.75rem",
+                background: "#111",
+                border: "1px solid #222",
+                borderRadius: "4px",
+                color: "#fff",
+                fontSize: "14px",
+                outline: "none",
+                cursor: "pointer",
+              }}
+            >
+              <option value="All">All industries</option>
+              {allIndustries.map((i) => (
+                <option key={i} value={i}>{i}</option>
+              ))}
+            </select>
+          );
+        })()}
+
         {/* Export Emails button */}
         <button
           onClick={handleCopyEmails}
@@ -421,6 +454,7 @@ export default function CustomersPage() {
                   "Email",
                   "Phone",
                   "Source",
+                  "Industry",
                   "Type",
                   "Status",
                   "Date",
@@ -496,6 +530,28 @@ export default function CustomersPage() {
                     }}
                   >
                     {c.source || "\u2014"}
+                  </td>
+                  <td
+                    style={{
+                      padding: "0.75rem 1rem",
+                      borderBottom: "1px solid #161616",
+                    }}
+                  >
+                    {c.industry ? (
+                      <span
+                        style={{
+                          fontSize: 11,
+                          padding: "2px 8px",
+                          borderRadius: 3,
+                          background: "rgba(255,255,255,0.06)",
+                          color: "rgba(255,255,255,0.75)",
+                        }}
+                      >
+                        {c.industry}
+                      </span>
+                    ) : (
+                      <span style={{ color: "rgba(255,255,255,0.25)" }}>—</span>
+                    )}
                   </td>
                   <td
                     style={{

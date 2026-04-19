@@ -217,7 +217,7 @@ npx next build             # Production build
 - TikTok: https://www.tiktok.com/@printec.va
 
 ## Admin Portal
-- **URL**: /admin (protected by password auth via proxy.ts)
+- **URL**: /admin (protected by admin session cookie via proxy.ts; matcher covers BOTH /admin/* and /api/admin/*)
 - **Password**: Set via `ADMIN_PASSWORD` env var
 - **Features**:
   - Dashboard with sales metrics (booked pipeline, completed revenue, avg order) — includes both inquiries and contracts
@@ -277,12 +277,17 @@ npx next build             # Production build
 - **Azure health check**: /api/admin/azure-status tests credentials + shows secret expiry
 
 ## Supabase Access & RLS Policy
-- **Service role** (`SUPABASE_SERVICE_ROLE_KEY`) is used ONLY by admin API routes under `/api/admin/*` via `createServerClient()` in `src/lib/supabase.ts`. These routes are gated by `proxy.ts` password auth.
+- **Service role** (`SUPABASE_SERVICE_ROLE_KEY`) is used ONLY by admin API routes under `/api/admin/*` via `createServerClient()` in `src/lib/supabase.ts`. These routes are gated by `proxy.ts` admin session cookie.
 - **Anon client** (`getSupabase()`) is used by all public routes/pages. Public access is constrained by RLS:
   - `inquiries` — anon INSERT only
   - `catalog_leads` — anon INSERT only
   - `catalogs`, `catalog_projects` — anon SELECT only
-- **Never add service-role usage to a public route** (no admin auth). Use the anon client and add the narrowest RLS policy needed.
+  - `page_content`, `page_images`, `portfolio_images` — anon SELECT, service_role write
+  - `blog_posts` — anon SELECT only where `published = true`, service_role write
+  - `promo_slides` — anon SELECT only where `active = true`, service_role write
+  - `contracts`, `quotes`, `email_logs`, `email_templates` — service_role only (no anon access at all)
+- **Customer signing flow** reads contract data via PUBLIC endpoint `GET /api/contracts/[id]/public-view` (NOT `/api/admin/contracts/[id]`). It exposes only 15 fields: id, contract_number, client_name, client_email, event_date, venue, service_description, total_price, advance_amount, balance_amount, balance_due, travel_cost, terms, signed_at, signature_data. Internal admin metadata (payment_status, status, inquiry_id, sent_at, completed_at, category, created_at, updated_at) is intentionally omitted.
+- **Never add service-role usage to a public route** without admin auth gating. Use the anon client and add the narrowest RLS policy needed.
 
 ## Database Tables (Supabase)
 - `page_images` — page_slug, slot, url, alt_text

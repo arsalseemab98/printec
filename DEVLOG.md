@@ -2,6 +2,22 @@
 
 ---
 
+## 2026-04-19 — Admin API gating + public signing endpoint
+- Closed unauthenticated /api/admin/* surface. proxy.ts matcher now covers both /admin/:path* and /api/admin/:path*. Pages get redirect to /admin/login; APIs get JSON 401.
+- New public read-only endpoint /api/contracts/[id]/public-view returns only the 15 fields the customer signing page needs (no payment_status, status, inquiry_id, internal flags).
+- /sign/[id]/page.tsx switched from /api/admin/contracts/[id] to the new endpoint.
+- Why: earlier RLS hardening today closed direct PostgREST anon access, but our own admin API surface (running with service-role key) was still open to the internet. Anyone with — or who guessed — a contract UUID could read or mutate any contract via /api/admin/*.
+- Local verification pending external testing in production after deploy.
+
+## 2026-04-19 — RLS hardening across admin tables
+- contracts table was leaking ALL rows (incl. PII, financial data, signature_data) to anon clients via two misnamed policies (Allow public read by id, Allow all for service role) that were attached to the public Postgres role with USING (true). Dropped both; added a single service_role-only policy.
+- Same misconfiguration found by the security advisor on quotes (was leaking financial PII), email_logs, email_templates, page_content. Locked all four to service_role only.
+- For tables that are publicly rendered (page_images, blog_posts, promo_slides), split the policy: explicit anon SELECT (filtered by published=true / active=true where applicable) + service_role ALL.
+- promo_slides had RLS disabled entirely; enabled and policed.
+- Verified: anon SELECT on contracts/quotes/email_logs/email_templates returns []. Public reads on page_images/blog_posts/promo_slides still work (filtered correctly). Supabase advisor reports zero ERROR-level lints; remaining WARNs are intentional design (anon INSERT for contact form, public images CDN bucket).
+
+---
+
 ## 2026-04-14 — Edit Bugs, Contract PDF, Calendar Bookings, Orders, Nav, RLS Hardening
 
 ### What was done

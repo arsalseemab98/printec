@@ -155,3 +155,16 @@ export const staggerContainer = {
   hidden: {},
   visible: { transition: { staggerChildren: 0.12, delayChildren: 0.05 } },
 };
+
+export const INDUSTRIES = [
+  "Restaurant",
+  "Retail / Storefront",
+  "Wedding / Event",
+  "Real Estate",
+  "Healthcare",
+  "Office / Corporate",
+  "Automotive",
+  "Religious / Church",
+  "Education",
+  "Other",
+] as const;

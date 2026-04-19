@@ -36,6 +36,8 @@ interface Contract {
   signature_data: string | null;
   created_at: string;
   updated_at: string;
+  payment_status: "Not Paid" | "Half Paid" | "Full Paid";
+  payment_email_sent_at: string | null;
 }
 
 const inputStyle: React.CSSProperties = {
@@ -77,6 +79,7 @@ export default function ContractDetailPage({
   const [copied, setCopied] = useState(false);
   const [downloadingPdf, setDownloadingPdf] = useState(false);
   const [updatingStatus, setUpdatingStatus] = useState(false);
+  const [sendingPayment, setSendingPayment] = useState(false);
 
   const CONTRACT_STATUSES = ["Pending", "Sent", "Signed", "Completed", "Cancelled"] as const;
   const CONTRACT_STATUS_COLORS: Record<string, string> = {
@@ -822,6 +825,94 @@ export default function ContractDetailPage({
               </button>
             </div>
           </div>
+
+          {/* Payment */}
+          {contract && (
+            <div style={{ background: "#111", border: "1px solid #222", borderRadius: 4, padding: "1.25rem", marginBottom: "1.5rem" }}>
+              <h3 style={{ fontSize: 14, fontWeight: 700, color: "#fff", margin: "0 0 1rem", textTransform: "uppercase", letterSpacing: 1 }}>
+                Payment
+              </h3>
+
+              <label style={labelStyle}>Payment Status</label>
+              <select
+                value={contract.payment_status}
+                onChange={async (e) => {
+                  const newStatus = e.target.value as Contract["payment_status"];
+                  const res = await fetch(`/api/admin/contracts/${contract.id}`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ payment_status: newStatus }),
+                  });
+                  if (res.ok) {
+                    const updated = await res.json();
+                    setContract(updated);
+                  } else {
+                    alert("Failed to update payment status.");
+                  }
+                }}
+                style={{ ...inputStyle, cursor: "pointer", marginBottom: "1rem" }}
+              >
+                {["Not Paid", "Half Paid", "Full Paid"].map((s) => (
+                  <option key={s} value={s}>{s}</option>
+                ))}
+              </select>
+
+              {(() => {
+                const canSend =
+                  !!contract.client_email &&
+                  (contract.payment_status === "Half Paid" || contract.payment_status === "Full Paid");
+                const reason = !contract.client_email
+                  ? "No client email on file"
+                  : contract.payment_status === "Not Paid"
+                    ? "Set payment status to Half Paid or Full Paid first"
+                    : "";
+                return (
+                  <>
+                    <button
+                      disabled={!canSend || sendingPayment}
+                      title={reason}
+                      onClick={async () => {
+                        if (!confirm("Send payment update email to the customer?")) return;
+                        setSendingPayment(true);
+                        try {
+                          const res = await fetch(`/api/admin/contracts/${contract.id}/send-payment-update`, {
+                            method: "POST",
+                          });
+                          if (res.ok) {
+                            const data = await res.json();
+                            setContract({ ...contract, payment_email_sent_at: data.sent_at });
+                            alert("Payment update email sent.");
+                          } else {
+                            const err = await res.json().catch(() => ({}));
+                            alert(err.error || "Failed to send.");
+                          }
+                        } finally {
+                          setSendingPayment(false);
+                        }
+                      }}
+                      style={{
+                        background: canSend ? "#F7941D" : "#333",
+                        color: canSend ? "#0C0C0C" : "rgba(255,255,255,0.4)",
+                        border: "none",
+                        padding: "0.55rem 1.25rem",
+                        borderRadius: 4,
+                        cursor: canSend ? "pointer" : "not-allowed",
+                        fontSize: 13,
+                        fontWeight: 700,
+                      }}
+                    >
+                      {sendingPayment ? "Sending..." : "Send Payment Update Email"}
+                    </button>
+                    {contract.payment_email_sent_at && (
+                      <p style={{ marginTop: 8, color: "rgba(255,255,255,0.4)", fontSize: 12 }}>
+                        Last sent: {new Date(contract.payment_email_sent_at).toLocaleString()}
+                      </p>
+                    )}
+                  </>
+                );
+              })()}
+            </div>
+          )}
         </div>
       </div>
 

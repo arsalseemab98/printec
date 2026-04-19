@@ -881,7 +881,11 @@ export default function ContractDetailPage({
                           if (res.ok) {
                             const data = await res.json();
                             setContract({ ...contract, payment_email_sent_at: data.sent_at });
-                            alert("Payment update email sent.");
+                            alert(
+                              data.warning
+                                ? `Payment update email sent.\n\nWarning: ${data.warning}`
+                                : "Payment update email sent."
+                            );
                           } else {
                             const err = await res.json().catch(() => ({}));
                             alert(err.error || "Failed to send.");

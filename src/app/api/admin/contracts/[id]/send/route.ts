@@ -96,7 +96,7 @@ export async function POST(
       </div>
     </div>
     <div style="text-align:center;padding:20px;color:#444;font-size:11px;letter-spacing:1px;">
-      PRINTEC CORP &mdash; FROM VISION TO VINYL
+      PRINTEC VIRGINIA LLC &mdash; FROM VISION TO VINYL
     </div>
   </div>
 </body>

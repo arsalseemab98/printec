@@ -160,6 +160,12 @@ export async function POST(
 
     if (updateErr) {
       console.error("Failed to update payment_email_sent_at:", updateErr);
+      return NextResponse.json({
+        success: true,
+        sent_at: sentAt,
+        warning:
+          "Email sent, but failed to record the sent timestamp. The 'Last sent' label may not update.",
+      });
     }
 
     return NextResponse.json({ success: true, sent_at: sentAt });

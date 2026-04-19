@@ -4,6 +4,7 @@ import { useEffect, useState, use } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Trash2, Save, Plus, FileSignature } from "lucide-react";
+import { INDUSTRIES } from "@/lib/constants";
 
 interface Inquiry {
   id: string;
@@ -23,6 +24,7 @@ interface Inquiry {
   completed_price: number | null;
   notes: string;
   event_date: string | null;
+  industry: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -62,7 +64,7 @@ export default function InquiryDetailPage({
   const [notes, setNotes] = useState("");
   const [saving, setSaving] = useState(false);
   const [editing, setEditing] = useState(false);
-  const [editData, setEditData] = useState({ name: "", email: "", phone: "", service: "", budget: "", description: "", event_date: "" });
+  const [editData, setEditData] = useState({ name: "", email: "", phone: "", service: "", budget: "", description: "", event_date: "", industry: "" });
   const [savingEdit, setSavingEdit] = useState(false);
 
   useEffect(() => {
@@ -131,6 +133,7 @@ export default function InquiryDetailPage({
       budget: inquiry.budget || "",
       description: inquiry.description || "",
       event_date: inquiry.event_date || "",
+      industry: inquiry.industry || "",
     });
     setEditing(true);
   }
@@ -140,7 +143,7 @@ export default function InquiryDetailPage({
     const res = await fetch(`/api/admin/inquiries/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(editData),
+      body: JSON.stringify({ ...editData, industry: editData.industry || null }),
     });
     const data = await res.json();
     setInquiry(data);
@@ -172,6 +175,7 @@ export default function InquiryDetailPage({
     { label: "Email", value: inquiry.email },
     { label: "Phone", value: inquiry.phone },
     { label: "Service", value: inquiry.service },
+    { label: "Industry", value: inquiry.industry || "" },
     { label: "Budget", value: inquiry.budget },
     { label: "Source", value: inquiry.source },
     { label: "Page", value: inquiry.page },
@@ -364,6 +368,36 @@ export default function InquiryDetailPage({
                   />
                 </div>
               ))}
+              <div style={{ marginBottom: "0.75rem" }}>
+                <label style={{ fontSize: "11px", textTransform: "uppercase", letterSpacing: "1px", color: "rgba(255,255,255,0.35)", display: "block", marginBottom: "4px" }}>
+                  Industry
+                </label>
+                <input
+                  type="text"
+                  list="industries-list"
+                  value={editData.industry}
+                  onChange={(e) => setEditData((prev) => ({ ...prev, industry: e.target.value }))}
+                  placeholder="Restaurant, Retail, Wedding…"
+                  style={{
+                    width: "100%",
+                    padding: "8px 10px",
+                    background: "#0C0C0C",
+                    border: "1px solid #333",
+                    borderRadius: "4px",
+                    color: "#fff",
+                    fontSize: "14px",
+                    outline: "none",
+                    boxSizing: "border-box",
+                  }}
+                  onFocus={(e) => (e.currentTarget.style.borderColor = "#F7941D")}
+                  onBlur={(e) => (e.currentTarget.style.borderColor = "#333")}
+                />
+                <datalist id="industries-list">
+                  {INDUSTRIES.map((i) => (
+                    <option key={i} value={i} />
+                  ))}
+                </datalist>
+              </div>
               <div style={{ marginBottom: "0.75rem" }}>
                 <label style={{ fontSize: "11px", textTransform: "uppercase", letterSpacing: "1px", color: "rgba(255,255,255,0.35)", display: "block", marginBottom: "4px" }}>
                   Description

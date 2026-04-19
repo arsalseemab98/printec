@@ -44,6 +44,7 @@ export async function POST(req: NextRequest) {
   // If admin created the contract without picking an inquiry, mint one so the
   // customer surfaces in the Customers list and CRM pipeline.
   let inquiryId: string | null = body.inquiry_id || null;
+  let createdInquiryId: string | null = null;
   if (!inquiryId && body.client_name) {
     const { data: newInquiry, error: inqErr } = await supabase
       .from("inquiries")
@@ -65,6 +66,7 @@ export async function POST(req: NextRequest) {
       );
     }
     inquiryId = newInquiry?.id ?? null;
+    createdInquiryId = inquiryId;
   }
 
   const { data, error } = await supabase
@@ -90,6 +92,18 @@ export async function POST(req: NextRequest) {
     .single();
 
   if (error) {
+    if (createdInquiryId) {
+      const { error: cleanupErr } = await supabase
+        .from("inquiries")
+        .delete()
+        .eq("id", createdInquiryId);
+      if (cleanupErr) {
+        console.error(
+          `Contract insert failed AND orphan inquiry cleanup failed for inquiry ${createdInquiryId}:`,
+          cleanupErr
+        );
+      }
+    }
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 

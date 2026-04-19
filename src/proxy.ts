@@ -3,25 +3,26 @@ import { NextRequest, NextResponse } from "next/server";
 export default function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Skip middleware for login page and API routes
-  if (
-    pathname === "/admin/login" ||
-    pathname.startsWith("/api/")
-  ) {
+  if (pathname === "/admin/login" || pathname === "/api/admin/login") {
     return NextResponse.next();
   }
 
-  // Check for admin session cookie on all /admin/* routes
   const session = request.cookies.get("admin_session");
+  const authed = session?.value === "authenticated";
 
-  if (!session || session.value !== "authenticated") {
-    const loginUrl = new URL("/admin/login", request.url);
-    return NextResponse.redirect(loginUrl);
+  if (authed) return NextResponse.next();
+
+  if (pathname.startsWith("/api/admin/")) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  if (pathname.startsWith("/admin/")) {
+    return NextResponse.redirect(new URL("/admin/login", request.url));
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: "/admin/:path*",
+  matcher: ["/admin/:path*", "/api/admin/:path*"],
 };

@@ -17,6 +17,7 @@ interface Recipient {
   email: string;
   source: string;
   detail: string;
+  industry: string | null;
 }
 
 const SOURCE_LABELS: Record<string, string> = {

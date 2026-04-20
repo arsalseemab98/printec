@@ -143,7 +143,7 @@ export default function InquiryDetailPage({
     const res = await fetch(`/api/admin/inquiries/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...editData, industry: editData.industry || null }),
+      body: JSON.stringify({ ...editData, industry: editData.industry?.trim() || null }),
     });
     const data = await res.json();
     setInquiry(data);

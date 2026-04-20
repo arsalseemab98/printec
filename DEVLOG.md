@@ -2,6 +2,14 @@
 
 ---
 
+## 2026-04-19 — Customer industry tag + newsletter filter
+- New nullable column `industry` on `inquiries` (applied via Supabase MCP; recorded in scripts/migrations/2026-04-19-add-industry-to-inquiries.sql).
+- Datalist input on /admin/inquiries/[id] — preset list (Restaurant / Retail / Wedding / etc., from src/lib/constants.ts INDUSTRIES) + free text fallback.
+- /admin/customers gets an Industry column + dropdown filter; catalog leads and orphan contracts show "—" and are hidden when an industry is selected (they have no industry).
+- /admin/emails/compose gets an Industry filter that narrows the recipient picker via /api/admin/emails/recipients?industry=X (server-side filter at the SQL level, not just client-side). URL-synced via ?industry=X for bookmarkability.
+- Defensive: applied FORCE ROW LEVEL SECURITY on inquiries to align with contracts/quotes/email_logs/email_templates from earlier today.
+- RLS regression check: anon SELECT on inquiries still returns []; security advisor reports zero new ERROR-level findings.
+
 ## 2026-04-19 — Contract payment status feature
 - New columns on contracts: `payment_status` (CHECK Not Paid/Half Paid/Full Paid, default Not Paid) and `payment_email_sent_at` (timestamptz).
 - Contract detail page: payment status dropdown + "Send Payment Update Email" button (Microsoft Graph). Button disabled when payment_status is Not Paid or contract has no client_email; tooltip explains the reason.

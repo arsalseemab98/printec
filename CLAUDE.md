@@ -246,6 +246,8 @@ npx next build             # Production build
   - POST /api/admin/inquiries — create inquiry from admin (used when converting catalog lead to inquiry)
   - **Catalogs**: Create/edit/delete portfolio catalogs, manage projects (images, specs, reorder), view leads
   - **Customers**: Unified view of all inquiries + catalog leads with filter/search/export
+  - Industry tag on customers (datalist input on /admin/inquiries/[id]; preset list in src/lib/constants.ts INDUSTRIES + free-text fallback). Surfaces as a column + filter on /admin/customers (catalog leads + orphan contracts have no industry — they show "—" and are hidden when an industry is selected).
+  - Email composer recipient picker has an Industry filter (URL-synced via ?industry=X), backed by a server-side narrow on the inquiries query at /api/admin/emails/recipients?industry=X. When filtered, catalog leads + contracts are excluded from the picker (they have no industry).
   - Interactive web catalogs: 6 categories (channel letters, vehicle wraps, window graphics, wall wraps, floor wraps, neon signs)
   - Email-gated catalog viewer (fullscreen cinematic slideshow)
   - "Send This Design" inquiry form within catalog viewer (auto-fills service category)
@@ -297,7 +299,7 @@ npx next build             # Production build
 - `page_images` — page_slug, slot, url, alt_text
 - `page_content` — page_slug, field, value
 - `blog_posts` — slug, title, excerpt, category, content (HTML), published
-- `inquiries` — name, email, phone, service, status, booked_price, completed_price, event_date, utm_*
+- `inquiries` — name, email, phone, service, status, booked_price, completed_price, event_date, utm_*, industry
 - `quotes` — inquiry_id, quote_number (PQ-001), items (jsonb), total, sent_at
 - `contracts` — inquiry_id (nullable), contract_number (PC-001), event_date, venue, service_description, total_price, advance_amount, balance_amount, balance_due, travel_cost, client_name, client_email, terms (jsonb), signature_data, signed_at, sent_at, status (Pending/Sent/Signed/Completed/Cancelled), completed_at, payment_status (Not Paid/Half Paid/Full Paid), payment_email_sent_at, category
 - `catalogs` — id (uuid), title, slug (unique), description, created_at

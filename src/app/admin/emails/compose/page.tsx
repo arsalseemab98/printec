@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { ArrowLeft, Send, Save, Users, Search, CheckSquare, Square, Loader2 } from "lucide-react";
+import { INDUSTRIES } from "@/lib/constants";
 
 const TiptapEditor = dynamic(() => import("@/components/admin/tiptap-editor"), { ssr: false });
 
@@ -42,6 +43,7 @@ function ComposeEmailPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const templateId = searchParams.get("template");
+  const initialIndustry = searchParams.get("industry") || "All";
 
   const [subject, setSubject] = useState("");
   const [body, setBody] = useState("");
@@ -49,6 +51,7 @@ function ComposeEmailPage() {
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [search, setSearch] = useState("");
   const [sourceFilter, setSourceFilter] = useState<string>("all");
+  const [industryFilter, setIndustryFilter] = useState(initialIndustry);
   const [loading, setLoading] = useState(true);
   const [sending, setSending] = useState(false);
   const [sendResult, setSendResult] = useState<{ sent: number; failed: number } | null>(null);
@@ -56,10 +59,21 @@ function ComposeEmailPage() {
 
   // Load recipients
   useEffect(() => {
-    fetch("/api/admin/emails/recipients")
+    const url =
+      industryFilter && industryFilter !== "All"
+        ? `/api/admin/emails/recipients?industry=${encodeURIComponent(industryFilter)}`
+        : `/api/admin/emails/recipients`;
+    fetch(url)
       .then((r) => r.json())
       .then((data) => { setRecipients(Array.isArray(data) ? data : []); setLoading(false); });
-  }, []);
+  }, [industryFilter]);
+
+  // Sync industry to URL
+  useEffect(() => {
+    const params = new URLSearchParams();
+    if (industryFilter && industryFilter !== "All") params.set("industry", industryFilter);
+    router.replace(`/admin/emails/compose${params.toString() ? `?${params}` : ""}`, { scroll: false });
+  }, [industryFilter, router]);
 
   // Load template if specified
   useEffect(() => {
@@ -263,6 +277,32 @@ function ComposeEmailPage() {
             />
           </div>
 
+          {/* Industry filter */}
+          <div style={{ marginBottom: "8px" }}>
+            <label style={{ display: "block", fontSize: 11, color: "rgba(255,255,255,0.5)", marginBottom: 4 }}>
+              Filter by Industry
+            </label>
+            <select
+              value={industryFilter}
+              onChange={(e) => setIndustryFilter(e.target.value)}
+              style={{
+                width: "100%",
+                padding: "0.55rem",
+                background: "#0C0C0C",
+                border: "1px solid #333",
+                borderRadius: 4,
+                color: "#fff",
+                fontSize: 14,
+                colorScheme: "dark",
+              }}
+            >
+              <option value="All">All industries</option>
+              {INDUSTRIES.map((i) => (
+                <option key={i} value={i}>{i}</option>
+              ))}
+            </select>
+          </div>
+
           {/* Source filter */}
           <div style={{ display: "flex", gap: "4px", marginBottom: "8px", flexWrap: "wrap" }}>
             {[{ key: "all", label: "All" }, { key: "inquiry", label: "Inquiries" }, { key: "catalog", label: "Catalog" }, { key: "contract", label: "Contracts" }].map((f) => (
@@ -300,6 +340,11 @@ function ComposeEmailPage() {
           <div style={{ flex: 1, overflowY: "auto" }}>
             {loading ? (
               <p style={{ color: "rgba(255,255,255,0.4)", fontSize: "13px" }}>Loading contacts...</p>
+            ) : industryFilter !== "All" && recipients.length === 0 ? (
+              <p style={{ color: "rgba(255,255,255,0.5)", fontSize: 13, padding: "1rem" }}>
+                No customers tagged with industry &ldquo;{industryFilter}&rdquo;. Tag one from{" "}
+                <Link href="/admin/inquiries" style={{ color: "#F7941D" }}>/admin/inquiries</Link>.
+              </p>
             ) : filtered.length === 0 ? (
               <p style={{ color: "rgba(255,255,255,0.3)", fontSize: "13px", textAlign: "center", padding: "20px" }}>
                 No contacts found

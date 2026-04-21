@@ -45,11 +45,18 @@ export async function POST(req: NextRequest) {
   // customer surfaces in the Customers list and CRM pipeline.
   let inquiryId: string | null = body.inquiry_id || null;
   let createdInquiryId: string | null = null;
-  if (!inquiryId && body.client_name) {
+  const clientName = typeof body.client_name === "string" ? body.client_name.trim() : "";
+  if (!inquiryId && !clientName) {
+    return NextResponse.json(
+      { error: "Client name is required when no inquiry is linked." },
+      { status: 400 }
+    );
+  }
+  if (!inquiryId) {
     const { data: newInquiry, error: inqErr } = await supabase
       .from("inquiries")
       .insert({
-        name: body.client_name,
+        name: clientName,
         email: body.client_email || null,
         service: body.service_description || body.category || null,
         status: "Booked",

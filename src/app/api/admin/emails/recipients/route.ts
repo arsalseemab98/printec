@@ -29,6 +29,14 @@ export async function GET(req: NextRequest) {
           .order("created_at", { ascending: false }),
   ]);
 
+  const dbError = inquiriesRes.error || leadsRes.error || contractsRes.error;
+  if (dbError) {
+    return NextResponse.json(
+      { error: `Failed to load recipients: ${dbError.message}` },
+      { status: 500 }
+    );
+  }
+
   const recipients: { id: string; name: string; email: string; source: string; detail: string; industry: string | null }[] = [];
   const seen = new Set<string>();
 

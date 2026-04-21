@@ -32,7 +32,13 @@ export async function PUT(
   const allowed = ["status", "notes", "booked_price", "completed_price", "name", "email", "phone", "service", "budget", "description", "event_date", "industry"];
   const updates: Record<string, unknown> = {};
   for (const key of allowed) {
-    if (body[key] !== undefined) updates[key] = body[key];
+    if (body[key] === undefined) continue;
+    if (key === "industry") {
+      const v = typeof body.industry === "string" ? body.industry.trim() : "";
+      updates.industry = v ? v : null;
+    } else {
+      updates[key] = body[key];
+    }
   }
   updates.updated_at = new Date().toISOString();
 

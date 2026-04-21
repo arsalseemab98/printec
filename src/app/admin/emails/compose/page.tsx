@@ -54,6 +54,7 @@ function ComposeEmailPage() {
   const [sourceFilter, setSourceFilter] = useState<string>("all");
   const [industryFilter, setIndustryFilter] = useState(initialIndustry);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
   const [sending, setSending] = useState(false);
   const [sendResult, setSendResult] = useState<{ sent: number; failed: number } | null>(null);
   const [savingTemplate, setSavingTemplate] = useState(false);
@@ -64,9 +65,26 @@ function ComposeEmailPage() {
       industryFilter && industryFilter !== "All"
         ? `/api/admin/emails/recipients?industry=${encodeURIComponent(industryFilter)}`
         : `/api/admin/emails/recipients`;
+    setLoadError(null);
+    setLoading(true);
     fetch(url)
-      .then((r) => r.json())
-      .then((data) => { setRecipients(Array.isArray(data) ? data : []); setLoading(false); });
+      .then(async (r) => {
+        const data = await r.json().catch(() => null);
+        if (!r.ok) {
+          const msg = data && typeof data === "object" && "error" in data ? String((data as { error: unknown }).error) : `HTTP ${r.status}`;
+          throw new Error(msg);
+        }
+        return data;
+      })
+      .then((data) => {
+        setRecipients(Array.isArray(data) ? data : []);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setRecipients([]);
+        setLoadError(err instanceof Error ? err.message : "Failed to load recipients.");
+        setLoading(false);
+      });
   }, [industryFilter]);
 
   // Sync industry to URL
@@ -341,6 +359,10 @@ function ComposeEmailPage() {
           <div style={{ flex: 1, overflowY: "auto" }}>
             {loading ? (
               <p style={{ color: "rgba(255,255,255,0.4)", fontSize: "13px" }}>Loading contacts...</p>
+            ) : loadError ? (
+              <p style={{ color: "#E53935", fontSize: 13, padding: "1rem" }}>
+                Failed to load recipients: {loadError}
+              </p>
             ) : industryFilter !== "All" && recipients.length === 0 ? (
               <p style={{ color: "rgba(255,255,255,0.5)", fontSize: 13, padding: "1rem" }}>
                 No customers tagged with industry &ldquo;{industryFilter}&rdquo;. Tag one from{" "}

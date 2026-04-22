@@ -77,7 +77,7 @@ export default function NewQuotePage() {
           budget: budget.trim() || null,
           event_date: eventDate || null,
           source: "manual-quote",
-          status: "Quoted",
+          status: "New",
         }),
       });
 

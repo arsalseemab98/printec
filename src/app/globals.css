@@ -497,6 +497,7 @@
   .admin-grid-4 { grid-template-columns: repeat(2, 1fr) !important; gap: 0.75rem !important; }
   .admin-grid-3 { grid-template-columns: 1fr !important; gap: 0.75rem !important; }
   .admin-grid-2 { grid-template-columns: 1fr !important; gap: 0.75rem !important; }
+  .quote-item-row { grid-template-columns: 1fr 100px 36px !important; gap: 0.4rem !important; }
 
   /* Flex header wraps */
   .admin-header-row {

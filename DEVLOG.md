@@ -2,6 +2,20 @@
 
 ---
 
+## 2026-04-22 — Quote save-path hardening + mobile auto-refresh
+- /api/admin/quotes/[id]/send: surface DB write failure as `warning` field instead of swallowing it (fixes the double-email risk where the email succeeded but `sent_at` didn't update). Graph errors now propagate the real cause instead of "Failed to send. Please try again."
+- /admin/quotes list: replaced the two `// silent` catches with real alerts on load + resend failures. Resend now confirms before firing.
+- /api/admin/quotes POST: 5-attempt retry loop catches Postgres 23505 (unique violation) so concurrent requests can't both produce the same PQ-NNNN. Migration file at scripts/migrations/2026-04-22-quotes-quote-number-unique.sql (CREATE UNIQUE INDEX) — needs to be applied via Supabase MCP after re-auth; without it the retry has nothing to catch.
+- /admin/quotes/new: inquiry created with status `New` instead of `Quoted`. Quote builder promotes to `Quoted` only after a successful save. Abandoning the builder no longer leaves a fake `Quoted` orphan in CRM.
+- Quote builder mobile: header gets flexWrap + admin-header-row class; line-items grid uses new `quote-item-row` class that collapses to `1fr 100px 36px` at ≤768px so inputs don't get squished off-screen.
+- Auto-refresh: added visibilitychange + window focus listeners so when a phone user backgrounds the tab and returns, an immediate version check runs (mobile browsers throttle setInterval in background, leaving stale UI without this).
+
+## 2026-04-21 — Save-path hardening across admin APIs
+- /api/admin/contracts POST: reject with 400 when no `inquiry_id` AND no `client_name` (previously silently skipped the inquiry auto-create, leaving an orphan contract with no customer-list name).
+- /api/admin/inquiries/[id] PUT: trim `industry` and store `null` for empty/whitespace so the industry filter can't match polluted rows.
+- /api/admin/emails/recipients GET: return 500 if any of the three parallel Supabase queries errors (previously the errors were dropped and an empty recipient list was returned silently).
+- /admin/emails/compose: check `res.ok` and render the failure in red instead of rendering a misleading empty list.
+
 ## 2026-04-19 — Customer industry tag + newsletter filter
 - New nullable column `industry` on `inquiries` (applied via Supabase MCP; recorded in scripts/migrations/2026-04-19-add-industry-to-inquiries.sql).
 - Datalist input on /admin/inquiries/[id] — preset list (Restaurant / Retail / Wedding / etc., from src/lib/constants.ts INDUSTRIES) + free text fallback.

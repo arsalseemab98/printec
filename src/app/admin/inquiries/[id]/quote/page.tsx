@@ -160,6 +160,7 @@ export default function QuoteBuilderPage({
       }
 
       const saved = await res.json();
+      const wasNew = !quote;
       setQuote(saved);
       setItems(
         saved.items && saved.items.length > 0
@@ -173,12 +174,19 @@ export default function QuoteBuilderPage({
       );
 
       // Update URL with quote_id if newly created
-      if (!quote) {
+      if (wasNew) {
         window.history.replaceState(
           null,
           "",
           `/admin/inquiries/${inquiryId}/quote?quote_id=${saved.id}`
         );
+        // Promote the inquiry to Quoted now that an actual quote exists.
+        // Best-effort: failure here doesn't void the saved quote.
+        fetch(`/api/admin/inquiries/${inquiryId}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ status: "Quoted" }),
+        }).catch((e) => console.error("Failed to promote inquiry to Quoted:", e));
       }
     } catch (err) {
       showMessage(
@@ -212,7 +220,11 @@ export default function QuoteBuilderPage({
 
       const data = await res.json();
       setQuote((prev) => (prev ? { ...prev, sent_at: data.sent_at } : prev));
-      showMessage("Quote sent to customer successfully!", "success");
+      if (data.warning) {
+        showMessage(`Quote sent — warning: ${data.warning}`, "error");
+      } else {
+        showMessage("Quote sent to customer successfully!", "success");
+      }
     } catch (err) {
       showMessage(
         err instanceof Error ? err.message : "Failed to send quote.",
@@ -295,11 +307,14 @@ export default function QuoteBuilderPage({
 
       {/* Header */}
       <div
+        className="admin-header-row"
         style={{
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
           marginBottom: "2rem",
+          flexWrap: "wrap",
+          gap: "1rem",
         }}
       >
         <div>
@@ -450,10 +465,11 @@ export default function QuoteBuilderPage({
 
           {/* Table header */}
           <div
+            className="quote-item-row"
             style={{
               display: "grid",
-              gridTemplateColumns: "1fr 140px 40px",
-              gap: "0.75rem",
+              gridTemplateColumns: "minmax(0,1fr) 120px 40px",
+              gap: "0.5rem",
               marginBottom: "0.5rem",
               padding: "0 0.25rem",
             }}
@@ -485,6 +501,7 @@ export default function QuoteBuilderPage({
           {items.map((item, index) => (
             <div
               key={index}
+              className="quote-item-row"
               style={{
                 display: "grid",
                 gridTemplateColumns: "1fr 140px 40px",

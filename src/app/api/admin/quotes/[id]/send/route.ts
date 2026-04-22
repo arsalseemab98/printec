@@ -145,19 +145,22 @@ export async function POST(
       .select()
       .single();
 
+    const sentAt = updated?.sent_at ?? new Date().toISOString();
     if (updateErr) {
-      // Email already sent — log but don't fail
-      console.error("Failed to update sent_at:", updateErr);
+      console.error("Failed to update quotes.sent_at after Graph send:", updateErr);
+      return NextResponse.json({
+        success: true,
+        sent_at: sentAt,
+        warning: `Email sent, but the database record was not updated (${updateErr.message}). The list may show this quote as Not Sent — do not click Resend without checking the customer first.`,
+      });
     }
 
-    return NextResponse.json({
-      success: true,
-      sent_at: updated?.sent_at ?? new Date().toISOString(),
-    });
+    return NextResponse.json({ success: true, sent_at: sentAt });
   } catch (error) {
     console.error("Quote send error:", error);
+    const detail = error instanceof Error ? error.message : String(error);
     return NextResponse.json(
-      { error: "Failed to send quote. Please try again." },
+      { error: `Failed to send quote: ${detail}` },
       { status: 500 }
     );
   }

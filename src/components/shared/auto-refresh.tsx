@@ -30,7 +30,20 @@ export function AutoRefresh() {
     // Check immediately, then on interval
     checkVersion();
     const interval = setInterval(checkVersion, CHECK_INTERVAL);
-    return () => clearInterval(interval);
+
+    // Mobile browsers throttle background timers; when the tab regains focus,
+    // run an extra check so phone users don't sit on a stale build.
+    const onVisible = () => {
+      if (document.visibilityState === "visible") checkVersion();
+    };
+    document.addEventListener("visibilitychange", onVisible);
+    window.addEventListener("focus", onVisible);
+
+    return () => {
+      clearInterval(interval);
+      document.removeEventListener("visibilitychange", onVisible);
+      window.removeEventListener("focus", onVisible);
+    };
   }, []);
 
   return null;

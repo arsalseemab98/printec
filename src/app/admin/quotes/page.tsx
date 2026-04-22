@@ -37,24 +37,36 @@ export default function QuotesSentPage() {
     setLoading(true);
     try {
       const res = await fetch("/api/admin/quotes");
-      const data = await res.json();
-      if (Array.isArray(data)) {
-        setQuotes(data);
+      const data = await res.json().catch(() => null);
+      if (!res.ok) {
+        const msg = data && typeof data === "object" && "error" in data ? String((data as { error: unknown }).error) : `HTTP ${res.status}`;
+        throw new Error(msg);
       }
-    } catch {
-      // silent
+      setQuotes(Array.isArray(data) ? data : []);
+    } catch (err) {
+      setQuotes([]);
+      alert(`Failed to load quotes: ${err instanceof Error ? err.message : "unknown error"}`);
     } finally {
       setLoading(false);
     }
   }
 
   async function handleResend(quoteId: string) {
+    if (!confirm("Resend this quote email to the customer?")) return;
     setResending(quoteId);
     try {
-      await fetch(`/api/admin/quotes/${quoteId}/send`, { method: "POST" });
+      const res = await fetch(`/api/admin/quotes/${quoteId}/send`, { method: "POST" });
+      const data = await res.json().catch(() => null);
+      if (!res.ok) {
+        const msg = data && typeof data === "object" && "error" in data ? String((data as { error: unknown }).error) : `HTTP ${res.status}`;
+        throw new Error(msg);
+      }
+      if (data && typeof data === "object" && "warning" in data && data.warning) {
+        alert(`Quote sent — warning: ${String((data as { warning: unknown }).warning)}`);
+      }
       await fetchQuotes();
-    } catch {
-      // silent
+    } catch (err) {
+      alert(`Failed to resend quote: ${err instanceof Error ? err.message : "unknown error"}`);
     } finally {
       setResending(null);
     }

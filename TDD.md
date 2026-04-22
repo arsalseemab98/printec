@@ -459,3 +459,22 @@
 - [PASSING] Send at Full Paid → "Paid In Full" email arrives with PAID IN FULL status row; payment_email_sent_at updated.
 - [PASSING] Contract with no client_email → send button disabled with tooltip "No client email on file".
 - [PASSING] /admin/contracts list shows payment-status pill on every row; gray/orange/green for Not Paid/Half Paid/Full Paid.
+
+## Save-path hardening (2026-04-21)
+
+- [PASSING] POST /api/admin/contracts with no inquiry_id AND no client_name → 400 with error "Client name is required when no inquiry is linked." (was: silent orphan contract).
+- [PASSING] BookingModal POST with valid client_name → succeeds; auto-creates inquiry; client_name persisted on inquiry without trailing whitespace.
+- [PASSING] PUT /api/admin/inquiries/[id] with industry="  " → DB stores null; subsequent .eq("industry","") on the recipients endpoint returns no false matches.
+- [PASSING] /api/admin/emails/recipients with simulated DB error → 500 with error message (was: empty list silently returned).
+- [PASSING] /admin/emails/compose load failure → renders red "Failed to load recipients: …" (was: empty list).
+
+## Quote save-path hardening (2026-04-22)
+
+- [PASSING] POST /api/admin/quotes/[id]/send when Microsoft Graph send succeeds but `sent_at` UPDATE fails → response is 200 with `{success, sent_at, warning}`; UI alerts the warning. No silent re-send risk.
+- [PASSING] POST /api/admin/quotes/[id]/send when Graph throws → 500 includes the real Graph error message (auth/throttle/recipient) — not just "Failed to send."
+- [PASSING] /admin/quotes Resend → confirm() prompt fires; on POST failure an alert shows the cause (was: silent).
+- [PASSING] /admin/quotes initial load failure → alert with HTTP status / error body (was: silent).
+- [PENDING migration] POST /api/admin/quotes concurrent requests → second insert hits 23505, retry loop produces the next PQ-NNNN. Requires unique index from scripts/migrations/2026-04-22-quotes-quote-number-unique.sql.
+- [PASSING] /admin/quotes/new submit → inquiry created with status="New". Quote builder save → inquiry promoted to status="Quoted". Abandoning builder leaves a normal "New" inquiry, not a fake "Quoted" orphan.
+- [PASSING] Quote builder on 375px viewport → header buttons wrap; line-items grid stays inside the card; description input remains usable.
+- [PASSING] Auto-refresh on mobile: background tab for >30s, return → immediate version check fires on visibilitychange (was: tab sat on stale build until next interval, often throttled by mobile OS).

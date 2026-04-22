@@ -261,7 +261,14 @@ npx next build             # Production build
   - **Azure Health**: Dashboard shows email service status (active/down), client secret expiry date + days remaining, warning at ≤30 days
   - **Fully mobile responsive** — all admin pages work on phone/tablet (responsive grids, collapsing layouts)
   - **Inquiries & Quotes**: card layout on mobile (no horizontal scroll), full table on desktop (admin-desktop-only / admin-mobile-only CSS toggle)
-  - **Auto-refresh**: browser auto-reloads when new deploy goes live (polls /api/version every 30s)
+  - **Auto-refresh**: browser auto-reloads when new deploy goes live (polls /api/version every 30s, plus an immediate check on tab focus / visibilitychange so backgrounded mobile tabs don't sit on a stale build)
+  - **Quotes hardening (2026-04-22)**:
+    - Quote send (/api/admin/quotes/[id]/send) returns `{success, sent_at, warning?}`. If the email goes out but the `sent_at` DB write fails, the response includes a `warning` and the UI surfaces it so admin doesn't blindly resend. Graph errors propagate the real Azure/Graph message instead of a generic "Failed to send."
+    - Quote list (/admin/quotes) shows real alerts on load + resend failures (no more `// silent` swallowed errors). Resend prompts a confirm() so a mis-tap on mobile can't double-email.
+    - Quote number race: POST /api/admin/quotes retries on Postgres unique-violation (23505). Requires the unique index from scripts/migrations/2026-04-22-quotes-quote-number-unique.sql to be applied via Supabase MCP.
+    - Manual quote flow (/admin/quotes/new): inquiry is created with status `New`, then promoted to `Quoted` only after the quote is actually saved in the builder. Abandoning the builder leaves a normal `New` inquiry instead of a fake `Quoted` orphan.
+    - Quote builder mobile: header buttons wrap; line-items grid uses `quote-item-row` class that collapses column widths at ≤768px so the price/delete columns don't push the description input off-screen.
+  - **Save-path hardening (2026-04-21)**: POST /api/admin/contracts requires `client_name` when no `inquiry_id` (returns 400 instead of silently creating a nameless orphan). PUT /api/admin/inquiries/[id] trims `industry` and stores null for empty/whitespace. /api/admin/emails/recipients returns 500 on any Supabase error (was silently returning empty list). /admin/emails/compose surfaces the failure in red.
 
 ## Email Integration
 - **Provider**: Microsoft Graph API (Azure AD app)

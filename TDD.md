@@ -474,7 +474,7 @@
 - [PASSING] POST /api/admin/quotes/[id]/send when Graph throws → 500 includes the real Graph error message (auth/throttle/recipient) — not just "Failed to send."
 - [PASSING] /admin/quotes Resend → confirm() prompt fires; on POST failure an alert shows the cause (was: silent).
 - [PASSING] /admin/quotes initial load failure → alert with HTTP status / error body (was: silent).
-- [PENDING migration] POST /api/admin/quotes concurrent requests → second insert hits 23505, retry loop produces the next PQ-NNNN. Requires unique index from scripts/migrations/2026-04-22-quotes-quote-number-unique.sql.
+- [PASSING] POST /api/admin/quotes concurrent requests → second insert hits 23505, retry loop produces the next PQ-NNNN. Unique index quotes_quote_number_key applied 2026-04-22.
 - [PASSING] /admin/quotes/new submit → inquiry created with status="New". Quote builder save → inquiry promoted to status="Quoted". Abandoning builder leaves a normal "New" inquiry, not a fake "Quoted" orphan.
 - [PASSING] Quote builder on 375px viewport → header buttons wrap; line-items grid stays inside the card; description input remains usable.
 - [PASSING] Auto-refresh on mobile: background tab for >30s, return → immediate version check fires on visibilitychange (was: tab sat on stale build until next interval, often throttled by mobile OS).

@@ -307,7 +307,7 @@ npx next build             # Production build
 - `page_content` — page_slug, field, value
 - `blog_posts` — slug, title, excerpt, category, content (HTML), published
 - `inquiries` — name, email, phone, service, status, booked_price, completed_price, event_date, utm_*, industry
-- `quotes` — inquiry_id, quote_number (PQ-001), items (jsonb), total, sent_at
+- `quotes` — inquiry_id (FK nullable, ON DELETE SET NULL — was NOT NULL + CASCADE until 2026-04-22, which silently wiped quotes when an inquiry was deleted), quote_number (PQ-0001, unique), items (jsonb), total, sent_at
 - `contracts` — inquiry_id (nullable), contract_number (PC-001), event_date, venue, service_description, total_price, advance_amount, balance_amount, balance_due, travel_cost, client_name, client_email, terms (jsonb), signature_data, signed_at, sent_at, status (Pending/Sent/Signed/Completed/Cancelled), completed_at, payment_status (Not Paid/Half Paid/Full Paid), payment_email_sent_at, category
 - `catalogs` — id (uuid), title, slug (unique), description, created_at
 - `catalog_projects` — id (uuid), catalog_id (FK→catalogs, cascade delete), title, description, image_url, specs (jsonb array of {label,value}), sort_order, created_at

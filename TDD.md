@@ -478,3 +478,10 @@
 - [PASSING] /admin/quotes/new submit → inquiry created with status="New". Quote builder save → inquiry promoted to status="Quoted". Abandoning builder leaves a normal "New" inquiry, not a fake "Quoted" orphan.
 - [PASSING] Quote builder on 375px viewport → header buttons wrap; line-items grid stays inside the card; description input remains usable.
 - [PASSING] Auto-refresh on mobile: background tab for >30s, return → immediate version check fires on visibilitychange (was: tab sat on stale build until next interval, often throttled by mobile OS).
+
+## Orphan quote protection (2026-04-22)
+
+- [PASSING] Delete an inquiry that has a linked quote → quote survives, appears on /admin/quotes with inquiry_id=null and inquiries=null (was: quote silently cascade-deleted).
+- [PASSING] /admin/quotes row with null inquiry_id → renders "Customer deleted" in italic 0.7 opacity; quote_number shown as plain text (not linked); View and Resend buttons hidden.
+- [PASSING] /admin/quotes mobile card with null inquiry_id → card rendered without Link wrapper so it can't navigate to a broken /admin/inquiries/null/quote URL.
+- [PASSING] Supabase query confirms post-migration: `SELECT is_nullable, delete_rule FROM quotes.inquiry_id FK = (YES, SET NULL)`.

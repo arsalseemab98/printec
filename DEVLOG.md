@@ -2,6 +2,12 @@
 
 ---
 
+## 2026-04-22 — Stop silent quote loss on inquiry delete
+- Root cause of missing quotes on /admin/quotes: `quotes.inquiry_id` FK was NOT NULL + ON DELETE CASCADE. Deleting an inquiry (via /admin/inquiries/[id] delete) silently dropped every linked quote from the database. Numbering gap in production (PQ-0002, PQ-0007 present; PQ-0001, 0003, 0004, 0005, 0006 gone) is the smoking gun — 5 quotes already lost to this.
+- Fix: applied migration scripts/migrations/2026-04-22-quotes-inquiry-fk-set-null.sql via Supabase MCP — dropped NOT NULL on quotes.inquiry_id and changed the FK to ON DELETE SET NULL. Mirror of contracts.inquiry_id which was already SET NULL.
+- /admin/quotes list now handles orphan quotes (inquiry_id IS NULL): row rendered at 0.7 opacity with "Customer deleted" label, quote number is non-linked, View button hidden, Resend hidden (send route would 404 on the missing inquiry anyway). Financial record (quote_number, total, sent_at, items, notes) preserved.
+- Note: only protects future deletions; the 5 already-cascaded quotes are unrecoverable.
+
 ## 2026-04-22 — Quote save-path hardening + mobile auto-refresh
 - /api/admin/quotes/[id]/send: surface DB write failure as `warning` field instead of swallowing it (fixes the double-email risk where the email succeeded but `sent_at` didn't update). Graph errors now propagate the real cause instead of "Failed to send. Please try again."
 - /admin/quotes list: replaced the two `// silent` catches with real alerts on load + resend failures. Resend now confirms before firing.

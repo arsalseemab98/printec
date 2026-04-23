@@ -63,6 +63,15 @@ export async function DELETE(
   const { id } = await params;
   const supabase = createServerClient();
 
+  const { error: quoteError } = await supabase
+    .from("quotes")
+    .delete()
+    .eq("inquiry_id", id);
+
+  if (quoteError) {
+    return NextResponse.json({ error: quoteError.message }, { status: 500 });
+  }
+
   const { error } = await supabase.from("inquiries").delete().eq("id", id);
 
   if (error) {

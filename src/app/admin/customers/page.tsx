@@ -669,70 +669,74 @@ export default function CustomersPage() {
                       whiteSpace: "nowrap",
                     }}
                   >
-                    <div style={{ display: "flex", gap: "6px" }}>
+                    <div style={{ display: "flex", gap: "4px" }}>
                       {c.type === "catalog_lead" && (
                         <button
                           onClick={(e) => handleCreateInquiry(c, e)}
                           title="Create Inquiry from this lead"
+                          aria-label="Create Inquiry"
                           style={{
                             display: "inline-flex",
                             alignItems: "center",
-                            gap: "4px",
-                            padding: "4px 10px",
+                            justifyContent: "center",
+                            width: "28px",
+                            height: "28px",
                             background: "rgba(59,130,246,0.1)",
                             border: "1px solid rgba(59,130,246,0.3)",
                             borderRadius: "4px",
                             color: "#3b82f6",
-                            fontSize: "11px",
-                            fontWeight: 600,
                             cursor: "pointer",
                             transition: "all 0.2s",
                           }}
                           onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(59,130,246,0.2)"; }}
                           onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(59,130,246,0.1)"; }}
                         >
-                          <Plus size={12} /> Inquiry
+                          <Plus size={14} />
                         </button>
                       )}
                       {c.type !== "contract" && (
                         <button
                           onClick={(e) => handleCreateContract(c, e)}
                           title="Create Contract for this customer"
+                          aria-label="Create Contract"
                           style={{
                             display: "inline-flex",
                             alignItems: "center",
-                            gap: "4px",
-                            padding: "4px 10px",
+                            justifyContent: "center",
+                            width: "28px",
+                            height: "28px",
                             background: "rgba(247,148,29,0.1)",
                             border: "1px solid rgba(247,148,29,0.3)",
                             borderRadius: "4px",
                             color: "#F7941D",
-                            fontSize: "11px",
-                            fontWeight: 600,
                             cursor: "pointer",
                             transition: "all 0.2s",
                           }}
                           onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(247,148,29,0.2)"; }}
                           onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(247,148,29,0.1)"; }}
                         >
-                          <FileText size={12} /> Contract
+                          <FileText size={14} />
                         </button>
                       )}
                       <button
                         onClick={(e) => handleDelete(c, e)}
                         disabled={deleting === `${c.type}-${c.id}`}
-                        title="Delete this customer"
+                        title={
+                          deleting === `${c.type}-${c.id}`
+                            ? "Deleting..."
+                            : "Delete this customer"
+                        }
+                        aria-label="Delete customer"
                         style={{
                           display: "inline-flex",
                           alignItems: "center",
-                          gap: "4px",
-                          padding: "4px 10px",
+                          justifyContent: "center",
+                          width: "28px",
+                          height: "28px",
                           background: "rgba(229,57,53,0.1)",
                           border: "1px solid rgba(229,57,53,0.3)",
                           borderRadius: "4px",
                           color: "#E53935",
-                          fontSize: "11px",
-                          fontWeight: 600,
                           cursor:
                             deleting === `${c.type}-${c.id}`
                               ? "wait"
@@ -749,10 +753,7 @@ export default function CustomersPage() {
                             "rgba(229,57,53,0.1)";
                         }}
                       >
-                        <Trash2 size={12} />
-                        {deleting === `${c.type}-${c.id}`
-                          ? "Deleting..."
-                          : "Delete"}
+                        <Trash2 size={14} />
                       </button>
                     </div>
                   </td>

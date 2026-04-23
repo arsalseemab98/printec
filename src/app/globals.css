@@ -581,6 +581,22 @@
   .admin-mobile-only { display: flex !important; }
 }
 
+/* Sticky Actions column for admin tables (dark mode default) */
+.sticky-action {
+  position: sticky;
+  right: 0;
+  background: #111;
+  border-left: 1px solid #222;
+  z-index: 1;
+}
+th.sticky-action {
+  z-index: 2;
+}
+.admin-light .sticky-action {
+  background: #fff !important;
+  border-left-color: #e0e0e0 !important;
+}
+
 @media (max-width: 480px) {
   .admin-grid-6 { grid-template-columns: 1fr 1fr !important; }
   .admin-grid-4 { grid-template-columns: 1fr !important; }

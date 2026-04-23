@@ -487,7 +487,8 @@ export default function CustomersPage() {
           </p>
         </div>
       ) : (
-        <div className="admin-table-wrap" style={{ overflowX: "auto" }}>
+        <>
+        <div className="admin-desktop-only admin-table-wrap" style={{ overflowX: "auto" }}>
           <table
             style={{
               width: "100%",
@@ -758,6 +759,243 @@ export default function CustomersPage() {
             </tbody>
           </table>
         </div>
+
+        {/* Mobile Cards */}
+        <div
+          className="admin-mobile-only"
+          style={{ display: "none", flexDirection: "column", gap: "0.75rem" }}
+        >
+          {filtered.map((c) => {
+            const typeLabel =
+              c.type === "inquiry"
+                ? "Inquiry"
+                : c.type === "contract"
+                ? "Contract"
+                : "Catalog Lead";
+            const statusColor = STATUS_COLORS[c.status] || "#888";
+            const typeColor = TYPE_COLORS[c.type] || "#888";
+            const isDeleting = deleting === `${c.type}-${c.id}`;
+
+            return (
+              <div
+                key={`m-${c.type}-${c.id}`}
+                onClick={() => handleRowClick(c)}
+                style={{
+                  background: "#111",
+                  border: "1px solid #222",
+                  borderRadius: "4px",
+                  padding: "0.875rem",
+                  cursor: "pointer",
+                  opacity: isDeleting ? 0.5 : 1,
+                  transition: "opacity 0.2s",
+                }}
+              >
+                {/* Top: type + status + date */}
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "6px",
+                    marginBottom: "0.5rem",
+                    flexWrap: "wrap",
+                  }}
+                >
+                  <span
+                    style={{
+                      padding: "2px 8px",
+                      borderRadius: "9999px",
+                      fontSize: "10px",
+                      fontWeight: 700,
+                      color: typeColor,
+                      background: `${typeColor}20`,
+                      border: `1px solid ${typeColor}40`,
+                    }}
+                  >
+                    {typeLabel}
+                  </span>
+                  <span
+                    style={{
+                      padding: "2px 8px",
+                      borderRadius: "9999px",
+                      fontSize: "10px",
+                      fontWeight: 700,
+                      color: statusColor,
+                      background: `${statusColor}20`,
+                      border: `1px solid ${statusColor}40`,
+                    }}
+                  >
+                    {c.status}
+                  </span>
+                  <span
+                    style={{
+                      marginLeft: "auto",
+                      color: "rgba(255,255,255,0.35)",
+                      fontSize: "11px",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {new Date(c.created_at).toLocaleDateString("en-US", {
+                      month: "short",
+                      day: "numeric",
+                      year: "numeric",
+                    })}
+                  </span>
+                </div>
+
+                {/* Name */}
+                <p
+                  style={{
+                    color: "#fff",
+                    fontSize: "16px",
+                    fontWeight: 700,
+                    margin: "0 0 2px",
+                    wordBreak: "break-word",
+                  }}
+                >
+                  {c.name || "—"}
+                </p>
+
+                {/* Email */}
+                {c.email && (
+                  <p
+                    style={{
+                      color: "rgba(255,255,255,0.6)",
+                      fontSize: "13px",
+                      margin: "0 0 2px",
+                      wordBreak: "break-all",
+                    }}
+                  >
+                    {c.email}
+                  </p>
+                )}
+
+                {/* Phone */}
+                {c.phone && (
+                  <p
+                    style={{
+                      color: "rgba(255,255,255,0.45)",
+                      fontSize: "13px",
+                      margin: "0 0 2px",
+                    }}
+                  >
+                    {c.phone}
+                  </p>
+                )}
+
+                {/* Source + Industry */}
+                {(c.source || c.industry) && (
+                  <div
+                    style={{
+                      display: "flex",
+                      gap: "6px",
+                      flexWrap: "wrap",
+                      marginTop: "0.35rem",
+                    }}
+                  >
+                    {c.source && (
+                      <span
+                        style={{
+                          color: "rgba(255,255,255,0.4)",
+                          fontSize: "11px",
+                        }}
+                      >
+                        {c.source}
+                      </span>
+                    )}
+                    {c.industry && (
+                      <span
+                        style={{
+                          fontSize: 10,
+                          padding: "2px 6px",
+                          borderRadius: 3,
+                          background: "rgba(255,255,255,0.06)",
+                          color: "rgba(255,255,255,0.75)",
+                        }}
+                      >
+                        {c.industry}
+                      </span>
+                    )}
+                  </div>
+                )}
+
+                {/* Actions */}
+                <div
+                  style={{
+                    display: "flex",
+                    gap: "6px",
+                    flexWrap: "wrap",
+                    marginTop: "0.75rem",
+                    paddingTop: "0.5rem",
+                    borderTop: "1px solid #1a1a1a",
+                  }}
+                >
+                  {c.type === "catalog_lead" && (
+                    <button
+                      onClick={(e) => handleCreateInquiry(c, e)}
+                      style={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: "4px",
+                        padding: "5px 10px",
+                        background: "rgba(59,130,246,0.1)",
+                        border: "1px solid rgba(59,130,246,0.3)",
+                        borderRadius: "4px",
+                        color: "#3b82f6",
+                        fontSize: "11px",
+                        fontWeight: 600,
+                        cursor: "pointer",
+                      }}
+                    >
+                      <Plus size={12} /> Inquiry
+                    </button>
+                  )}
+                  {c.type !== "contract" && (
+                    <button
+                      onClick={(e) => handleCreateContract(c, e)}
+                      style={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: "4px",
+                        padding: "5px 10px",
+                        background: "rgba(247,148,29,0.1)",
+                        border: "1px solid rgba(247,148,29,0.3)",
+                        borderRadius: "4px",
+                        color: "#F7941D",
+                        fontSize: "11px",
+                        fontWeight: 600,
+                        cursor: "pointer",
+                      }}
+                    >
+                      <FileText size={12} /> Contract
+                    </button>
+                  )}
+                  <button
+                    onClick={(e) => handleDelete(c, e)}
+                    disabled={isDeleting}
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: "4px",
+                      padding: "5px 10px",
+                      background: "rgba(229,57,53,0.1)",
+                      border: "1px solid rgba(229,57,53,0.3)",
+                      borderRadius: "4px",
+                      color: "#E53935",
+                      fontSize: "11px",
+                      fontWeight: 600,
+                      cursor: isDeleting ? "wait" : "pointer",
+                      marginLeft: "auto",
+                    }}
+                  >
+                    <Trash2 size={12} />
+                    {isDeleting ? "Deleting..." : "Delete"}
+                  </button>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+        </>
       )}
     </div>
   );

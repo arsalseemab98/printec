@@ -592,7 +592,7 @@
 th.sticky-action {
   z-index: 2;
 }
-.admin-light .sticky-action {
+.admin-light main .sticky-action {
   background: #fff !important;
   border-left-color: #e0e0e0 !important;
 }

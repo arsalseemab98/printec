@@ -511,6 +511,7 @@ export default function CustomersPage() {
                 ].map((h) => (
                   <th
                     key={h}
+                    className={h === "Actions" ? "sticky-action" : undefined}
                     style={{
                       textAlign: "left",
                       padding: "0.75rem 1rem",
@@ -661,6 +662,7 @@ export default function CustomersPage() {
                     })}
                   </td>
                   <td
+                    className="sticky-action"
                     style={{
                       padding: "0.75rem 0.5rem",
                       borderBottom: "1px solid #161616",

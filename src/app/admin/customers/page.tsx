@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Search, Copy, Check, Plus, FileText } from "lucide-react";
+import { ArrowLeft, Search, Copy, Check, Plus, FileText, Trash2 } from "lucide-react";
 import Link from "next/link";
 
 interface Customer {
@@ -54,6 +54,7 @@ export default function CustomersPage() {
   const [industryFilter, setIndustryFilter] = useState("All");
   const [search, setSearch] = useState("");
   const [copied, setCopied] = useState(false);
+  const [deleting, setDeleting] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchData() {
@@ -136,6 +137,53 @@ export default function CustomersPage() {
     if (res.ok) {
       const data = await res.json();
       router.push(`/admin/inquiries/${data.id}`);
+    }
+  }
+
+  async function handleDelete(c: Customer, e: React.MouseEvent) {
+    e.stopPropagation();
+    const label =
+      c.type === "inquiry"
+        ? "inquiry"
+        : c.type === "contract"
+        ? "contract"
+        : "catalog lead";
+    if (
+      !confirm(
+        `Delete this ${label} for ${c.name || c.email}? This cannot be undone.`
+      )
+    ) {
+      return;
+    }
+
+    const key = `${c.type}-${c.id}`;
+    setDeleting(key);
+    try {
+      const endpoint =
+        c.type === "inquiry"
+          ? `/api/admin/inquiries/${c.id}`
+          : c.type === "contract"
+          ? `/api/admin/contracts/${c.id}`
+          : `/api/admin/catalog-leads/${c.id}`;
+
+      const res = await fetch(endpoint, { method: "DELETE" });
+      if (!res.ok) {
+        const data = await res.json().catch(() => null);
+        const msg =
+          data && typeof data === "object" && "error" in data
+            ? String((data as { error: unknown }).error)
+            : `HTTP ${res.status}`;
+        throw new Error(msg);
+      }
+      setCustomers((prev) =>
+        prev.filter((x) => !(x.type === c.type && x.id === c.id))
+      );
+    } catch (err) {
+      alert(
+        `Failed to delete: ${err instanceof Error ? err.message : "unknown error"}`
+      );
+    } finally {
+      setDeleting(null);
     }
   }
 
@@ -667,6 +715,42 @@ export default function CustomersPage() {
                           <FileText size={12} /> Contract
                         </button>
                       )}
+                      <button
+                        onClick={(e) => handleDelete(c, e)}
+                        disabled={deleting === `${c.type}-${c.id}`}
+                        title="Delete this customer"
+                        style={{
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: "4px",
+                          padding: "4px 10px",
+                          background: "rgba(229,57,53,0.1)",
+                          border: "1px solid rgba(229,57,53,0.3)",
+                          borderRadius: "4px",
+                          color: "#E53935",
+                          fontSize: "11px",
+                          fontWeight: 600,
+                          cursor:
+                            deleting === `${c.type}-${c.id}`
+                              ? "wait"
+                              : "pointer",
+                          opacity: deleting === `${c.type}-${c.id}` ? 0.5 : 1,
+                          transition: "all 0.2s",
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.background =
+                            "rgba(229,57,53,0.2)";
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.background =
+                            "rgba(229,57,53,0.1)";
+                        }}
+                      >
+                        <Trash2 size={12} />
+                        {deleting === `${c.type}-${c.id}`
+                          ? "Deleting..."
+                          : "Delete"}
+                      </button>
                     </div>
                   </td>
                 </tr>

@@ -388,6 +388,7 @@ export default function AdminLayout({
         .admin-menu-drawer { display: none; }
         .admin-main {
           flex: 1;
+          min-width: 0;
           margin-left: 240px;
           padding: 2rem 2.5rem;
           min-height: 100vh;

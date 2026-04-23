@@ -13,12 +13,14 @@ export async function POST(request: NextRequest) {
 
     const response = NextResponse.json({ success: true });
 
+    const isProd = process.env.NODE_ENV === "production";
     response.cookies.set("admin_session", "authenticated", {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure: isProd,
       sameSite: "lax",
       path: "/",
-      maxAge: 60 * 60 * 24, // 24 hours
+      maxAge: 60 * 60 * 24 * 30, // 30 days
+      ...(isProd ? { domain: ".printecwrap.com" } : {}),
     });
 
     return response;

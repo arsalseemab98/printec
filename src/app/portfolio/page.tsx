@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import { CtaBanner } from "@/components/shared/cta-banner";
+import { BreadcrumbJsonLd } from "@/components/shared/json-ld";
 import { GalleryGridBlock } from "@/components/ui/gallery-grid-block-shadcnui";
 import { ServicesShowcase } from "./services-showcase";
 import { ORANGE, BLACK, WHITE } from "@/lib/constants";
@@ -31,6 +32,7 @@ export default async function PortfolioPage() {
   const portfolioData = await getPortfolioImages();
   return (
     <main>
+      <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Portfolio", path: "/portfolio" }]} />
       {/* Custom Hero */}
       <section
         style={{

@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Section } from "@/components/shared/section";
 import { SkewedButton } from "@/components/shared/skewed-button";
 import { BeforeAfterSlider } from "@/components/ui/before-after-slider";
+import { BreadcrumbJsonLd, FaqJsonLd } from "@/components/shared/json-ld";
 import {
   ORANGE,
   BLACK,
@@ -196,6 +197,13 @@ export default async function BusinessSignagePage() {
   const imgs = await getPageImages("business-signage");
   return (
     <main style={{ background: BLACK }}>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", path: "/" },
+          { name: "Business Signage", path: "/business-signage" },
+        ]}
+      />
+      <FaqJsonLd items={FAQ_DATA} />
 
       {/* ── 1. HERO ── */}
       <Section

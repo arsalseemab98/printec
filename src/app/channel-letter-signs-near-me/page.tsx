@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Section } from "@/components/shared/section";
 import { CtaBanner } from "@/components/shared/cta-banner";
 import { SkewedButton } from "@/components/shared/skewed-button";
+import { BreadcrumbJsonLd } from "@/components/shared/json-ld";
 import {
   MapPin,
   FileCheck,
@@ -174,6 +175,7 @@ const card: React.CSSProperties = {
 export default function ChannelLetterSignsNearMePage() {
   return (
     <main style={{ background: BLACK }}>
+      <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Channel Letter Signs Near Me", path: "/channel-letter-signs-near-me" }]} />
 
       {/* ── 1. HERO ── */}
       <Section

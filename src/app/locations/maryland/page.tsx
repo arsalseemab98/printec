@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import { Section } from "@/components/shared/section";
 import { CtaBanner } from "@/components/shared/cta-banner";
+import { BreadcrumbJsonLd } from "@/components/shared/json-ld";
 import {
   MapPin,
   Store,
@@ -185,6 +186,13 @@ const card: React.CSSProperties = {
 export default function MarylandPage() {
   return (
     <main style={{ background: BLACK }}>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", path: "/" },
+          { name: "Locations", path: "/locations/virginia" },
+          { name: "Maryland", path: "/locations/maryland" },
+        ]}
+      />
 
       {/* ── HERO ── */}
       <Section

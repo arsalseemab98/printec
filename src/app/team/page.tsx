@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import Image from "next/image";
 import { Section } from "@/components/shared/section";
 import { CtaBanner } from "@/components/shared/cta-banner";
+import { BreadcrumbJsonLd } from "@/components/shared/json-ld";
 import {
   ORANGE,
   BLACK,
@@ -130,6 +131,7 @@ const VALUES = [
 export default function TeamPage() {
   return (
     <main style={{ background: BLACK }}>
+      <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Team", path: "/team" }]} />
       {/* ── HERO ── */}
       <Section style={{ padding: 0 }}>
         <div

@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { getBlogPostBySlug, getBlogPosts } from "@/lib/content";
 import { BLOG_POSTS, getBlogPost, getRelatedPosts } from "@/lib/blog-data";
 import { CtaBanner } from "@/components/shared/cta-banner";
+import { BreadcrumbJsonLd } from "@/components/shared/json-ld";
 import { ORANGE, BLACK, WHITE } from "@/lib/constants";
 import { ArrowLeft, ArrowRight, Calendar, Clock } from "lucide-react";
 
@@ -89,6 +90,13 @@ export default async function BlogPostPage({
 
   return (
     <main>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", path: "/" },
+          { name: "Blog", path: "/blog" },
+          { name: post.title, path: `/blog/${post.slug}` },
+        ]}
+      />
       {/* Hero */}
       <section
         style={{

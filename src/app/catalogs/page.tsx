@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import Link from "next/link";
+import { BreadcrumbJsonLd } from "@/components/shared/json-ld";
 import { ORANGE, BLACK, DARK1, WHITE } from "@/lib/constants";
 
 export const metadata: Metadata = {
@@ -11,6 +12,7 @@ export const metadata: Metadata = {
 export default function CatalogsPage() {
   return (
     <main>
+      <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Catalogs", path: "/catalogs" }]} />
       <section
         style={{
           background: BLACK,

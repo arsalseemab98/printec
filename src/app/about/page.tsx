@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import Image from "next/image";
 import { Section } from "@/components/shared/section";
 import { CtaBanner } from "@/components/shared/cta-banner";
+import { BreadcrumbJsonLd } from "@/components/shared/json-ld";
 import {
   ORANGE,
   BLACK,
@@ -165,6 +166,7 @@ export default async function AboutPage() {
   const imgs = await getPageImages("about");
   return (
     <main style={{ background: BLACK }}>
+      <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "About", path: "/about" }]} />
       {/* ── 1. HERO ── */}
       <Section style={{ padding: 0 }}>
         <div

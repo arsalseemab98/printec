@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Section } from "@/components/shared/section";
 import { CtaBanner } from "@/components/shared/cta-banner";
 import { BeforeAfterSlider } from "@/components/ui/before-after-slider";
+import { BreadcrumbJsonLd, FaqJsonLd } from "@/components/shared/json-ld";
 import {
   ORANGE,
   BLACK,
@@ -157,6 +158,13 @@ export default async function CustomNeonSignsPage() {
   const imgs = await getPageImages("custom-neon-signs");
   return (
     <main style={{ background: BLACK }}>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", path: "/" },
+          { name: "Custom Neon Signs", path: "/custom-neon-signs" },
+        ]}
+      />
+      <FaqJsonLd items={FAQ} />
 
       {/* ── 1. HERO ── */}
       <Section style={{ padding: 0 }}>

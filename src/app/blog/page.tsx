@@ -3,6 +3,7 @@ import Link from "next/link";
 import { getBlogPosts } from "@/lib/content";
 import { BLOG_POSTS } from "@/lib/blog-data";
 import { CtaBanner } from "@/components/shared/cta-banner";
+import { BreadcrumbJsonLd } from "@/components/shared/json-ld";
 import { DARK1, DARK2, ORANGE, BLACK, WHITE } from "@/lib/constants";
 import { Calendar, Clock, ArrowRight } from "lucide-react";
 
@@ -55,6 +56,7 @@ export default async function BlogPage() {
 
   return (
     <main>
+      <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Blog", path: "/blog" }]} />
       {/* Custom Hero */}
       <section
         style={{

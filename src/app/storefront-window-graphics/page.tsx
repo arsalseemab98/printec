@@ -4,6 +4,7 @@ import { Section } from "@/components/shared/section";
 import { CtaBanner } from "@/components/shared/cta-banner";
 import { SkewedButton } from "@/components/shared/skewed-button";
 import { BeforeAfterSlider } from "@/components/ui/before-after-slider";
+import { BreadcrumbJsonLd } from "@/components/shared/json-ld";
 import {
   Maximize,
   Scissors,
@@ -174,6 +175,7 @@ const card: React.CSSProperties = {
 export default function StorefrontWindowGraphicsPage() {
   return (
     <main style={{ background: BLACK }}>
+      <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Storefront Window Graphics", path: "/storefront-window-graphics" }]} />
 
       {/* ── 1. HERO ── */}
       <Section

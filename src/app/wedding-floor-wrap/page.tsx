@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Section } from "@/components/shared/section";
 import { CtaBanner } from "@/components/shared/cta-banner";
 import { SkewedButton } from "@/components/shared/skewed-button";
+import { BreadcrumbJsonLd, FaqJsonLd } from "@/components/shared/json-ld";
 import {
   Crown,
   Flower2,
@@ -249,6 +250,13 @@ const imgPlaceholder = (ratio: string, text: string): React.CSSProperties => ({
 export default function WeddingFloorWrapPage() {
   return (
     <main style={{ background: BLACK }}>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", path: "/" },
+          { name: "Wedding Dance Floor Wraps", path: "/wedding-floor-wrap" },
+        ]}
+      />
+      <FaqJsonLd items={FAQS} />
 
       {/* ── 1. HERO ── */}
       <Section

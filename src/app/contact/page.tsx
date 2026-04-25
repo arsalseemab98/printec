@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import { Section } from "@/components/shared/section";
 import { ContactForm } from "@/components/shared/contact-form";
+import { BreadcrumbJsonLd } from "@/components/shared/json-ld";
 import {
   ORANGE,
   BLACK,
@@ -71,6 +72,7 @@ const SEPARATOR: React.CSSProperties = {
 export default function ContactPage() {
   return (
     <main style={{ background: BLACK }}>
+      <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Contact", path: "/contact" }]} />
       {/* ── 1. HERO ── */}
       <Section
         style={{

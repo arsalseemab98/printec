@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import Image from "next/image";
 import { Section } from "@/components/shared/section";
 import { CtaBanner } from "@/components/shared/cta-banner";
+import { BreadcrumbJsonLd } from "@/components/shared/json-ld";
 import { BeforeAfterSlider } from "@/components/ui/before-after-slider";
 import {
   ORANGE,
@@ -188,6 +189,7 @@ export default async function ChannelLettersSignagePage() {
   const imgs = await getPageImages("channel-letters-signage");
   return (
     <main style={{ background: BLACK }}>
+      <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Channel Letters Signage", path: "/channel-letters-signage" }]} />
 
       {/* ── 1. HERO ── */}
       <Section style={{ padding: 0 }}>

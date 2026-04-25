@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import Image from "next/image";
 import { Section } from "@/components/shared/section";
 import { SkewedButton } from "@/components/shared/skewed-button";
+import { BreadcrumbJsonLd } from "@/components/shared/json-ld";
 import { BeforeAfterSlider } from "@/components/ui/before-after-slider";
 import { GalleryGridBlock } from "@/components/ui/gallery-grid-block-shadcnui";
 import { getPortfolioImages } from "@/lib/content";
@@ -189,6 +190,7 @@ export default async function DanceFloorWrapsPage() {
   const portfolioData = await getPortfolioImages("Floor Wraps");
   return (
     <main style={{ background: BLACK }}>
+      <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Dance Floor Wraps", path: "/dance-floor-wraps" }]} />
 
       {/* ── 1. HERO ── */}
       <Section

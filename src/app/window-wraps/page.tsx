@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import Image from "next/image";
 import { Section } from "@/components/shared/section";
 import { CtaBanner } from "@/components/shared/cta-banner";
+import { BreadcrumbJsonLd } from "@/components/shared/json-ld";
 import { BeforeAfterSlider } from "@/components/ui/before-after-slider";
 import {
   ORANGE,
@@ -157,6 +158,7 @@ export default async function WindowWrapsPage() {
   const imgs = await getPageImages("window-wraps");
   return (
     <main style={{ background: BLACK }}>
+      <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Window Wraps", path: "/window-wraps" }]} />
 
       {/* ── 1. HERO ── */}
       <Section style={{ padding: 0 }}>

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Section } from "@/components/shared/section";
 import { CtaBanner } from "@/components/shared/cta-banner";
 import { SkewedButton } from "@/components/shared/skewed-button";
+import { BreadcrumbJsonLd } from "@/components/shared/json-ld";
 import {
   Zap,
   Timer,
@@ -185,6 +186,7 @@ const card: React.CSSProperties = {
 export default function LedChannelLettersPage() {
   return (
     <main style={{ background: BLACK }}>
+      <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "LED Channel Letters", path: "/led-channel-letters" }]} />
 
       {/* ── 1. HERO ── */}
       <Section

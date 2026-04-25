@@ -228,7 +228,7 @@ export function ContactForm() {
               <div>
                 <div style={INFO_LABEL_STYLE}>ADDRESS</div>
                 <div style={INFO_VALUE_STYLE}>
-                  Virginia, USA
+                  Woodbridge, VA 22191
                 </div>
               </div>
             </div>

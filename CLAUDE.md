@@ -61,7 +61,7 @@ src/
 │   ├── led-channel-letters/          # SEO landing page
 │   ├── channel-letter-signs-near-me/ # SEO landing page
 │   ├── storefront-window-graphics/   # SEO landing page
-│   ├── locations/                    # Location SEO pages (9 cities)
+│   ├── locations/                    # Location SEO pages — DMV only (Virginia, Washington DC, Maryland). 6 out-of-area pages (Seattle, NYC, LA, Chicago, Dallas, Houston) removed 2026-04-25 with 301s in next.config.ts due to doorway-page risk.
 │   ├── catalogs/                     # Interactive web catalogs
 │   │   ├── page.tsx                  # Public catalogs landing (grid of 6 catalogs)
 │   │   └── [slug]/page.tsx           # Fullscreen slideshow viewer + email gate
@@ -340,9 +340,9 @@ npx next build             # Production build
 - Supabase client uses lazy init to prevent build crashes when env vars missing
 - Domain: printecwrap.com is primary (www redirects to non-www)
 - Sitemap base URL: https://printecwrap.com
-- Phone number: +1 (715) 503-5444 (used across all pages)
+- Phone number: +1 (715) 503-5444 (used across all pages) — **WARNING: 715 is a Wisconsin area code; the company is in Virginia. NAP geo trust mismatch flagged in 2026-04-25 SEO audit. Replace with 571/703/804 when a real VA number is acquired.**
 - Email: info@printecwrap.com (NOT printeccorp.com)
-- Address: Virginia, USA (no specific street address shown publicly)
+- Address: 15485 Marsh Overlook Dr, Woodbridge, VA 22191 (in JSON-LD schema + contract PDFs). Site footer + contact form show "Woodbridge, VA 22191" (city/state/zip only).
 - Company name: Printec Virginia LLC (NOT "Printec Corp")
 - Homepage is server component wrapper → imports HomePageClient (client component)
 - JSON-LD LocalBusiness structured data in root layout (schema.org)
@@ -352,7 +352,7 @@ npx next build             # Production build
 - Portfolio categories match actual services (single source of truth in constants.ts)
 - Portfolio gallery is DB-driven (admin manages via /admin/portfolio)
 - Catalogs page shows "Coming Soon" (full catalog system built but not live yet)
-- Contact page: no map placeholder, address shows "Virginia, USA"
+- Contact page: no map placeholder, address shows "Woodbridge, VA 22191" (was "Virginia, USA" before 2026-04-25 NAP fix)
 - Homepage: "LATEST WORK" placeholder grid removed from social section
 - Storefront Window Graphics page has before/after slider + industry images
 - Food Truck Wraps page has Taco Fiesta wrap image in portfolio
@@ -364,7 +364,9 @@ npx next build             # Production build
 - robots.txt pointing to correct sitemap
 - Canonical URL on homepage
 - Meta descriptions all under 160 chars
-- 9 location pages for local SEO (DC, VA, MD, Seattle, NYC, LA, Chicago, Dallas, Houston)
+- 3 location pages for local SEO (DC, VA, MD) — 6 out-of-area pages removed 2026-04-25 (doorway-page risk; all 301-redirect to /locations/virginia)
+- LocalBusiness JSON-LD includes `aggregateRating` (5.0 / 13) + 3 `Review` entries — sourced from live GBP "Printec Wrap" listing. Maintenance: keep in sync with the live GBP. Never invent ratings.
+- Homepage has a Testimonials section (between sections 6.5 and 7) with 3 real Google reviews + GBP CTAs. Constants `GBP_RATING`, `GBP_REVIEW_COUNT`, `TESTIMONIALS` in src/components/home-page-client.tsx must stay synced with the JSON-LD `aggregateRating` + `review` array in src/app/layout.tsx.
 - Google Analytics 4 (Measurement ID: G-6K8LW0P8B9) — page views, custom events, conversion tracking
 - GA4 custom events: generate_lead, catalog_email_capture, phone_click, email_click, whatsapp_click, cta_click
 - GA4 event helper: `src/lib/gtag.ts` — trackEvent() wrapper used across 8 components

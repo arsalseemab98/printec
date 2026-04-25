@@ -122,6 +122,7 @@ export default function RootLayout({
               email: "info@printecwrap.com",
               address: {
                 "@type": "PostalAddress",
+                streetAddress: "15485 Marsh Overlook Dr",
                 addressLocality: "Woodbridge",
                 addressRegion: "VA",
                 postalCode: "22191",
@@ -144,6 +145,41 @@ export default function RootLayout({
                 { "@type": "OpeningHoursSpecification", dayOfWeek: "Saturday", opens: "10:00", closes: "16:00" },
               ],
               priceRange: "$$",
+              // Reviews — sourced from live Google Business Profile (Printec Wrap).
+              // Keep ratingValue + reviewCount in sync with the GBP listing; never invent values.
+              aggregateRating: {
+                "@type": "AggregateRating",
+                ratingValue: "5.0",
+                reviewCount: "13",
+                bestRating: "5",
+                worstRating: "1",
+              },
+              review: [
+                {
+                  "@type": "Review",
+                  author: { "@type": "Person", name: "Jaspreet Kaur" },
+                  reviewRating: { "@type": "Rating", ratingValue: "5", bestRating: "5" },
+                  reviewBody:
+                    "Printec Wrap is so professional that my restaurant looks so amazing. Highly recommend them for any kind of display or wrap.",
+                  datePublished: "2026-04-25",
+                },
+                {
+                  "@type": "Review",
+                  author: { "@type": "Organization", name: "Sangria's Mexican Grill" },
+                  reviewRating: { "@type": "Rating", ratingValue: "5", bestRating: "5" },
+                  reviewBody:
+                    "We have been using Printec for years and absolutely love it! They are extremely quick to make changes to menus, have great customer service and a personal dedicated rep that you can deal directly with instead of having to call a 1-800.",
+                  datePublished: "2026-04-25",
+                },
+                {
+                  "@type": "Review",
+                  author: { "@type": "Person", name: "Mansoortastic" },
+                  reviewRating: { "@type": "Rating", ratingValue: "5", bestRating: "5" },
+                  reviewBody:
+                    "Great service and excellent customer handling. Their team delivered even more than I expected — highly recommended!",
+                  datePublished: "2026-04-23",
+                },
+              ],
               areaServed: [
                 { "@type": "State", name: "Virginia" },
                 { "@type": "State", name: "Maryland" },

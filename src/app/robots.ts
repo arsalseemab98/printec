@@ -3,7 +3,6 @@ import { MetadataRoute } from "next";
 // Third-party SEO/scraping crawlers that pollute analytics without business value.
 // Blocking is voluntary — well-behaved bots honor robots.txt; hostile scrapers ignore it.
 const BLOCKED_BOTS = [
-  "AhrefsBot",
   "SemrushBot",
   "MJ12bot",
   "DotBot",

@@ -50,12 +50,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/locations/washington-dc",
     "/locations/virginia",
     "/locations/maryland",
-    "/locations/seattle",
-    "/locations/new-york",
-    "/locations/los-angeles",
-    "/locations/chicago",
-    "/locations/dallas",
-    "/locations/houston",
   ];
 
   const blogPages = BLOG_POSTS.map((post) => ({

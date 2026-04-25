@@ -32,12 +32,26 @@
 | Washington DC | `/locations/washington-dc` | ✅ | ✅ | ✅ | Live |
 | Virginia | `/locations/virginia` | ✅ | ✅ | ✅ | Live |
 | Maryland | `/locations/maryland` | ✅ | ✅ | ✅ | Live |
-| Seattle | `/locations/seattle` | ✅ | ✅ | ✅ | Live |
-| New York | `/locations/new-york` | ✅ | ✅ | ✅ | Live |
-| Los Angeles | `/locations/los-angeles` | ✅ | ✅ | ✅ | Live |
-| Chicago | `/locations/chicago` | ✅ | ✅ | ✅ | Live |
-| Dallas | `/locations/dallas` | ✅ | ✅ | ✅ | Live |
-| Houston | `/locations/houston` | ✅ | ✅ | ✅ | Live |
+| Seattle | `/locations/seattle` | — | — | — | **Removed 2026-04-25** — 301 → /locations/virginia (doorway-page risk) |
+| New York | `/locations/new-york` | — | — | — | **Removed 2026-04-25** — 301 → /locations/virginia |
+| Los Angeles | `/locations/los-angeles` | — | — | — | **Removed 2026-04-25** — 301 → /locations/virginia |
+| Chicago | `/locations/chicago` | — | — | — | **Removed 2026-04-25** — 301 → /locations/virginia |
+| Dallas | `/locations/dallas` | — | — | — | **Removed 2026-04-25** — 301 → /locations/virginia |
+| Houston | `/locations/houston` | — | — | — | **Removed 2026-04-25** — 301 → /locations/virginia |
+
+### SEO test cases — added 2026-04-25
+| Test | Status |
+|------|--------|
+| `curl -I https://printecwrap.com/locations/seattle` returns 308 redirect to `/locations/virginia` | Pending live deploy |
+| Homepage HTML contains JSON-LD `"aggregateRating":{"ratingValue":"5.0","reviewCount":"13"}` | Pending live deploy |
+| Homepage HTML contains 3 `Review` schema entries (Jaspreet Kaur, Sangria's, Mansoortastic) | Pending live deploy |
+| Homepage renders Testimonials section with 3 review cards + GBP CTAs | Pending live deploy |
+| `/contact` body shows "Woodbridge, VA 22191" (no "Virginia, USA") | ✅ Build verified |
+| Footer + contact-form modal show same address | ✅ Build verified |
+| `robots.txt` allows `AhrefsBot` (no longer in disallow list) | ✅ Build verified |
+| `sitemap.xml` excludes seattle/new-york/los-angeles/chicago/dallas/houston | ✅ Build verified |
+| JSON-LD `streetAddress: "15485 Marsh Overlook Dr"` present | ✅ Build verified |
+| `npx next build` passes after all changes | ✅ Verified 2026-04-25 |
 
 ## Components — Verification
 

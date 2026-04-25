@@ -45,6 +45,36 @@ const SERVICES = [
 // PORTFOLIO_CATEGORIES and PORTFOLIO are imported below
 
 
+/* ─── REVIEWS DATA — sourced from live Google Business Profile (Printec Wrap) ─── */
+// Refresh by visiting the GBP page and re-running the import; do not invent data.
+const GBP_URL =
+  "https://www.google.com/maps/place/Printec+Wrap/@38.583299,-77.358306,17z/data=!4m6!3m5!1s0xf4670ddaa524e8f:0x7ac9df46c44223f3!8m2!3d38.583299!4d-77.358306";
+const GBP_RATING = 5.0;
+const GBP_REVIEW_COUNT = 13;
+const TESTIMONIALS = [
+  {
+    author: "Jaspreet Kaur",
+    role: "Restaurant owner · Local Guide",
+    rating: 5,
+    text: "Printec Wrap is so professional that my restaurant looks so amazing. Highly recommend them for any kind of display or wrap.",
+    date: "April 2026",
+  },
+  {
+    author: "Sangria's Mexican Grill",
+    role: "Restaurant",
+    rating: 5,
+    text: "We have been using Printec for years and absolutely love it! They are extremely quick to make changes to menus, have great customer service and a personal dedicated rep that you can deal directly with instead of having to call a 1-800.",
+    date: "April 2026",
+  },
+  {
+    author: "Mansoortastic",
+    role: "Local Guide",
+    rating: 5,
+    text: "Great service and excellent customer handling. Their team delivered even more than I expected — highly recommended!",
+    date: "April 2026",
+  },
+];
+
 /* ─── STATS DATA ─── */
 const STATS = [
   { value: "2017", label: "ESTABLISHED" },
@@ -267,6 +297,196 @@ function CtaSectionAnimated() {
         </motion.div>
       </div>
     </div>
+  );
+}
+
+/* ─── TESTIMONIALS SECTION — Google reviews social proof ─── */
+function TestimonialsSection() {
+  const fullStars = Math.floor(GBP_RATING);
+  return (
+    <Section
+      id="reviews"
+      style={{
+        padding: "clamp(60px, 10vw, 120px) 24px",
+        maxWidth: "1280px",
+        margin: "0 auto",
+      }}
+    >
+      {/* Header */}
+      <div style={{ textAlign: "center", marginBottom: "clamp(40px, 6vw, 64px)" }}>
+        <div
+          style={{
+            display: "inline-block",
+            background: ORANGE,
+            color: BLACK,
+            padding: "4px 14px",
+            fontWeight: 900,
+            fontSize: "11px",
+            letterSpacing: "2px",
+            transform: "rotate(-2deg)",
+            marginBottom: "20px",
+          }}
+        >
+          GOOGLE REVIEWS
+        </div>
+        <h2
+          style={{
+            fontSize: "clamp(32px, 5vw, 48px)",
+            fontWeight: 900,
+            lineHeight: 1.1,
+            textTransform: "uppercase",
+            margin: "0 0 16px",
+          }}
+        >
+          WHAT OUR <span style={{ color: ORANGE }}>CLIENTS</span> SAY
+        </h2>
+        <div
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "10px",
+            fontFamily: "Arial, sans-serif",
+            fontSize: "16px",
+            color: WHITE,
+          }}
+        >
+          <span style={{ display: "inline-flex", gap: "2px", color: "#FFD600" }}>
+            {Array.from({ length: 5 }, (_, i) => (
+              <span key={i} style={{ fontSize: "20px", lineHeight: 1 }}>
+                {i < fullStars ? "★" : "☆"}
+              </span>
+            ))}
+          </span>
+          <span style={{ fontWeight: 700 }}>{GBP_RATING.toFixed(1)}</span>
+          <span style={{ color: "rgba(255,255,255,0.55)" }}>
+            · {GBP_REVIEW_COUNT} reviews on Google
+          </span>
+        </div>
+      </div>
+
+      {/* Cards */}
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+          gap: "20px",
+          marginBottom: "48px",
+        }}
+      >
+        {TESTIMONIALS.map((t) => (
+          <article
+            key={t.author}
+            style={{
+              background: DARK1,
+              border: `1px solid ${DARK2}`,
+              borderRadius: "4px",
+              padding: "28px 24px",
+              display: "flex",
+              flexDirection: "column",
+              gap: "16px",
+            }}
+          >
+            <div style={{ display: "inline-flex", gap: "2px", color: "#FFD600" }}>
+              {Array.from({ length: 5 }, (_, i) => (
+                <span key={i} style={{ fontSize: "16px", lineHeight: 1 }}>
+                  {i < t.rating ? "★" : "☆"}
+                </span>
+              ))}
+            </div>
+            <p
+              style={{
+                fontFamily: "Arial, sans-serif",
+                fontSize: "15px",
+                lineHeight: 1.7,
+                color: "rgba(255,255,255,0.78)",
+                margin: 0,
+              }}
+            >
+              &ldquo;{t.text}&rdquo;
+            </p>
+            <div style={{ marginTop: "auto", paddingTop: "8px" }}>
+              <div
+                style={{
+                  fontFamily: "Arial Black, Arial, sans-serif",
+                  fontWeight: 900,
+                  fontSize: "14px",
+                  color: WHITE,
+                  marginBottom: "2px",
+                }}
+              >
+                {t.author}
+              </div>
+              <div
+                style={{
+                  fontSize: "11px",
+                  letterSpacing: "1px",
+                  textTransform: "uppercase",
+                  color: "rgba(255,255,255,0.45)",
+                }}
+              >
+                {t.role} · {t.date}
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      {/* CTAs */}
+      <div
+        style={{
+          display: "flex",
+          gap: "16px",
+          justifyContent: "center",
+          flexWrap: "wrap",
+        }}
+      >
+        <a
+          href={GBP_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            fontFamily: "Arial, sans-serif",
+            fontSize: "13px",
+            color: WHITE,
+            textDecoration: "none",
+            border: `1px solid ${DARK2}`,
+            padding: "12px 22px",
+            letterSpacing: "1px",
+            textTransform: "uppercase",
+            fontWeight: 700,
+            transition: "border-color 0.2s, color 0.2s",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.borderColor = ORANGE;
+            e.currentTarget.style.color = ORANGE;
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.borderColor = DARK2;
+            e.currentTarget.style.color = WHITE;
+          }}
+        >
+          Read all {GBP_REVIEW_COUNT} reviews on Google →
+        </a>
+        <a
+          href={GBP_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            fontFamily: "Arial, sans-serif",
+            fontSize: "13px",
+            background: ORANGE,
+            color: BLACK,
+            textDecoration: "none",
+            padding: "12px 22px",
+            letterSpacing: "1px",
+            textTransform: "uppercase",
+            fontWeight: 900,
+          }}
+        >
+          Leave a Google review
+        </a>
+      </div>
+    </Section>
   );
 }
 
@@ -1041,6 +1261,14 @@ export function HomePageClient() {
 
       {/* ─── TAPE STRIP ─── */}
       <TapeStrip rotation={-0.8} />
+
+      {/* ═══════════════════════════════════════════ */}
+      {/* ─── 6.5 TESTIMONIALS — Google reviews social proof ─── */}
+      {/* ═══════════════════════════════════════════ */}
+      <TestimonialsSection />
+
+      {/* ─── TAPE STRIP ─── */}
+      <TapeStrip rotation={0.6} />
 
       {/* ═══════════════════════════════════════════ */}
       {/* ─── 7. QUOTE / CTA SECTION ─── */}

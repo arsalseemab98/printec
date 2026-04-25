@@ -45,12 +45,6 @@ const LOCATION_LINKS = [
   { label: "Virginia", href: "/locations/virginia" },
   { label: "Washington DC", href: "/locations/washington-dc" },
   { label: "Maryland", href: "/locations/maryland" },
-  { label: "New York", href: "/locations/new-york" },
-  { label: "Los Angeles", href: "/locations/los-angeles" },
-  { label: "Chicago", href: "/locations/chicago" },
-  { label: "Seattle", href: "/locations/seattle" },
-  { label: "Dallas", href: "/locations/dallas" },
-  { label: "Houston", href: "/locations/houston" },
 ];
 
 const CONNECT_ICON_MAP: Record<string, React.ReactNode> = {

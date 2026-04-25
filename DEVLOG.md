@@ -2,6 +2,43 @@
 
 ---
 
+## 2026-04-25 — SEO audit + 4 critical fixes (reviews, NAP, doorway pages, AhrefsBot)
+
+Full SEO audit run via parallel subagents (technical, content, schema, local). Reports saved to `seo-audit/` (FULL-AUDIT-REPORT.md, ACTION-PLAN.md, technical-audit.md, content-audit.md, schema-audit.md, local-audit.md). Overall SEO Health Score: ~58/100. Local SEO sub-score: 34/100, dragged down primarily by zero reviews + doorway pages.
+
+### Fixes applied
+
+**1. Reviews — added real Google data (was: 0/100, no reviews anywhere)**
+- Pulled live data from GBP listing "Printec Wrap" (https://www.google.com/maps/place/Printec+Wrap/@38.583299,-77.358306). Confirmed 5.0★ / 13 reviews on the live profile.
+- `src/app/layout.tsx`: added `aggregateRating` (5.0/13) and 3 `Review` entities (Jaspreet Kaur, Sangria's Mexican Grill, Mansoortastic) to LocalBusiness JSON-LD. Each entry uses verbatim review text from GBP. Skipped the owner's own "Arsal Seemab" review on purpose — self-reviewing is a bad signal.
+- `src/components/home-page-client.tsx`: new `TestimonialsSection` component, inserted between section 6.5 and 7 (CTA) so social proof primes the conversion. Reads from `TESTIMONIALS` constant + `GBP_RATING` + `GBP_REVIEW_COUNT`. Cards match Refined Minimal style (#161616 bg, #222 border, gold stars). Two CTAs: "Read all 13 reviews on Google" + "Leave a Google review" — both link to the GBP URL.
+- **Maintenance:** the constants `GBP_RATING`, `GBP_REVIEW_COUNT`, and `TESTIMONIALS` array must be kept in sync with the live GBP. Schema review entries in layout.tsx must mirror the same 3 reviews. Inflated ratings = Google manual-action risk.
+
+**2. Doorway pages — removed Seattle/NYC/LA/Chicago/Dallas/Houston**
+- Deleted directories: `src/app/locations/{seattle,new-york,los-angeles,chicago,dallas,houston}/`
+- Added 6 permanent (308) redirects in `next.config.ts` → all point to `/locations/virginia`
+- Removed from `src/app/sitemap.ts` `locationPages` array
+- Removed from `src/components/layout/footer.tsx` `LOCATION_LINKS` array
+- Reason: all 6 used a city-name-swapped template with no physical presence, no local projects, no local phone (used same WI 715 number on every page). Doorway-page manual-action risk under Sept 2025 QRG. The DMV trio (Virginia, DC, Maryland) was kept — defensible given Woodbridge proximity (30mi to DC, 45mi to Baltimore).
+
+**3. NAP inconsistency — fixed contact-form modal**
+- `src/components/shared/contact-form.tsx:231`: changed "Virginia, USA" → "Woodbridge, VA 22191" so all public surfaces match (contact page, footer, schema all already used Woodbridge VA 22191).
+- `src/app/layout.tsx`: added `streetAddress: "15485 Marsh Overlook Dr"` to `PostalAddress` in JSON-LD. Address was already public via contract PDFs and `/sign/[id]` page so this is not new disclosure. Completes the schema for full Local SEO benefit.
+
+**4. AhrefsBot unblocked**
+- `src/app/robots.ts`: removed `"AhrefsBot"` from `BLOCKED_BOTS` array. SemrushBot + 8 others remain blocked. Reason: AhrefsBot was blocking the owner's own SEO monitoring tools. Other scraper bots (MJ12, DotBot, BLEXBot, etc.) stay disallowed.
+
+### Outstanding (NOT done — needs real data)
+- **Phone number:** still `(715) 503-5444` everywhere. Wisconsin area code on a Virginia business + Virginia GBP = NAP geo trust mismatch. Did not invent a substitute number — risk of putting a real stranger's phone live. User needs to acquire a real VA number (571/703/804) and we'll do a sweep across `layout.tsx`, `footer.tsx`, `contact-form.tsx`, `home-page-client.tsx`, all `tel:` and `wa.me/` links + update GBP.
+- **GBP hours mismatch:** GBP shows "Open 24 hours" 7 days/week; site schema shows Mon-Fri 9-6, Sat 10-4. One side is wrong. Did not change either — needs owner to confirm true hours.
+- **GBP listing name:** GBP shows "Printec Wrap" but legal entity is "Printec Virginia LLC". Should be reconciled in GBP dashboard (use legal name).
+- **Phone line on homepage:** `home-page-client.tsx` line 1127 still hardcodes `(715) 503-5444` in 3 places (will be swept once VA number provided).
+
+### Verification
+- `npx next build` passed clean — 32 routes, 6 location dirs gone, 3 location dirs remain (virginia, washington-dc, maryland).
+- All internal links to deleted pages removed (verified via grep — no orphan `href="/locations/{deleted}"`).
+- Schema valid JSON (verified by build pass; deeper validation against schema.org pending live deploy + Google Rich Results Test).
+
 ## 2026-04-22 — Stop silent quote loss on inquiry delete
 - Root cause of missing quotes on /admin/quotes: `quotes.inquiry_id` FK was NOT NULL + ON DELETE CASCADE. Deleting an inquiry (via /admin/inquiries/[id] delete) silently dropped every linked quote from the database. Numbering gap in production (PQ-0002, PQ-0007 present; PQ-0001, 0003, 0004, 0005, 0006 gone) is the smoking gun — 5 quotes already lost to this.
 - Fix: applied migration scripts/migrations/2026-04-22-quotes-inquiry-fk-set-null.sql via Supabase MCP — dropped NOT NULL on quotes.inquiry_id and changed the FK to ON DELETE SET NULL. Mirror of contracts.inquiry_id which was already SET NULL.

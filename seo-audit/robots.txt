@@ -1,0 +1,38 @@
+User-Agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /sign/
+
+User-Agent: AhrefsBot
+Disallow: /
+
+User-Agent: SemrushBot
+Disallow: /
+
+User-Agent: MJ12bot
+Disallow: /
+
+User-Agent: DotBot
+Disallow: /
+
+User-Agent: BLEXBot
+Disallow: /
+
+User-Agent: PetalBot
+Disallow: /
+
+User-Agent: DataForSeoBot
+Disallow: /
+
+User-Agent: SeekportBot
+Disallow: /
+
+User-Agent: SerpstatBot
+Disallow: /
+
+User-Agent: ZoominfoBot
+Disallow: /
+
+Sitemap: https://printecwrap.com/sitemap.xml
+

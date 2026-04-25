@@ -37,6 +37,13 @@ const nextConfig: NextConfig = {
       { source: "/author/:path*", destination: "/team", permanent: true },
       // Old WordPress pagination
       { source: "/page/:path*", destination: "/", permanent: true },
+      // Out-of-area location pages (doorway-page risk under Sept 2025 QRG) → Virginia
+      { source: "/locations/seattle", destination: "/locations/virginia", permanent: true },
+      { source: "/locations/new-york", destination: "/locations/virginia", permanent: true },
+      { source: "/locations/los-angeles", destination: "/locations/virginia", permanent: true },
+      { source: "/locations/chicago", destination: "/locations/virginia", permanent: true },
+      { source: "/locations/dallas", destination: "/locations/virginia", permanent: true },
+      { source: "/locations/houston", destination: "/locations/virginia", permanent: true },
     ];
   },
 };

@@ -3,7 +3,7 @@ import Image from "next/image";
 import { Section } from "@/components/shared/section";
 import { CtaBanner } from "@/components/shared/cta-banner";
 import { BeforeAfterSlider } from "@/components/ui/before-after-slider";
-import { BreadcrumbJsonLd, FaqJsonLd } from "@/components/shared/json-ld";
+import { BreadcrumbJsonLd, FaqJsonLd, ServiceJsonLd } from "@/components/shared/json-ld";
 import {
   ORANGE,
   BLACK,
@@ -162,6 +162,19 @@ export default async function CustomNeonSignsPage() {
         items={[
           { name: "Home", path: "/" },
           { name: "Custom Neon Signs", path: "/custom-neon-signs" },
+        ]}
+      />
+      <ServiceJsonLd
+        name="Custom LED Neon Signs"
+        serviceType="Custom Neon Signs"
+        description="Custom LED neon signs for businesses, weddings, events, and home decor. Energy-efficient, long-lasting, and fully customizable. Serving Virginia, Maryland, and Washington DC."
+        path="/custom-neon-signs"
+        offers={[
+          "Business LED Neon Signs",
+          "Wedding & Event Neon Signs",
+          "Home Decor LED Neon",
+          "Custom Logo Neon",
+          "Quote & Phrase Neon Signs",
         ]}
       />
       <FaqJsonLd items={FAQ} />

@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import Image from "next/image";
 import { Section } from "@/components/shared/section";
 import { CtaBanner } from "@/components/shared/cta-banner";
-import { BreadcrumbJsonLd } from "@/components/shared/json-ld";
+import { BreadcrumbJsonLd, ServiceJsonLd } from "@/components/shared/json-ld";
 import { BeforeAfterSlider } from "@/components/ui/before-after-slider";
 import {
   ORANGE,
@@ -197,6 +197,19 @@ export default async function WallWrapsPage() {
   return (
     <main style={{ background: BLACK }}>
       <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Wall Wraps", path: "/wall-wraps" }]} />
+      <ServiceJsonLd
+        name="Commercial Wall Wraps"
+        serviceType="Wall Wraps"
+        description="Custom vinyl wall wraps for offices, retail stores, restaurants, and commercial spaces. Durable wall graphics that transform any interior. Serving Virginia, Maryland, and Washington DC."
+        path="/wall-wraps"
+        offers={[
+          "Office Wall Murals",
+          "Retail Wall Graphics",
+          "Restaurant Wall Art",
+          "Commercial Vinyl Wraps",
+          "Interior Brand Walls",
+        ]}
+      />
 
       {/* ── 1. HERO ── */}
       <Section style={{ padding: 0 }}>

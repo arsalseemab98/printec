@@ -3,7 +3,7 @@ import Image from "next/image";
 import { Section } from "@/components/shared/section";
 import { SkewedButton } from "@/components/shared/skewed-button";
 import { BeforeAfterSlider } from "@/components/ui/before-after-slider";
-import { BreadcrumbJsonLd, FaqJsonLd } from "@/components/shared/json-ld";
+import { BreadcrumbJsonLd, FaqJsonLd, ServiceJsonLd } from "@/components/shared/json-ld";
 import {
   ORANGE,
   BLACK,
@@ -201,6 +201,21 @@ export default async function BusinessSignagePage() {
         items={[
           { name: "Home", path: "/" },
           { name: "Business Signage", path: "/business-signage" },
+        ]}
+      />
+      <ServiceJsonLd
+        name="Custom Business Signage"
+        serviceType="Business Signage"
+        description="Custom business signage including monument signs, pylon signs, channel letters, storefront and office signs. ADA-compliant. Serving Virginia, Maryland, and Washington DC."
+        path="/business-signage"
+        offers={[
+          "Monument Signs",
+          "Pylon Signs",
+          "Blade Signs",
+          "Channel Letters",
+          "Cabinet Signs",
+          "ADA Wayfinding Signs",
+          "Dimensional Lettering",
         ]}
       />
       <FaqJsonLd items={FAQ_DATA} />

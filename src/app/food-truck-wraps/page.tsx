@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import Image from "next/image";
 import { Section } from "@/components/shared/section";
 import { CtaBanner } from "@/components/shared/cta-banner";
-import { BreadcrumbJsonLd } from "@/components/shared/json-ld";
+import { BreadcrumbJsonLd, ServiceJsonLd } from "@/components/shared/json-ld";
 import { BeforeAfterSlider } from "@/components/ui/before-after-slider";
 import {
   ORANGE,
@@ -225,6 +225,19 @@ export default function FoodTruckWrapsPage() {
   return (
     <main style={{ background: BLACK }}>
       <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Food Truck Wraps", path: "/food-truck-wraps" }]} />
+      <ServiceJsonLd
+        name="Custom Food Truck Wraps"
+        serviceType="Food Truck Wraps"
+        description="Custom food truck wraps and trailer graphics that turn your mobile kitchen into a rolling billboard. Full wraps, partial wraps, menu boards. Serving Virginia, Maryland, and Washington DC."
+        path="/food-truck-wraps"
+        offers={[
+          "Full Food Truck Wraps",
+          "Partial Food Truck Wraps",
+          "Trailer Graphics",
+          "Menu Boards",
+          "Window Lettering",
+        ]}
+      />
 
       {/* ── 1. HERO ── */}
       <Section style={{ padding: 0 }}>

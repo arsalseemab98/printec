@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import Image from "next/image";
 import { Section } from "@/components/shared/section";
 import { CtaBanner } from "@/components/shared/cta-banner";
-import { BreadcrumbJsonLd } from "@/components/shared/json-ld";
+import { BreadcrumbJsonLd, ServiceJsonLd } from "@/components/shared/json-ld";
 import { BeforeAfterSlider } from "@/components/ui/before-after-slider";
 import {
   ORANGE,
@@ -159,6 +159,19 @@ export default async function WindowWrapsPage() {
   return (
     <main style={{ background: BLACK }}>
       <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Window Wraps", path: "/window-wraps" }]} />
+      <ServiceJsonLd
+        name="Custom Window Wraps & Storefront Graphics"
+        serviceType="Window Wraps"
+        description="Custom window wraps, storefront graphics, and business window decals that attract customers. Privacy films, full wraps, perforated vinyl. Serving Virginia, Maryland, and Washington DC."
+        path="/window-wraps"
+        offers={[
+          "Storefront Window Graphics",
+          "Privacy Window Films",
+          "Perforated Vinyl Windows",
+          "Frosted Window Film",
+          "Vinyl Window Lettering",
+        ]}
+      />
 
       {/* ── 1. HERO ── */}
       <Section style={{ padding: 0 }}>

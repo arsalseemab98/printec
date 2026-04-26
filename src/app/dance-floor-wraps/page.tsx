@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import Image from "next/image";
 import { Section } from "@/components/shared/section";
 import { SkewedButton } from "@/components/shared/skewed-button";
-import { BreadcrumbJsonLd } from "@/components/shared/json-ld";
+import { BreadcrumbJsonLd, ServiceJsonLd } from "@/components/shared/json-ld";
 import { BeforeAfterSlider } from "@/components/ui/before-after-slider";
 import { GalleryGridBlock } from "@/components/ui/gallery-grid-block-shadcnui";
 import { getPortfolioImages } from "@/lib/content";
@@ -191,6 +191,19 @@ export default async function DanceFloorWrapsPage() {
   return (
     <main style={{ background: BLACK }}>
       <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Dance Floor Wraps", path: "/dance-floor-wraps" }]} />
+      <ServiceJsonLd
+        name="Custom Dance Floor Wraps"
+        serviceType="Dance Floor Wraps"
+        description="Custom dance floor wraps for weddings, corporate events, galas, and trade shows. Slip-resistant vinyl with full-color custom artwork. Serving Virginia, Maryland, and Washington DC."
+        path="/dance-floor-wraps"
+        offers={[
+          "Wedding Floor Wraps",
+          "Corporate Event Floor Wraps",
+          "Trade Show Floor Graphics",
+          "Custom Monogram Floor Decals",
+          "Brand Activation Floor Wraps",
+        ]}
+      />
 
       {/* ── 1. HERO ── */}
       <Section

@@ -115,6 +115,7 @@ export default function RootLayout({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "LocalBusiness",
+              "@id": "https://printecwrap.com/#business",
               name: "Printec Virginia LLC",
               description: "Virginia's premier custom signage, wraps, and graphics company. Channel letters, window wraps, dance floor wraps, wall wraps, neon signs & more.",
               url: "https://printecwrap.com",

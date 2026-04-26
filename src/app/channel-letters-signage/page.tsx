@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import Image from "next/image";
 import { Section } from "@/components/shared/section";
 import { CtaBanner } from "@/components/shared/cta-banner";
-import { BreadcrumbJsonLd } from "@/components/shared/json-ld";
+import { BreadcrumbJsonLd, ServiceJsonLd } from "@/components/shared/json-ld";
 import { BeforeAfterSlider } from "@/components/ui/before-after-slider";
 import {
   ORANGE,
@@ -190,6 +190,19 @@ export default async function ChannelLettersSignagePage() {
   return (
     <main style={{ background: BLACK }}>
       <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Channel Letters Signage", path: "/channel-letters-signage" }]} />
+      <ServiceJsonLd
+        name="Channel Letter Signs"
+        serviceType="Channel Letter Signs"
+        description="Custom channel letter signs and LED signage for businesses. Front-lit, back-lit, and halo-lit options. Expert installation across Virginia, Maryland, and Washington DC."
+        path="/channel-letters-signage"
+        offers={[
+          "Front-Lit Channel Letters",
+          "Back-Lit (Halo-Lit) Channel Letters",
+          "LED Illuminated Channel Letters",
+          "Open-Face Neon Channel Letters",
+          "Custom Logo Cabinet Signs",
+        ]}
+      />
 
       {/* ── 1. HERO ── */}
       <Section style={{ padding: 0 }}>

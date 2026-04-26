@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { getBlogPostBySlug, getBlogPosts } from "@/lib/content";
 import { BLOG_POSTS, getBlogPost, getRelatedPosts } from "@/lib/blog-data";
 import { CtaBanner } from "@/components/shared/cta-banner";
-import { BreadcrumbJsonLd } from "@/components/shared/json-ld";
+import { BreadcrumbJsonLd, BlogPostingJsonLd } from "@/components/shared/json-ld";
 import { ORANGE, BLACK, WHITE } from "@/lib/constants";
 import { ArrowLeft, ArrowRight, Calendar, Clock } from "lucide-react";
 
@@ -96,6 +96,12 @@ export default async function BlogPostPage({
           { name: "Blog", path: "/blog" },
           { name: post.title, path: `/blog/${post.slug}` },
         ]}
+      />
+      <BlogPostingJsonLd
+        headline={post.title}
+        description={post.excerpt}
+        slug={post.slug}
+        datePublished={post.date}
       />
       {/* Hero */}
       <section

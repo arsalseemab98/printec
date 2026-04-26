@@ -358,15 +358,22 @@ npx next build             # Production build
 - Food Truck Wraps page has Taco Fiesta wrap image in portfolio
 
 ## SEO Features
-- Unique metadata (title, description, keywords, openGraph) on all 32 pages
-- JSON-LD LocalBusiness schema (services, hours, social, area served)
-- sitemap.xml with priority tiers (service 0.9, SEO 0.8, location 0.7, blog 0.6)
-- robots.txt pointing to correct sitemap
-- Canonical URL on homepage
+- Unique metadata (title, description, keywords, openGraph) on all 26 public pages (was 32 before 2026-04-25 doorway-page cleanup)
+- **JSON-LD schema architecture (post 2026-04-25/26 audit):**
+  - `LocalBusiness` on every page (in root layout) — `@id: "https://printecwrap.com/#business"` for cross-entity references. Includes `aggregateRating` (5.0/13) + 3 real `Review` entries from GBP, `streetAddress: "15485 Marsh Overlook Dr"`, `openingHoursSpecification`, `areaServed`, `hasOfferCatalog`.
+  - `Service` schema on 7 main service pages — `provider` field references LocalBusiness via `@id`. Each has `serviceType`, `name`, `description`, `areaServed` (VA/MD/DC), and `hasOfferCatalog` with 5–7 sub-services.
+  - `BreadcrumbList` on all 21 inner pages.
+  - `FAQPage` on 4 pages with FAQ data (business-signage, custom-neon-signs, wedding-floor-wrap, locations/washington-dc) — reuses existing `FAQ_DATA`/`FAQ`/`FAQS` arrays.
+  - `BlogPosting` on `/blog/[slug]` — pulls from existing `post` object.
+  - Helper: `src/components/shared/json-ld.tsx` exports `BreadcrumbJsonLd`, `FaqJsonLd`, `ServiceJsonLd`, `BlogPostingJsonLd`.
+- sitemap.xml with priority tiers (service 0.9, SEO 0.8, location 0.7, blog 0.6) — 33 URLs total
+- robots.txt pointing to correct sitemap; AhrefsBot allowed (was blocked, unblocked 2026-04-25 so own SEO tools can monitor)
+- Canonical URL on homepage; Next.js `metadataBase` handles canonicals on inner pages
 - Meta descriptions all under 160 chars
-- 3 location pages for local SEO (DC, VA, MD) — 6 out-of-area pages removed 2026-04-25 (doorway-page risk; all 301-redirect to /locations/virginia)
-- LocalBusiness JSON-LD includes `aggregateRating` (5.0 / 13) + 3 `Review` entries — sourced from live GBP "Printec Wrap" listing. Maintenance: keep in sync with the live GBP. Never invent ratings.
-- Homepage has a Testimonials section (between sections 6.5 and 7) with 3 real Google reviews + GBP CTAs. Constants `GBP_RATING`, `GBP_REVIEW_COUNT`, `TESTIMONIALS` in src/components/home-page-client.tsx must stay synced with the JSON-LD `aggregateRating` + `review` array in src/app/layout.tsx.
+- 3 location pages for local SEO (DC, VA, MD) — 6 out-of-area pages removed 2026-04-25 (doorway-page risk; all 308-redirect to /locations/virginia via next.config.ts)
+- Homepage has a Testimonials section (between sections 6.5 and 7) with 3 real Google reviews + GBP CTAs. Constants `GBP_RATING`, `GBP_REVIEW_COUNT`, `TESTIMONIALS` in src/components/home-page-client.tsx must stay synced with the JSON-LD `aggregateRating` + `review` array in src/app/layout.tsx. **Never invent ratings — Google manual-action risk.**
+- Security headers via `next.config.ts` `headers()`: `X-Frame-Options: SAMEORIGIN`, `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin`, `Permissions-Policy: camera=()/microphone=()/geolocation=()`. HSTS already present from Vercel default.
+- www → apex redirect is **308 Permanent** (set via Vercel API: `PATCH /v9/projects/{id}/domains/www.printecwrap.com` with `redirectStatusCode: 308`). The change is persisted at the Vercel platform level — survives redeploys. To revert, PATCH back to 307 or null.
 - Google Analytics 4 (Measurement ID: G-6K8LW0P8B9) — page views, custom events, conversion tracking
 - GA4 custom events: generate_lead, catalog_email_capture, phone_click, email_click, whatsapp_click, cta_click
 - GA4 event helper: `src/lib/gtag.ts` — trackEvent() wrapper used across 8 components

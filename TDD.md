@@ -42,16 +42,51 @@
 ### SEO test cases — added 2026-04-25
 | Test | Status |
 |------|--------|
-| `curl -I https://printecwrap.com/locations/seattle` returns 308 redirect to `/locations/virginia` | Pending live deploy |
-| Homepage HTML contains JSON-LD `"aggregateRating":{"ratingValue":"5.0","reviewCount":"13"}` | Pending live deploy |
-| Homepage HTML contains 3 `Review` schema entries (Jaspreet Kaur, Sangria's, Mansoortastic) | Pending live deploy |
-| Homepage renders Testimonials section with 3 review cards + GBP CTAs | Pending live deploy |
-| `/contact` body shows "Woodbridge, VA 22191" (no "Virginia, USA") | ✅ Build verified |
-| Footer + contact-form modal show same address | ✅ Build verified |
-| `robots.txt` allows `AhrefsBot` (no longer in disallow list) | ✅ Build verified |
-| `sitemap.xml` excludes seattle/new-york/los-angeles/chicago/dallas/houston | ✅ Build verified |
-| JSON-LD `streetAddress: "15485 Marsh Overlook Dr"` present | ✅ Build verified |
+| `curl -I https://printecwrap.com/locations/seattle` returns 308 redirect to `/locations/virginia` | ✅ Live verified |
+| Homepage HTML contains JSON-LD `"aggregateRating":{"ratingValue":"5.0","reviewCount":"13"}` | ✅ Live verified |
+| Homepage HTML contains 3 `Review` schema entries (Jaspreet Kaur, Sangria's, Mansoortastic) | ✅ Live verified |
+| Homepage renders Testimonials section with 3 review cards + GBP CTAs | ✅ Live verified |
+| `/contact` body shows "Woodbridge, VA 22191" (no "Virginia, USA") | ✅ Live verified |
+| Footer + contact-form modal show same address | ✅ Live verified |
+| `robots.txt` allows `AhrefsBot` (no longer in disallow list) | ✅ Live verified |
+| `sitemap.xml` excludes seattle/new-york/los-angeles/chicago/dallas/houston | ✅ Live verified (33 URLs, was 39) |
+| JSON-LD `streetAddress: "15485 Marsh Overlook Dr"` present | ✅ Live verified |
 | `npx next build` passes after all changes | ✅ Verified 2026-04-25 |
+
+### SEO test cases — added 2026-04-25 (security headers + BreadcrumbList + FAQPage)
+| Test | Status |
+|------|--------|
+| `curl -I https://printecwrap.com` returns `x-frame-options: SAMEORIGIN` | ✅ Live verified |
+| `curl -I https://printecwrap.com` returns `x-content-type-options: nosniff` | ✅ Live verified |
+| `curl -I https://printecwrap.com` returns `referrer-policy: strict-origin-when-cross-origin` | ✅ Live verified |
+| `curl -I https://printecwrap.com` returns `permissions-policy: camera=(), microphone=(), geolocation=()` | ✅ Live verified |
+| `/about` HTML contains BreadcrumbList JSON-LD with Home → About | ✅ Live verified |
+| All 21 inner pages emit BreadcrumbList JSON-LD via `<BreadcrumbJsonLd />` | ✅ Live verified (sample 3 pages) |
+| `/business-signage` HTML contains FAQPage JSON-LD with 6 Q&A entries | ✅ Live verified |
+| `/custom-neon-signs` HTML contains FAQPage JSON-LD | ✅ Live verified |
+| `/wedding-floor-wrap` HTML contains FAQPage JSON-LD | ✅ Live verified |
+| `/locations/washington-dc` HTML contains FAQPage JSON-LD | ✅ Live verified |
+
+### SEO test cases — added 2026-04-25 (Vercel domain config)
+| Test | Status |
+|------|--------|
+| `curl -sI https://www.printecwrap.com` returns `HTTP/2 308` (was 307) | ✅ Live verified |
+| `curl -sI https://www.printecwrap.com/about` returns 308 + `location: https://printecwrap.com/about` | ✅ Live verified |
+| `curl -sI https://printecwrap.com` apex still returns 200 | ✅ Live verified |
+
+### SEO test cases — added 2026-04-26 (Service + BlogPosting schema)
+| Test | Status |
+|------|--------|
+| `/business-signage` HTML contains `"@type":"Service","name":"Custom Business Signage"` | ✅ Live verified |
+| `/channel-letters-signage` HTML contains `"@type":"Service","name":"Channel Letter Signs"` | ✅ Live verified |
+| `/custom-neon-signs` HTML contains `"@type":"Service","name":"Custom LED Neon Signs"` | ✅ Live verified |
+| `/dance-floor-wraps` HTML contains `"@type":"Service","name":"Custom Dance Floor Wraps"` | ✅ Live verified |
+| `/food-truck-wraps` HTML contains `"@type":"Service","name":"Custom Food Truck Wraps"` | ✅ Live verified |
+| `/wall-wraps` HTML contains `"@type":"Service","name":"Commercial Wall Wraps"` | ✅ Live verified |
+| `/window-wraps` HTML contains `"@type":"Service","name":"Custom Window Wraps & Storefront Graphics"` | ✅ Live verified |
+| `/blog/[slug]` HTML contains `"@type":"BlogPosting"` with headline + datePublished | ✅ Live verified |
+| LocalBusiness JSON-LD has `"@id":"https://printecwrap.com/#business"` (every page) | ✅ Live verified |
+| Service `provider` field references LocalBusiness via the same `@id` | ✅ Live verified |
 
 ## Components — Verification
 

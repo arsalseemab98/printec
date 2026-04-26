@@ -2,6 +2,35 @@
 
 ---
 
+## 2026-04-26 — Service + BlogPosting schema, LocalBusiness @id anchor
+
+Final SEO audit follow-ups. All code-fixable items from the 2026-04-25 audit are now closed.
+
+- `src/components/shared/json-ld.tsx`: extended with `ServiceJsonLd` + `BlogPostingJsonLd` helpers. Added `BUSINESS_ID` constant (`https://printecwrap.com/#business`) for cross-entity references.
+- `src/app/layout.tsx`: added `"@id": "https://printecwrap.com/#business"` to the LocalBusiness JSON-LD so Service entities on inner pages can reference the same business via `provider`.
+- **Service schema** added to 7 main service pages (`/business-signage`, `/channel-letters-signage`, `/custom-neon-signs`, `/dance-floor-wraps`, `/food-truck-wraps`, `/wall-wraps`, `/window-wraps`). Each declares `serviceType`, `name`, `description`, `url`, `provider` (referencing LocalBusiness `@id`), `areaServed` (VA/MD/DC), and `hasOfferCatalog` with 5–7 sub-services.
+- **Skipped intentionally:** the 4 SEO landing pages (`/led-channel-letters`, `/channel-letter-signs-near-me`, `/storefront-window-graphics`, `/wedding-floor-wrap`). They're variants of the main services — adding Service schema there would create duplicate entities competing for the same query intents.
+- **BlogPosting schema** added to `src/app/blog/[slug]/page.tsx`. Pulls `title`, `excerpt`, `slug`, `date` from the existing `post` object so it works for both Supabase-backed and `BLOG_POSTS` fallback. Eligible for Article rich results in SERPs once we add per-post hero images.
+- Verified live post-deploy via `curl -s | grep` for each Service entity by unique name. All 7 Services + BlogPosting + `@id` anchor confirmed in HTML.
+- Deployed via `vercel --prod --yes` before pushing the commit; production is now in sync with `main`.
+- Commit: `3d46934`.
+
+## 2026-04-25 — Security headers + BreadcrumbList + FAQPage schema
+
+- `next.config.ts`: added `headers()` function exposing 4 security headers on `/:path*`: `X-Frame-Options: SAMEORIGIN`, `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin`, `Permissions-Policy: camera=(), microphone=(), geolocation=()`. HSTS already present from Vercel default.
+- `src/components/shared/json-ld.tsx`: new helper file exposing `BreadcrumbJsonLd` and `FaqJsonLd`. Server-rendered `<script type="application/ld+json">` blocks. Type-safe props.
+- **BreadcrumbList** added to all 21 inner pages: about, team, portfolio, contact, blog hub, blog/[slug], catalogs, all 7 service pages, all 4 SEO landing pages, and 3 location pages (virginia, washington-dc, maryland).
+- **FAQPage** added to 4 pages with existing FAQ data: business-signage, custom-neon-signs, wedding-floor-wrap, locations/washington-dc. Reuses the existing `FAQ_DATA` / `FAQ` / `FAQS` arrays — single source of truth for both visible content and schema.
+- Commit: `a72f23c`.
+
+## 2026-04-25 — www → apex redirect: 307 → 308 (via Vercel domain config)
+
+- Vercel platform-level `www.printecwrap.com` redirect was 307 (Temporary). 307 doesn't pass full link equity, so backlinks to www were not consolidating to the canonical apex.
+- Vercel CLI doesn't expose a "redirect status code" toggle for domain aliases. Tried `next.config.ts` host-based redirect first — doesn't work because Vercel's platform redirect runs before Next.js.
+- **Fixed via Vercel API directly**: `PATCH /v9/projects/{id}/domains/www.printecwrap.com` with `{"redirect":"printecwrap.com","redirectStatusCode":308}`. Used the auth token from `~/Library/Application Support/com.vercel.cli/auth.json`.
+- Verified live: `curl -sI https://www.printecwrap.com` now returns `HTTP/2 308`. Path-preservation works (`/about` → `/about`).
+- Persisted at the platform level — survives redeploys, reverts, and CLI promotes. No code commit.
+
 ## 2026-04-25 — SEO audit + 4 critical fixes (reviews, NAP, doorway pages, AhrefsBot)
 
 Full SEO audit run via parallel subagents (technical, content, schema, local). Reports saved to `seo-audit/` (FULL-AUDIT-REPORT.md, ACTION-PLAN.md, technical-audit.md, content-audit.md, schema-audit.md, local-audit.md). Overall SEO Health Score: ~58/100. Local SEO sub-score: 34/100, dragged down primarily by zero reviews + doorway pages.
